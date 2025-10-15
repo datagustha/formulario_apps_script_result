@@ -1,0 +1,2361 @@
+<!DOCTYPE html>
+<html lang="pt-BR">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>Sistema de Gestão de Cadastros - RESULT</title>
+  <link href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.0.0/css/all.min.css" rel="stylesheet">
+  <style>
+    /* 🔥 ESTILOS DO SISTEMA */
+    * {
+      box-sizing: border-box;
+      margin: 0;
+      padding: 0;
+      font-family: 'Segoe UI', system-ui, -apple-system, sans-serif;
+    }
+    
+    :root {
+      --primary: #7E3E9A;
+      --secondary: #A1CC4C;
+      --accent: #FF6B35;
+      --dark: #2D3047;
+      --light: #FFFFFF;
+      --success: #28A745;
+      --warning: #FFC107;
+      --danger: #DC3545;
+      --info: #17A2B8;
+      --gray: #6C757D;
+      --border: #E0E0E0;
+      --background: #F8F9FA;
+    }
+    
+    body {
+      background: var(--background);
+      min-height: 100vh;
+      padding: 20px;
+      color: var(--dark);
+    }
+    
+    .container {
+      max-width: 1200px;
+      margin: 0 auto;
+      background: var(--light);
+      border-radius: 15px;
+      box-shadow: 0 10px 30px rgba(0, 0, 0, 0.1);
+      overflow: hidden;
+    }
+    
+    .header {
+      background: var(--primary);
+      padding: 30px 40px;
+      color: white;
+      text-align: center;
+    }
+    
+    .logo-container {
+      display: flex;
+      flex-direction: column;
+      align-items: center;
+      gap: 15px;
+    }
+    
+    .logo {
+      width: 120px;
+      height: 120px;
+      background: white;
+      padding: 15px;
+      border-radius: 20px;
+      box-shadow: 0 5px 15px rgba(0, 0, 0, 0.2);
+    }
+    
+    h1 {
+      font-size: 2.8rem;
+      font-weight: 700;
+      margin-bottom: 10px;
+    }
+    
+    .subtitle {
+      font-size: 1.3rem;
+      opacity: 0.9;
+    }
+    
+    .content {
+      padding: 40px;
+    }
+    
+    .card {
+      background: var(--light);
+      border-radius: 12px;
+      padding: 30px;
+      margin-bottom: 25px;
+      box-shadow: 0 4px 15px rgba(0, 0, 0, 0.05);
+      border: 1px solid var(--border);
+    }
+    
+    .card-header {
+      display: flex;
+      align-items: center;
+      justify-content: space-between;
+      gap: 15px;
+      margin-bottom: 25px;
+      padding-bottom: 15px;
+      border-bottom: 3px solid var(--primary);
+    }
+    
+    .card-header i {
+      color: var(--primary);
+      font-size: 1.8rem;
+    }
+    
+    .card-title {
+      font-size: 1.6rem;
+      font-weight: 600;
+      color: var(--primary);
+    }
+    
+    .form-grid {
+      display: grid;
+      grid-template-columns: repeat(auto-fit, minmax(300px, 1fr));
+      gap: 20px;
+      margin-bottom: 25px;
+    }
+    
+    .form-group {
+      margin-bottom: 20px;
+    }
+    
+    .form-label {
+      display: flex;
+      align-items: center;
+      gap: 10px;
+      margin-bottom: 8px;
+      font-weight: 600;
+      color: var(--dark);
+    }
+    
+    .form-control {
+      width: 100%;
+      padding: 12px 15px;
+      border: 2px solid var(--border);
+      border-radius: 8px;
+      font-size: 1rem;
+      transition: all 0.3s ease;
+    }
+    
+    .form-control:focus {
+      outline: none;
+      border-color: var(--primary);
+    }
+    
+    .btn {
+      display: inline-flex;
+      align-items: center;
+      gap: 10px;
+      padding: 12px 24px;
+      border: none;
+      border-radius: 8px;
+      font-size: 1rem;
+      font-weight: 600;
+      cursor: pointer;
+      transition: all 0.3s ease;
+    }
+    
+    .btn-primary {
+      background: var(--primary);
+      color: white;
+    }
+    
+    .btn-primary:hover {
+      background: #6a2e82;
+    }
+    
+    .btn-success {
+      background: var(--success);
+      color: white;
+    }
+    
+    .btn-warning {
+      background: var(--warning);
+      color: var(--dark);
+    }
+    
+    .btn-danger {
+      background: var(--danger);
+      color: white;
+    }
+    
+    .btn-info {
+      background: var(--info);
+      color: white;
+    }
+    
+    .btn-outline {
+      background: transparent;
+      border: 2px solid var(--primary);
+      color: var(--primary);
+    }
+    
+    .btn-sm {
+      padding: 8px 16px;
+      font-size: 0.9rem;
+    }
+    
+    .btn-group {
+      display: flex;
+      gap: 15px;
+      margin-top: 25px;
+    }
+    
+    .message {
+      padding: 15px 20px;
+      border-radius: 8px;
+      margin: 15px 0;
+      display: none;
+      align-items: center;
+      gap: 10px;
+    }
+    
+    .success {
+      background: #d4edda;
+      color: var(--success);
+      border: 1px solid #c3e6cb;
+    }
+    
+    .error {
+      background: #f8d7da;
+      color: var(--danger);
+      border: 1px solid #f5c6cb;
+    }
+    
+    .info {
+      background: #d1ecf1;
+      color: #0c5460;
+      border: 1px solid #bee5eb;
+    }
+    
+    /* 🔥 ESTILOS DE LOADING */
+    .loading-container {
+      display: flex;
+      flex-direction: column;
+      align-items: center;
+      justify-content: center;
+      padding: 40px;
+      text-align: center;
+    }
+    
+    .loading-spinner {
+      width: 50px;
+      height: 50px;
+      border: 5px solid #f3f3f3;
+      border-top: 5px solid var(--primary);
+      border-radius: 50%;
+      animation: spin 1s linear infinite;
+      margin-bottom: 15px;
+    }
+    
+    @keyframes spin {
+      0% { transform: rotate(0deg); }
+      100% { transform: rotate(360deg); }
+    }
+    
+    /* 🔥 ESTILOS DA TABELA */
+    .table-container {
+      margin-top: 20px;
+      overflow: hidden;
+      border-radius: 10px;
+      box-shadow: 0 2px 10px rgba(0, 0, 0, 0.1);
+    }
+    
+    .table-responsive {
+      overflow-x: auto;
+    }
+    
+    .data-table {
+      width: 100%;
+      border-collapse: collapse;
+      background: white;
+    }
+    
+    .data-table th {
+      background: var(--primary);
+      color: white;
+      padding: 15px 12px;
+      text-align: left;
+      font-weight: 600;
+      font-size: 0.9rem;
+      position: sticky;
+      top: 0;
+    }
+    
+    .data-table td {
+      padding: 12px;
+      border-bottom: 1px solid var(--border);
+      font-size: 0.9rem;
+    }
+    
+    .data-table tbody tr {
+      transition: all 0.3s ease;
+    }
+    
+    .data-table tbody tr:hover {
+      background: #f8f9fa;
+      transform: translateY(-1px);
+      box-shadow: 0 2px 8px rgba(0, 0, 0, 0.1);
+    }
+    
+    .data-table .btn-sm {
+      padding: 6px 12px;
+      font-size: 0.8rem;
+      margin: 2px;
+    }
+    
+    .status-badge {
+      padding: 4px 8px;
+      border-radius: 12px;
+      font-size: 0.75rem;
+      font-weight: 600;
+      text-align: center;
+      display: inline-block;
+      min-width: 80px;
+    }
+    
+    .acoes-cell {
+      display: flex;
+      gap: 5px;
+      flex-wrap: wrap;
+    }
+    
+    /* 🔥 NOVOS ESTILOS PARA AS SEÇÕES DE CADASTROS */
+    .action-buttons {
+      display: flex;
+      gap: 15px;
+      margin-bottom: 20px;
+      flex-wrap: wrap;
+    }
+    
+    .cadastros-container {
+      margin-top: 30px;
+      padding: 25px;
+      background: white;
+      border-radius: 12px;
+      box-shadow: 0 4px 15px rgba(0, 0, 0, 0.1);
+      border: 2px solid var(--primary);
+    }
+    
+    .cadastros-grid {
+      display: grid;
+      grid-template-columns: repeat(auto-fill, minmax(350px, 1fr));
+      gap: 20px;
+      margin-top: 20px;
+    }
+    
+    .cadastro-card {
+      background: white;
+      border-radius: 10px;
+      padding: 20px;
+      border: 2px solid var(--border);
+      transition: all 0.3s ease;
+    }
+    
+    .cadastro-card:hover {
+      transform: translateY(-2px);
+      box-shadow: 0 5px 15px rgba(0, 0, 0, 0.1);
+    }
+    
+    .cadastro-header {
+      display: flex;
+      justify-content: space-between;
+      align-items: flex-start;
+      margin-bottom: 15px;
+    }
+    
+    .cadastro-nome {
+      font-size: 1.2rem;
+      font-weight: 700;
+      color: var(--dark);
+    }
+    
+    .cadastro-situacao {
+      padding: 4px 12px;
+      border-radius: 20px;
+      font-size: 0.8rem;
+      font-weight: 600;
+    }
+    
+    .situacao-cadastrado {
+      background: #D1E7DD;
+      color: #0F5132;
+    }
+
+    .situacao-novo-registro {
+  background-color: #bfe1f6 !important;
+  color: #0c5aa3 !important;
+  border: 1px solid #8bc9f0 !important;
+}
+    
+    .situacao-andamento {
+      background: #FFF3CD;
+      color: #856404;
+    }
+    
+    .situacao-parado {
+      background: #E2E3E5;
+      color: #383D41;
+    }
+    
+    .situacao-descredenciado {
+      background: #F8D7DA;
+      color: #721C24;
+    }
+    
+    .cadastro-info {
+      margin-bottom: 8px;
+      font-size: 0.9rem;
+    }
+    
+    .cadastro-info strong {
+      color: var(--primary);
+    }
+    
+    .mensalidade-badge {
+      background: var(--primary);
+      color: white;
+      padding: 4px 10px;
+      border-radius: 15px;
+      font-size: 0.8rem;
+      font-weight: 600;
+    }
+    
+    .filtros-container {
+      display: flex;
+      gap: 10px;
+      align-items: center;
+      flex-wrap: wrap;
+    }
+
+    /* 🔥 ESTILOS PARA PESQUISA */
+    .search-container {
+      position: relative;
+    }
+
+    .suggestions {
+      position: absolute;
+      top: 100%;
+      left: 0;
+      right: 0;
+      background: white;
+      border: 1px solid var(--primary);
+      border-top: none;
+      border-radius: 0 0 10px 10px;
+      z-index: 1000;
+      box-shadow: 0 4px 15px rgba(0, 0, 0, 0.1);
+      margin-top: -2px;
+      max-height: 300px;
+      overflow-y: auto;
+    }
+
+    .suggestion-item {
+      padding: 12px 16px;
+      cursor: pointer;
+      border-bottom: 1px solid var(--border);
+      transition: all 0.2s ease;
+      font-size: 1rem;
+      font-weight: 500;
+    }
+
+    .suggestion-item:hover {
+      background: var(--primary);
+      color: white;
+      font-weight: 600;
+    }
+
+    .suggestion-item:last-child {
+      border-bottom: none;
+    }
+    
+    .suggestion-section {
+      background: var(--primary);
+      color: white;
+      font-weight: 700;
+      padding: 10px 16px;
+      font-size: 0.9rem;
+      border-bottom: 1px solid var(--border);
+    }
+
+    .contador-lojas {
+      background: var(--primary);
+      color: white;
+      padding: 6px 12px;
+      border-radius: 20px;
+      font-size: 0.9rem;
+      font-weight: 600;
+    }
+
+    /* 🔥 ESTILOS PARA CAMPOS OBRIGATÓRIOS */
+.form-label.obrigatorio::after {
+  content: " *";
+  color: var(--danger);
+  font-weight: bold;
+  margin-left: 2px;
+}
+
+.campo-obrigatorio {
+  border-left: 4px solid var(--danger) !important;
+  background-color: #fff5f5 !important;
+}
+
+.aviso-obrigatorio {
+  color: var(--danger);
+  font-size: 0.8rem;
+  font-weight: 600;
+  margin-top: 5px;
+  display: none;
+}
+
+
+/* 🔥 ESTILOS PARA CAMPOS OBRIGATÓRIOS */
+.form-label.obrigatorio::after {
+  content: " *";
+  color: var(--danger);
+  font-weight: bold;
+  margin-left: 2px;
+}
+
+.campo-obrigatorio {
+  border-left: 4px solid var(--danger) !important;
+  background-color: #fff5f5 !important;
+}
+
+.aviso-obrigatorio {
+  color: var(--danger);
+  font-size: 0.8rem;
+  font-weight: 600;
+  margin-top: 5px;
+  display: none;
+}
+
+/* 🔥🔥🔥 ADICIONE ESTE CSS AQUI - ESTILOS MELHORADOS PARA VALIDAÇÃO */
+.form-control.campo-obrigatorio,
+select.campo-obrigatorio {
+  border: 2px solid var(--danger) !important;
+  background-color: #fff5f5 !important;
+  box-shadow: 0 0 0 3px rgba(220, 53, 69, 0.1) !important;
+  animation: pulse 0.5s ease-in-out;
+}
+
+@keyframes pulse {
+  0% { transform: scale(1); }
+  50% { transform: scale(1.02); }
+  100% { transform: scale(1); }
+}
+
+/* Destaque para a seção de fornecedores quando inválida */
+.fornecedores-invalido {
+  border: 2px solid var(--danger) !important;
+  background: #fff5f5 !important;
+  animation: shake 0.5s ease-in-out;
+}
+
+@keyframes shake {
+  0%, 100% { transform: translateX(0); }
+  25% { transform: translateX(-5px); }
+  75% { transform: translateX(5px); }
+}
+/* 🔥🔥🔥 FIM DO CSS ADICIONADO */
+
+    /* 🔥 ESTILOS PARA BOTÕES DE AÇÃO NA TABELA */
+    .btn-editar {
+      background: var(--primary);
+      color: white;
+      border: none;
+      padding: 6px 12px;
+      border-radius: 6px;
+      cursor: pointer;
+      font-size: 0.8rem;
+      transition: all 0.3s ease;
+    }
+    
+    .btn-editar:hover {
+      background: #6a2e82;
+    }
+    
+    .btn-visualizar {
+      background: var(--info);
+      color: white;
+      border: none;
+      padding: 6px 10px;
+      border-radius: 6px;
+      cursor: pointer;
+      font-size: 0.8rem;
+      transition: all 0.3s ease;
+    }
+    
+    .btn-visualizar:hover {
+      background: #138496;
+    }
+
+    /* 🔄 ESTILOS PARA O LOADING OVERLAY */
+#loadingOverlay {
+  display: none;
+  position: fixed;
+  top: 0;
+  left: 0;
+  width: 100%;
+  height: 100%;
+  background: rgba(0,0,0,0.7);
+  z-index: 9999;
+  justify-content: center;
+  align-items: center;
+  flex-direction: column;
+}
+
+.loading-content {
+  background: white;
+  padding: 40px;
+  border-radius: 15px;
+  text-align: center;
+  box-shadow: 0 10px 30px rgba(0,0,0,0.3);
+  min-width: 300px;
+  border: 3px solid var(--primary);
+}
+
+.loading-spinner-large {
+  border: 5px solid #f3f3f3;
+  border-top: 5px solid var(--primary);
+  border-radius: 50%;
+  width: 60px;
+  height: 60px;
+  animation: spin 1s linear infinite;
+  margin: 0 auto 20px;
+}
+
+.loading-text {
+  margin: 0;
+  color: var(--dark);
+  font-weight: bold;
+  font-size: 18px;
+}
+
+.loading-subtext {
+  margin: 8px 0 0 0;
+  color: var(--gray);
+  font-size: 14px;
+}
+
+/* 🔥 ESTILOS PARA O MODAL DE DETALHES */
+.modal-overlay {
+  display: none;
+  position: fixed;
+  top: 0;
+  left: 0;
+  width: 100%;
+  height: 100%;
+  background: rgba(0,0,0,0.7);
+  z-index: 10000;
+  justify-content: center;
+  align-items: center;
+  padding: 20px;
+}
+
+.modal-content {
+  background: white;
+  border-radius: 15px;
+  padding: 30px;
+  max-width: 600px;
+  width: 100%;
+  max-height: 80vh;
+  overflow-y: auto;
+  box-shadow: 0 20px 60px rgba(0,0,0,0.3);
+  border: 3px solid var(--primary);
+  position: relative;
+}
+
+.modal-header {
+  display: flex;
+  justify-content: space-between;
+  align-items: center;
+  margin-bottom: 25px;
+  padding-bottom: 15px;
+  border-bottom: 2px solid var(--primary);
+}
+
+.modal-title {
+  font-size: 1.5rem;
+  font-weight: 700;
+  color: var(--primary);
+  margin: 0;
+}
+
+.btn-close {
+  background: none;
+  border: none;
+  font-size: 1.5rem;
+  cursor: pointer;
+  color: var(--gray);
+  padding: 5px;
+  border-radius: 50%;
+  width: 40px;
+  height: 40px;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  transition: all 0.3s ease;
+}
+
+.btn-close:hover {
+  background: var(--danger);
+  color: white;
+}
+
+.detalhes-grid {
+  display: grid;
+  grid-template-columns: repeat(auto-fit, minmax(250px, 1fr));
+  gap: 15px;
+  margin-bottom: 20px;
+}
+
+.detalhe-item {
+  margin-bottom: 12px;
+}
+
+.detalhe-label {
+  font-weight: 600;
+  color: var(--primary);
+  margin-bottom: 5px;
+  display: block;
+}
+
+.detalhe-valor {
+  color: var(--dark);
+  background: #f8f9fa;
+  padding: 8px 12px;
+  border-radius: 8px;
+  border-left: 3px solid var(--primary);
+}
+
+    @media (max-width: 768px) {
+      .content {
+        padding: 20px;
+      }
+      
+      .form-grid {
+        grid-template-columns: 1fr;
+      }
+      
+      .btn-group {
+        flex-direction: column;
+      }
+      
+      .action-buttons {
+        flex-direction: column;
+      }
+      
+      .cadastros-grid {
+        grid-template-columns: 1fr;
+      }
+      
+      .card-header {
+        flex-direction: column;
+        align-items: flex-start;
+      }
+      
+      .filtros-container {
+        margin-top: 15px;
+      }
+      
+      .data-table {
+        font-size: 0.8rem;
+      }
+      
+      .acoes-cell {
+        flex-direction: column;
+      }
+    }
+  </style>
+</head>
+<body>
+  <div class="container">
+    <div class="header">
+      <div class="logo-container">
+        <div class="logo">🏢</div>
+        <div>
+          <h1>RESULT</h1>
+          <div class="subtitle">Sistema de Gestão de Cadastros</div>
+        </div>
+      </div>
+    </div>
+    
+    <div class="content">
+      <!-- BOTÕES DE AÇÃO -->
+      <div class="action-buttons">
+        <button type="button" class="btn btn-primary" onclick="mostrarTodosCadastros()">
+          <i class="fas fa-store"></i>
+          Ver Todos os Cadastros
+        </button>
+        <button type="button" class="btn btn-info" onclick="limparDados()">
+          <i class="fas fa-plus"></i>
+          Novo Cadastro
+        </button>
+      </div>
+
+      <!-- CARD BUSCA POR CNPJ -->
+      <div class="card">
+        <div class="card-header">
+          <i class="fas fa-search"></i>
+          <h2 class="card-title">Buscar Cadastro</h2>
+        </div>
+        
+        <div class="form-grid">
+          <div class="form-group">
+            <label class="form-label">
+              <i class="fas fa-id-card"></i>
+              CNPJ
+            </label>
+            <input type="text" id="cnpj" class="form-control" 
+                   placeholder="Digite o CNPJ..."
+                   oninput="formatarCNPJ(this)">
+          </div>
+        </div>
+        
+        <div class="btn-group">
+          <button type="button" class="btn btn-primary" onclick="buscarPorCNPJ()">
+            <i class="fas fa-search"></i>
+            Buscar Cadastro
+          </button>
+          <button type="button" class="btn btn-info" onclick="limparBusca()">
+            <i class="fas fa-broom"></i>
+            Limpar Busca
+          </button>
+        </div>
+      </div>
+      
+      <!-- CARD DADOS DO CADASTRO -->
+<div class="card">
+  <div class="card-header">
+    <i class="fas fa-info-circle"></i>
+    <h2 class="card-title">Dados do Cadastro</h2>
+  </div>
+  
+  <div class="form-grid">
+    <div class="form-group">
+      <label class="form-label obrigatorio">
+        <i class="fas fa-building"></i>
+        Razão Social
+      </label>
+      <input type="text" id="razao_social" class="form-control">
+    </div>
+    
+    <div class="form-group">
+      <label class="form-label">
+        <i class="fas fa-signature"></i>
+        Nome Fantasia
+      </label>
+      <input type="text" id="nome_fantasia" class="form-control">
+    </div>
+    
+    <!-- 🔥 CAMPO CNPJ ADICIONADO AQUI -->
+    <div class="form-group">
+      <label class="form-label obrigatorio">
+        <i class="fas fa-id-card"></i>
+        CNPJ
+      </label>
+      <input type="text" id="cnpj_cadastro" class="form-control" 
+             placeholder="Digite o CNPJ para cadastro..."
+             oninput="formatarCNPJ(this)">
+    </div>
+    
+    <div class="form-group">
+      <label class="form-label obrigatorio">
+        <i class="fas fa-tag"></i>
+        Tipo
+      </label>
+      <select id="tipo" class="form-control">
+        <option value="">-- Selecione --</option>
+        <option value="GERAL">GERAL</option>
+        <option value="SORRIA SIM">SORRIA SIM</option>
+        <option value="SORRIFÁCIL">SORRIFÁCIL</option>
+      </select>
+    </div>
+          
+
+
+
+          
+          <div class="form-group">
+            <label class="form-label">
+              <i class="fas fa-calendar"></i>
+              Data Status
+            </label>
+            <input type="date" id="data_status" class="form-control">
+          </div>
+          
+          <div class="form-group">
+            <label class="form-label">
+              <i class="fas fa-file-contract"></i>
+              Contrato Enviado
+            </label>
+            <select id="contrato_enviado" class="form-control">
+              <option value="">-- Selecione --</option>
+              <option value="Sim">Sim</option>
+              <option value="Não">Não</option>
+            </select>
+          </div>
+          
+          <div class="form-group">
+            <label class="form-label">
+              <i class="fas fa-file-signature"></i>
+              Contrato Assinado
+            </label>
+            <select id="contrato_assinado" class="form-control">
+              <option value="">-- Selecione --</option>
+              <option value="Sim">Sim</option>
+              <option value="Não">Não</option>
+            </select>
+          </div>
+          
+          <div class="form-group">
+            <label class="form-label">
+              <i class="fas fa-play-circle"></i>
+              Ativação
+            </label>
+            <input type="date" id="ativacao" class="form-control">
+          </div>
+          
+          <div class="form-group">
+            <label class="form-label">
+              <i class="fas fa-link"></i>
+              Link
+            </label>
+            <input type="text" id="link" class="form-control" placeholder="https://...">
+          </div>
+          
+          <div class="form-group">
+            <label class="form-label obrigatorio">
+              <i class="fas fa-money-bill-wave"></i>
+              Mensalidade
+            </label>
+            <input type="text" id="mensalidade" class="form-control" placeholder="R$ 0,00" oninput="formatarMoeda(this)">
+          </div>
+
+          <!-- 🔥 CAMPO ADESÃO -->
+<div class="form-group">
+  <label class="form-label">
+    <i class="fas fa-handshake"></i>
+    Adesão
+  </label>
+  <input type="text" id="adesao" class="form-control" placeholder="R$ 0,00" oninput="formatarMoeda(this)" value="R$ 0,00">
+  <small style="color: var(--gray); font-size: 0.8rem;">
+    <i class="fas fa-info-circle"></i> Valor "0,00" será salvo como "Isento"
+  </small>
+</div>
+
+<!-- 🔥 CAMPOS TARIFA E % TARIFA -->
+<div class="form-group">
+  <label class="form-label">
+    <i class="fas fa-percentage"></i>
+    Tarifa
+  </label>
+  <div style="display: grid; grid-template-columns: 1fr 1fr; gap: 10px;">
+    <div style="display: flex; align-items: center; gap: 8px; padding: 10px; background: white; border: 2px solid var(--border); border-radius: 8px;">
+      <input type="radio" id="tarifa_mdr" name="tarifa" value="MDR" style="accent-color: var(--primary);">
+      <label for="tarifa_mdr" style="font-weight: 600; color: var(--dark); cursor: pointer;">MDR</label>
+    </div>
+    <div style="display: flex; align-items: center; gap: 8px; padding: 10px; background: white; border: 2px solid var(--border); border-radius: 8px;">
+      <input type="radio" id="tarifa_tis" name="tarifa" value="TIS" style="accent-color: var(--primary);">
+      <label for="tarifa_tis" style="font-weight: 600; color: var(--dark); cursor: pointer;">TIS</label>
+    </div>
+  </div>
+</div>
+
+<div class="form-group">
+  <label class="form-label">
+    <i class="fas fa-chart-line"></i>
+    % Tarifa
+  </label>
+  <select id="percentual_tarifa" class="form-control">
+    <option value="0%">0%</option>
+    <option value="1%">1%</option>
+    <option value="2%">2%</option>
+    <option value="3%">3%</option>
+    <option value="4%">4%</option>
+    <option value="5%">5%</option>
+    <option value="6%">6%</option>
+    <option value="7%">7%</option>
+    <option value="8%">8%</option>
+    <option value="9%">9%</option>
+    <option value="10%">10%</option>
+    <option value="11%">11%</option>
+    <option value="12%">12%</option>
+  </select>
+</div>
+          
+          <div class="form-group">
+            <label class="form-label obrigatorio">
+              <i class="fas fa-flag"></i>
+              Situação
+            </label>
+            <select id="situacao" class="form-control">
+  <option value="Novo registro">Novo registro</option>
+  <option value="Cadastrado">Cadastrado</option>
+  <option value="Em andamento">Em andamento</option>
+  <option value="Parado">Parado</option>
+  <option value="Descredenciado">Descredenciado</option>
+</select>
+          </div>
+          <!-- 🔥 FORNECEDORES MAIS BONITOS NO FINAL -->
+<div class="form-group" style="grid-column: 1 / -1;">
+  <label class="form-label">
+    <i class="fas fa-truck"></i>
+    Fornecedor(es) - <span style="color: var(--primary); font-weight: 600;">Selecione um ou mais</span>
+  </label>
+  <div style="background: linear-gradient(135deg, #f8f9fa 0%, #e9ecef 100%); padding: 20px; border-radius: 12px; border: 2px dashed var(--primary);">
+    <div style="display: grid; grid-template-columns: repeat(auto-fit, minmax(180px, 1fr)); gap: 15px;">
+      <div style="display: flex; align-items: center; gap: 12px; padding: 12px; background: white; border-radius: 8px; border: 2px solid var(--border); transition: all 0.3s ease;">
+        <input type="checkbox" name="fornecedor" value="Ágil" style="width: 20px; height: 20px; accent-color: var(--primary);">
+        <span style="font-weight: 600; color: var(--dark);">Ágil</span>
+      </div>
+      <div style="display: flex; align-items: center; gap: 12px; padding: 12px; background: white; border-radius: 8px; border: 2px solid var(--border); transition: all 0.3s ease;">
+        <input type="checkbox" name="fornecedor" value="BC" style="width: 20px; height: 20px; accent-color: var(--primary);">
+        <span style="font-weight: 600; color: var(--dark);">BC</span>
+      </div>
+      <div style="display: flex; align-items: center; gap: 12px; padding: 12px; background: white; border-radius: 8px; border: 2px solid var(--border); transition: all 0.3s ease;">
+        <input type="checkbox" name="fornecedor" value="Parcelex" style="width: 20px; height: 20px; accent-color: var(--primary);">
+        <span style="font-weight: 600; color: var(--dark);">Parcelex</span>
+      </div>
+      <div style="display: flex; align-items: center; gap: 12px; padding: 12px; background: white; border-radius: 8px; border: 2px solid var(--border); transition: all 0.3s ease;">
+        <input type="checkbox" name="fornecedor" value="Agoracred" style="width: 20px; height: 20px; accent-color: var(--primary);">
+        <span style="font-weight: 600; color: var(--dark);">Agoracred</span>
+      </div>
+      <div style="display: flex; align-items: center; gap: 12px; padding: 12px; background: white; border-radius: 8px; border: 2px solid var(--border); transition: all 0.3s ease;">
+        <input type="checkbox" name="fornecedor" value="Afinz" style="width: 20px; height: 20px; accent-color: var(--primary);">
+        <span style="font-weight: 600; color: var(--dark);">Afinz</span>
+      </div>
+    </div>
+    <div style="margin-top: 15px; text-align: center;">
+      <span style="background: var(--primary); color: white; padding: 6px 12px; border-radius: 20px; font-size: 0.8rem; font-weight: 600;">
+        <i class="fas fa-info-circle"></i> Selecione pelo menos um fornecedor
+      </span>
+    </div>
+  </div>
+</div>
+
+<!-- 🔥 CAMPO EVENTO DINÂMICO -->
+<div class="form-group">
+  <label class="form-label">
+    <i class="fas fa-calendar-check"></i>
+    Evento
+  </label>
+  <select id="evento" class="form-control">
+    <option value="">-- Selecione um evento --</option>
+    <!-- Os eventos serão preenchidos dinamicamente via JavaScript -->
+  </select>
+</div>
+        </div>
+
+          
+        
+        <div class="form-group">
+          <label class="form-label">
+            <i class="fas fa-sticky-note"></i>
+            Status
+          </label>
+          <textarea id="observacoes" class="form-control" rows="3"></textarea>
+        </div>
+
+          
+        
+        <div class="btn-group">
+          <button type="button" class="btn btn-success" onclick="cadastrar()" id="btnCadastrar">
+            <i class="fas fa-plus-circle"></i>
+            Cadastrar
+          </button>
+          <button type="button" class="btn btn-warning" onclick="atualizar()" id="btnAtualizar" style="display: none;">
+            <i class="fas fa-save"></i>
+            Atualizar
+          </button>
+        </div>
+      </div>
+
+  
+
+        </div>
+
+      <!-- SEÇÃO: TODOS OS CADASTROS -->
+      <div class="cadastros-container" id="secaoCadastros" style="display: none;">
+        <div class="card-header">
+          <i class="fas fa-store"></i>
+          <h2 class="card-title" id="tituloCadastros">Todos os Cadastros</h2>
+          <div class="filtros-container" id="filtrosContainer" style="display: none;">
+            <button type="button" class="btn btn-outline btn-sm" onclick="filtrarTabela('all')">
+              Todos
+            </button>
+            <button type="button" class="btn btn-sm" onclick="filtrarTabela('Novo registro')" style="background-color: #bfe1f6; color: #2D3047; border: 1px solid #a1c9e4;">
+              Novos
+            </button>
+            <button type="button" class="btn btn-success btn-sm" onclick="filtrarTabela('Cadastrado')">
+              Cadastrados
+            </button>
+            <button type="button" class="btn btn-warning btn-sm" onclick="filtrarTabela('Em andamento')">
+              Em Andamento
+            </button>
+            <button type="button" class="btn btn-danger btn-sm" onclick="filtrarTabela('Parado')">
+              Parados
+            </button>
+            <button type="button" class="btn btn-secondary btn-sm" onclick="filtrarTabela('Descredenciado')">
+              Descredenciados
+            </button>
+          </div>
+        </div>
+        
+        <!-- BARRA DE PESQUISA MELHORADA -->
+        <div class="form-group" style="margin-bottom: 20px;">
+          <div class="search-container">
+            <input type="text" id="pesquisaCadastros" class="form-control" 
+                   placeholder="Pesquisar por nome, CNPJ ou fornecedor..."
+                   oninput="filtrarPesquisa()">
+          </div>
+          <div style="display: flex; justify-content: space-between; align-items: center; margin-top: 10px;">
+            <span class="contador-lojas" id="contadorCadastros">0 cadastros</span>
+            <div>
+              <select id="ordenacaoCadastros" onchange="ordenarCadastros()" style="padding: 8px 12px; border: 2px solid var(--border); border-radius: 8px; margin-right: 10px;">
+                <option value="razao_social">Ordenar por Nome</option>
+                <option value="fornecedor">Ordenar por Fornecedor</option>
+                <option value="situacao">Ordenar por Situação</option>
+              </select>
+              <button type="button" class="btn btn-info btn-sm" onclick="recarregarCadastros()">
+                <i class="fas fa-sync-alt"></i> Atualizar
+              </button>
+            </div>
+          </div>
+        </div>
+        
+        <!-- LOADING -->
+        <div class="loading-container" id="loadingCadastros" style="display: none;">
+          <div class="loading-spinner"></div>
+          <p>Carregando cadastros...</p>
+        </div>
+        
+        <!-- TABELA MELHORADA -->
+        <div class="table-container" id="tableContainer" style="display: none;">
+          <div class="table-responsive">
+            <table class="data-table" id="tabelaCadastros">
+              <thead>
+                <tr>
+                  <th>Razão Social</th>
+                  <th>CNPJ</th>
+                  <th>Fornecedor</th>
+                  <th>Evento</th>
+                  <th>Situação</th>
+                  <th>Mensalidade</th>
+                  <th>Adesão</th>
+                  <th>Tarifa</th>
+                  <th>% Tarifa</th>
+                  <th>Ações</th>
+                </tr>
+              </thead>
+              <tbody id="tabelaCadastrosBody">
+                <!-- Dados serão preenchidos via JavaScript -->
+              </tbody>
+            </table>
+          </div>
+        </div>
+      </div>
+      
+      <!-- MENSAGENS DO SISTEMA -->
+      <div id="messageSuccess" class="message success" style="display: none;">
+        <i class="fas fa-check-circle"></i>
+        <span></span>
+      </div>
+      
+      <div id="messageError" class="message error" style="display: none;">
+        <i class="fas fa-exclamation-circle"></i>
+        <span></span>
+      </div>
+
+      <div id="messageInfo" class="message info" style="display: none;">
+        <i class="fas fa-info-circle"></i>
+        <span></span>
+      </div>
+    </div>
+  </div>
+
+  <script>
+    // 🔥 VARIÁVEIS GLOBAIS
+    let cadastroAtualId = null;
+    let todosCadastros = [];
+    let cadastrosFiltrados = [];
+
+   function formatarCNPJ(input) {
+  // Salva a posição do cursor
+  const cursorPos = input.selectionStart;
+  
+  let value = input.value.replace(/\D/g, '');
+  
+  // Aplica a formatação
+  if (value.length > 12) {
+    value = value.replace(/^(\d{2})(\d{3})(\d{3})(\d{4})(\d{2})/, '$1.$2.$3/$4-$5');
+  } else if (value.length > 8) {
+    value = value.replace(/^(\d{2})(\d{3})(\d{3})/, '$1.$2.$3/');
+  } else if (value.length > 5) {
+    value = value.replace(/^(\d{2})(\d{3})/, '$1.$2.');
+  } else if (value.length > 2) {
+    value = value.replace(/^(\d{2})/, '$1.');
+  }
+  
+  input.value = value;
+  
+  // Restaura a posição do cursor
+  input.setSelectionRange(cursorPos, cursorPos);
+}
+
+    function formatarMoeda(input) {
+      let value = input.value.replace(/\D/g, '');
+      value = (value / 100).toFixed(2);
+      value = value.replace('.', ',');
+      value = value.replace(/(\d)(?=(\d{3})+\,)/g, "$1.");
+      input.value = 'R$ ' + value;
+    }
+
+    function formatarMoedaParaInput(valor) {
+      if (!valor) return 'R$ 0,00';
+      const numero = typeof valor === 'number' ? valor : parseFloat(valor);
+      return 'R$ ' + numero.toLocaleString('pt-BR', { minimumFractionDigits: 2 });
+    }
+
+    function showMessage(type, text) {
+      const successEl = document.getElementById('messageSuccess');
+      const errorEl = document.getElementById('messageError');
+      const infoEl = document.getElementById('messageInfo');
+
+      successEl.style.display = 'none';
+      errorEl.style.display = 'none';
+      infoEl.style.display = 'none';
+
+      if (type === 'success') {
+        successEl.querySelector('span').textContent = text;
+        successEl.style.display = 'flex';
+      } else if (type === 'error') {
+        errorEl.querySelector('span').textContent = text;
+        errorEl.style.display = 'flex';
+      } else if (type === 'info') {
+        infoEl.querySelector('span').textContent = text;
+        infoEl.style.display = 'flex';
+      }
+
+      setTimeout(() => {
+        successEl.style.display = 'none';
+        errorEl.style.display = 'none';
+        infoEl.style.display = 'none';
+      }, 5000);
+    }
+
+function buscarPorCNPJ() {
+  // 🔥 CORREÇÃO: Pegar CNPJ do campo de busca e remover formatação
+  const cnpjBusca = document.getElementById('cnpj').value.replace(/\D/g, '');
+  
+  if (!cnpjBusca) {
+    showMessage('error', 'Digite um CNPJ para buscar');
+    return;
+  }
+
+  showMessage('info', '🔍 Buscando cadastro...');
+
+  google.script.run
+    .withSuccessHandler(function(dados) {
+      preencherDadosCadastro(dados);
+    })
+    .withFailureHandler(function(error) {
+      showMessage('error', 'Erro: ' + error.message);
+    })
+    .buscarCadastroPorCNPJ(cnpjBusca); // ✅ Envia apenas números
+}
+
+// 🔥 FUNÇÃO CORRIGIDA - Preencher checkboxes de fornecedor
+function preencherFornecedoresCheckbox(fornecedor) {
+  console.log("🔧 Preenchendo fornecedor:", fornecedor);
+  
+  // Limpar seleções anteriores
+  const checkboxes = document.querySelectorAll('input[name="fornecedor"]');
+  checkboxes.forEach(cb => cb.checked = false);
+  
+  if (!fornecedor) {
+    console.log("ℹ️ Nenhum fornecedor para preencher");
+    return;
+  }
+  
+  // Se for uma string única (caso de edição), selecionar apenas aquele
+  if (typeof fornecedor === 'string') {
+    console.log("🎯 Procurando checkbox para:", fornecedor);
+    const checkbox = document.querySelector(`input[name="fornecedor"][value="${fornecedor}"]`);
+    if (checkbox) {
+      checkbox.checked = true;
+      console.log("✅ Checkbox selecionado:", fornecedor);
+    } else {
+      console.log("❌ Checkbox não encontrado para:", fornecedor);
+    }
+  }
+}
+
+
+function preencherDadosCadastro(dados) {
+  if (!dados.encontrado) {
+    showMessage('info', dados.mensagem);
+    limparFormulario();
+    document.getElementById('btnCadastrar').style.display = 'block';
+    document.getElementById('btnAtualizar').style.display = 'none';
+    cadastroAtualId = null;
+    return;
+  }
+
+  cadastroAtualId = dados.id;
+  document.getElementById('razao_social').value = dados.razao_social;
+  document.getElementById('nome_fantasia').value = dados.nome_fantasia;
+  document.getElementById('cnpj_cadastro').value = dados.cnpj; // ✅ AGORA PREENCHE O CNPJ DO CADASTRO
+  document.getElementById('tipo').value = dados.tipo;
+  preencherFornecedoresCheckbox(dados.fornecedor);
+  document.getElementById('data_status').value = dados.data_status;
+  document.getElementById('observacoes').value = dados.observacoes;
+  document.getElementById('contrato_enviado').value = dados.contrato_enviado;
+  document.getElementById('contrato_assinado').value = dados.contrato_assinado;
+  document.getElementById('ativacao').value = dados.ativacao;
+  document.getElementById('link').value = dados.link;
+  document.getElementById('mensalidade').value = formatarMoedaParaInput(dados.mensalidade);
+  // 🔥 NOVO: Preencher tarifa e percentual_tarifa na edição
+if (dados.tarifa) {
+  const radioTarifa = document.querySelector(`input[name="tarifa"][value="${dados.tarifa}"]`);
+  if (radioTarifa) radioTarifa.checked = true;
+}
+if (dados.percentual_tarifa) {
+  document.getElementById('percentual_tarifa').value = dados.percentual_tarifa;
+}
+  document.getElementById('situacao').value = dados.situacao;
+  document.getElementById('situacao').value = dados.situacao;
+
+// 🔥 NOVO: Preencher evento na edição
+if (dados.evento) {
+  // Primeiro atualiza os eventos baseado na situação
+  atualizarEventos();
+  // Depois seleciona o evento específico
+  document.getElementById('evento').value = dados.evento;
+}
+
+  document.getElementById('btnCadastrar').style.display = 'none';
+  document.getElementById('btnAtualizar').style.display = 'block';
+
+  showMessage('success', 'Cadastro encontrado! Modo de edição ativado.');
+}
+
+// 🔥 ADICIONAR ESTA FUNÇÃO NO JavaScript (antes da função cadastrar())
+function limparDados() {
+  limparFormulario();
+  showMessage('info', 'Formulário limpo! Pronto para novo cadastro.');
+}
+
+// 🔥 FUNÇÃO DE DEBUG - Adicione isso ANTES da função cadastrar
+function debugCadastro() {
+  console.log("🔍 DEBUG: Verificando dados do formulário...");
+  
+  const dados = coletarDadosFormulario();
+  console.log("Dados coletados:", dados);
+  
+  if (!dados) {
+    console.log("❌ ERRO: Nenhum dado coletado - verifique fornecedores");
+    return;
+  }
+  
+  console.log("Fornecedores selecionados:", dados.fornecedores);
+  console.log("Quantidade de fornecedores:", dados.fornecedores.length);
+  
+  // Testar comunicação com Google Apps Script
+  console.log("🔄 Testando comunicação com servidor...");
+  google.script.run
+    .withSuccessHandler(function(res) {
+      console.log("✅ Comunicação OK:", res);
+    })
+    .withFailureHandler(function(error) {
+      console.error("❌ Erro de comunicação:", error);
+    })
+    .testar();
+}
+
+// 🔥 TESTE DE VALIDAÇÃO - Adicione isso no seu JavaScript
+function testarValidacao() {
+  console.log("🧪 TESTANDO VALIDAÇÃO...");
+  
+  // Simular clique no cadastrar
+  const dados = coletarDadosFormulario();
+  console.log("Dados do formulário:", dados);
+  
+  // Testar campos obrigatórios
+  const camposObrigatorios = [
+    { campo: 'razao_social', nome: 'Razão Social', elemento: 'razao_social' },
+    { campo: 'cnpj', nome: 'CNPJ', elemento: 'cnpj_cadastro' },
+    { campo: 'tipo', nome: 'Tipo', elemento: 'tipo' }
+  ];
+  
+  let camposInvalidos = [];
+  
+  for (const obrigatorio of camposObrigatorios) {
+    let valorCampo = dados[obrigatorio.campo];
+    let estaVazio = false;
+    
+    if (obrigatorio.campo === 'tipo') {
+      estaVazio = !valorCampo || valorCampo.toString().trim() === '' || valorCampo === '-- Selecione --';
+    } else {
+      estaVazio = !valorCampo || valorCampo.toString().trim() === '';
+    }
+    
+    if (estaVazio) {
+      camposInvalidos.push(obrigatorio.nome);
+      console.log(`❌ Campo vazio: ${obrigatorio.nome}`);
+    }
+  }
+  
+  console.log(`📊 Resultado: ${camposInvalidos.length} campos inválidos`);
+  return camposInvalidos;
+}
+
+// Chame essa função no console do navegador para testar
+
+function cadastrar() {
+  console.log("🎯 CADASTRAR: Iniciando validação...");
+  
+  // 🔥 CORREÇÃO: Coletar dados PRIMEIRO
+  const dados = coletarDadosFormulario();
+  console.log("📋 Dados coletados:", dados);
+  console.log("🔤 CNPJ que será enviado:", dados.cnpj); // ✅ DEBUG IMPORTANTE - VERIFIQUE SE ESTÁ FORMATADO AQUI!
+
+ const camposObrigatorios = [
+  { campo: 'razao_social', nome: 'Razão Social', elemento: 'razao_social' },
+  { campo: 'cnpj', nome: 'CNPJ', elemento: 'cnpj_cadastro' },
+  { campo: 'tipo', nome: 'Tipo', elemento: 'tipo' },
+  { campo: 'mensalidade', nome: 'Mensalidade', elemento: 'mensalidade' }
+];
+
+  let camposInvalidos = [];
+  
+  // 🔥 CORREÇÃO: Remover destaque anterior de TODOS os campos
+  document.querySelectorAll('.form-control, select').forEach(campo => {
+    campo.classList.remove('campo-obrigatorio');
+    // Remover também o estilo inline se existir
+    campo.style.borderColor = '';
+    campo.style.backgroundColor = '';
+  });
+
+  // 🔥 VALIDAR CAMPOS INDIVIDUAIS
+  for (const obrigatorio of camposObrigatorios) {
+    const elemento = document.getElementById(obrigatorio.elemento);
+    let valorCampo = dados ? dados[obrigatorio.campo] : null;
+    let estaVazio = false;
+    
+    // Verificar se é select
+    if (obrigatorio.campo === 'tipo') {
+      estaVazio = !valorCampo || valorCampo.toString().trim() === '' || valorCampo === '-- Selecione --';
+    } else {
+      estaVazio = !valorCampo || valorCampo.toString().trim() === '';
+    }
+    
+    if (estaVazio) {
+      elemento.classList.add('campo-obrigatorio');
+      elemento.style.borderColor = 'var(--danger)';
+      elemento.style.backgroundColor = '#fff5f5';
+      
+      if (camposInvalidos.length === 0) {
+        elemento.focus(); // Focar no primeiro campo inválido
+      }
+      camposInvalidos.push(obrigatorio.nome);
+      
+      console.log(`❌ Campo obrigatório vazio: ${obrigatorio.nome}`);
+    }
+  }
+
+  // 🔥 VALIDAR FORNECEDORES
+  let fornecedorInvalido = false;
+  if (!dados || !dados.fornecedores || dados.fornecedores.length === 0) {
+    console.log("❌ ERRO: Nenhum fornecedor selecionado");
+    
+    // Destacar a seção de fornecedores
+    const fornecedorSection = document.querySelector('[style*="grid-column: 1 / -1"]');
+    if (fornecedorSection) {
+      fornecedorSection.style.border = '2px solid var(--danger)';
+      fornecedorSection.style.background = '#fff5f5';
+    }
+    
+    camposInvalidos.push('Fornecedor');
+    fornecedorInvalido = true;
+  } else {
+    // Remover destaque se estiver ok
+    const fornecedorSection = document.querySelector('[style*="grid-column: 1 / -1"]');
+    if (fornecedorSection) {
+      fornecedorSection.style.border = '2px dashed var(--primary)';
+      fornecedorSection.style.background = 'linear-gradient(135deg, #f8f9fa 0%, #e9ecef 100%)';
+    }
+  }
+
+  // 🔥 SE HOUVER CAMPOS INVÁLIDOS, MOSTRAR ERRO E PARAR
+  if (camposInvalidos.length > 0) {
+    const mensagemErro = `❌ CAMPOS OBRIGATÓRIOS NÃO PREENCHIDOS:\n${camposInvalidos.join('\n')}`;
+    console.error(mensagemErro);
+    
+    // Mostrar mensagem de erro BEM VISÍVEL
+    showMessage('error', `❌ Preencha os campos obrigatórios: ${camposInvalidos.join(', ')}`);
+    
+    // Scroll para o primeiro campo inválido
+    const primeiroCampo = document.querySelector('.campo-obrigatorio');
+    if (primeiroCampo) {
+      primeiroCampo.scrollIntoView({ behavior: 'smooth', block: 'center' });
+    }
+    
+    return; // 🔥 PARAR A EXECUÇÃO AQUI - NÃO CADASTRAR
+  }
+
+  // 🔥 SE CHEGOU AQUI, TODOS OS CAMPOS SÃO VÁLIDOS
+  console.log("✅ TODAS AS VALIDAÇÕES PASSARAM!");
+  console.log("📤 Dados para cadastro:", dados);
+  
+  dados.acao = 'cadastrar';
+
+  // 🔄 MOSTRAR LOADING
+  showLoading("Cadastrando...", "Salvando os dados no sistema");
+
+  const btnCadastrar = document.getElementById('btnCadastrar');
+  btnCadastrar.innerHTML = '<i class="fas fa-spinner fa-spin"></i> Cadastrando...';
+  btnCadastrar.disabled = true;
+
+  // 🔥 ENVIAR PARA O GOOGLE APPS SCRIPT
+  google.script.run
+    .withSuccessHandler(function(res) {
+      console.log("✅ Resposta do servidor:", res);
+      hideLoading();
+      
+      btnCadastrar.innerHTML = '<i class="fas fa-plus-circle"></i> Cadastrar';
+      btnCadastrar.disabled = false;
+      
+      if (res.success) {
+        showMessage('success', '✅ ' + res.message);
+        limparFormulario();
+      } else {
+        showMessage('error', '❌ ' + res.message);
+      }
+    })
+    .withFailureHandler(function(error) {
+      console.error("❌ Erro do servidor:", error);
+      hideLoading();
+      
+      btnCadastrar.innerHTML = '<i class="fas fa-plus-circle"></i> Cadastrar';
+      btnCadastrar.disabled = false;
+      showMessage('error', '❌ Erro: ' + error.message);
+    })
+    .salvarCadastro(dados);
+}
+
+function atualizar() {
+  if (!cadastroAtualId) {
+    showMessage('error', 'Nenhum cadastro selecionado para atualizar');
+    return;
+  }
+
+  const dados = coletarDadosFormulario();
+  if (!dados) {
+    showMessage('error', 'Selecione pelo menos um fornecedor');
+    return;
+  }
+  
+  dados.acao = 'atualizar';
+  dados.id = cadastroAtualId;
+
+ const camposObrigatorios = [
+  { campo: 'razao_social', nome: 'Razão Social', elemento: 'razao_social' },
+  { campo: 'cnpj', nome: 'CNPJ', elemento: 'cnpj_cadastro' },
+  { campo: 'tipo', nome: 'Tipo', elemento: 'tipo' },
+  { campo: 'mensalidade', nome: 'Mensalidade', elemento: 'mensalidade' }
+];
+
+  let camposInvalidos = [];
+  
+  document.querySelectorAll('.form-control, select').forEach(campo => {
+    campo.classList.remove('campo-obrigatorio');
+    campo.style.borderColor = '';
+    campo.style.backgroundColor = '';
+  });
+
+  for (const obrigatorio of camposObrigatorios) {
+    const elemento = document.getElementById(obrigatorio.elemento);
+    let valorCampo = dados ? dados[obrigatorio.campo] : null;
+    let estaVazio = false;
+    
+    if (obrigatorio.campo === 'tipo') {
+      estaVazio = !valorCampo || valorCampo.toString().trim() === '' || valorCampo === '-- Selecione --';
+    } else {
+      estaVazio = !valorCampo || valorCampo.toString().trim() === '';
+    }
+    
+    if (estaVazio) {
+      elemento.classList.add('campo-obrigatorio');
+      elemento.style.borderColor = 'var(--danger)';
+      elemento.style.backgroundColor = '#fff5f5';
+      
+      if (camposInvalidos.length === 0) {
+        elemento.focus();
+      }
+      camposInvalidos.push(obrigatorio.nome);
+    }
+  }
+
+  // Validar fornecedores
+  if (!dados.fornecedores || dados.fornecedores.length === 0) {
+    const fornecedorSection = document.querySelector('[style*="grid-column: 1 / -1"]');
+    if (fornecedorSection) {
+      fornecedorSection.style.border = '2px solid var(--danger)';
+      fornecedorSection.style.background = '#fff5f5';
+    }
+    camposInvalidos.push('Fornecedor');
+  }
+
+  if (camposInvalidos.length > 0) {
+    showMessage('error', `❌ Preencha os campos obrigatórios: ${camposInvalidos.join(', ')}`);
+    return;
+  }
+
+  // 🔄 MOSTRAR LOADING
+  showLoading("Atualizando...", "Salvando as alterações");
+
+  const btnAtualizar = document.getElementById('btnAtualizar');
+  btnAtualizar.innerHTML = '<i class="fas fa-spinner fa-spin"></i> Atualizando...';
+  btnAtualizar.disabled = true;
+
+  google.script.run
+    .withSuccessHandler(function(res) {
+      hideLoading();
+      
+      btnAtualizar.innerHTML = '<i class="fas fa-save"></i> Atualizar';
+      btnAtualizar.disabled = false;
+      
+      if (res.success) {
+        showMessage('success', '✅ ' + res.message);
+      } else {
+        showMessage('error', '❌ ' + res.message);
+      }
+    })
+    .withFailureHandler(function(error) {
+      hideLoading();
+      
+      btnAtualizar.innerHTML = '<i class="fas fa-save"></i> Atualizar';
+      btnAtualizar.disabled = false;
+      showMessage('error', '❌ Erro: ' + error.message);
+    })
+    .salvarCadastro(dados);
+}
+
+// 🔥 ADICIONE ESTA FUNÇÃO: Remover destaque de erro ao digitar
+function configurarValidacaoEmTempoReal() {
+  const campos = document.querySelectorAll('#razao_social, #cnpj_cadastro, #tipo');
+  campos.forEach(campo => {
+    campo.addEventListener('input', function() {
+      this.style.borderColor = '';
+    });
+  });
+}
+
+// 🔥 CHAME ESTA FUNÇÃO NO DOMContentLoaded:
+document.addEventListener('DOMContentLoaded', function() {
+  console.log('Sistema de Gestão de Cadastros - RESULT inicializado');
+  document.getElementById('mensalidade').value = 'R$ 0,00';
+  document.getElementById('situacao').value = 'Cadastrado';
+  configurarValidacaoEmTempoReal(); // ✅ NOVA LINHA
+});
+
+// 🔥 FUNÇÃO PARA ATUALIZAR EVENTOS COM BASE NA SITUAÇÃO
+function atualizarEventos() {
+  const situacao = document.getElementById('situacao').value;
+  const selectEvento = document.getElementById('evento');
+  
+  // Limpar opções atuais
+  selectEvento.innerHTML = '<option value="">-- Selecione um evento --</option>';
+  
+// ✅ LISTA DE EVENTOS ORGANIZADA POR CATEGORIAS
+const eventosEmAndamento = [
+  "Aguardando Aceite da Loja",
+  "Aguardando Aceite do Fornecedor", 
+  "Aguardando Documentos",
+  "Aguardando retorno",
+  "Agendamento de demonstração",
+  "Cliente interessado",
+  "Cliente não interessado",
+  "Condição Especial",
+  "Contrato assinado",
+  "Desistiu",
+  "Documentação Incompleta",
+  "Em Implantação",
+  "Em Treinamento",
+  "Envio de boleto",
+  "Envio de WhatsApp",
+  "Follow-up necessário",
+  "Fornecedor alterado",
+  "Ligação realizada",
+  "Negociação em andamento",
+  "Pagamento Efetuado",
+  "Pagamento Pendente",
+  "Proposta enviada",
+  "Quantidade de lojas alterada",
+  "Recado Registrado",
+  "Reunião agendada",
+  "Sem Retorno",
+  "Solicitou mais informações",
+  "Telefone alterado"
+].sort();
+
+const eventosParado = [
+  "Cancelado",
+  "Bloqueado", 
+  "Desistiu"
+].sort();
+
+const eventosCadastrado = [
+  "Loja cadastrada"
+];
+  
+  let eventos = [];
+  
+  switch(situacao) {
+    case 'Em andamento':
+      eventos = eventosEmAndamento;
+      break;
+    case 'Parado':
+      eventos = eventosParado;
+      break;
+    case 'Cadastrado':
+      eventos = eventosCadastrado;
+      break;
+    case 'Descredenciado':
+      eventos = ['Descredenciado'];
+      break;
+    default:
+      eventos = [];
+  }
+  
+  // Adicionar opções ao select
+  eventos.forEach(evento => {
+    const option = document.createElement('option');
+    option.value = evento;
+    option.textContent = evento;
+    selectEvento.appendChild(option);
+  });
+}
+
+// 🔥 CONFIGURAR EVENTO ONCHANGE NA SITUAÇÃO
+document.addEventListener('DOMContentLoaded', function() {
+  // ... código existente ...
+  
+  // ✅ CONFIGURAR EVENTO PARA ATUALIZAR EVENTOS
+  document.getElementById('situacao').addEventListener('change', atualizarEventos);
+  
+  // ✅ INICIALIZAR EVENTOS COM BASE NA SITUAÇÃO PADRÃO
+  atualizarEventos();
+});
+
+function coletarDadosFormulario() {
+  // ✅ GARANTIR QUE O CNPJ MANTENHA A MÁSCARA
+  const cnpjInput = document.getElementById('cnpj_cadastro');
+  const cnpjFormatado = cnpjInput.value; // Já vem formatado pelo oninput
+  
+  console.log("📋 CNPJ coletado:", cnpjFormatado); // Para debug
+
+    // 🔥 NOVO: Processar adesão (0 = "Isento")
+  let adesaoValue = document.getElementById('adesao').value;
+  if (adesaoValue === 'R$ 0,00' || adesaoValue === '0,00' || adesaoValue === '0') {
+    adesaoValue = 'Isento';
+  }
+  
+  // 🔥 NOVO: Coletar múltiplos fornecedores selecionados
+  const checkboxesFornecedores = document.querySelectorAll('input[name="fornecedor"]:checked');
+  const fornecedoresSelecionados = Array.from(checkboxesFornecedores).map(cb => cb.value);
+  
+  return {
+  razao_social: document.getElementById('razao_social').value,
+  nome_fantasia: document.getElementById('nome_fantasia').value,
+  cnpj: cnpjFormatado,
+  tipo: document.getElementById('tipo').value,
+  adesao: adesaoValue,
+  // 🔥 NOVO: Coletar tarifa e percentual
+  tarifa: document.querySelector('input[name="tarifa"]:checked')?.value || '',
+  percentual_tarifa: document.getElementById('percentual_tarifa').value,
+  fornecedores: fornecedoresSelecionados,
+    data_status: document.getElementById('data_status').value,
+    observacoes: document.getElementById('observacoes').value,
+    contrato_enviado: document.getElementById('contrato_enviado').value,
+    contrato_assinado: document.getElementById('contrato_assinado').value,
+    ativacao: document.getElementById('ativacao').value,
+    link: document.getElementById('link').value,
+    mensalidade: document.getElementById('mensalidade').value,
+    situacao: document.getElementById('situacao').value,
+evento: document.getElementById('evento').value // ✅ NOVA LINHA - EVENTO
+  };
+}
+
+  function limparFormulario() {
+  document.getElementById('razao_social').value = '';
+  document.getElementById('nome_fantasia').value = '';
+  document.getElementById('cnpj_cadastro').value = '';
+  document.getElementById('tipo').value = '';
+  
+  // 🔥 NOVO: Limpar checkboxes de fornecedor
+  const checkboxes = document.querySelectorAll('input[name="fornecedor"]');
+  checkboxes.forEach(cb => cb.checked = false);
+  document.getElementById('data_status').value = '';
+  document.getElementById('observacoes').value = '';
+  document.getElementById('contrato_enviado').value = '';
+  document.getElementById('contrato_assinado').value = '';
+  document.getElementById('ativacao').value = '';
+  document.getElementById('link').value = '';
+  document.getElementById('mensalidade').value = 'R$ 0,00';
+  document.getElementById('situacao').value = 'Novo registro';
+  atualizarEventos();
+// 🔥 NOVO: Limpar tarifa e percentual_tarifa
+const radiosTarifa = document.querySelectorAll('input[name="tarifa"]');
+radiosTarifa.forEach(radio => radio.checked = false);
+document.getElementById('percentual_tarifa').value = '0%';
+  document.getElementById('btnCadastrar').style.display = 'block';
+  document.getElementById('btnAtualizar').style.display = 'none';
+  cadastroAtualId = null;
+}
+
+function limparBusca() {
+  document.getElementById('cnpj').value = '';
+  document.getElementById('cnpj_cadastro').value = '';
+  limparFormulario();
+  
+  // 🔥 NOVO: Esconder a tabela também
+  document.getElementById('secaoCadastros').style.display = 'none';
+  showMessage('info', 'Busca limpa e tabela ocultada!');
+}
+
+
+function mostrarTodosCadastros() {
+  console.log("🎯 Iniciando carregamento de cadastros...");
+  
+  // 🔄 MOSTRAR LOADING
+  showLoading("Carregando cadastros...", "Buscando todos os registros");
+  
+  // Mostrar loading da tabela também
+  const loading = document.getElementById('loadingCadastros');
+  const tableContainer = document.getElementById('tableContainer');
+  const filtrosContainer = document.getElementById('filtrosContainer');
+  
+  loading.style.display = 'flex';
+  tableContainer.style.display = 'none';
+  filtrosContainer.style.display = 'none';
+
+  google.script.run
+    .withSuccessHandler(function(cadastros) {
+  // 🔄 ESCONDER LOADING
+  hideLoading();
+  
+  console.log("✅ Cadastros recebidos:", cadastros);
+  
+  if (cadastros && cadastros.length > 0) {
+  // ✅ ORDENAR POR NOME AUTOMATICAMENTE - CORREÇÃO APLICADA
+  const cadastrosOrdenados = cadastros.sort((a, b) => {
+    const nomeA = (a.razao_social || '').toLowerCase();
+    const nomeB = (b.razao_social || '').toLowerCase();
+    return nomeA.localeCompare(nomeB);
+  });
+    todosCadastros = cadastrosOrdenados;
+    cadastrosFiltrados = [...cadastrosOrdenados];
+    
+    exibirTabelaCadastros(cadastrosOrdenados, 'Todos os Cadastros');
+        document.getElementById('filtrosContainer').style.display = 'flex';
+        
+        showMessage('success', `✅ ${cadastros.length} cadastros carregados com sucesso!`);
+      } else {
+        loading.style.display = 'none';
+        tableContainer.style.display = 'block';
+        document.getElementById('tabelaCadastrosBody').innerHTML = `
+          <tr>
+            <td colspan="7" style="text-align: center; padding: 40px;">
+              <i class="fas fa-inbox" style="font-size: 3rem; color: var(--gray); margin-bottom: 15px;"></i>
+              <h3>Nenhum cadastro encontrado</h3>
+              <p>Não há cadastros na base de dados.</p>
+            </td>
+          </tr>
+        `;
+        showMessage('info', '📝 Nenhum cadastro encontrado na base de dados.');
+      }
+    })
+    .withFailureHandler(function(error) {
+      // 🔄 ESCONDER LOADING EM CASO DE ERRO
+      hideLoading();
+      
+      console.error("❌ Erro ao carregar cadastros:", error);
+      loading.style.display = 'none';
+      showMessage('error', '❌ Erro ao carregar cadastros: ' + error.message);
+    })
+    .buscarTodosCadastros();
+}
+
+    function exibirTabelaCadastros(cadastros, titulo) {
+      const secao = document.getElementById('secaoCadastros');
+      const tituloElement = document.getElementById('tituloCadastros');
+      const tableContainer = document.getElementById('tableContainer');
+      const tabelaBody = document.getElementById('tabelaCadastrosBody');
+      const loading = document.getElementById('loadingCadastros');
+
+      tituloElement.textContent = `${titulo} (${cadastros.length})`;
+      tabelaBody.innerHTML = '';
+
+      if (cadastros.length === 0) {
+        tabelaBody.innerHTML = `
+          <tr>
+            <td colspan="7" style="text-align: center; padding: 40px;">
+              <i class="fas fa-search" style="font-size: 3rem; color: var(--gray); margin-bottom: 15px;"></i>
+              <h3>Nenhum resultado encontrado</h3>
+              <p>Tente alterar os filtros de pesquisa.</p>
+            </td>
+          </tr>
+        `;
+      } else {
+        cadastros.forEach(cadastro => {
+          const row = criarLinhaTabelaMelhorada(cadastro);
+          tabelaBody.appendChild(row);
+        });
+      }
+
+      loading.style.display = 'none';
+      tableContainer.style.display = 'block';
+      secao.style.display = 'block';
+      atualizarContador();
+      
+      // Scroll suave para a seção
+      setTimeout(() => {
+        secao.scrollIntoView({ behavior: 'smooth', block: 'start' });
+      }, 300);
+    }
+
+    function formatarPercentual(valor) {
+  if (!valor) return 'N/A';
+  
+  // Se já estiver com % (ex: "8%"), retorna como está
+  if (typeof valor === 'string' && valor.includes('%')) {
+    return valor;
+  }
+  
+  // Se for número decimal (ex: 0.08), converte para porcentagem
+  const numero = parseFloat(valor);
+  if (!isNaN(numero)) {
+    return (numero * 100) + '%';
+  }
+  
+  return valor || 'N/A';
+}
+
+function criarLinhaTabelaMelhorada(cadastro) {
+  const row = document.createElement('tr');
+  row.style.cursor = 'pointer';
+  
+// Classes de situação - ✅ CORREÇÃO: "Novo registro" com r minúsculo
+let situacaoClass = 'situacao-cadastrado'; // padrão
+if (cadastro.situacao === 'Novo registro') situacaoClass = 'situacao-novo-registro';
+else if (cadastro.situacao === 'Em andamento') situacaoClass = 'situacao-andamento';
+else if (cadastro.situacao === 'Parado') situacaoClass = 'situacao-parado';
+else if (cadastro.situacao === 'Descredenciado') situacaoClass = 'situacao-descredenciado';
+ row.innerHTML = `
+  <td>
+    <div style="font-weight: 600; color: var(--primary);">${cadastro.razao_social || 'N/A'}</div>
+    <div style="font-size: 0.8rem; color: var(--gray);">${cadastro.nome_fantasia || 'Sem nome fantasia'}</div>
+    <div style="font-size: 0.7rem; color: var(--gray); margin-top: 2px;">${cadastro.tipo || 'N/A'}</div>
+  </td>
+  <td>
+    <div style="font-family: monospace; font-size: 0.85rem;">${cadastro.cnpj || 'N/A'}</div>
+  </td>
+  <td>
+    <div style="font-weight: 500;">${cadastro.fornecedor || 'N/A'}</div>
+  </td>
+  <td>
+    <div style="font-size: 0.8rem; max-width: 150px; overflow: hidden; text-overflow: ellipsis; white-space: nowrap;">
+      ${cadastro.evento || 'N/A'}
+    </div>
+  </td>
+  <td>
+    <span class="status-badge ${situacaoClass}">${cadastro.situacao || 'N/A'}</span>
+  </td>
+  <td style="font-weight: 600; color: var(--success);">
+    ${formatarMoedaParaInput(cadastro.mensalidade)}
+  </td>
+  <td style="font-weight: 600; color: var(--info);">
+    ${cadastro.adesao === 'Isento' || cadastro.adesao === 0 ? 'Isento' : formatarMoedaParaInput(cadastro.adesao)}
+  </td>
+  <td>
+    <div style="font-weight: 500; color: var(--primary);">${cadastro.tarifa || 'N/A'}</div>
+  </td>
+  <td>
+    <div style="font-weight: 500; color: var(--success);">${formatarPercentual(cadastro.percentual_tarifa)}</div>
+  </td>
+  <td class="acoes-cell">
+    <button class="btn btn-primary btn-sm" onclick="selecionarCadastroParaEditar(event, '${cadastro.cnpj}', '${cadastro.fornecedor}', ${cadastro.id})" title="Editar este cadastro">
+      <i class="fas fa-edit"></i> Editar
+    </button>
+    <button class="btn btn-info btn-sm" onclick="verDetalhesRapido(event, '${cadastro.cnpj}', '${cadastro.fornecedor}', ${cadastro.id})" title="Ver detalhes">
+      <i class="fas fa-eye"></i> Visualizar
+    </button>
+  </td>
+`;
+
+  return row;
+}
+
+// 🔥 FUNÇÃO PARA SELECIONAR CADASTRO PARA EDIÇÃO - CORRIGIDA
+function selecionarCadastroParaEditar(event, cnpj, fornecedor, id) {
+  event.stopPropagation(); // Impede que o clique na linha também seja acionado
+  
+  console.log(`🎯 Selecionando cadastro: ID ${id}, CNPJ ${cnpj}, Fornecedor ${fornecedor}`);
+  
+  showMessage('info', `🔍 Buscando cadastro...`);
+  
+  // Buscar o cadastro específico pelo ID (mais preciso que CNPJ)
+  google.script.run
+    .withSuccessHandler(function(dados) {
+      if (dados.encontrado) {
+        preencherDadosCadastro(dados);
+        showMessage('success', `✅ Cadastro de "${dados.razao_social}" carregado para edição!`);
+        
+        // FECHAR a tabela ao editar (nova funcionalidade)
+        document.getElementById('secaoCadastros').style.display = 'none';
+        
+        // Scroll para o topo
+        window.scrollTo({ top: 0, behavior: 'smooth' });
+      } else {
+        showMessage('error', '❌ Cadastro não encontrado!');
+      }
+    })
+    .withFailureHandler(function(error) {
+      showMessage('error', '❌ Erro ao buscar cadastro: ' + error.message);
+    })
+    .buscarCadastroPorID(id); // USA A NOVA FUNÇÃO!
+}
+
+    function filtrarTabela(situacao) {
+      const tabelaBody = document.getElementById('tabelaCadastrosBody');
+      const tituloElement = document.getElementById('tituloCadastros');
+      
+      let cadastrosFiltradosTemp = todosCadastros;
+      let titulo = 'Todos os Cadastros';
+
+      if (situacao !== 'all') {
+        cadastrosFiltradosTemp = todosCadastros.filter(cad => cad.situacao === situacao);
+        titulo = `Cadastros - ${situacao}`;
+      }
+
+      cadastrosFiltrados = cadastrosFiltradosTemp;
+      tituloElement.textContent = `${titulo} (${cadastrosFiltradosTemp.length})`;
+      tabelaBody.innerHTML = '';
+
+      if (cadastrosFiltradosTemp.length === 0) {
+        tabelaBody.innerHTML = `
+          <tr>
+            <td colspan="7" style="text-align: center; padding: 40px;">
+              <i class="fas fa-inbox" style="font-size: 3rem; color: var(--gray); margin-bottom: 15px;"></i>
+              <p>Nenhum cadastro encontrado.</p>
+            </td>
+          </tr>
+        `;
+      } else {
+        cadastrosFiltradosTemp.forEach(cadastro => {
+          const row = criarLinhaTabelaMelhorada(cadastro);
+          tabelaBody.appendChild(row);
+        });
+      }
+      
+      atualizarContador();
+    }
+
+    function filtrarPesquisa() {
+      const termo = document.getElementById('pesquisaCadastros').value.toLowerCase().trim();
+      
+      if (!termo) {
+        cadastrosFiltrados = [...todosCadastros];
+        exibirTabelaCadastros(cadastrosFiltrados, 'Todos os Cadastros');
+        return;
+      }
+
+      const resultados = todosCadastros.filter(cadastro => {
+        const razaoSocial = (cadastro.razao_social || '').toLowerCase();
+        const cnpj = (cadastro.cnpj || '').toLowerCase();
+        const fornecedor = (cadastro.fornecedor || '').toLowerCase();
+        const nomeFantasia = (cadastro.nome_fantasia || '').toLowerCase();
+        
+        return razaoSocial.includes(termo) || 
+               cnpj.includes(termo) || 
+               fornecedor.includes(termo) ||
+               nomeFantasia.includes(termo);
+      });
+
+      cadastrosFiltrados = resultados;
+      
+      if (resultados.length === 0) {
+        exibirTabelaCadastros([], `Nenhum resultado para "${termo}"`);
+      } else {
+        exibirTabelaCadastros(resultados, `Resultados para "${termo}"`);
+      }
+    }
+
+    function ordenarCadastros() {
+      const criterio = document.getElementById('ordenacaoCadastros').value;
+      const cadastrosOrdenados = [...cadastrosFiltrados];
+      
+      cadastrosOrdenados.sort((a, b) => {
+        const valorA = (a[criterio] || '').toString().toLowerCase();
+        const valorB = (b[criterio] || '').toString().toLowerCase();
+        
+        return valorA.localeCompare(valorB);
+      });
+
+      exibirTabelaCadastros(cadastrosOrdenados, 'Todos os Cadastros');
+    }
+
+    function recarregarCadastros() {
+      console.log("🔄 Recarregando cadastros...");
+      mostrarTodosCadastros();
+    }
+
+    function verDetalhesRapido(event, cnpj, fornecedor, id) {
+  event.stopPropagation();
+  
+  console.log(`👁️ Buscando detalhes do cadastro: ID ${id}, CNPJ ${cnpj}`);
+  
+  showMessage('info', 'Carregando detalhes...');
+  
+  // Buscar dados completos do cadastro
+  google.script.run
+    .withSuccessHandler(function(dados) {
+      if (dados.encontrado) {
+        exibirModalDetalhes(dados);
+      } else {
+        showMessage('error', 'Cadastro não encontrado para visualização');
+      }
+    })
+    .withFailureHandler(function(error) {
+      showMessage('error', 'Erro ao carregar detalhes: ' + error.message);
+    })
+    .buscarCadastroPorID(id); // Usa a mesma função do editar
+}
+
+// 🔥 ADICIONAR PARA EVITAR ERROS COM DATAS
+function formatarDataParaExibicao(data) {
+  if (!data) return '';
+  
+  try {
+    // Se já estiver no formato brasileiro, retorna como está
+    if (typeof data === 'string' && data.includes('/')) {
+      return data;
+    }
+    
+    // Se for objeto Date ou string ISO, formata
+    const dateObj = new Date(data);
+    if (!isNaN(dateObj.getTime())) {
+      return dateObj.toLocaleDateString('pt-BR');
+    }
+    
+    return data;
+  } catch (error) {
+    return data; // Retorna o valor original em caso de erro
+  }
+}
+
+// 🔥 FUNÇÃO: EXIBIR MODAL COM DETALHES - CORRIGIDA
+function exibirModalDetalhes(dados) {
+  const modal = document.getElementById('modalDetalhes');
+  const content = document.getElementById('modalDetalhesContent');
+  
+  // Formatar mensalidade
+  const mensalidadeFormatada = formatarMoedaParaInput(dados.mensalidade);
+  
+  // Criar HTML dos detalhes - CORRETO E LIMPO
+  content.innerHTML = `
+    <div class="detalhes-grid">
+      <div class="detalhe-item">
+        <span class="detalhe-label">🏢 Razão Social</span>
+        <div class="detalhe-valor">${dados.razao_social || 'N/A'}</div>
+      </div>
+      
+      <div class="detalhe-item">
+        <span class="detalhe-label">🏷️ Nome Fantasia</span>
+        <div class="detalhe-valor">${dados.nome_fantasia || 'N/A'}</div>
+      </div>
+      
+      <div class="detalhe-item">
+        <span class="detalhe-label">🔢 CNPJ</span>
+        <div class="detalhe-valor" style="font-family: monospace;">${dados.cnpj || 'N/A'}</div>
+      </div>
+      
+      <div class="detalhe-item">
+        <span class="detalhe-label">📊 Tipo</span>
+        <div class="detalhe-valor">${dados.tipo || 'N/A'}</div>
+      </div>
+      
+      <div class="detalhe-item">
+        <span class="detalhe-label">🚚 Fornecedor</span>
+        <div class="detalhe-valor">${dados.fornecedor || 'N/A'}</div>
+      </div>
+      
+      
+      <div class="detalhe-item">
+        <span class="detalhe-label">📅 Data Status</span>
+        <div class="detalhe-valor">${formatarDataParaExibicao(dados.data_status) || 'N/A'}</div>
+      </div>
+
+      <div class="detalhe-item">
+        <span class="detalhe-label">📄 Contrato Enviado</span>
+        <div class="detalhe-valor">${dados.contrato_enviado || 'N/A'}</div>
+      </div>
+      
+      <div class="detalhe-item">
+        <span class="detalhe-label">✍️ Contrato Assinado</span>
+        <div class="detalhe-valor">${dados.contrato_assinado || 'N/A'}</div>
+      </div>
+      
+      <div class="detalhe-item">
+        <span class="detalhe-label">🚀 Ativação</span>
+        <div class="detalhe-valor">${formatarDataParaExibicao(dados.ativacao) || 'N/A'}</div>
+      </div>
+      
+      <div class="detalhe-item">
+        <span class="detalhe-label">🔗 Link</span>
+        <div class="detalhe-valor">
+          ${dados.link ? `<a href="${dados.link}" target="_blank" style="color: var(--primary);">${dados.link}</a>` : 'N/A'}
+        </div>
+      </div>
+      
+      <div class="detalhe-item">
+        <span class="detalhe-label">💰 Mensalidade</span>
+        <div class="detalhe-valor" style="color: var(--success); font-weight: 600;">${mensalidadeFormatada}</div>
+      </div>
+      
+      <div class="detalhe-item">
+        <span class="detalhe-label">🎯 Situação</span>
+        <div class="detalhe-valor">
+          <span class="status-badge ${getSituacaoClass(dados.situacao)}">${dados.situacao || 'N/A'}</span>
+        </div>
+      </div>
+    </div>
+    
+   ${dados.observacoes ? `
+<div class="detalhe-item">
+  <span class="detalhe-label">📝 Status</span> <!-- ✅ AGORA É "Status" -->
+  <div class="detalhe-valor" style="background: #fffbf0; border-left-color: var(--warning);">
+    ${dados.observacoes}
+  </div>
+</div>
+` : ''}
+    
+    <div style="margin-top: 20px; padding: 15px; background: #f8f9fa; border-radius: 10px; text-align: center;">
+      <p style="margin: 0; color: var(--gray); font-size: 0.9rem;">
+        <i class="fas fa-info-circle"></i>
+        Clique em "Editar" para modificar estes dados
+      </p>
+    </div>
+  `;
+  
+  // Exibir modal
+  modal.style.display = 'flex';
+}
+
+// 🔥 FUNÇÃO: FECHAR MODAL
+function fecharModalDetalhes() {
+  const modal = document.getElementById('modalDetalhes');
+  modal.style.display = 'none';
+}
+
+// 🔥 FUNÇÃO AUXILIAR: Classe CSS para situação
+function getSituacaoClass(situacao) {
+  switch(situacao) {
+    case 'Cadastrado': return 'situacao-cadastrado';
+    case 'Em andamento': return 'situacao-andamento';
+    case 'Parado': return 'situacao-parado';
+    case 'Descredenciado': return 'situacao-descredenciado';
+    default: return 'situacao-cadastrado';
+  }
+}
+
+    function atualizarContador() {
+      const contador = document.getElementById('contadorCadastros');
+      contador.textContent = `${cadastrosFiltrados.length} cadastro${cadastrosFiltrados.length !== 1 ? 's' : ''}`;
+    }
+
+    // Fechar sugestões quando clicar fora
+    document.addEventListener('click', function(e) {
+      if (!e.target.closest('.search-container')) {
+        document.getElementById('suggestions').style.display = 'none';
+      }
+    });
+
+// 🔄 FUNÇÕES DE LOADING
+function showLoading(message = "Salvando dados...", submessage = "Aguarde um momento") {
+  const overlay = document.getElementById('loadingOverlay');
+  const loadingText = overlay.querySelector('.loading-text');
+  const loadingSubtext = overlay.querySelector('.loading-subtext');
+  
+  loadingText.textContent = message;
+  loadingSubtext.textContent = submessage;
+  overlay.style.display = 'flex';
+}
+
+function hideLoading() {
+  const overlay = document.getElementById('loadingOverlay');
+  overlay.style.display = 'none';
+}
+
+// Fechar modal clicando fora do conteúdo
+document.getElementById('modalDetalhes').addEventListener('click', function(e) {
+  if (e.target === this) {
+    fecharModalDetalhes();
+  }
+});
+
+// Fechar modal com ESC
+document.addEventListener('keydown', function(e) {
+  if (e.key === 'Escape') {
+    fecharModalDetalhes();
+  }
+});
+
+    // 🔥 INICIALIZAÇÃO
+    document.addEventListener('DOMContentLoaded', function() {
+      console.log('Sistema de Gestão de Cadastros - RESULT inicializado');
+      document.getElementById('mensalidade').value = 'R$ 0,00';
+      document.getElementById('situacao').value = 'Cadastrado';
+    });
+  </script>
+
+<!-- 🔄 OVERLAY DE CARREGAMENTO -->
+<div id="loadingOverlay">
+  <div class="loading-content">
+    <div class="loading-spinner-large"></div>
+    <p class="loading-text">Salvando dados...</p>
+    <p class="loading-subtext">Aguarde um momento</p>
+  </div>
+</div>
+
+<!-- 🔥 MODAL DE DETALHES -->
+<div id="modalDetalhes" class="modal-overlay">
+  <div class="modal-content">
+    <div class="modal-header">
+      <h3 class="modal-title">📋 Detalhes Completo do Cadastro</h3>
+      <button class="btn-close" onclick="fecharModalDetalhes()">
+        <i class="fas fa-times"></i>
+      </button>
+    </div>
+    
+    <div id="modalDetalhesContent">
+      <!-- Conteúdo será preenchido via JavaScript -->
+    </div>
+    
+    <div style="text-align: center; margin-top: 25px; padding-top: 20px; border-top: 1px solid var(--border);">
+      <button class="btn btn-primary" onclick="fecharModalDetalhes()">
+        <i class="fas fa-check"></i> Fechar
+      </button>
+    </div>
+  </div>
+</div>
+
+</body>
+</html>
