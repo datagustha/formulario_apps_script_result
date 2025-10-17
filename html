@@ -51,12 +51,14 @@
       color: white;
       text-align: center;
     }
+
     
-    .logo-container {
+    ..logo-container {
       display: flex;
       flex-direction: column;
       align-items: center;
       gap: 15px;
+      margin-bottom: 10px;
     }
     
     .logo {
@@ -66,6 +68,7 @@
       padding: 15px;
       border-radius: 20px;
       box-shadow: 0 5px 15px rgba(0, 0, 0, 0.2);
+      object-fit: contain;
     }
     
     h1 {
@@ -200,6 +203,26 @@
       padding: 8px 16px;
       font-size: 0.9rem;
     }
+
+ /* 🔥 ESTILOS PARA BOTÕES DE FILTRO ATIVOS */
+.filtros-container .btn.active {
+  transform: translateY(-2px);
+  box-shadow: 0 4px 12px rgba(126, 62, 154, 0.3);
+  border: 2px solid var(--primary) !important;
+}
+
+/* Estilo específico para o botão "Todos" quando ativo */
+.filtros-container .btn.active[onclick="filtrarTabela('all')"] {
+  background: var(--primary) !important;
+  color: white !important;
+  border-color: var(--primary) !important;
+}
+
+/* Estilo para os outros botões quando ativos */
+.filtros-container .btn.active:not([onclick="filtrarTabela('all')"]) {
+  border: 2px solid var(--primary) !important;
+  box-shadow: 0 0 0 3px rgba(126, 62, 154, 0.2) !important;
+}
     
     .btn-group {
       display: flex;
@@ -436,6 +459,7 @@
       gap: 10px;
       align-items: center;
       flex-wrap: wrap;
+      margin-top: 10px; /* 🔥 ADICIONE ESTA LINHA */
     }
 
     .filtros-eventos {
@@ -1004,6 +1028,15 @@
       .btn-group {
         flex-direction: column;
       }
+
+        h1 {
+        font-size: 2.2rem;
+      }
+      
+      .logo {
+        width: 80px;
+        height: 80px;
+      }
       
       .action-buttons {
         flex-direction: column;
@@ -1036,10 +1069,14 @@
   <div class="container">
     <div class="header">
       <div class="logo-container">
-        <div class="logo">🏢</div>
-        <div>
-          <h1>RESULT</h1>
-          <div class="subtitle">Sistema de Gestão de Cadastros</div>
+        <img src="https://i.ibb.co/B2r5xtbS/sim-cred-5.png" class="logo" alt="SIM CRED">
+        <div class="header-content">
+          <h1>Sistema de Prospecções</h1>
+          <div class="subtitle">Situação e Acompanhamento de Lojas</div>
+          <div class="version">
+            <i class="fas fa-rocket"></i>
+            Versão 2.0
+          </div>
         </div>
       </div>
     </div>
@@ -1121,8 +1158,8 @@
             </label>
             <select id="contrato_enviado" class="form-control">
               <option value="">-- Selecione --</option>
-              <option value="Sim">Sim</option>
-              <option value="Não">Não</option>
+              <option value="SIM">SIM</option>
+              <option value="NAO">NAO</option>
             </select>
           </div>
 
@@ -1133,8 +1170,8 @@
             </label>
             <select id="contrato_assinado" class="form-control">
               <option value="">-- Selecione --</option>
-              <option value="Sim">Sim</option>
-              <option value="Não">Não</option>
+              <option value="SIM">SIM</option>
+              <option value="NAO">NAO</option>
             </select>
           </div>
           
@@ -1200,7 +1237,7 @@
               <div class="fornecedor-item" style="margin-bottom: 20px; padding: 15px; background: white; border-radius: 10px; border: 2px solid var(--border);">
                 <div style="display: flex; align-items: center; gap: 15px; margin-bottom: 15px;">
                   <input type="checkbox" name="fornecedor" value="Agil" style="width: 20px; height: 20px; accent-color: var(--primary);" onchange="toggleFornecedorConfig(this, 'agil')">
-                  <span style="font-weight: 600; color: var(--dark); font-size: 1.1rem;">Agil</span>
+                  <span style="font-weight: 600; color: var(--dark); font-size: 1.1rem;">AGIL</span>
                 </div>
                 <div id="config-agil" style="display: none; grid-template-columns: 1fr 1fr; gap: 15px; padding: 15px; background: #f8f9fa; border-radius: 8px;">
                   <div>
@@ -1282,7 +1319,7 @@
               <div class="fornecedor-item" style="margin-bottom: 20px; padding: 15px; background: white; border-radius: 10px; border: 2px solid var(--border);">
                 <div style="display: flex; align-items: center; gap: 15px; margin-bottom: 15px;">
                   <input type="checkbox" name="fornecedor" value="Parcelex" style="width: 20px; height: 20px; accent-color: var(--primary);" onchange="toggleFornecedorConfig(this, 'parcelex')">
-                  <span style="font-weight: 600; color: var(--dark); font-size: 1.1rem;">Parcelex</span>
+                  <span style="font-weight: 600; color: var(--dark); font-size: 1.1rem;">PARCELEX</span>
                 </div>
                 <div id="config-parcelex" style="display: none; grid-template-columns: 1fr 1fr; gap: 15px; padding: 15px; background: #f8f9fa; border-radius: 8px;">
                   <div>
@@ -1323,7 +1360,7 @@
               <div class="fornecedor-item" style="margin-bottom: 20px; padding: 15px; background: white; border-radius: 10px; border: 2px solid var(--border);">
                 <div style="display: flex; align-items: center; gap: 15px; margin-bottom: 15px;">
                   <input type="checkbox" name="fornecedor" value="Agoracred" style="width: 20px; height: 20px; accent-color: var(--primary);" onchange="toggleFornecedorConfig(this, 'agoracred')">
-                  <span style="font-weight: 600; color: var(--dark); font-size: 1.1rem;">Agoracred</span>
+                  <span style="font-weight: 600; color: var(--dark); font-size: 1.1rem;">AGORACRED</span>
                 </div>
                 <div id="config-agoracred" style="display: none; grid-template-columns: 1fr 1fr; gap: 15px; padding: 15px; background: #f8f9fa; border-radius: 8px;">
                   <div>
@@ -1364,7 +1401,7 @@
               <div class="fornecedor-item" style="margin-bottom: 20px; padding: 15px; background: white; border-radius: 10px; border: 2px solid var(--border);">
                 <div style="display: flex; align-items: center; gap: 15px; margin-bottom: 15px;">
                   <input type="checkbox" name="fornecedor" value="Afinz" style="width: 20px; height: 20px; accent-color: var(--primary);" onchange="toggleFornecedorConfig(this, 'afinz')">
-                  <span style="font-weight: 600; color: var(--dark); font-size: 1.1rem;">Afinz</span>
+                  <span style="font-weight: 600; color: var(--dark); font-size: 1.1rem;">AFINZ</span>
                 </div>
                 <div id="config-afinz" style="display: none; grid-template-columns: 1fr 1fr; gap: 15px; padding: 15px; background: #f8f9fa; border-radius: 8px;">
                   <div>
@@ -1457,6 +1494,13 @@
   <div class="card-header">
     <i class="fas fa-store"></i>
     <h2 class="card-title" id="tituloCadastros">Todos os Cadastros</h2>
+  </div>
+
+  <!-- NOVA SEÇÃO: FILTRO POR SITUAÇÃO -->
+  <div style="margin: 20px 0; padding: 15px; background: #f8f9fa; border-radius: 8px; border-left: 4px solid var(--primary);">
+    <div style="font-weight: 600; color: var(--primary); margin-bottom: 10px;">
+      <i class="fas fa-filter"></i> Filtrar por Situação:
+    </div>
     <div class="filtros-container" id="filtrosContainer" style="display: none;">
       <button type="button" class="btn btn-outline btn-sm" onclick="filtrarTabela('all')">
         Todos
@@ -1496,6 +1540,7 @@
           <option value="nome_fantasia">Ordenar por Nome Fantasia</option>
           <option value="fornecedor">Ordenar por Fornecedor</option>
           <option value="situacao">Ordenar por Situação</option>
+          <option value="defasagem">Ordenar por Defasagem</option>
         </select>
         
         <button type="button" class="btn btn-info btn-sm" onclick="recarregarCadastros()">
@@ -1507,21 +1552,13 @@
 
  <!-- 🔥 FILTRO DE EVENTOS COM SEARCH -->
 <div class="filtro-search-container" id="filtroEventoContainer" style="display: none; position: relative;">
-  <div style="position: relative; width: 300px;">
-    <input type="text" 
-           id="inputFiltroEvento" 
-           class="form-control" 
-           placeholder="Digite o evento para filtrar..."
-           oninput="filtrarSugestoesEvento()"
-           style="padding-right: 40px;">
-    <button type="button" 
-            class="btn btn-sm" 
-            onclick="limparFiltroEvento()"
-            style="position: absolute; right: 5px; top: 50%; transform: translateY(-50%); background: var(--danger); color: white; border: none; border-radius: 4px; padding: 4px 8px; display: none;"
-            id="btnLimparFiltro">
-      <i class="fas fa-times"></i>
-    </button>
-  </div>
+ <div style="position: relative; width: 300px;">
+  <input type="text" 
+         id="inputFiltroEvento" 
+         class="form-control" 
+         placeholder="Digite o evento para filtrar..."
+         oninput="filtrarSugestoesEvento()">
+</div>
   
   <div class="suggestions-evento" id="suggestionsEvento" style="display: none;">
     <!-- Sugestões aparecerão aqui -->
@@ -1586,20 +1623,21 @@
     </div>
   </div>
 
-  <!-- 🔥 MODAL DE DETALHES -->
+  
+    <!-- 🔥 MODAL DE DETALHES - ESTRUTURA CORRIGIDA -->
   <div id="modalDetalhes" class="modal-overlay">
     <div class="modal-content">
       <div class="modal-header">
-        <h3 class="modal-title">📋 Detalhes Completo do Cadastro</h3>
+        <h3 class="modal-title">📋 Detalhes do Cadastro</h3>
         <button class="btn-close" onclick="fecharModalDetalhes()">
           <i class="fas fa-times"></i>
         </button>
       </div>
-      
+
       <div id="modalDetalhesContent">
         <!-- Conteúdo será preenchido via JavaScript -->
       </div>
-      
+
       <div style="text-align: center; margin-top: 25px; padding-top: 20px; border-top: 1px solid var(--border);">
         <button class="btn btn-primary" onclick="fecharModalDetalhes()">
           <i class="fas fa-check"></i> Fechar
@@ -1731,37 +1769,144 @@ setTimeout(testarAtualizacaoEventos, 2000);
       }
     }
 
-    function validarSenha() {
-      const inputSenha = document.getElementById('inputSenha');
-      if (!inputSenha) {
-        console.log("❌ inputSenha não encontrado");
-        return;
-      }
+  function validarSenha() {
+  const inputSenha = document.getElementById('inputSenha');
+  if (!inputSenha) {
+    console.log("❌ inputSenha não encontrado");
+    return;
+  }
+  
+  const senha = inputSenha.value;
+  console.log("🔐 Validando senha:", senha);
+  
+  if (senha === SENHA_PERMITIDA) {
+    console.log("✅ SENHA CORRETA - Iniciando liberação de campos");
+    
+    // 🔥 CORREÇÃO: SALVAR OS DADOS ATUAIS ANTES DE FECHAR O MODAL
+    const dadosAtuais = coletarDadosFormularioTemporario();
+    
+    fecharModalSenha();
+    
+    // Atualizar localStorage
+    localStorage.setItem('usuarioAutorizado', 'true');
+    console.log("💾 localStorage atualizado");
+    
+    // Liberar TODOS os campos protegidos
+    liberarTodosCamposProtegidos();
+    
+    // 🔥 CORREÇÃO: RESTAURAR OS DADOS APÓS LIBERAR OS CAMPOS
+    setTimeout(() => {
+      restaurarDadosFormulario(dadosAtuais);
+    }, 100);
+    
+    showMessage('success', '✅ Todos os campos foram liberados para edição!');
+    
+  } else {
+    console.log("❌ SENHA INCORRETA");
+    showMessage('error', '❌ Senha incorreta!');
+    inputSenha.value = '';
+    inputSenha.focus();
+  }
+}
+
+function coletarDadosFormularioTemporario() {
+  const dados = {
+    razao_social: document.getElementById('razao_social').value,
+    nome_fantasia: document.getElementById('nome_fantasia').value,
+    cnpj_cadastro: document.getElementById('cnpj_cadastro').value,
+    tipo: document.getElementById('tipo').value,
+    data_status: document.getElementById('data_status').value,
+    observacoes: document.getElementById('observacoes').value,
+    contrato_enviado: document.getElementById('contrato_enviado').value,
+    contrato_assinado: document.getElementById('contrato_assinado').value,
+    ativacao: document.getElementById('ativacao').value,
+    link: document.getElementById('link').value,
+    mensalidade: document.getElementById('mensalidade').value,
+    situacao: document.getElementById('situacao').value,
+    adesao: document.getElementById('adesao').value,
+    evento: document.getElementById('inputEventoSearch').value
+  };
+  
+  // Coletar fornecedores selecionados
+  const fornecedoresSelecionados = [];
+  const checkboxes = document.querySelectorAll('input[name="fornecedor"]:checked');
+  checkboxes.forEach(checkbox => {
+    const fornecedorNome = checkbox.value;
+    const fornecedorId = fornecedorNome.toLowerCase();
+    const configDiv = document.getElementById(`config-${fornecedorId}`);
+    
+    if (configDiv && configDiv.style.display === 'grid') {
+      const tarifaRadio = document.querySelector(`input[name="tarifa_${fornecedorId}"]:checked`);
+      const percentualSelect = document.querySelector(`select[name="percentual_${fornecedorId}"]`);
       
-      const senha = inputSenha.value;
-      console.log("🔐 Validando senha:", senha);
-      console.log("🔐 Comparação com '519901':", senha === '519901');
-      
-      if (senha === SENHA_PERMITIDA) {
-        console.log("✅ SENHA CORRETA - Iniciando liberação de campos");
-        fecharModalSenha();
-        
-        // Atualizar localStorage
-        localStorage.setItem('usuarioAutorizado', 'true');
-        console.log("💾 localStorage atualizado");
-        
-        // Liberar TODOS os campos protegidos
-        liberarTodosCamposProtegidos();
-        
-        showMessage('success', '✅ Todos os campos foram liberados para edição!');
-        
-      } else {
-        console.log("❌ SENHA INCORRETA");
-        showMessage('error', '❌ Senha incorreta!');
-        inputSenha.value = '';
-        inputSenha.focus();
-      }
+      fornecedoresSelecionados.push({
+        nome: fornecedorNome,
+        tarifa: tarifaRadio ? tarifaRadio.value : '',
+        percentual: percentualSelect ? percentualSelect.value : ''
+      });
     }
+  });
+  
+  dados.fornecedores = fornecedoresSelecionados;
+  return dados;
+}
+
+// 🔥 ADICIONAR: Função para restaurar dados após liberar campos
+function restaurarDadosFormulario(dados) {
+  if (!dados) return;
+  
+  console.log("🔄 Restaurando dados do formulário:", dados);
+  
+  // Restaurar campos básicos
+  document.getElementById('razao_social').value = dados.razao_social || '';
+  document.getElementById('nome_fantasia').value = dados.nome_fantasia || '';
+  document.getElementById('cnpj_cadastro').value = dados.cnpj_cadastro || '';
+  document.getElementById('tipo').value = dados.tipo || '';
+  document.getElementById('data_status').value = dados.data_status || '';
+  document.getElementById('observacoes').value = dados.observacoes || '';
+  document.getElementById('contrato_enviado').value = dados.contrato_enviado || '';
+  document.getElementById('contrato_assinado').value = dados.contrato_assinado || '';
+  document.getElementById('ativacao').value = dados.ativacao || '';
+  document.getElementById('link').value = dados.link || '';
+  document.getElementById('mensalidade').value = dados.mensalidade || 'R$ 0,00';
+  document.getElementById('situacao').value = dados.situacao || 'Novo registro';
+  document.getElementById('adesao').value = dados.adesao || 'R$ 0,00';
+  document.getElementById('inputEventoSearch').value = dados.evento || '';
+  
+  // Restaurar fornecedores
+  if (dados.fornecedores && dados.fornecedores.length > 0) {
+    dados.fornecedores.forEach(fornecedor => {
+      const checkbox = document.querySelector(`input[name="fornecedor"][value="${fornecedor.nome}"]`);
+      if (checkbox) {
+        checkbox.checked = true;
+        const fornecedorId = fornecedor.nome.toLowerCase();
+        const configDiv = document.getElementById(`config-${fornecedorId}`);
+        
+        if (configDiv) {
+          configDiv.style.display = 'grid';
+          
+          // Restaurar tarifa
+          if (fornecedor.tarifa) {
+            const tarifaRadio = document.querySelector(`input[name="tarifa_${fornecedorId}"][value="${fornecedor.tarifa}"]`);
+            if (tarifaRadio) {
+              tarifaRadio.checked = true;
+            }
+          }
+          
+          // Restaurar percentual
+          if (fornecedor.percentual) {
+            const percentualSelect = document.querySelector(`select[name="percentual_${fornecedorId}"]`);
+            if (percentualSelect) {
+              percentualSelect.value = fornecedor.percentual;
+            }
+          }
+        }
+      }
+    });
+  }
+  
+  console.log("✅ Dados restaurados com sucesso!");
+}
 
     function fecharModalSenha() {
       document.getElementById('modalSenha').style.display = 'none';
@@ -1769,153 +1914,169 @@ setTimeout(testarAtualizacaoEventos, 2000);
     }
 
     // 🔥 FUNÇÃO PARA LIBERAR TODOS OS CAMPOS PROTEGIDOS - CORRIGIDA
-    function liberarTodosCamposProtegidos() {
-      console.log("🔓 LIBERANDO TODOS OS CAMPOS...");
+ function liberarTodosCamposProtegidos() {
+  console.log("🔓 LIBERANDO TODOS OS CAMPOS...");
+  
+  // 🔥 CORREÇÃO: SALVAR OS DADOS ANTES DE LIBERAR
+  const dadosAtuais = coletarDadosFormularioTemporario();
+  
+  // Liberar campos principais
+  const camposProtegidos = [
+    'razao_social', 'nome_fantasia', 'cnpj_cadastro', 'tipo', 
+    'mensalidade', 'adesao', 'situacao', 'data_status',
+    'contrato_enviado', 'contrato_assinado', 'ativacao', 'link'
+  ];
+  
+  camposProtegidos.forEach(id => {
+    const campo = document.getElementById(id);
+    if (campo) {
+      console.log(`🔓 Liberando: ${id}`);
       
-      // Liberar campos principais
-      const camposProtegidos = [
-        'razao_social', 'nome_fantasia', 'cnpj_cadastro', 'tipo', 
-        'mensalidade', 'adesao', 'situacao', 'data_status',
-        'contrato_enviado', 'contrato_assinado', 'ativacao', 'link'
-      ];
+      const novoCampo = campo.cloneNode(true);
+      novoCampo.removeAttribute('readonly');
+      novoCampo.disabled = false;
+      novoCampo.style.backgroundColor = '';
+      novoCampo.style.cursor = 'text';
+      novoCampo.style.opacity = '1';
       
-      camposProtegidos.forEach(id => {
-        const campo = document.getElementById(id);
-        if (campo) {
-          console.log(`🔓 Liberando: ${id}`);
-          
-          // 🔥 CORREÇÃO: Remover completamente o elemento e criar um novo
-          const novoCampo = campo.cloneNode(true);
-          novoCampo.removeAttribute('readonly');
-          novoCampo.disabled = false;
-          novoCampo.style.backgroundColor = '';
-          novoCampo.style.cursor = 'text';
-          novoCampo.style.opacity = '1';
-          
-          // 🔥 CORREÇÃO CRÍTICA: Remover event listeners de proteção
-          novoCampo.onfocus = null;
-          novoCampo.onclick = null;
-          
-          // Substituir o campo antigo pelo novo
-          campo.parentNode.replaceChild(novoCampo, campo);
-          
-          console.log(`✅ ${id} liberado completamente`);
-        }
-      });
+      novoCampo.onfocus = null;
+      novoCampo.onclick = null;
       
-      // Liberar campos dos fornecedores - CORREÇÃO COMPLETA
-      console.log("🔓 Liberando campos dos fornecedores...");
-      const camposFornecedor = document.querySelectorAll(`
-        input[name="fornecedor"], 
-        input[name^="tarifa_"], 
-        select[name^="percentual_"]
-      `);
+      campo.parentNode.replaceChild(novoCampo, campo);
       
-      camposFornecedor.forEach(campo => {
-        // Clonar e substituir completamente
-        const novoCampo = campo.cloneNode(true);
-        novoCampo.disabled = false;
-        novoCampo.style.cursor = '';
-        novoCampo.style.opacity = '1';
-        novoCampo.style.backgroundColor = '';
-        
-        // 🔥 REMOVER todos os event listeners
-        novoCampo.onclick = null;
-        novoCampo.onfocus = null;
-        novoCampo.onmousedown = null;
-        
-        campo.parentNode.replaceChild(novoCampo, campo);
-      });
-      
-      console.log("🎯 TODOS OS CAMPOS FORAM LIBERADOS COM SUCESSO!");
+      console.log(`✅ ${id} liberado completamente`);
     }
+  });
+  
+  // Liberar campos dos fornecedores
+  console.log("🔓 Liberando campos dos fornecedores...");
+  const camposFornecedor = document.querySelectorAll(`
+    input[name="fornecedor"], 
+    input[name^="tarifa_"], 
+    select[name^="percentual_"]
+  `);
+  
+  camposFornecedor.forEach(campo => {
+    const novoCampo = campo.cloneNode(true);
+    novoCampo.disabled = false;
+    novoCampo.style.cursor = '';
+    novoCampo.style.opacity = '1';
+    novoCampo.style.backgroundColor = '';
+    
+    novoCampo.onclick = null;
+    novoCampo.onfocus = null;
+    novoCampo.onmousedown = null;
+    
+    campo.parentNode.replaceChild(novoCampo, campo);
+  });
+  
+  // 🔥 CORREÇÃO: RESTAURAR OS DADOS APÓS LIBERAR
+  setTimeout(() => {
+    restaurarDadosFormulario(dadosAtuais);
+  }, 100);
+  
+  console.log("🎯 TODOS OS CAMPOS FORAM LIBERADOS COM SUCESSO!");
+}
 
     // 🔥 FUNÇÃO PRINCIPAL PARA CONFIGURAR PROTEÇÃO
-    function configurarCamposProtegidos() {
-      console.log("🎯 CONFIGURAR CAMPOS PROTEGIDOS - INICIANDO PROTECÇÃO FORÇADA");
+  function configurarCamposProtegidos() {
+  console.log("🎯 CONFIGURAR CAMPOS PROTEGIDOS - INICIANDO PROTECÇÃO FORÇADA");
+  
+  // 🔥 CORREÇÃO: SALVAR OS DADOS EXISTENTES ANTES DE PROTEGER
+  const dadosAtuais = coletarDadosFormularioTemporario();
+  
+  // 🔥 FORÇAR: Ignorar localStorage e SEMPRE proteger inicialmente
+  console.log("🔒 PROTECÇÃO FORÇADA: Ignorando localStorage");
+  
+  const camposProtegidos = [
+    'razao_social', 'nome_fantasia', 'cnpj_cadastro', 'tipo', 
+    'mensalidade', 'adesao', 'situacao', 'data_status',
+    'contrato_enviado', 'contrato_assinado', 'ativacao', 'link'
+  ];
+  
+  console.log("🔒 Protegendo campos principais...");
+  
+  // Proteger campos principais - FORÇADO
+  camposProtegidos.forEach(id => {
+    const campo = document.getElementById(id);
+    if (campo) {
+      console.log(`🔒 Protegendo: ${id}`);
+      campo.setAttribute('readonly', 'true');
+      campo.disabled = false; // Garantir que não está disabled
+      campo.style.backgroundColor = '#f8f9fa';
+      campo.style.cursor = 'not-allowed';
+      campo.style.opacity = '1';
       
-      // 🔥 FORÇAR: Ignorar localStorage e SEMPRE proteger inicialmente
-      console.log("🔒 PROTECÇÃO FORÇADA: Ignorando localStorage");
+      // Remover qualquer event listener anterior
+      const novoCampo = campo.cloneNode(true);
+      campo.parentNode.replaceChild(novoCampo, campo);
       
-      const camposProtegidos = [
-        'razao_social', 'nome_fantasia', 'cnpj_cadastro', 'tipo', 
-        'mensalidade', 'adesao', 'situacao', 'data_status',
-        'contrato_enviado', 'contrato_assinado', 'ativacao', 'link'
-      ];
-      
-      console.log("🔒 Protegendo campos principais...");
-      
-      // Proteger campos principais - FORÇADO
-      camposProtegidos.forEach(id => {
-        const campo = document.getElementById(id);
-        if (campo) {
-          console.log(`🔒 Protegendo: ${id}`);
-          campo.setAttribute('readonly', 'true');
-          campo.disabled = false; // Garantir que não está disabled
-          campo.style.backgroundColor = '#f8f9fa';
-          campo.style.cursor = 'not-allowed';
-          campo.style.opacity = '1';
-          
-          // Remover qualquer event listener anterior
-          const novoCampo = campo.cloneNode(true);
-          campo.parentNode.replaceChild(novoCampo, campo);
-          
-          // Adicionar novo event listener
-          document.getElementById(id).addEventListener('focus', function(e) {
-            e.preventDefault();
-            console.log(`🔓 Campo ${id} solicitando senha`);
-            solicitarSenha(this);
-          });
-        }
+      // Adicionar novo event listener
+      document.getElementById(id).addEventListener('focus', function(e) {
+        e.preventDefault();
+        console.log(`🔓 Campo ${id} solicitando senha`);
+        solicitarSenha(this);
       });
-      
-      // Proteger campos dos fornecedores - FORÇADO
-      console.log("🔒 Protegendo campos dos fornecedores...");
-      const camposFornecedor = document.querySelectorAll(`
-        input[name="fornecedor"], 
-        input[name^="tarifa_"], 
-        select[name^="percentual_"]
-      `);
-      
-      camposFornecedor.forEach(campo => {
-        campo.disabled = true;
-        campo.style.cursor = 'not-allowed';
-        campo.style.opacity = '0.6';
-        
-        // Clonar e substituir para limpar event listeners
-        const novoCampo = campo.cloneNode(true);
-        campo.parentNode.replaceChild(novoCampo, campo);
-        
-        // Re-aplicar event listeners
-        if (campo.type === 'checkbox' || campo.type === 'radio') {
-          novoCampo.addEventListener('click', function(e) {
-            e.preventDefault();
-            solicitarSenha(this);
-          });
-        } else {
-          novoCampo.addEventListener('focus', function(e) {
-            e.preventDefault();
-            solicitarSenha(this);
-          });
-        }
-      });
-      
-      // Campos liberados (não proteger)
-      console.log("✅ Liberando campos permitidos...");
-      const camposLiberados = ['evento', 'observacoes'];
-      camposLiberados.forEach(id => {
-        const campo = document.getElementById(id);
-        if (campo) {
-          campo.removeAttribute('readonly');
-          campo.disabled = false;
-          campo.style.backgroundColor = '';
-          campo.style.cursor = 'text';
-          campo.style.opacity = '1';
-        }
-      });
-      
-      console.log("🎯 PROTECÇÃO FORÇADA FINALIZADA - Campos devem estar BLOQUEADOS");
     }
+  });
+  
+  // Proteger campos dos fornecedores - FORÇADO
+  console.log("🔒 Protegendo campos dos fornecedores...");
+  const camposFornecedor = document.querySelectorAll(`
+    input[name="fornecedor"], 
+    input[name^="tarifa_"], 
+    select[name^="percentual_"]
+  `);
+  
+  camposFornecedor.forEach(campo => {
+    campo.disabled = true;
+    campo.style.cursor = 'not-allowed';
+    campo.style.opacity = '0.6';
+    
+    // Clonar e substituir para limpar event listeners
+    const novoCampo = campo.cloneNode(true);
+    campo.parentNode.replaceChild(novoCampo, campo);
+    
+    // Re-aplicar event listeners
+    if (campo.type === 'checkbox' || campo.type === 'radio') {
+      novoCampo.addEventListener('click', function(e) {
+        e.preventDefault();
+        solicitarSenha(this);
+      });
+    } else {
+      novoCampo.addEventListener('focus', function(e) {
+        e.preventDefault();
+        solicitarSenha(this);
+      });
+    }
+  });
+  
+  // Campos liberados (não proteger)
+  console.log("✅ Liberando campos permitidos...");
+  const camposLiberados = ['evento', 'observacoes', 'inputEventoSearch'];
+  camposLiberados.forEach(id => {
+    const campo = document.getElementById(id);
+    if (campo) {
+      campo.removeAttribute('readonly');
+      campo.disabled = false;
+      campo.style.backgroundColor = '';
+      campo.style.cursor = 'text';
+      campo.style.opacity = '1';
+    }
+  });
+  
+  // 🔥 CORREÇÃO CRÍTICA: RESTAURAR OS DADOS APÓS CONFIGURAR A PROTEÇÃO
+  setTimeout(() => {
+    if (dadosAtuais && (dadosAtuais.razao_social || dadosAtuais.cnpj_cadastro)) {
+      console.log("🔄 Restaurando dados após proteção:", dadosAtuais);
+      restaurarDadosFormulario(dadosAtuais);
+    } else {
+      console.log("ℹ️ Nenhum dado para restaurar - formulário vazio");
+    }
+  }, 300);
+  
+  console.log("🎯 PROTECÇÃO FORÇADA FINALIZADA - Campos devem estar BLOQUEADOS mas dados preservados");
+}
 
     // 🔥 FUNÇÃO TEMPORÁRIA PARA TESTAR ENVIO DO FORMULÁRIO
     function testarEnvioFormulario() {
@@ -2008,6 +2169,111 @@ setTimeout(testarAtualizacaoEventos, 2000);
         infoEl.style.display = 'none';
       }, 5000);
     }
+
+ // 🔥 FUNÇOES AUXILIAR
+
+ // 🔥 ADICIONE ESTA FUNÇÃO AUXILIAR PARA PADRONIZAR FORNECEDORES
+function padronizarNomeFornecedor(nome) {
+  if (!nome) return '';
+  
+  // Lista de fornecedores conhecidos em MAIÚSCULAS
+  const fornecedoresPadronizados = {
+    'agil': 'AGIL',
+    'bc': 'BC', 
+    'parcelex': 'PARCELEX',
+    'agoracred': 'AGORACRED',
+    'afinz': 'AFINZ'
+  };
+  
+  const nomeLower = nome.toLowerCase();
+  return fornecedoresPadronizados[nomeLower] || nome.toUpperCase();
+}
+
+// 🔥 ATUALIZE a parte dos fornecedores na função coletarDadosFormulario:
+// (Dentro da função coletarDadosFormulario, procure esta parte):
+
+checkboxesFornecedores.forEach(checkbox => {
+  const fornecedorNome = checkbox.value;
+  // 🔥 CORREÇÃO: Padronizar para MAIÚSCULAS
+  const fornecedorPadronizado = padronizarNomeFornecedor(fornecedorNome);
+  const fornecedorId = fornecedorNome.toLowerCase();
+  
+  // ... resto do código permanece igual
+  fornecedoresComConfiguracoes.push({
+    nome: fornecedorPadronizado, // 🔥 AGORA EM MAIÚSCULAS
+    tarifa: tarifaSelecionada,
+    percentual_tarifa: percentualSelecionado
+  });
+});
+
+ // 🔥 FUNÇÃO: Calcular defasagem em dias
+function calcularDefasagem(dataUltimoEvento) {
+  if (!dataUltimoEvento || dataUltimoEvento === 'N/A') return 'N/A';
+  
+  try {
+    // Converter a data do último evento
+    const partesData = dataUltimoEvento.split('/');
+    if (partesData.length !== 3) return 'Data inválida';
+    
+    const dataEvento = new Date(partesData[2], partesData[1] - 1, partesData[0]);
+    const hoje = new Date();
+    
+    // Calcular diferença em dias
+    const diffTempo = hoje.getTime() - dataEvento.getTime();
+    const diffDias = Math.floor(diffTempo / (1000 * 3600 * 24));
+    
+    if (diffDias === 0) return 'Hoje';
+    if (diffDias === 1) return '1 dia';
+    if (diffDias > 1) return `${diffDias} dias`;
+    if (diffDias < 0) return 'Data futura';
+    
+    return 'N/A';
+  } catch (error) {
+    console.error("❌ Erro ao calcular defasagem:", error);
+    return 'Erro no cálculo';
+  }
+}
+
+// 🔥 FUNÇÃO: Formatar percentual para exibição (0.03 → 3%) - VERSÃO CORRIGIDA
+function formatarPercentualParaExibicao(percentual) {
+  if (!percentual && percentual !== 0) return '';
+  
+  console.log("🔍 Percentual recebido:", percentual, "Tipo:", typeof percentual);
+  
+  try {
+    // Se já está em formato de string com %, retorna como está
+    if (typeof percentual === 'string' && percentual.includes('%')) {
+      return percentual;
+    }
+    
+    // Converter para número
+    let numero;
+    if (typeof percentual === 'string') {
+      // Remove possíveis caracteres não numéricos, mantendo ponto decimal
+      const valorLimpo = percentual.replace(/[^\d.,]/g, '').replace(',', '.');
+      numero = parseFloat(valorLimpo);
+    } else {
+      numero = parseFloat(percentual);
+    }
+    
+    // Se não é um número válido, retorna original
+    if (isNaN(numero)) {
+      return percentual;
+    }
+    
+    // 🔥 CORREÇÃO DEFINITIVA: Se o número é menor que 1, converte para porcentagem
+    if (numero < 1) {
+      return Math.round(numero * 100) + '%';
+    } else {
+      // Se o número é 1 ou maior, assume que já é porcentagem
+      return Math.round(numero) + '%';
+    }
+    
+  } catch (error) {
+    console.error("❌ Erro ao formatar percentual:", error);
+    return percentual;
+  }
+}
 
     function toggleFornecedorConfig(checkbox, fornecedorId) {
       const configDiv = document.getElementById(`config-${fornecedorId}`);
@@ -2157,6 +2423,94 @@ function coletarDadosFormulario() {
     showMessage('error', '❌ Erro interno ao processar formulário');
     return null;
   }
+}
+
+// 🔥 FUNÇÃO DE DEBUG DETALHADA - Contrato Enviado
+function debugContratoEnviado(dados) {
+  console.log("🔍🔍🔍 DEBUG CONTRATO ENVIADO:");
+  console.log("📦 Todos os dados recebidos:", dados);
+  console.log("❓ Tem contrato_enviado?", 'contrato_enviado' in dados);
+  console.log("📋 Valor de contrato_enviado:", dados.contrato_enviado);
+  console.log("📋 Tipo de contrato_enviado:", typeof dados.contrato_enviado);
+  console.log("📋 Valor bruto:", dados.contrato_enviado);
+  console.log("📋 Convertido para string:", String(dados.contrato_enviado));
+  console.log("📋 Em maiúsculas:", String(dados.contrato_enviado).toUpperCase());
+  
+  // Verificar todos os campos disponíveis
+  console.log("🔑 Todas as chaves disponíveis:", Object.keys(dados));
+}
+
+// 🔥 FUNÇÃO COM DEBUG: Preencher dados do cadastro
+// 🔥 FUNÇÃO CORRIGIDA: Preencher dados do cadastro
+function preencherDadosCadastro(dados) {
+  console.log("🎯 PREENCHER DADOS CADASTRO: Iniciando");
+  console.log("📦 Dados recebidos:", dados);
+  
+  if (!dados.encontrado) {
+    showMessage('error', '❌ ' + dados.mensagem);
+    return;
+  }
+
+  // Preencher campos básicos
+  document.getElementById('razao_social').value = dados.razao_social || '';
+  document.getElementById('nome_fantasia').value = dados.nome_fantasia || '';
+  document.getElementById('cnpj_cadastro').value = dados.cnpj || '';
+  document.getElementById('tipo').value = dados.tipo || '';
+  document.getElementById('data_status').value = dados.data_status || '';
+  document.getElementById('observacoes').value = dados.observacoes || '';
+  
+  // 🔥🔥🔥 CORREÇÃO DEFINITIVA: Usar o nome exato do campo do Google Sheets
+  let contratoEnviadoValue = '';
+  if (dados.Contrato_Enviado !== undefined && dados.Contrato_Enviado !== null) {
+    contratoEnviadoValue = String(dados.Contrato_Enviado).toUpperCase().trim();
+    console.log("✅ Contrato_Enviado encontrado:", contratoEnviadoValue);
+  } else {
+    console.log("⚠️ Contrato_Enviado não encontrado nos dados");
+    contratoEnviadoValue = 'SIM'; // Valor padrão
+  }
+  
+  let contratoAssinadoValue = '';
+  if (dados.Contrato_Assinado !== undefined && dados.Contrato_Assinado !== null) {
+    contratoAssinadoValue = String(dados.Contrato_Assinado).toUpperCase().trim();
+    console.log("✅ Contrato_Assinado encontrado:", contratoAssinadoValue);
+  } else {
+    contratoAssinadoValue = 'NAO'; // Valor padrão
+  }
+  
+  // Preencher os campos
+  document.getElementById('contrato_enviado').value = contratoEnviadoValue;
+  document.getElementById('contrato_assinado').value = contratoAssinadoValue;
+  
+  // Outros campos
+  document.getElementById('ativacao').value = dados.ativacao || '';
+  document.getElementById('link').value = dados.link || '';
+  document.getElementById('mensalidade').value = formatarMoedaParaInput(dados.mensalidade);
+  document.getElementById('situacao').value = dados.situacao || 'Novo registro';
+  document.getElementById('adesao').value = dados.adesao === 'Isento' || dados.adesao === 0 ? 'R$ 0,00' : formatarMoedaParaInput(dados.adesao);
+  
+  // Preencher evento
+  if (dados.evento) {
+    document.getElementById('inputEventoSearch').value = dados.evento;
+    document.getElementById('evento').value = dados.evento;
+  }
+  
+  // Preencher fornecedor
+  preencherFornecedorComTarifas(dados);
+  
+  // Atualizar eventos
+  atualizarEventos();
+  
+  // Configurar modo de atualização
+  cadastroAtualId = dados.id;
+  document.getElementById('btnCadastrar').style.display = 'none';
+  document.getElementById('btnAtualizar').style.display = 'block';
+  
+  console.log("✅ Formulário preenchido com sucesso!");
+  
+  // Scroll para o formulário
+  document.querySelector('.card').scrollIntoView({ behavior: 'smooth', block: 'start' });
+  
+  showMessage('success', '✅ Cadastro carregado para edição!');
 }
 
 // 🔥🔥🔥 CORREÇÃO DA VALIDAÇÃO DE CAMPOS OBRIGATÓRIOS
@@ -2521,19 +2875,11 @@ function filtrarTabela(situacao) {
   // Remover classe active de todos os botões
   document.querySelectorAll('.filtros-container .btn').forEach(btn => {
     btn.classList.remove('active');
-    btn.style.backgroundColor = '';
-    btn.style.color = '';
   });
   
   // Adicionar classe active ao botão clicado
   const botaoClicado = event.target;
   botaoClicado.classList.add('active');
-  
-  // Destacar visualmente o botão ativo
-  if (situacao === 'all') {
-    botaoClicado.style.backgroundColor = 'var(--primary)';
-    botaoClicado.style.color = 'white';
-  }
 
   configurarFiltroEvento(situacao);
   
@@ -2649,14 +2995,19 @@ function filtrarTabela(situacao) {
         .buscarCadastroPorCNPJ(cnpjBusca); // ✅ Envia apenas números
     }
 
-    function preencherFornecedorComTarifas(dados) {
+// 🔥 FUNÇÃO CORRIGIDA: Preencher fornecedor com MAIÚSCULAS
+// 🔥 FUNÇÃO COMPLETA CORRIGIDA: Preencher fornecedor com MAIÚSCULAS e tarifas
+function preencherFornecedorComTarifas(dados) {
   console.log("🔧 Preenchendo fornecedor com tarifas:", dados);
+  
+  // 🔥 ADICIONE ESTA LINHA PARA DEBUG
+  debugDadosTarifa(dados);
   
   // Limpar seleções anteriores
   const checkboxes = document.querySelectorAll('input[name="fornecedor"]');
   checkboxes.forEach(cb => {
     cb.checked = false;
-    const fornecedorId = cb.value.toLowerCase();
+    const fornecedorId = cb.getAttribute('onchange').split("'")[1];
     const configDiv = document.getElementById(`config-${fornecedorId}`);
     if (configDiv) {
       configDiv.style.display = 'none';
@@ -2672,27 +3023,34 @@ function filtrarTabela(situacao) {
     return;
   }
   
-  // Encontrar o checkbox do fornecedor
-  const checkbox = document.querySelector(`input[name="fornecedor"][value="${dados.fornecedor}"]`);
+  // 🔥 CORREÇÃO DEFINITIVA: Converter fornecedor para MAIÚSCULAS para busca
+  const fornecedorNome = dados.fornecedor.toUpperCase().trim();
+  console.log("🎯 Fornecedor do Google Sheets (convertido para MAIÚSCULAS):", fornecedorNome);
+
+  // Encontrar o checkbox do fornecedor (agora buscando por MAIÚSCULAS)
+  const checkbox = document.querySelector(`input[name="fornecedor"][value="${fornecedorNome}"]`);
+  
   if (checkbox) {
     checkbox.checked = true;
+    console.log("✅ Checkbox marcado para:", fornecedorNome);
     
-    // Ativar configurações do fornecedor
-    const fornecedorId = dados.fornecedor.toLowerCase();
+    // Ativar configurações do fornecedor (ID em minúsculas)
+    const fornecedorId = fornecedorNome.toLowerCase();
     const configDiv = document.getElementById(`config-${fornecedorId}`);
     
     if (configDiv) {
       configDiv.style.display = 'grid';
       
-      // 🔥 CORREÇÃO CRÍTICA: Preencher tipo de tarifa (MDR/TIS)
+      // Preencher tipo de tarifa
       if (dados.tarifa) {
-        const radioTarifa = configDiv.querySelector(`input[name="tarifa_${fornecedorId}"][value="${dados.tarifa}"]`);
+        const tarifaNormalizada = (dados.tarifa || '').toUpperCase();
+        const radioTarifa = configDiv.querySelector(`input[name="tarifa_${fornecedorId}"][value="${tarifaNormalizada}"]`);
         if (radioTarifa) {
           radioTarifa.checked = true;
-          console.log("✅ Tipo de tarifa selecionado:", dados.tarifa);
+          console.log("✅ Tipo de tarifa selecionado:", tarifaNormalizada);
         } else {
-          console.log("⚠️ Tarifa não encontrada:", dados.tarifa, "para", fornecedorId);
-          // 🔥 CORREÇÃO: Selecionar MDR como padrão se não encontrar
+          console.log("⚠️ Tarifa não encontrada:", tarifaNormalizada);
+          // Selecionar MDR como padrão
           const radioPadrao = configDiv.querySelector(`input[name="tarifa_${fornecedorId}"][value="MDR"]`);
           if (radioPadrao) {
             radioPadrao.checked = true;
@@ -2700,101 +3058,127 @@ function filtrarTabela(situacao) {
           }
         }
       } else {
-        console.log("⚠️ Nenhuma tarifa nos dados para", fornecedorId);
-        // 🔥 CORREÇÃO: Selecionar MDR como padrão se não houver tarifa
+        console.log("⚠️ Nenhuma tarifa nos dados");
         const radioPadrao = configDiv.querySelector(`input[name="tarifa_${fornecedorId}"][value="MDR"]`);
         if (radioPadrao) {
           radioPadrao.checked = true;
-          console.log("✅ MDR selecionado como padrão (sem tarifa nos dados)");
+          console.log("✅ MDR selecionado como padrão");
         }
       }
       
-      // Preencher percentual da tarifa
+      // 🔥🔥🔥 SEÇÃO CORRIGIDA DO PERCENTUAL_TARIFA - VERSÃO COMPLETA
       if (dados.percentual_tarifa !== undefined && dados.percentual_tarifa !== null) {
         const selectPercentual = configDiv.querySelector(`select[name="percentual_${fornecedorId}"]`);
         if (selectPercentual) {
           let percentualValue = dados.percentual_tarifa;
           
-          // Converter para formato correto
+          console.log("🔍 Percentual recebido do GS:", percentualValue, "Tipo:", typeof percentualValue);
+          
+          // 🔥 CORREÇÃO CRÍTICA: Processar diferentes formatos de percentual
           if (typeof percentualValue === 'number') {
-            percentualValue = Math.round(percentualValue * 100) + '%';
-          } else if (typeof percentualValue === 'string' && !percentualValue.includes('%')) {
-            if (percentualValue.includes('.')) {
-              const numero = parseFloat(percentualValue);
+            // Se é número (0.03, 0.05, etc), converter para formato de porcentagem
+            if (percentualValue < 1) {
+              percentualValue = Math.round(percentualValue * 100) + '%';
+            } else {
+              percentualValue = Math.round(percentualValue) + '%';
+            }
+          } else if (typeof percentualValue === 'string') {
+            // Se é string, garantir que tem o símbolo %
+            if (percentualValue && !percentualValue.includes('%')) {
+              // Tentar converter para número primeiro
+              const numero = parseFloat(percentualValue.replace(',', '.'));
               if (!isNaN(numero)) {
-                percentualValue = Math.round(numero * 100) + '%';
+                if (numero < 1) {
+                  percentualValue = Math.round(numero * 100) + '%';
+                } else {
+                  percentualValue = Math.round(numero) + '%';
+                }
               } else {
                 percentualValue = percentualValue + '%';
               }
-            } else {
-              percentualValue = percentualValue + '%';
+            }
+            // Se já tem %, manter como está
+          }
+          
+          console.log("✅ Percentual formatado para select:", percentualValue);
+          
+          // Definir o valor no select
+          selectPercentual.value = percentualValue;
+          
+          // 🔥 CORREÇÃO EXTRA: Se não encontrou o valor, usar o mais próximo
+          if (!selectPercentual.value && percentualValue) {
+            const todasOpcoes = Array.from(selectPercentual.options);
+            const valorNumerico = parseFloat(percentualValue.replace('%', '').replace(',', '.'));
+            
+            if (!isNaN(valorNumerico)) {
+              // Encontrar a opção mais próxima
+              const opcaoMaisProxima = todasOpcoes.find(opt => {
+                const optValor = parseFloat(opt.value.replace('%', ''));
+                return !isNaN(optValor) && optValor === valorNumerico;
+              });
+              
+              if (opcaoMaisProxima) {
+                selectPercentual.value = opcaoMaisProxima.value;
+                console.log("✅ Usando opção mais próxima:", opcaoMaisProxima.value);
+              }
             }
           }
           
-          selectPercentual.value = percentualValue;
-          console.log("✅ Percentual definido:", percentualValue);
+          console.log("🎯 Valor final no select:", selectPercentual.value);
         }
       } else {
-        console.log("⚠️ Nenhum percentual nos dados para", fornecedorId);
-        // 🔥 CORREÇÃO: Definir 0% como padrão
+        console.log("⚠️ Nenhum percentual nos dados - usando 0% como padrão");
         const selectPercentual = configDiv.querySelector(`select[name="percentual_${fornecedorId}"]`);
         if (selectPercentual) {
           selectPercentual.value = '0%';
-          console.log("✅ 0% definido como padrão (sem percentual nos dados)");
         }
       }
     }
   } else {
-    console.log("❌ Fornecedor não encontrado no HTML:", dados.fornecedor);
+    console.log("❌ Fornecedor não encontrado no HTML:", fornecedorNome);
+    console.log("🔍 Checkboxes disponíveis:", Array.from(document.querySelectorAll('input[name="fornecedor"]')).map(cb => cb.value));
+    
+    // 🔥 NOVA CORREÇÃO: Tentar encontrar por conversão de caso
+    const todosCheckboxes = document.querySelectorAll('input[name="fornecedor"]');
+    let checkboxEncontrado = null;
+    
+    todosCheckboxes.forEach(cb => {
+      if (cb.value.toUpperCase() === fornecedorNome) {
+        checkboxEncontrado = cb;
+      }
+    });
+    
+    if (checkboxEncontrado) {
+      console.log("✅ Fornecedor encontrado por conversão de caso!");
+      checkboxEncontrado.checked = true;
+      
+      // Ativar configurações
+      const fornecedorId = checkboxEncontrado.value.toLowerCase();
+      const configDiv = document.getElementById(`config-${fornecedorId}`);
+      if (configDiv) {
+        configDiv.style.display = 'grid';
+        // ... resto do código de preenchimento das tarifas (repetir a lógica acima)
+      }
+    }
   }
 }
 
-    function preencherDadosCadastro(dados) {
-      if (!dados.encontrado) {
-        showMessage('info', dados.mensagem);
-        limparFormulario();
-        document.getElementById('btnCadastrar').style.display = 'block';
-        document.getElementById('btnAtualizar').style.display = 'none';
-        cadastroAtualId = null;
-        return;
-      }
-
-      cadastroAtualId = dados.id;
-      document.getElementById('razao_social').value = dados.razao_social;
-      document.getElementById('nome_fantasia').value = dados.nome_fantasia;
-      document.getElementById('cnpj_cadastro').value = dados.cnpj;
-      document.getElementById('tipo').value = dados.tipo;
-      
-      // 🔥 CORREÇÃO: Preencher adesão corretamente
-      if (dados.adesao === 'Isento' || dados.adesao === 0 || dados.adesao === '0') {
-        document.getElementById('adesao').value = 'R$ 0,00';
-      } else {
-        document.getElementById('adesao').value = formatarMoedaParaInput(dados.adesao);
-      }
-      
-      // 🔥 CORREÇÃO: Preencher fornecedor com tarifas
-      preencherFornecedorComTarifas(dados);
-      
-      document.getElementById('data_status').value = dados.data_status;
-      document.getElementById('observacoes').value = dados.observacoes;
-      document.getElementById('contrato_enviado').value = dados.contrato_enviado;
-      document.getElementById('contrato_assinado').value = dados.contrato_assinado;
-      document.getElementById('ativacao').value = dados.ativacao;
-      document.getElementById('link').value = dados.link;
-      document.getElementById('mensalidade').value = formatarMoedaParaInput(dados.mensalidade);
-      document.getElementById('situacao').value = dados.situacao;
-
-      // 🔥 CORREÇÃO: Preencher evento
-      if (dados.evento) {
-        atualizarEventos();
-        document.getElementById('evento').value = dados.evento;
-      }
-
-      document.getElementById('btnCadastrar').style.display = 'none';
-      document.getElementById('btnAtualizar').style.display = 'block';
-
-      showMessage('success', 'Cadastro encontrado! Modo de edição ativado.');
-    }
+// 🔥 ADICIONE ESTA FUNÇÃO DE DEBUG PARA VERIFICAR OS DADOS
+function debugDadosTarifa(dados) {
+  console.log("🔍🔍🔍 DEBUG DADOS TARIFA:");
+  console.log("📦 Todos os dados:", dados);
+  console.log("💰 Fornecedor:", dados.fornecedor);
+  console.log("💵 Tarifa:", dados.tarifa, "Tipo:", typeof dados.tarifa);
+  console.log("📊 Percentual Tarifa:", dados.percentual_tarifa, "Tipo:", typeof dados.percentual_tarifa);
+  console.log("🔍 Chaves disponíveis:", Object.keys(dados));
+  
+  // Verificar se há outras variações do nome do campo
+  const chavesPercentual = Object.keys(dados).filter(key => 
+    key.toLowerCase().includes('percent') || 
+    key.toLowerCase().includes('tarifa')
+  );
+  console.log("🎯 Chaves relacionadas a tarifa/percentual:", chavesPercentual);
+}
 
  function limparBusca() {
   limparFormulario();
@@ -2915,23 +3299,13 @@ function atualizarEventos() {
 function getSituacaoClass(situacao) {
   if (!situacao) return 'situacao-cadastrado';
   
-  // 🔥 CORREÇÃO DEFINITIVA: Captura TODAS as variações de "Novo Registro"
-  const situacaoLower = situacao.toLowerCase().trim();
-  const situacaoSemAcentos = situacaoLower.normalize('NFD').replace(/[\u0300-\u036f]/g, '');
+  const situacaoUpper = situacao.toUpperCase().trim();
   
-  // Verifica TODAS as possíveis variações de "Novo Registro"
-  if (situacaoLower.includes('novo registro') || 
-      situacaoLower === 'novo registro' ||
-      situacaoLower === 'novo registr' ||
-      situacaoSemAcentos.includes('novo registro') ||
-      situacao.includes('Novo Registro') ||
-      situacao.includes('Novo registro')) {
-    return 'situacao-novo-registro';
-  }
-  else if (situacaoLower.includes('cadastrado')) return 'situacao-cadastrado';
-  else if (situacaoLower.includes('em andamento')) return 'situacao-andamento';
-  else if (situacaoLower.includes('não concluído') || situacaoLower.includes('nao concluido')) return 'situacao-nao-concluido';
-  else if (situacaoLower.includes('descredenciado')) return 'situacao-descredenciado';
+  if (situacaoUpper.includes('NOVO REGISTRO')) return 'situacao-novo-registro';
+  else if (situacaoUpper.includes('CADASTRADO')) return 'situacao-cadastrado';
+  else if (situacaoUpper.includes('EM ANDAMENTO')) return 'situacao-andamento';
+  else if (situacaoUpper.includes('NÃO CONCLUÍDO') || situacaoUpper.includes('NAO CONCLUIDO')) return 'situacao-nao-concluido';
+  else if (situacaoUpper.includes('DESCREDENCIADO')) return 'situacao-descredenciado';
   else return 'situacao-cadastrado';
 }
 
@@ -3026,25 +3400,17 @@ function exibirTabelaCadastrosAgrupada(cadastrosAgrupados, titulo) {
 
 // 🔥 FUNÇÃO PARA PADRONIZAR O TEXTO DA SITUAÇÃO
 function padronizarSituacao(situacao) {
-  if (!situacao) return 'Novo registro';
+  if (!situacao) return 'NOVO REGISTRO';
   
-  const situacaoLower = situacao.toLowerCase().trim();
-  const situacaoSemAcentos = situacaoLower.normalize('NFD').replace(/[\u0300-\u036f]/g, '');
+  const situacaoUpper = situacao.toUpperCase().trim();
   
-  // Padroniza para "Novo registro" (minúsculo)
-  if (situacaoLower.includes('novo registro') || 
-      situacaoLower === 'novo registr' ||
-      situacaoSemAcentos.includes('novo registro') ||
-      situacao.includes('Novo Registro') ||
-      situacao.includes('Novo registro')) {
-    return 'Novo registro';
-  }
-  else if (situacaoLower.includes('cadastrado')) return 'Cadastrado';
-  else if (situacaoLower.includes('em andamento')) return 'Em andamento';
-  else if (situacaoLower.includes('não concluído') || situacaoLower.includes('nao concluido')) return 'Não concluído';
-  else if (situacaoLower.includes('descredenciado')) return 'Descredenciado';
+  if (situacaoUpper.includes('NOVO REGISTRO')) return 'NOVO REGISTRO';
+  else if (situacaoUpper.includes('CADASTRADO')) return 'CADASTRADO';
+  else if (situacaoUpper.includes('EM ANDAMENTO')) return 'EM ANDAMENTO';
+  else if (situacaoUpper.includes('NÃO CONCLUÍDO') || situacaoUpper.includes('NAO CONCLUIDO')) return 'NÃO CONCLUÍDO';
+  else if (situacaoUpper.includes('DESCREDENCIADO')) return 'DESCREDENCIADO';
   
-  return situacao; // Mantém original se não identificar
+  return situacaoUpper;
 }
 
 // 🔥 FUNÇÃO PARA CRIAR LINHA DA TABELA AGRUPADA
@@ -3158,10 +3524,13 @@ function exibirModalLojasAgrupadas(cnpj, lojas) {
         
         <div style="display: grid; grid-template-columns: 1fr 1fr; gap: 10px; margin-bottom: 10px;">
           <div><strong>📅 Evento:</strong> ${loja.evento || 'N/A'}</div>
-          <div><strong>💰 Tarifa:</strong> ${loja.tarifa || 'N/A'} ${loja.percentual_tarifa || ''}</div>
+          <div><strong>💰 Tarifa:</strong> ${loja.tarifa || 'N/A'} ${formatarPercentualParaExibicao(loja.percentual_tarifa)}</div>
           <div><strong>💵 Mensalidade:</strong> ${formatarMoedaParaInput(loja.mensalidade)}</div>
           <div><strong>🤝 Adesão:</strong> ${loja.adesao === 'Isento' || loja.adesao === 0 ? 'Isento' : formatarMoedaParaInput(loja.adesao)}</div>
         </div>
+<div style="background: #f8f9fa; padding: 8px 12px; border-radius: 6px; margin-bottom: 10px; border-left: 3px solid var(--warning);">
+  <strong>⏰ Defasagem:</strong> <span style="color: ${calcularDefasagem(loja.ultimo_evento).includes('30') || calcularDefasagem(loja.ultimo_evento).includes('31') ? 'var(--danger)' : 'var(--dark)'}; font-weight: 600;">${calcularDefasagem(loja.ultimo_evento)}</span>
+</div>
         
         <div style="margin-top: 10px; display: flex; gap: 10px;">
           <button class="btn btn-warning btn-sm" onclick="editarCadastroModal('${loja.id}')">
@@ -3201,22 +3570,30 @@ function exibirModalLojasAgrupadas(cnpj, lojas) {
   modal.style.display = 'flex';
 }
 
-// 🔥 FUNÇÃO PARA EDITAR UMA LOJA ESPECÍFICA (do modal)
 function editarCadastroModal(id) {
-  console.log("✏️ Editando cadastro ID:", id);
+  console.log("✏️ EDITANDO CADASTRO MODAL - INICIANDO");
+  console.log("🔍 ID recebido:", id);
+  
   showLoading("Carregando dados...", "Buscando informações da loja");
   
   google.script.run
     .withSuccessHandler(function(dados) {
+      console.log("✅ DADOS RECEBIDOS DO GS:", dados);
       hideLoading();
       fecharModalDetalhes(); // Fecha o modal das lojas
-      preencherDadosCadastro(dados); // Preenche o formulário principal
       
-      // Scroll para o formulário
-      document.getElementById('razao_social').scrollIntoView({ behavior: 'smooth' });
-      showMessage('success', '✅ Cadastro carregado para edição!');
+      // 🔥 CORREÇÃO: Chamar a função diretamente, não através do GS
+      if (dados.encontrado) {
+        preencherDadosCadastro(dados); // Preenche o formulário principal
+        // Scroll para o formulário
+        document.getElementById('razao_social').scrollIntoView({ behavior: 'smooth' });
+        showMessage('success', '✅ Cadastro carregado para edição!');
+      } else {
+        showMessage('error', '❌ ' + dados.mensagem);
+      }
     })
     .withFailureHandler(function(error) {
+      console.error("❌ ERRO AO CARREGAR CADASTRO:", error);
       hideLoading();
       showMessage('error', '❌ Erro ao carregar cadastro: ' + error.message);
     })
@@ -3249,13 +3626,6 @@ function exibirModalDetalhesCompleto(dados) {
   const adesaoFormatada = dados.adesao === 'Isento' || dados.adesao === 0 ? 'Isento' : formatarMoedaParaInput(dados.adesao);
 
   content.innerHTML = `
-    <div class="modal-header">
-      <h3 class="modal-title">📋 Detalhes Completo da Loja</h3>
-      <button class="btn-close" onclick="fecharModalDetalhes()">
-        <i class="fas fa-times"></i>
-      </button>
-    </div>
-    
     <div class="detalhes-grid">
       <div class="detalhe-item">
         <span class="detalhe-label">🏢 Razão Social</span>
@@ -3282,9 +3652,9 @@ function exibirModalDetalhesCompleto(dados) {
         <div class="detalhe-valor">${dados.fornecedor || 'N/A'}</div>
       </div>
       
-      <div class="detalhe-item">
+            <div class="detalhe-item">
         <span class="detalhe-label">💰 Tarifa</span>
-        <div class="detalhe-valor">${dados.tarifa || 'N/A'} ${dados.percentual_tarifa || ''}</div>
+        <div class="detalhe-valor">${dados.tarifa || 'N/A'} ${formatarPercentualParaExibicao(dados.percentual_tarifa)}</div>
       </div>
       
       <div class="detalhe-item">
@@ -3340,17 +3710,24 @@ function exibirModalDetalhesCompleto(dados) {
         <span class="detalhe-label">📝 Observações</span>
         <div class="detalhe-valor">${dados.observacoes || 'Nenhuma observação'}</div>
       </div>
+
+            <div class="detalhe-item" style="grid-column: 1 / -1;">
+        <span class="detalhe-label">📅 Último Evento Registrado</span>
+        <div class="detalhe-valor">${dados.ultimo_evento || 'N/A'}</div>
+      </div>
+
+      <div class="detalhe-item" style="grid-column: 1 / -1;">
+        <span class="detalhe-label">⏰ Defasagem</span>
+        <div class="detalhe-valor">${calcularDefasagem(dados.ultimo_evento)}</div>
+      </div>
     </div>
 
-    <div style="text-align: center; margin-top: 25px; padding-top: 20px; border-top: 1px solid var(--border);">
-      <button class="btn btn-warning" onclick="editarCadastroModal('${dados.id}')">
-        <i class="fas fa-edit"></i> Editar Esta Loja
-      </button>
-      <button class="btn btn-primary" onclick="fecharModalDetalhes()" style="margin-left: 10px;">
-        <i class="fas fa-check"></i> Fechar
-      </button>
-    </div>
-  `;
+      <div style="text-align: center; margin-top: 25px; padding-top: 20px; border-top: 1px solid var(--border);">
+    <button class="btn btn-warning" onclick="editarCadastroModal('${dados.id}')">
+      <i class="fas fa-edit"></i> Editar Esta Loja
+    </button>
+  </div>
+`;
   
   modal.style.display = 'flex';
 }
@@ -3370,9 +3747,7 @@ function filtrarSugestoesEvento() {
   const container = document.getElementById('filtroEventoContainer');
   const termo = input.value.toLowerCase().trim();
   
-  // Mostrar/ocultar botão limpar
-  const btnLimpar = document.getElementById('btnLimparFiltro');
-  btnLimpar.style.display = termo ? 'block' : 'none';
+  
   
   if (termo.length < 1) {
     suggestions.style.display = 'none';
@@ -3537,11 +3912,11 @@ function aplicarFiltrosAtivos() {
 function limparFiltroEvento() {
   const input = document.getElementById('inputFiltroEvento');
   const suggestions = document.getElementById('suggestionsEvento');
-  const btnLimpar = document.getElementById('btnLimparFiltro');
+  
   
   input.value = '';
   suggestions.style.display = 'none';
-  btnLimpar.style.display = 'none';
+  
   
   // Remover todos os filtros
   const tagsContainer = document.getElementById('tagsFiltrosAtivos');
