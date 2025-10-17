@@ -5,7 +5,7 @@
   <meta name="viewport" content="width=device-width, initial-scale=1.0">
   <title>Sistema de Gestão de Cadastros - RESULT</title>
   <link href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.0.0/css/all.min.css" rel="stylesheet">
-  <style>
+<style>
     /* 🔥 ESTILOS DO SISTEMA */
     * {
       box-sizing: border-box;
@@ -83,14 +83,15 @@
       padding: 40px;
     }
     
-    .card {
-      background: var(--light);
-      border-radius: 12px;
-      padding: 30px;
-      margin-bottom: 25px;
-      box-shadow: 0 4px 15px rgba(0, 0, 0, 0.05);
-      border: 1px solid var(--border);
-    }
+ .card {
+  background: var(--light);
+  border-radius: 12px;
+  padding: 30px;
+  margin-bottom: 25px;
+  margin-top: 40px; /* 🔥 ADICIONE ESTA LINHA - ESPAÇO ACIMA */
+  box-shadow: 0 4px 15px rgba(0, 0, 0, 0.05);
+  border: 1px solid var(--border);
+}
     
     .card-header {
       display: flex;
@@ -274,6 +275,7 @@
       width: 100%;
       border-collapse: collapse;
       background: white;
+      table-layout: fixed;
     }
     
     .data-table th {
@@ -288,13 +290,15 @@
     }
     
     .data-table td {
-      padding: 12px;
+      padding: 12px 8px;
       border-bottom: 1px solid var(--border);
       font-size: 0.9rem;
+      word-wrap: break-word;
     }
     
     .data-table tbody tr {
       transition: all 0.3s ease;
+      display: table-row;
     }
     
     .data-table tbody tr:hover {
@@ -322,16 +326,17 @@
     .acoes-cell {
       display: flex;
       gap: 5px;
-      flex-wrap: wrap;
+      justify-content: center;
+      align-items: center;
     }
     
-    /* 🔥 NOVOS ESTILOS PARA AS SEÇÕES DE CADASTROS */
-    .action-buttons {
-      display: flex;
-      gap: 15px;
-      margin-bottom: 20px;
-      flex-wrap: wrap;
-    }
+.action-buttons {
+  display: flex;
+  gap: 15px;
+  margin: 40px 0 20px 0; /* 🔥 ADICIONA ESPAÇO ACIMA E ABAIXO */
+  flex-wrap: wrap;
+  /* REMOVE: padding, background, border, border-radius */
+}
     
     .cadastros-container {
       margin-top: 30px;
@@ -388,17 +393,17 @@
     }
 
     .situacao-novo-registro {
-  background-color: #bfe1f6 !important;
-  color: #0c5aa3 !important;
-  border: 1px solid #8bc9f0 !important;
-}
+      background-color: #bfe1f6 !important;
+      color: #0c5aa3 !important;
+      border: 1px solid #8bc9f0 !important;
+    }
     
     .situacao-andamento {
       background: #FFF3CD;
       color: #856404;
     }
     
-    .situacao-parado {
+    .situacao-nao-concluido {
       background: #E2E3E5;
       color: #383D41;
     }
@@ -433,6 +438,105 @@
       flex-wrap: wrap;
     }
 
+    .filtros-eventos {
+      display: none;
+      margin-top: 10px;
+      padding: 10px;
+      background: #f8f9fa;
+      border-radius: 8px;
+      border: 1px solid var(--border);
+    }
+
+/* 🔥 ESTILOS PARA FILTRO DE EVENTOS COM SEARCH */
+.filtro-search-container {
+  margin: 15px 0;
+  padding: 15px;
+  background: var(--light);
+  border-radius: 10px;
+  border: 1px solid var(--border);
+}
+
+.suggestions-evento {
+  position: absolute;
+  top: 100%;
+  left: 0;
+  right: 0;
+  background: white;
+  border: 1px solid var(--primary);
+  border-top: none;
+  border-radius: 0 0 8px 8px;
+  z-index: 1000;
+  box-shadow: 0 4px 15px rgba(0, 0, 0, 0.1);
+  max-height: 200px;
+  overflow-y: auto;
+  margin-top: -2px;
+}
+
+.suggestion-evento-item {
+  padding: 10px 15px;
+  cursor: pointer;
+  border-bottom: 1px solid var(--border);
+  transition: all 0.2s ease;
+  font-size: 0.9rem;
+}
+
+.suggestion-evento-item:hover {
+  background: var(--primary);
+  color: white;
+}
+
+.suggestion-evento-item:last-child {
+  border-bottom: none;
+}
+
+.suggestion-evento-section {
+  background: var(--primary);
+  color: white;
+  font-weight: 700;
+  padding: 8px 15px;
+  font-size: 0.8rem;
+  border-bottom: 1px solid var(--border);
+}
+
+.filtro-chip {
+  background: white;
+  border: 2px solid var(--border);
+  border-radius: 20px;
+  padding: 6px 12px;
+  font-size: 12px;
+  display: flex;
+  align-items: center;
+  gap: 6px;
+  cursor: pointer;
+  transition: all 0.3s ease;
+  font-weight: 500;
+}
+
+.filtro-chip.ativo {
+  background: var(--primary);
+  color: white;
+  border-color: var(--primary);
+}
+
+.filtro-chip .remover {
+  background: none;
+  border: none;
+  color: inherit;
+  cursor: pointer;
+  padding: 0;
+  width: 16px;
+  height: 16px;
+  border-radius: 50%;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  font-size: 10px;
+}
+
+.filtro-chip .remover:hover {
+  background: rgba(255,255,255,0.3);
+}
+    
     /* 🔥 ESTILOS PARA PESQUISA */
     .search-container {
       position: relative;
@@ -492,76 +596,53 @@
     }
 
     /* 🔥 ESTILOS PARA CAMPOS OBRIGATÓRIOS */
-.form-label.obrigatorio::after {
-  content: " *";
-  color: var(--danger);
-  font-weight: bold;
-  margin-left: 2px;
-}
+    .form-label.obrigatorio::after {
+      content: " *";
+      color: var(--danger);
+      font-weight: bold;
+      margin-left: 2px;
+    }
 
-.campo-obrigatorio {
-  border-left: 4px solid var(--danger) !important;
-  background-color: #fff5f5 !important;
-}
+    .campo-obrigatorio {
+      border-left: 4px solid var(--danger) !important;
+      background-color: #fff5f5 !important;
+    }
 
-.aviso-obrigatorio {
-  color: var(--danger);
-  font-size: 0.8rem;
-  font-weight: 600;
-  margin-top: 5px;
-  display: none;
-}
+    .aviso-obrigatorio {
+      color: var(--danger);
+      font-size: 0.8rem;
+      font-weight: 600;
+      margin-top: 5px;
+      display: none;
+    }
 
+    /* 🔥🔥🔥 ADICIONE ESTE CSS AQUI - ESTILOS MELHORADOS PARA VALIDAÇÃO */
+    .form-control.campo-obrigatorio,
+    select.campo-obrigatorio {
+      border: 2px solid var(--danger) !important;
+      background-color: #fff5f5 !important;
+      box-shadow: 0 0 0 3px rgba(220, 53, 69, 0.1) !important;
+      animation: pulse 0.5s ease-in-out;
+    }
 
-/* 🔥 ESTILOS PARA CAMPOS OBRIGATÓRIOS */
-.form-label.obrigatorio::after {
-  content: " *";
-  color: var(--danger);
-  font-weight: bold;
-  margin-left: 2px;
-}
+    @keyframes pulse {
+      0% { transform: scale(1); }
+      50% { transform: scale(1.02); }
+      100% { transform: scale(1); }
+    }
 
-.campo-obrigatorio {
-  border-left: 4px solid var(--danger) !important;
-  background-color: #fff5f5 !important;
-}
+    /* Destaque para a seção de fornecedores quando inválida */
+    .fornecedores-invalido {
+      border: 2px solid var(--danger) !important;
+      background: #fff5f5 !important;
+      animation: shake 0.5s ease-in-out;
+    }
 
-.aviso-obrigatorio {
-  color: var(--danger);
-  font-size: 0.8rem;
-  font-weight: 600;
-  margin-top: 5px;
-  display: none;
-}
-
-/* 🔥🔥🔥 ADICIONE ESTE CSS AQUI - ESTILOS MELHORADOS PARA VALIDAÇÃO */
-.form-control.campo-obrigatorio,
-select.campo-obrigatorio {
-  border: 2px solid var(--danger) !important;
-  background-color: #fff5f5 !important;
-  box-shadow: 0 0 0 3px rgba(220, 53, 69, 0.1) !important;
-  animation: pulse 0.5s ease-in-out;
-}
-
-@keyframes pulse {
-  0% { transform: scale(1); }
-  50% { transform: scale(1.02); }
-  100% { transform: scale(1); }
-}
-
-/* Destaque para a seção de fornecedores quando inválida */
-.fornecedores-invalido {
-  border: 2px solid var(--danger) !important;
-  background: #fff5f5 !important;
-  animation: shake 0.5s ease-in-out;
-}
-
-@keyframes shake {
-  0%, 100% { transform: translateX(0); }
-  25% { transform: translateX(-5px); }
-  75% { transform: translateX(5px); }
-}
-/* 🔥🔥🔥 FIM DO CSS ADICIONADO */
+    @keyframes shake {
+      0%, 100% { transform: translateX(0); }
+      25% { transform: translateX(-5px); }
+      75% { transform: translateX(5px); }
+    }
 
     /* 🔥 ESTILOS PARA BOTÕES DE AÇÃO NA TABELA */
     .btn-editar {
@@ -595,143 +676,321 @@ select.campo-obrigatorio {
     }
 
     /* 🔄 ESTILOS PARA O LOADING OVERLAY */
-#loadingOverlay {
-  display: none;
-  position: fixed;
-  top: 0;
-  left: 0;
+    #loadingOverlay {
+      display: none;
+      position: fixed;
+      top: 0;
+      left: 0;
+      width: 100%;
+      height: 100%;
+      background: rgba(0,0,0,0.7);
+      z-index: 9999;
+      justify-content: center;
+      align-items: center;
+      flex-direction: column;
+    }
+
+    .loading-content {
+      background: white;
+      padding: 40px;
+      border-radius: 15px;
+      text-align: center;
+      box-shadow: 0 10px 30px rgba(0,0,0,0.3);
+      min-width: 300px;
+      border: 3px solid var(--primary);
+    }
+
+    .loading-spinner-large {
+      border: 5px solid #f3f3f3;
+      border-top: 5px solid var(--primary);
+      border-radius: 50%;
+      width: 60px;
+      height: 60px;
+      animation: spin 1s linear infinite;
+      margin: 0 auto 20px;
+    }
+
+    .loading-text {
+      margin: 0;
+      color: var(--dark);
+      font-weight: bold;
+      font-size: 18px;
+    }
+
+    .loading-subtext {
+      margin: 8px 0 0 0;
+      color: var(--gray);
+      font-size: 14px;
+    }
+
+    /* 🔥 ESTILOS PARA O MODAL DE DETALHES */
+    .modal-overlay {
+      display: none;
+      position: fixed;
+      top: 0;
+      left: 0;
+      width: 100%;
+      height: 100%;
+      background: rgba(0,0,0,0.7);
+      z-index: 10000;
+      justify-content: center;
+      align-items: center;
+      padding: 20px;
+    }
+
+    .modal-content {
+      background: white;
+      border-radius: 15px;
+      padding: 30px;
+      max-width: 600px;
+      width: 100%;
+      max-height: 80vh;
+      overflow-y: auto;
+      box-shadow: 0 20px 60px rgba(0,0,0,0.3);
+      border: 3px solid var(--primary);
+      position: relative;
+    }
+
+    .modal-header {
+      display: flex;
+      justify-content: space-between;
+      align-items: center;
+      margin-bottom: 25px;
+      padding-bottom: 15px;
+      border-bottom: 2px solid var(--primary);
+    }
+
+    .modal-title {
+      font-size: 1.5rem;
+      font-weight: 700;
+      color: var(--primary);
+      margin: 0;
+    }
+
+    .btn-close {
+      background: none;
+      border: none;
+      font-size: 1.5rem;
+      cursor: pointer;
+      color: var(--gray);
+      padding: 5px;
+      border-radius: 50%;
+      width: 40px;
+      height: 40px;
+      display: flex;
+      align-items: center;
+      justify-content: center;
+      transition: all 0.3s ease;
+    }
+
+    .btn-close:hover {
+      background: var(--danger);
+      color: white;
+    }
+
+    .detalhes-grid {
+      display: grid;
+      grid-template-columns: repeat(auto-fit, minmax(250px, 1fr));
+      gap: 15px;
+      margin-bottom: 20px;
+    }
+
+    .detalhe-item {
+      margin-bottom: 12px;
+    }
+
+    .detalhe-label {
+      font-weight: 600;
+      color: var(--primary);
+      margin-bottom: 5px;
+      display: block;
+    }
+
+    .detalhe-valor {
+      color: var(--dark);
+      background: #f8f9fa;
+      padding: 8px 12px;
+      border-radius: 8px;
+      border-left: 3px solid var(--primary);
+    }
+
+    
+/* 🔥🔥🔥 CORREÇÃO DEFINITIVA - LARGURAS E ALINHAMENTO */
+.data-table {
+  table-layout: fixed;
   width: 100%;
-  height: 100%;
-  background: rgba(0,0,0,0.7);
-  z-index: 9999;
-  justify-content: center;
+}
+
+/* 🔥 LARGURAS DAS COLUNAS */
+.data-table th:nth-child(1),
+.data-table td:nth-child(1) {
+  width: 25%; /* Razão Social */
+}
+
+.data-table th:nth-child(2),
+.data-table td:nth-child(2) {
+  width: 14%; /* CNPJ */
+}
+
+.data-table th:nth-child(3),
+.data-table td:nth-child(3) {
+  width: 20%; /* Fornecedor */
+}
+
+.data-table th:nth-child(4),
+.data-table td:nth-child(4) {
+  width: 12%; /* Mensalidade */
+}
+
+.data-table th:nth-child(5),
+.data-table td:nth-child(5) {
+  width: 12%; /* Adesão */
+}
+
+.data-table th:nth-child(6),
+.data-table td:nth-child(6) {
+  width: 17%; /* Ações */
+}
+
+
+
+/* 🔥 CORREÇÃO ESPECÍFICA PARA O BOTÃO VISUALIZAR */
+.btn-visualizar-compact {
+  padding: 8px 12px !important;
+  font-size: 0.8rem !important;
+  min-width: 100px;
+  white-space: nowrap;
+  display: inline-flex;
   align-items: center;
-  flex-direction: column;
-}
-
-.loading-content {
-  background: white;
-  padding: 40px;
-  border-radius: 15px;
-  text-align: center;
-  box-shadow: 0 10px 30px rgba(0,0,0,0.3);
-  min-width: 300px;
-  border: 3px solid var(--primary);
-}
-
-.loading-spinner-large {
-  border: 5px solid #f3f3f3;
-  border-top: 5px solid var(--primary);
-  border-radius: 50%;
-  width: 60px;
-  height: 60px;
-  animation: spin 1s linear infinite;
-  margin: 0 auto 20px;
-}
-
-.loading-text {
-  margin: 0;
-  color: var(--dark);
-  font-weight: bold;
-  font-size: 18px;
-}
-
-.loading-subtext {
-  margin: 8px 0 0 0;
-  color: var(--gray);
-  font-size: 14px;
-}
-
-/* 🔥 ESTILOS PARA O MODAL DE DETALHES */
-.modal-overlay {
-  display: none;
-  position: fixed;
-  top: 0;
-  left: 0;
-  width: 100%;
-  height: 100%;
-  background: rgba(0,0,0,0.7);
-  z-index: 10000;
   justify-content: center;
-  align-items: center;
-  padding: 20px;
+  gap: 5px;
 }
 
-.modal-content {
+/* 🔥 GARANTIR QUE TODAS AS CÉLULAS TENHAM MESMA ALTURA */
+.data-table tbody tr {
+}
+
+
+/* 🔥 EXCEÇÃO: Primeira coluna alinhada à esquerda */
+.data-table td:nth-child(1) {
+  text-align: left;
+  vertical-align: top !important;
+}
+
+/* 🔥 LARGURAS DAS COLUNAS */
+.data-table th:nth-child(6),
+.data-table td:nth-child(6) {
+  width: 17%; /* Ações */
+}
+
+
+
+
+/* 🔥 ESTILOS PARA O SEARCH DE EVENTOS NO FORMULÁRIO */
+.suggestions-evento-search {
+  position: absolute;
+  top: 100%;
+  left: 0;
+  right: 0;
   background: white;
-  border-radius: 15px;
-  padding: 30px;
-  max-width: 600px;
-  width: 100%;
-  max-height: 80vh;
+  border: 1px solid var(--primary);
+  border-top: none;
+  border-radius: 0 0 8px 8px;
+  z-index: 1000;
+  box-shadow: 0 4px 15px rgba(0, 0, 0, 0.1);
+  max-height: 300px;
   overflow-y: auto;
-  box-shadow: 0 20px 60px rgba(0,0,0,0.3);
-  border: 3px solid var(--primary);
-  position: relative;
+  margin-top: -2px;
 }
 
-.modal-header {
-  display: flex;
-  justify-content: space-between;
-  align-items: center;
-  margin-bottom: 25px;
-  padding-bottom: 15px;
-  border-bottom: 2px solid var(--primary);
-}
-
-.modal-title {
-  font-size: 1.5rem;
-  font-weight: 700;
-  color: var(--primary);
-  margin: 0;
-}
-
-.btn-close {
-  background: none;
-  border: none;
-  font-size: 1.5rem;
+.suggestion-evento-item-search {
+  padding: 10px 15px;
   cursor: pointer;
-  color: var(--gray);
-  padding: 5px;
-  border-radius: 50%;
-  width: 40px;
-  height: 40px;
-  display: flex;
-  align-items: center;
-  justify-content: center;
-  transition: all 0.3s ease;
+  border-bottom: 1px solid var(--border);
+  transition: all 0.2s ease;
+  font-size: 0.9rem;
 }
 
-.btn-close:hover {
-  background: var(--danger);
+.suggestion-evento-item-search:hover {
+  background: var(--primary);
   color: white;
 }
 
-.detalhes-grid {
-  display: grid;
-  grid-template-columns: repeat(auto-fit, minmax(250px, 1fr));
-  gap: 15px;
-  margin-bottom: 20px;
+.suggestion-evento-item-search:last-child {
+  border-bottom: none;
 }
 
-.detalhe-item {
-  margin-bottom: 12px;
+.suggestion-evento-section-search {
+  background: var(--primary);
+  color: white;
+  font-weight: 700;
+  padding: 8px 15px;
+  font-size: 0.8rem;
+  border-bottom: 1px solid var(--border);
+  position: sticky;
+  top: 0;
 }
 
-.detalhe-label {
-  font-weight: 600;
-  color: var(--primary);
-  margin-bottom: 5px;
-  display: block;
+
+  /* 🔥🔥🔥 CORREÇÃO DEFINITIVA - ALINHAMENTO VERTICAL DA COLUNA AÇÕES */
+.data-table tbody tr {
+    display: table-row;
+    height: auto;
 }
 
-.detalhe-valor {
-  color: var(--dark);
-  background: #f8f9fa;
-  padding: 8px 12px;
-  border-radius: 8px;
-  border-left: 3px solid var(--primary);
+.data-table td {
+    vertical-align: middle !important;
+    padding: 15px 8px !important;
+    height: 100% !important;
+    border-bottom: 1px solid var(--border);
 }
+
+/* 🔥🔥🔥 CORREÇÃO URGENTE - BOTÃO NO MEIO DA CÉLULA */
+.data-table td:nth-child(6) {
+    height: 100% !important;
+    min-height: 100% !important;
+    vertical-align: middle !important;
+    padding: 0 !important;
+    display: table-cell !important;
+}
+
+.acoes-cell {
+    height: 100% !important;
+    min-height: 100% !important;
+    display: flex !important;
+    align-items: center !important;
+    justify-content: center !important;
+    padding: 0 !important;
+    margin: 0 !important;
+}
+
+/* 🔥 GARANTIR QUE O BOTÃO OCUPE TODA A ALTURA */
+.btn-visualizar-compact {
+    height: 100% !important;
+    min-height: 40px !important;
+    display: flex !important;
+    align-items: center !important;
+    justify-content: center !important;
+    padding: 8px 12px !important;
+    margin: 0 !important;
+    width: 100%;
+    border-radius: 6px !important;
+}
+
+/* 🔥 CORREÇÃO DA PRIMEIRA COLUNA (mantém alinhamento ao topo) */
+.data-table td:nth-child(1) {
+    vertical-align: top !important;
+}
+
+/* 🔥 CORREÇÃO DAS OUTRAS COLUNAS (alinhamento no meio) */
+.data-table td:nth-child(2),
+.data-table td:nth-child(3),
+.data-table td:nth-child(4),
+.data-table td:nth-child(5),
+.data-table td:nth-child(6) {
+    vertical-align: middle !important;
+}
+  
 
     @media (max-width: 768px) {
       .content {
@@ -785,101 +1044,67 @@ select.campo-obrigatorio {
       </div>
     </div>
     
-    <div class="content">
-      <!-- BOTÕES DE AÇÃO -->
+        <!-- BOTÕES DE AÇÃO SIMPLIFICADOS -->
       <div class="action-buttons">
         <button type="button" class="btn btn-primary" onclick="mostrarTodosCadastros()">
           <i class="fas fa-store"></i>
           Ver Todos os Cadastros
         </button>
-        <button type="button" class="btn btn-info" onclick="limparDados()">
-          <i class="fas fa-plus"></i>
-          Novo Cadastro
+        <button type="button" class="btn btn-info" onclick="limparBusca()">
+          <i class="fas fa-broom"></i>
+          Limpar Busca
         </button>
       </div>
 
-      <!-- CARD BUSCA POR CNPJ -->
+      
+      
+      <!-- CARD DADOS DO CADASTRO -->
       <div class="card">
         <div class="card-header">
-          <i class="fas fa-search"></i>
-          <h2 class="card-title">Buscar Cadastro</h2>
+          <i class="fas fa-info-circle"></i>
+          <h2 class="card-title">Dados do Cadastro</h2>
         </div>
         
         <div class="form-grid">
           <div class="form-group">
+            <label class="form-label obrigatorio">
+              <i class="fas fa-building"></i>
+              Razão Social
+            </label>
+            <input type="text" id="razao_social" class="form-control">
+          </div>
+          
+          <div class="form-group">
             <label class="form-label">
+              <i class="fas fa-signature"></i>
+              Nome Fantasia
+            </label>
+            <input type="text" id="nome_fantasia" class="form-control">
+          </div>
+          
+          <!-- 🔥 CAMPO CNPJ ADICIONADO AQUI -->
+          <div class="form-group">
+            <label class="form-label obrigatorio">
               <i class="fas fa-id-card"></i>
               CNPJ
             </label>
-            <input type="text" id="cnpj" class="form-control" 
-                   placeholder="Digite o CNPJ..."
+            <input type="text" id="cnpj_cadastro" class="form-control" 
+                   placeholder="Digite o CNPJ para cadastro..."
                    oninput="formatarCNPJ(this)">
           </div>
-        </div>
-        
-        <div class="btn-group">
-          <button type="button" class="btn btn-primary" onclick="buscarPorCNPJ()">
-            <i class="fas fa-search"></i>
-            Buscar Cadastro
-          </button>
-          <button type="button" class="btn btn-info" onclick="limparBusca()">
-            <i class="fas fa-broom"></i>
-            Limpar Busca
-          </button>
-        </div>
-      </div>
-      
-      <!-- CARD DADOS DO CADASTRO -->
-<div class="card">
-  <div class="card-header">
-    <i class="fas fa-info-circle"></i>
-    <h2 class="card-title">Dados do Cadastro</h2>
-  </div>
-  
-  <div class="form-grid">
-    <div class="form-group">
-      <label class="form-label obrigatorio">
-        <i class="fas fa-building"></i>
-        Razão Social
-      </label>
-      <input type="text" id="razao_social" class="form-control">
-    </div>
-    
-    <div class="form-group">
-      <label class="form-label">
-        <i class="fas fa-signature"></i>
-        Nome Fantasia
-      </label>
-      <input type="text" id="nome_fantasia" class="form-control">
-    </div>
-    
-    <!-- 🔥 CAMPO CNPJ ADICIONADO AQUI -->
-    <div class="form-group">
-      <label class="form-label obrigatorio">
-        <i class="fas fa-id-card"></i>
-        CNPJ
-      </label>
-      <input type="text" id="cnpj_cadastro" class="form-control" 
-             placeholder="Digite o CNPJ para cadastro..."
-             oninput="formatarCNPJ(this)">
-    </div>
-    
-    <div class="form-group">
-      <label class="form-label obrigatorio">
-        <i class="fas fa-tag"></i>
-        Tipo
-      </label>
-      <select id="tipo" class="form-control">
-        <option value="">-- Selecione --</option>
-        <option value="GERAL">GERAL</option>
-        <option value="SORRIA SIM">SORRIA SIM</option>
-        <option value="SORRIFÁCIL">SORRIFÁCIL</option>
-      </select>
-    </div>
           
-
-
-
+          <div class="form-group">
+            <label class="form-label obrigatorio">
+              <i class="fas fa-tag"></i>
+              Tipo
+            </label>
+            <select id="tipo" class="form-control">
+              <option value="">-- Selecione --</option>
+              <option value="GERAL">GERAL</option>
+              <option value="SORRIA SIM">SORRIA SIM</option>
+              <option value="SORRIFÁCIL">SORRIFÁCIL</option>
+            </select>
+          </div>
           
           <div class="form-group">
             <label class="form-label">
@@ -890,7 +1115,7 @@ select.campo-obrigatorio {
           </div>
           
           <div class="form-group">
-            <label class="form-label">
+            <label class="form-label obrigatorio">
               <i class="fas fa-file-contract"></i>
               Contrato Enviado
             </label>
@@ -900,9 +1125,9 @@ select.campo-obrigatorio {
               <option value="Não">Não</option>
             </select>
           </div>
-          
+
           <div class="form-group">
-            <label class="form-label">
+            <label class="form-label obrigatorio">
               <i class="fas fa-file-signature"></i>
               Contrato Assinado
             </label>
@@ -938,56 +1163,16 @@ select.campo-obrigatorio {
           </div>
 
           <!-- 🔥 CAMPO ADESÃO -->
-<div class="form-group">
-  <label class="form-label">
-    <i class="fas fa-handshake"></i>
-    Adesão
-  </label>
-  <input type="text" id="adesao" class="form-control" placeholder="R$ 0,00" oninput="formatarMoeda(this)" value="R$ 0,00">
-  <small style="color: var(--gray); font-size: 0.8rem;">
-    <i class="fas fa-info-circle"></i> Valor "0,00" será salvo como "Isento"
-  </small>
-</div>
-
-<!-- 🔥 CAMPOS TARIFA E % TARIFA -->
-<div class="form-group">
-  <label class="form-label">
-    <i class="fas fa-percentage"></i>
-    Tarifa
-  </label>
-  <div style="display: grid; grid-template-columns: 1fr 1fr; gap: 10px;">
-    <div style="display: flex; align-items: center; gap: 8px; padding: 10px; background: white; border: 2px solid var(--border); border-radius: 8px;">
-      <input type="radio" id="tarifa_mdr" name="tarifa" value="MDR" style="accent-color: var(--primary);">
-      <label for="tarifa_mdr" style="font-weight: 600; color: var(--dark); cursor: pointer;">MDR</label>
-    </div>
-    <div style="display: flex; align-items: center; gap: 8px; padding: 10px; background: white; border: 2px solid var(--border); border-radius: 8px;">
-      <input type="radio" id="tarifa_tis" name="tarifa" value="TIS" style="accent-color: var(--primary);">
-      <label for="tarifa_tis" style="font-weight: 600; color: var(--dark); cursor: pointer;">TIS</label>
-    </div>
-  </div>
-</div>
-
-<div class="form-group">
-  <label class="form-label">
-    <i class="fas fa-chart-line"></i>
-    % Tarifa
-  </label>
-  <select id="percentual_tarifa" class="form-control">
-    <option value="0%">0%</option>
-    <option value="1%">1%</option>
-    <option value="2%">2%</option>
-    <option value="3%">3%</option>
-    <option value="4%">4%</option>
-    <option value="5%">5%</option>
-    <option value="6%">6%</option>
-    <option value="7%">7%</option>
-    <option value="8%">8%</option>
-    <option value="9%">9%</option>
-    <option value="10%">10%</option>
-    <option value="11%">11%</option>
-    <option value="12%">12%</option>
-  </select>
-</div>
+          <div class="form-group">
+            <label class="form-label">
+              <i class="fas fa-handshake"></i>
+              Adesão
+            </label>
+            <input type="text" id="adesao" class="form-control" placeholder="R$ 0,00" oninput="formatarMoeda(this)" value="R$ 0,00">
+            <small style="color: var(--gray); font-size: 0.8rem;">
+              <i class="fas fa-info-circle"></i> Valor "0,00" será salvo como "Isento"
+            </small>
+          </div>
           
           <div class="form-group">
             <label class="form-label obrigatorio">
@@ -995,74 +1180,265 @@ select.campo-obrigatorio {
               Situação
             </label>
             <select id="situacao" class="form-control">
-  <option value="Novo registro">Novo registro</option>
-  <option value="Cadastrado">Cadastrado</option>
-  <option value="Em andamento">Em andamento</option>
-  <option value="Parado">Parado</option>
-  <option value="Descredenciado">Descredenciado</option>
-</select>
+              <option value="Novo registro">Novo registro</option>
+              <option value="Cadastrado">Cadastrado</option>
+              <option value="Em andamento">Em andamento</option>
+              <option value="Não concluído">Não concluído</option>
+              <option value="Descredenciado">Descredenciado</option>
+            </select>
           </div>
-          <!-- 🔥 FORNECEDORES MAIS BONITOS NO FINAL -->
-<div class="form-group" style="grid-column: 1 / -1;">
-  <label class="form-label">
-    <i class="fas fa-truck"></i>
-    Fornecedor(es) - <span style="color: var(--primary); font-weight: 600;">Selecione um ou mais</span>
-  </label>
-  <div style="background: linear-gradient(135deg, #f8f9fa 0%, #e9ecef 100%); padding: 20px; border-radius: 12px; border: 2px dashed var(--primary);">
-    <div style="display: grid; grid-template-columns: repeat(auto-fit, minmax(180px, 1fr)); gap: 15px;">
-      <div style="display: flex; align-items: center; gap: 12px; padding: 12px; background: white; border-radius: 8px; border: 2px solid var(--border); transition: all 0.3s ease;">
-        <input type="checkbox" name="fornecedor" value="Ágil" style="width: 20px; height: 20px; accent-color: var(--primary);">
-        <span style="font-weight: 600; color: var(--dark);">Ágil</span>
-      </div>
-      <div style="display: flex; align-items: center; gap: 12px; padding: 12px; background: white; border-radius: 8px; border: 2px solid var(--border); transition: all 0.3s ease;">
-        <input type="checkbox" name="fornecedor" value="BC" style="width: 20px; height: 20px; accent-color: var(--primary);">
-        <span style="font-weight: 600; color: var(--dark);">BC</span>
-      </div>
-      <div style="display: flex; align-items: center; gap: 12px; padding: 12px; background: white; border-radius: 8px; border: 2px solid var(--border); transition: all 0.3s ease;">
-        <input type="checkbox" name="fornecedor" value="Parcelex" style="width: 20px; height: 20px; accent-color: var(--primary);">
-        <span style="font-weight: 600; color: var(--dark);">Parcelex</span>
-      </div>
-      <div style="display: flex; align-items: center; gap: 12px; padding: 12px; background: white; border-radius: 8px; border: 2px solid var(--border); transition: all 0.3s ease;">
-        <input type="checkbox" name="fornecedor" value="Agoracred" style="width: 20px; height: 20px; accent-color: var(--primary);">
-        <span style="font-weight: 600; color: var(--dark);">Agoracred</span>
-      </div>
-      <div style="display: flex; align-items: center; gap: 12px; padding: 12px; background: white; border-radius: 8px; border: 2px solid var(--border); transition: all 0.3s ease;">
-        <input type="checkbox" name="fornecedor" value="Afinz" style="width: 20px; height: 20px; accent-color: var(--primary);">
-        <span style="font-weight: 600; color: var(--dark);">Afinz</span>
-      </div>
-    </div>
-    <div style="margin-top: 15px; text-align: center;">
-      <span style="background: var(--primary); color: white; padding: 6px 12px; border-radius: 20px; font-size: 0.8rem; font-weight: 600;">
-        <i class="fas fa-info-circle"></i> Selecione pelo menos um fornecedor
-      </span>
-    </div>
-  </div>
-</div>
 
-<!-- 🔥 CAMPO EVENTO DINÂMICO -->
-<div class="form-group">
+          <!-- 🔥 FORNECEDORES COM TARIFAS INDIVIDUAIS -->
+          <div class="form-group" style="grid-column: 1 / -1;">
+            <label class="form-label">
+              <i class="fas fa-truck"></i>
+              Fornecedor(es) - <span style="color: var(--primary); font-weight: 600;">Selecione e configure cada um</span>
+            </label>
+            <div style="background: linear-gradient(135deg, #f8f9fa 0%, #e9ecef 100%); padding: 20px; border-radius: 12px; border: 2px dashed var(--primary);">
+              
+              <!-- FORNECEDOR Agil -->
+              <div class="fornecedor-item" style="margin-bottom: 20px; padding: 15px; background: white; border-radius: 10px; border: 2px solid var(--border);">
+                <div style="display: flex; align-items: center; gap: 15px; margin-bottom: 15px;">
+                  <input type="checkbox" name="fornecedor" value="Agil" style="width: 20px; height: 20px; accent-color: var(--primary);" onchange="toggleFornecedorConfig(this, 'agil')">
+                  <span style="font-weight: 600; color: var(--dark); font-size: 1.1rem;">Agil</span>
+                </div>
+                <div id="config-agil" style="display: none; grid-template-columns: 1fr 1fr; gap: 15px; padding: 15px; background: #f8f9fa; border-radius: 8px;">
+                  <div>
+                    <label style="font-weight: 600; margin-bottom: 8px; display: block;">Tipo de Tarifa</label>
+                    <div style="display: flex; gap: 15px;">
+                      <div style="display: flex; align-items: center; gap: 8px;">
+                        <input type="radio" name="tarifa_agil" value="MDR" style="accent-color: var(--primary);">
+                        <label style="font-weight: 600;">MDR</label>
+                      </div>
+                      <div style="display: flex; align-items: center; gap: 8px;">
+                        <input type="radio" name="tarifa_agil" value="TIS" style="accent-color: var(--primary);">
+                        <label style="font-weight: 600;">TIS</label>
+                      </div>
+                    </div>
+                  </div>
+                  <div>
+                    <label style="font-weight: 600; margin-bottom: 8px; display: block;">Valor da Tarifa</label>
+                    <select name="percentual_agil" style="width: 100%; padding: 8px 12px; border: 2px solid var(--border); border-radius: 6px;">
+                      <option value="0%">0%</option>
+                      <option value="1%">1%</option>
+                      <option value="2%">2%</option>
+                      <option value="3%">3%</option>
+                      <option value="4%">4%</option>
+                      <option value="5%">5%</option>
+                      <option value="6%">6%</option>
+                      <option value="7%">7%</option>
+                      <option value="8%">8%</option>
+                      <option value="9%">9%</option>
+                      <option value="10%">10%</option>
+                      <option value="11%">11%</option>
+                      <option value="12%">12%</option>
+                    </select>
+                  </div>
+                </div>
+              </div>
+
+              <!-- FORNECEDOR BC -->
+              <div class="fornecedor-item" style="margin-bottom: 20px; padding: 15px; background: white; border-radius: 10px; border: 2px solid var(--border);">
+                <div style="display: flex; align-items: center; gap: 15px; margin-bottom: 15px;">
+                  <input type="checkbox" name="fornecedor" value="BC" style="width: 20px; height: 20px; accent-color: var(--primary);" onchange="toggleFornecedorConfig(this, 'bc')">
+                  <span style="font-weight: 600; color: var(--dark); font-size: 1.1rem;">BC</span>
+                </div>
+                <div id="config-bc" style="display: none; grid-template-columns: 1fr 1fr; gap: 15px; padding: 15px; background: #f8f9fa; border-radius: 8px;">
+                  <div>
+                    <label style="font-weight: 600; margin-bottom: 8px; display: block;">Tipo de Tarifa</label>
+                    <div style="display: flex; gap: 15px;">
+                      <div style="display: flex; align-items: center; gap: 8px;">
+                        <input type="radio" name="tarifa_bc" value="MDR" style="accent-color: var(--primary);">
+                        <label style="font-weight: 600;">MDR</label>
+                      </div>
+                      <div style="display: flex; align-items: center; gap: 8px;">
+                        <input type="radio" name="tarifa_bc" value="TIS" style="accent-color: var(--primary);">
+                        <label style="font-weight: 600;">TIS</label>
+                      </div>
+                    </div>
+                  </div>
+                  <div>
+                    <label style="font-weight: 600; margin-bottom: 8px; display: block;">Valor da Tarifa</label>
+                    <select name="percentual_bc" style="width: 100%; padding: 8px 12px; border: 2px solid var(--border); border-radius: 6px;">
+                      <option value="0%">0%</option>
+                      <option value="1%">1%</option>
+                      <option value="2%">2%</option>
+                      <option value="3%">3%</option>
+                      <option value="4%">4%</option>
+                      <option value="5%">5%</option>
+                      <option value="6%">6%</option>
+                      <option value="7%">7%</option>
+                      <option value="8%">8%</option>
+                      <option value="9%">9%</option>
+                      <option value="10%">10%</option>
+                      <option value="11%">11%</option>
+                      <option value="12%">12%</option>
+                    </select>
+                  </div>
+                </div>
+              </div>
+
+              <!-- FORNECEDOR PARCELEX -->
+              <div class="fornecedor-item" style="margin-bottom: 20px; padding: 15px; background: white; border-radius: 10px; border: 2px solid var(--border);">
+                <div style="display: flex; align-items: center; gap: 15px; margin-bottom: 15px;">
+                  <input type="checkbox" name="fornecedor" value="Parcelex" style="width: 20px; height: 20px; accent-color: var(--primary);" onchange="toggleFornecedorConfig(this, 'parcelex')">
+                  <span style="font-weight: 600; color: var(--dark); font-size: 1.1rem;">Parcelex</span>
+                </div>
+                <div id="config-parcelex" style="display: none; grid-template-columns: 1fr 1fr; gap: 15px; padding: 15px; background: #f8f9fa; border-radius: 8px;">
+                  <div>
+                    <label style="font-weight: 600; margin-bottom: 8px; display: block;">Tipo de Tarifa</label>
+                    <div style="display: flex; gap: 15px;">
+                      <div style="display: flex; align-items: center; gap: 8px;">
+                        <input type="radio" name="tarifa_parcelex" value="MDR" style="accent-color: var(--primary);">
+                        <label style="font-weight: 600;">MDR</label>
+                      </div>
+                      <div style="display: flex; align-items: center; gap: 8px;">
+                        <input type="radio" name="tarifa_parcelex" value="TIS" style="accent-color: var(--primary);">
+                        <label style="font-weight: 600;">TIS</label>
+                      </div>
+                    </div>
+                  </div>
+                  <div>
+                    <label style="font-weight: 600; margin-bottom: 8px; display: block;">Valor da Tarifa</label>
+                    <select name="percentual_parcelex" style="width: 100%; padding: 8px 12px; border: 2px solid var(--border); border-radius: 6px;">
+                      <option value="0%">0%</option>
+                      <option value="1%">1%</option>
+                      <option value="2%">2%</option>
+                      <option value="3%">3%</option>
+                      <option value="4%">4%</option>
+                      <option value="5%">5%</option>
+                      <option value="6%">6%</option>
+                      <option value="7%">7%</option>
+                      <option value="8%">8%</option>
+                      <option value="9%">9%</option>
+                      <option value="10%">10%</option>
+                      <option value="11%">11%</option>
+                      <option value="12%">12%</option>
+                    </select>
+                  </div>
+                </div>
+              </div>
+
+              <!-- FORNECEDOR AGORACRED -->
+              <div class="fornecedor-item" style="margin-bottom: 20px; padding: 15px; background: white; border-radius: 10px; border: 2px solid var(--border);">
+                <div style="display: flex; align-items: center; gap: 15px; margin-bottom: 15px;">
+                  <input type="checkbox" name="fornecedor" value="Agoracred" style="width: 20px; height: 20px; accent-color: var(--primary);" onchange="toggleFornecedorConfig(this, 'agoracred')">
+                  <span style="font-weight: 600; color: var(--dark); font-size: 1.1rem;">Agoracred</span>
+                </div>
+                <div id="config-agoracred" style="display: none; grid-template-columns: 1fr 1fr; gap: 15px; padding: 15px; background: #f8f9fa; border-radius: 8px;">
+                  <div>
+                    <label style="font-weight: 600; margin-bottom: 8px; display: block;">Tipo de Tarifa</label>
+                    <div style="display: flex; gap: 15px;">
+                      <div style="display: flex; align-items: center; gap: 8px;">
+                        <input type="radio" name="tarifa_agoracred" value="MDR" style="accent-color: var(--primary);">
+                        <label style="font-weight: 600;">MDR</label>
+                      </div>
+                      <div style="display: flex; align-items: center; gap: 8px;">
+                        <input type="radio" name="tarifa_agoracred" value="TIS" style="accent-color: var(--primary);">
+                        <label style="font-weight: 600;">TIS</label>
+                      </div>
+                    </div>
+                  </div>
+                  <div>
+                    <label style="font-weight: 600; margin-bottom: 8px; display: block;">Valor da Tarifa</label>
+                    <select name="percentual_agoracred" style="width: 100%; padding: 8px 12px; border: 2px solid var(--border); border-radius: 6px;">
+                      <option value="0%">0%</option>
+                      <option value="1%">1%</option>
+                      <option value="2%">2%</option>
+                      <option value="3%">3%</option>
+                      <option value="4%">4%</option>
+                      <option value="5%">5%</option>
+                      <option value="6%">6%</option>
+                      <option value="7%">7%</option>
+                      <option value="8%">8%</option>
+                      <option value="9%">9%</option>
+                      <option value="10%">10%</option>
+                      <option value="11%">11%</option>
+                      <option value="12%">12%</option>
+                    </select>
+                  </div>
+                </div>
+              </div>
+
+              <!-- FORNECEDOR AFINZ -->
+              <div class="fornecedor-item" style="margin-bottom: 20px; padding: 15px; background: white; border-radius: 10px; border: 2px solid var(--border);">
+                <div style="display: flex; align-items: center; gap: 15px; margin-bottom: 15px;">
+                  <input type="checkbox" name="fornecedor" value="Afinz" style="width: 20px; height: 20px; accent-color: var(--primary);" onchange="toggleFornecedorConfig(this, 'afinz')">
+                  <span style="font-weight: 600; color: var(--dark); font-size: 1.1rem;">Afinz</span>
+                </div>
+                <div id="config-afinz" style="display: none; grid-template-columns: 1fr 1fr; gap: 15px; padding: 15px; background: #f8f9fa; border-radius: 8px;">
+                  <div>
+                    <label style="font-weight: 600; margin-bottom: 8px; display: block;">Tipo de Tarifa</label>
+                    <div style="display: flex; gap: 15px;">
+                      <div style="display: flex; align-items: center; gap: 8px;">
+                        <input type="radio" name="tarifa_afinz" value="MDR" style="accent-color: var(--primary);">
+                        <label style="font-weight: 600;">MDR</label>
+                      </div>
+                      <div style="display: flex; align-items: center; gap: 8px;">
+                        <input type="radio" name="tarifa_afinz" value="TIS" style="accent-color: var(--primary);">
+                        <label style="font-weight: 600;">TIS</label>
+                      </div>
+                    </div>
+                  </div>
+                  <div>
+                    <label style="font-weight: 600; margin-bottom: 8px; display: block;">Valor da Tarifa</label>
+                    <select name="percentual_afinz" style="width: 100%; padding: 8px 12px; border: 2px solid var(--border); border-radius: 6px;">
+                      <option value="0%">0%</option>
+                      <option value="1%">1%</option>
+                      <option value="2%">2%</option>
+                      <option value="3%">3%</option>
+                      <option value="4%">4%</option>
+                      <option value="5%">5%</option>
+                      <option value="6%">6%</option>
+                      <option value="7%">7%</option>
+                      <option value="8%">8%</option>
+                      <option value="9%">9%</option>
+                      <option value="10%">10%</option>
+                      <option value="11%">11%</option>
+                      <option value="12%">12%</option>
+                    </select>
+                  </div>
+                </div>
+              </div>
+
+            </div>
+          </div>
+
+      <!-- 🔥 MANTENHA EXATAMENTE ASSIM - SÓ ADICIONE UM ID NO FORM-GROUP -->
+<div class="form-group" id="eventoFormGroup">
   <label class="form-label">
     <i class="fas fa-calendar-check"></i>
     Evento
   </label>
-  <select id="evento" class="form-control">
+  
+  <!-- 🔥 MANTENHA O SELECT ORIGINAL, MAS VAMOS ESCONDER ELE -->
+  <select id="evento" class="form-control" style="display: none;">
     <option value="">-- Selecione um evento --</option>
-    <!-- Os eventos serão preenchidos dinamicamente via JavaScript -->
   </select>
+  
+  <!-- 🔥 ADICIONE ESTE INPUT DE SEARCH NO MESMO LUGAR -->
+  <div style="position: relative;">
+    <input type="text" 
+           id="inputEventoSearch" 
+           class="form-control" 
+           placeholder="Digite para buscar evento..."
+           oninput="filtrarSugestoesEventoSearch()"
+           style="padding-right: 40px;">
+    
+    <!-- Sugestões aparecerão aqui -->
+    <div class="suggestions-evento" id="suggestionsEventoSearch" style="display: none;">
+      <!-- Sugestões separadas por situação -->
+    </div>
+  </div>
 </div>
-        </div>
 
-          
-        
         <div class="form-group">
           <label class="form-label">
             <i class="fas fa-sticky-note"></i>
-            Status
+            Observação
           </label>
           <textarea id="observacoes" class="form-control" rows="3"></textarea>
         </div>
-
-          
         
         <div class="btn-group">
           <button type="button" class="btn btn-success" onclick="cadastrar()" id="btnCadastrar">
@@ -1076,90 +1452,112 @@ select.campo-obrigatorio {
         </div>
       </div>
 
-  
+    <!-- SEÇÃO: TODOS OS CADASTROS -->
+<div class="cadastros-container" id="secaoCadastros" style="display: none;">
+  <div class="card-header">
+    <i class="fas fa-store"></i>
+    <h2 class="card-title" id="tituloCadastros">Todos os Cadastros</h2>
+    <div class="filtros-container" id="filtrosContainer" style="display: none;">
+      <button type="button" class="btn btn-outline btn-sm" onclick="filtrarTabela('all')">
+        Todos
+      </button>
+      <button type="button" class="btn btn-sm" onclick="filtrarTabela('Novo registro')" style="background-color: #bfe1f6; color: #2D3047; border: 1px solid #a1c9e4;">
+        Novos
+      </button>
+      <button type="button" class="btn btn-success btn-sm" onclick="filtrarTabela('Cadastrado')">
+        Cadastrados
+      </button>
+      <button type="button" class="btn btn-warning btn-sm" onclick="filtrarTabela('Em andamento')">
+        Em Andamento
+      </button>
+      <button type="button" class="btn btn-danger btn-sm" onclick="filtrarTabela('Não concluído')">
+        Não Concluídos
+      </button>
+      <button type="button" class="btn btn-secondary btn-sm" onclick="filtrarTabela('Descredenciado')">
+        Descredenciados
+      </button>
+    </div>
+  </div>
 
-        </div>
-
-      <!-- SEÇÃO: TODOS OS CADASTROS -->
-      <div class="cadastros-container" id="secaoCadastros" style="display: none;">
-        <div class="card-header">
-          <i class="fas fa-store"></i>
-          <h2 class="card-title" id="tituloCadastros">Todos os Cadastros</h2>
-          <div class="filtros-container" id="filtrosContainer" style="display: none;">
-            <button type="button" class="btn btn-outline btn-sm" onclick="filtrarTabela('all')">
-              Todos
-            </button>
-            <button type="button" class="btn btn-sm" onclick="filtrarTabela('Novo registro')" style="background-color: #bfe1f6; color: #2D3047; border: 1px solid #a1c9e4;">
-              Novos
-            </button>
-            <button type="button" class="btn btn-success btn-sm" onclick="filtrarTabela('Cadastrado')">
-              Cadastrados
-            </button>
-            <button type="button" class="btn btn-warning btn-sm" onclick="filtrarTabela('Em andamento')">
-              Em Andamento
-            </button>
-            <button type="button" class="btn btn-danger btn-sm" onclick="filtrarTabela('Parado')">
-              Parados
-            </button>
-            <button type="button" class="btn btn-secondary btn-sm" onclick="filtrarTabela('Descredenciado')">
-              Descredenciados
-            </button>
-          </div>
-        </div>
+  <!-- BARRA DE PESQUISA MELHORADA -->
+  <div class="form-group" style="margin-bottom: 20px;">
+    <div class="search-container">
+      <input type="text" id="pesquisaCadastros" class="form-control" 
+             placeholder="Pesquisar por nome, CNPJ ou fornecedor..."
+             oninput="filtrarPesquisa()">
+    </div>
+    
+    <div style="display: flex; justify-content: space-between; align-items: center; margin-top: 10px;">
+      <span class="contador-lojas" id="contadorCadastros">0 cadastros</span>
+      
+      <div style="display: flex; gap: 10px; align-items: center;">
+        <select id="ordenacaoCadastros" onchange="ordenarCadastros()" style="padding: 8px 12px; border: 2px solid var(--border); border-radius: 8px;">
+          <option value="razao_social">Ordenar por Razão Social</option>
+          <option value="nome_fantasia">Ordenar por Nome Fantasia</option>
+          <option value="fornecedor">Ordenar por Fornecedor</option>
+          <option value="situacao">Ordenar por Situação</option>
+        </select>
         
-        <!-- BARRA DE PESQUISA MELHORADA -->
-        <div class="form-group" style="margin-bottom: 20px;">
-          <div class="search-container">
-            <input type="text" id="pesquisaCadastros" class="form-control" 
-                   placeholder="Pesquisar por nome, CNPJ ou fornecedor..."
-                   oninput="filtrarPesquisa()">
-          </div>
-          <div style="display: flex; justify-content: space-between; align-items: center; margin-top: 10px;">
-            <span class="contador-lojas" id="contadorCadastros">0 cadastros</span>
-            <div>
-              <select id="ordenacaoCadastros" onchange="ordenarCadastros()" style="padding: 8px 12px; border: 2px solid var(--border); border-radius: 8px; margin-right: 10px;">
-                <option value="razao_social">Ordenar por Nome</option>
-                <option value="fornecedor">Ordenar por Fornecedor</option>
-                <option value="situacao">Ordenar por Situação</option>
-              </select>
-              <button type="button" class="btn btn-info btn-sm" onclick="recarregarCadastros()">
-                <i class="fas fa-sync-alt"></i> Atualizar
-              </button>
-            </div>
-          </div>
-        </div>
-        
-        <!-- LOADING -->
-        <div class="loading-container" id="loadingCadastros" style="display: none;">
-          <div class="loading-spinner"></div>
-          <p>Carregando cadastros...</p>
-        </div>
-        
-        <!-- TABELA MELHORADA -->
-        <div class="table-container" id="tableContainer" style="display: none;">
-          <div class="table-responsive">
-            <table class="data-table" id="tabelaCadastros">
-              <thead>
-                <tr>
-                  <th>Razão Social</th>
-                  <th>CNPJ</th>
-                  <th>Fornecedor</th>
-                  <th>Evento</th>
-                  <th>Situação</th>
-                  <th>Mensalidade</th>
-                  <th>Adesão</th>
-                  <th>Tarifa</th>
-                  <th>% Tarifa</th>
-                  <th>Ações</th>
-                </tr>
-              </thead>
-              <tbody id="tabelaCadastrosBody">
-                <!-- Dados serão preenchidos via JavaScript -->
-              </tbody>
-            </table>
-          </div>
-        </div>
+        <button type="button" class="btn btn-info btn-sm" onclick="recarregarCadastros()">
+          <i class="fas fa-sync-alt"></i> Atualizar
+        </button>
       </div>
+    </div>
+  </div>
+
+ <!-- 🔥 FILTRO DE EVENTOS COM SEARCH -->
+<div class="filtro-search-container" id="filtroEventoContainer" style="display: none; position: relative;">
+  <div style="position: relative; width: 300px;">
+    <input type="text" 
+           id="inputFiltroEvento" 
+           class="form-control" 
+           placeholder="Digite o evento para filtrar..."
+           oninput="filtrarSugestoesEvento()"
+           style="padding-right: 40px;">
+    <button type="button" 
+            class="btn btn-sm" 
+            onclick="limparFiltroEvento()"
+            style="position: absolute; right: 5px; top: 50%; transform: translateY(-50%); background: var(--danger); color: white; border: none; border-radius: 4px; padding: 4px 8px; display: none;"
+            id="btnLimparFiltro">
+      <i class="fas fa-times"></i>
+    </button>
+  </div>
+  
+  <div class="suggestions-evento" id="suggestionsEvento" style="display: none;">
+    <!-- Sugestões aparecerão aqui -->
+  </div>
+  
+  <!-- TAGS DE FILTROS ATIVOS -->
+  <div id="tagsFiltrosAtivos" style="display: flex; gap: 8px; margin-top: 10px; flex-wrap: wrap;"></div>
+</div>
+
+  <!-- LOADING -->
+  <div class="loading-container" id="loadingCadastros" style="display: none;">
+    <div class="loading-spinner"></div>
+    <p>Carregando cadastros...</p>
+  </div>
+  
+  <!-- TABELA MELHORADA -->
+  <div class="table-container" id="tableContainer" style="display: none;">
+    <div class="table-responsive">
+      <table class="data-table" id="tabelaCadastros">
+        <thead>
+          <tr>
+            <th>Razão Social</th>
+            <th>CNPJ</th>
+            <th>Fornecedor</th>
+            <th>Mensalidade</th>
+            <th>Adesão</th>
+            <th>Ações</th>
+          </tr>
+        </thead>
+        <tbody id="tabelaCadastrosBody">
+          <!-- Dados serão preenchidos via JavaScript -->
+        </tbody>
+      </table>
+    </div>
+  </div>
+</div>
       
       <!-- MENSAGENS DO SISTEMA -->
       <div id="messageSuccess" class="message success" style="display: none;">
@@ -1179,34 +1577,396 @@ select.campo-obrigatorio {
     </div>
   </div>
 
+  <!-- 🔄 OVERLAY DE CARREGAMENTO -->
+  <div id="loadingOverlay">
+    <div class="loading-content">
+      <div class="loading-spinner-large"></div>
+      <p class="loading-text">Salvando dados...</p>
+      <p class="loading-subtext">Aguarde um momento</p>
+    </div>
+  </div>
+
+  <!-- 🔥 MODAL DE DETALHES -->
+  <div id="modalDetalhes" class="modal-overlay">
+    <div class="modal-content">
+      <div class="modal-header">
+        <h3 class="modal-title">📋 Detalhes Completo do Cadastro</h3>
+        <button class="btn-close" onclick="fecharModalDetalhes()">
+          <i class="fas fa-times"></i>
+        </button>
+      </div>
+      
+      <div id="modalDetalhesContent">
+        <!-- Conteúdo será preenchido via JavaScript -->
+      </div>
+      
+      <div style="text-align: center; margin-top: 25px; padding-top: 20px; border-top: 1px solid var(--border);">
+        <button class="btn btn-primary" onclick="fecharModalDetalhes()">
+          <i class="fas fa-check"></i> Fechar
+        </button>
+      </div>
+    </div>
+  </div>
+
+  <!-- Modal de Senha - VERSÃO CORRIGIDA -->
+  <div id="modalSenha" class="modal-overlay" style="display: none;">
+    <div class="modal-content">
+      <div class="modal-header">
+        <h3 class="modal-title">🔒 Acesso Restrito</h3>
+        <button class="btn-close" onclick="fecharModalSenha()">
+          <i class="fas fa-times"></i>
+        </button>
+      </div>
+      
+      <div style="padding: 20px;">
+        <p>Para editar este campo é necessário informar a senha:</p>
+        <input type="password" id="inputSenha" class="form-control" placeholder="Digite a senha" style="margin: 15px 0;">
+        <div class="btn-group">
+          <button class="btn btn-primary" onclick="validarSenha()">
+            <i class="fas fa-check"></i> Validar
+          </button>
+          <button class="btn btn-outline" onclick="fecharModalSenha()">
+            <i class="fas fa-times"></i> Cancelar
+          </button>
+        </div>
+      </div>
+    </div>
+  </div>
+
   <script>
     // 🔥 VARIÁVEIS GLOBAIS
     let cadastroAtualId = null;
     let todosCadastros = [];
     let cadastrosFiltrados = [];
+    let campoEditavel = null;
+    const SENHA_PERMITIDA = '519901';
 
-   function formatarCNPJ(input) {
-  // Salva a posição do cursor
-  const cursorPos = input.selectionStart;
-  
-  let value = input.value.replace(/\D/g, '');
-  
-  // Aplica a formatação
-  if (value.length > 12) {
-    value = value.replace(/^(\d{2})(\d{3})(\d{3})(\d{4})(\d{2})/, '$1.$2.$3/$4-$5');
-  } else if (value.length > 8) {
-    value = value.replace(/^(\d{2})(\d{3})(\d{3})/, '$1.$2.$3/');
-  } else if (value.length > 5) {
-    value = value.replace(/^(\d{2})(\d{3})/, '$1.$2.');
-  } else if (value.length > 2) {
-    value = value.replace(/^(\d{2})/, '$1.');
-  }
-  
-  input.value = value;
-  
-  // Restaura a posição do cursor
-  input.setSelectionRange(cursorPos, cursorPos);
+    // 🔥 VARIÁVEIS DOS EVENTOS PARA FILTRO
+const eventosEmAndamento = [
+  "Aguardando Aceite da Loja", "Aguardando Aceite do Fornecedor", "Aguardando Documentos",
+  "Aguardando retorno", "Agendamento de demonstração", "Cliente interessado", 
+  "Cliente não interessado", "Condição Especial", "Contrato assinado", "Desistiu",
+  "Documentação Incompleta", "Em Implantação", "Em Treinamento", "Envio de boleto",
+  "Envio de WhatsApp", "Follow-up necessário", "Fornecedor alterado", "Ligação realizada",
+  "Negociação em andamento", "Pagamento Efetuado", "Pagamento Pendente", "Proposta enviada",
+  "Quantidade de lojas alterada", "Recado Registrado", "Reunião agendada", "Sem Retorno",
+  "Solicitou mais informações", "Telefone alterado"
+].sort();
+
+const eventosNaoConcluido = ["Cancelado", "Bloqueado", "Desistiu"].sort();
+const eventosCadastrado = ["Loja cadastrada"];
+
+    // ✅ VERIFICAR SE USUÁRIO JÁ ESTÁ AUTORIZADO AO CARREGAR A PÁGINA
+    document.addEventListener('DOMContentLoaded', function() {
+      console.log('Sistema de Gestão de Cadastros - RESULT inicializado');
+      
+      // Inicializar valores padrão
+      document.getElementById('mensalidade').value = 'R$ 0,00';
+      document.getElementById('situacao').value = 'Cadastrado';
+      
+      // Configurações iniciais
+      configurarValidacaoEmTempoReal();
+      document.getElementById('situacao').addEventListener('change', atualizarEventos);
+      atualizarEventos();
+      
+      // 🔥 CORREÇÃO: Configurar proteção APÓS o DOM estar carregado
+      setTimeout(() => {
+        configurarCamposProtegidos();
+      }, 500);
+      
+      // Configurar eventos do modal de senha
+      configurarModalSenha();
+    });
+
+    // 🔥 CÓDIGO TEMPORÁRIO PARA DEBUG - TESTAR SE A FUNÇÃO É CHAMADA
+function testarAtualizacaoEventos() {
+  console.log("🧪 TESTE: Chamando atualizarEventos() manualmente...");
+  atualizarEventos();
 }
+
+// Testa após 2 segundos (para você ver no console)
+setTimeout(testarAtualizacaoEventos, 2000);
+
+    // 🔥 FUNÇÕES DO MODAL DE SENHA - CORRIGIDAS
+    function configurarModalSenha() {
+      // Configurar evento de Enter no input de senha
+      const inputSenha = document.getElementById('inputSenha');
+      if (inputSenha) {
+        inputSenha.addEventListener('keydown', function(e) {
+          if (e.key === 'Enter') {
+            validarSenha();
+          }
+        });
+      }
+      
+      // Fechar modal ao clicar fora
+      const modalSenha = document.getElementById('modalSenha');
+      if (modalSenha) {
+        modalSenha.addEventListener('click', function(e) {
+          if (e.target === this) {
+            fecharModalSenha();
+          }
+        });
+      }
+      
+      // Fechar modal com ESC
+      document.addEventListener('keydown', function(e) {
+        if (e.key === 'Escape' && document.getElementById('modalSenha').style.display === 'flex') {
+          fecharModalSenha();
+        }
+      });
+    }
+
+    function solicitarSenha(campo) {
+      campoEditavel = campo;
+      
+      // Mostrar modal
+      document.getElementById('modalSenha').style.display = 'flex';
+      
+      // Limpar e focar no input
+      const inputSenha = document.getElementById('inputSenha');
+      if (inputSenha) {
+        inputSenha.value = '';
+        inputSenha.focus();
+      }
+    }
+
+    function validarSenha() {
+      const inputSenha = document.getElementById('inputSenha');
+      if (!inputSenha) {
+        console.log("❌ inputSenha não encontrado");
+        return;
+      }
+      
+      const senha = inputSenha.value;
+      console.log("🔐 Validando senha:", senha);
+      console.log("🔐 Comparação com '519901':", senha === '519901');
+      
+      if (senha === SENHA_PERMITIDA) {
+        console.log("✅ SENHA CORRETA - Iniciando liberação de campos");
+        fecharModalSenha();
+        
+        // Atualizar localStorage
+        localStorage.setItem('usuarioAutorizado', 'true');
+        console.log("💾 localStorage atualizado");
+        
+        // Liberar TODOS os campos protegidos
+        liberarTodosCamposProtegidos();
+        
+        showMessage('success', '✅ Todos os campos foram liberados para edição!');
+        
+      } else {
+        console.log("❌ SENHA INCORRETA");
+        showMessage('error', '❌ Senha incorreta!');
+        inputSenha.value = '';
+        inputSenha.focus();
+      }
+    }
+
+    function fecharModalSenha() {
+      document.getElementById('modalSenha').style.display = 'none';
+      campoEditavel = null;
+    }
+
+    // 🔥 FUNÇÃO PARA LIBERAR TODOS OS CAMPOS PROTEGIDOS - CORRIGIDA
+    function liberarTodosCamposProtegidos() {
+      console.log("🔓 LIBERANDO TODOS OS CAMPOS...");
+      
+      // Liberar campos principais
+      const camposProtegidos = [
+        'razao_social', 'nome_fantasia', 'cnpj_cadastro', 'tipo', 
+        'mensalidade', 'adesao', 'situacao', 'data_status',
+        'contrato_enviado', 'contrato_assinado', 'ativacao', 'link'
+      ];
+      
+      camposProtegidos.forEach(id => {
+        const campo = document.getElementById(id);
+        if (campo) {
+          console.log(`🔓 Liberando: ${id}`);
+          
+          // 🔥 CORREÇÃO: Remover completamente o elemento e criar um novo
+          const novoCampo = campo.cloneNode(true);
+          novoCampo.removeAttribute('readonly');
+          novoCampo.disabled = false;
+          novoCampo.style.backgroundColor = '';
+          novoCampo.style.cursor = 'text';
+          novoCampo.style.opacity = '1';
+          
+          // 🔥 CORREÇÃO CRÍTICA: Remover event listeners de proteção
+          novoCampo.onfocus = null;
+          novoCampo.onclick = null;
+          
+          // Substituir o campo antigo pelo novo
+          campo.parentNode.replaceChild(novoCampo, campo);
+          
+          console.log(`✅ ${id} liberado completamente`);
+        }
+      });
+      
+      // Liberar campos dos fornecedores - CORREÇÃO COMPLETA
+      console.log("🔓 Liberando campos dos fornecedores...");
+      const camposFornecedor = document.querySelectorAll(`
+        input[name="fornecedor"], 
+        input[name^="tarifa_"], 
+        select[name^="percentual_"]
+      `);
+      
+      camposFornecedor.forEach(campo => {
+        // Clonar e substituir completamente
+        const novoCampo = campo.cloneNode(true);
+        novoCampo.disabled = false;
+        novoCampo.style.cursor = '';
+        novoCampo.style.opacity = '1';
+        novoCampo.style.backgroundColor = '';
+        
+        // 🔥 REMOVER todos os event listeners
+        novoCampo.onclick = null;
+        novoCampo.onfocus = null;
+        novoCampo.onmousedown = null;
+        
+        campo.parentNode.replaceChild(novoCampo, campo);
+      });
+      
+      console.log("🎯 TODOS OS CAMPOS FORAM LIBERADOS COM SUCESSO!");
+    }
+
+    // 🔥 FUNÇÃO PRINCIPAL PARA CONFIGURAR PROTEÇÃO
+    function configurarCamposProtegidos() {
+      console.log("🎯 CONFIGURAR CAMPOS PROTEGIDOS - INICIANDO PROTECÇÃO FORÇADA");
+      
+      // 🔥 FORÇAR: Ignorar localStorage e SEMPRE proteger inicialmente
+      console.log("🔒 PROTECÇÃO FORÇADA: Ignorando localStorage");
+      
+      const camposProtegidos = [
+        'razao_social', 'nome_fantasia', 'cnpj_cadastro', 'tipo', 
+        'mensalidade', 'adesao', 'situacao', 'data_status',
+        'contrato_enviado', 'contrato_assinado', 'ativacao', 'link'
+      ];
+      
+      console.log("🔒 Protegendo campos principais...");
+      
+      // Proteger campos principais - FORÇADO
+      camposProtegidos.forEach(id => {
+        const campo = document.getElementById(id);
+        if (campo) {
+          console.log(`🔒 Protegendo: ${id}`);
+          campo.setAttribute('readonly', 'true');
+          campo.disabled = false; // Garantir que não está disabled
+          campo.style.backgroundColor = '#f8f9fa';
+          campo.style.cursor = 'not-allowed';
+          campo.style.opacity = '1';
+          
+          // Remover qualquer event listener anterior
+          const novoCampo = campo.cloneNode(true);
+          campo.parentNode.replaceChild(novoCampo, campo);
+          
+          // Adicionar novo event listener
+          document.getElementById(id).addEventListener('focus', function(e) {
+            e.preventDefault();
+            console.log(`🔓 Campo ${id} solicitando senha`);
+            solicitarSenha(this);
+          });
+        }
+      });
+      
+      // Proteger campos dos fornecedores - FORÇADO
+      console.log("🔒 Protegendo campos dos fornecedores...");
+      const camposFornecedor = document.querySelectorAll(`
+        input[name="fornecedor"], 
+        input[name^="tarifa_"], 
+        select[name^="percentual_"]
+      `);
+      
+      camposFornecedor.forEach(campo => {
+        campo.disabled = true;
+        campo.style.cursor = 'not-allowed';
+        campo.style.opacity = '0.6';
+        
+        // Clonar e substituir para limpar event listeners
+        const novoCampo = campo.cloneNode(true);
+        campo.parentNode.replaceChild(novoCampo, campo);
+        
+        // Re-aplicar event listeners
+        if (campo.type === 'checkbox' || campo.type === 'radio') {
+          novoCampo.addEventListener('click', function(e) {
+            e.preventDefault();
+            solicitarSenha(this);
+          });
+        } else {
+          novoCampo.addEventListener('focus', function(e) {
+            e.preventDefault();
+            solicitarSenha(this);
+          });
+        }
+      });
+      
+      // Campos liberados (não proteger)
+      console.log("✅ Liberando campos permitidos...");
+      const camposLiberados = ['evento', 'observacoes'];
+      camposLiberados.forEach(id => {
+        const campo = document.getElementById(id);
+        if (campo) {
+          campo.removeAttribute('readonly');
+          campo.disabled = false;
+          campo.style.backgroundColor = '';
+          campo.style.cursor = 'text';
+          campo.style.opacity = '1';
+        }
+      });
+      
+      console.log("🎯 PROTECÇÃO FORÇADA FINALIZADA - Campos devem estar BLOQUEADOS");
+    }
+
+    // 🔥 FUNÇÃO TEMPORÁRIA PARA TESTAR ENVIO DO FORMULÁRIO
+    function testarEnvioFormulario() {
+      console.log("🧪 TESTANDO ENVIO DO FORMULÁRIO...");
+      
+      // Coletar dados do formulário normalmente (a mesma função que o cadastrar usa)
+      const dados = coletarDadosFormulario();
+      
+      console.log("📤 Dados coletados para envio:", dados);
+      console.log("🔢 Fornecedores coletados:", dados.fornecedores);
+      
+      if (!dados.fornecedores || dados.fornecedores.length === 0) {
+        alert("❌ Nenhum fornecedor selecionado! Selecione pelo menos um.");
+        return;
+      }
+      
+      // Enviar para debug no GS
+      google.script.run
+        .withSuccessHandler(function(res) {
+          console.log("✅ RESPOSTA DO DEBUG:", res);
+          alert(`DEBUG CONCLUÍDO:\n\n• Fornecedores enviados: ${res.quantidadeFornecedores}\n• Estrutura: ${JSON.stringify(res.estruturaFornecedores, null, 2)}\n\nVerifique o console do GS para detalhes completos.`);
+        })
+        .withFailureHandler(function(error) {
+          console.error("❌ ERRO NO DEBUG:", error);
+          alert("Erro no debug: " + error.message);
+        })
+        .debugFormulario(dados);
+    }
+
+    function formatarCNPJ(input) {
+      // Salva a posição do cursor
+      const cursorPos = input.selectionStart;
+      
+      let value = input.value.replace(/\D/g, '');
+      
+      // Aplica a formatação
+      if (value.length > 12) {
+        value = value.replace(/^(\d{2})(\d{3})(\d{3})(\d{4})(\d{2})/, '$1.$2.$3/$4-$5');
+      } else if (value.length > 8) {
+        value = value.replace(/^(\d{2})(\d{3})(\d{3})/, '$1.$2.$3/');
+      } else if (value.length > 5) {
+        value = value.replace(/^(\d{2})(\d{3})/, '$1.$2.');
+      } else if (value.length > 2) {
+        value = value.replace(/^(\d{2})/, '$1.');
+      }
+      
+      input.value = value;
+      
+      // Restaura a posição do cursor
+      input.setSelectionRange(cursorPos, cursorPos);
+    }
 
     function formatarMoeda(input) {
       let value = input.value.replace(/\D/g, '');
@@ -1249,559 +2009,481 @@ select.campo-obrigatorio {
       }, 5000);
     }
 
-function buscarPorCNPJ() {
-  // 🔥 CORREÇÃO: Pegar CNPJ do campo de busca e remover formatação
-  const cnpjBusca = document.getElementById('cnpj').value.replace(/\D/g, '');
-  
-  if (!cnpjBusca) {
-    showMessage('error', 'Digite um CNPJ para buscar');
-    return;
-  }
-
-  showMessage('info', '🔍 Buscando cadastro...');
-
-  google.script.run
-    .withSuccessHandler(function(dados) {
-      preencherDadosCadastro(dados);
-    })
-    .withFailureHandler(function(error) {
-      showMessage('error', 'Erro: ' + error.message);
-    })
-    .buscarCadastroPorCNPJ(cnpjBusca); // ✅ Envia apenas números
-}
-
-// 🔥 FUNÇÃO CORRIGIDA - Preencher checkboxes de fornecedor
-function preencherFornecedoresCheckbox(fornecedor) {
-  console.log("🔧 Preenchendo fornecedor:", fornecedor);
-  
-  // Limpar seleções anteriores
-  const checkboxes = document.querySelectorAll('input[name="fornecedor"]');
-  checkboxes.forEach(cb => cb.checked = false);
-  
-  if (!fornecedor) {
-    console.log("ℹ️ Nenhum fornecedor para preencher");
-    return;
-  }
-  
-  // Se for uma string única (caso de edição), selecionar apenas aquele
-  if (typeof fornecedor === 'string') {
-    console.log("🎯 Procurando checkbox para:", fornecedor);
-    const checkbox = document.querySelector(`input[name="fornecedor"][value="${fornecedor}"]`);
-    if (checkbox) {
-      checkbox.checked = true;
-      console.log("✅ Checkbox selecionado:", fornecedor);
-    } else {
-      console.log("❌ Checkbox não encontrado para:", fornecedor);
+    function toggleFornecedorConfig(checkbox, fornecedorId) {
+      const configDiv = document.getElementById(`config-${fornecedorId}`);
+      
+      if (checkbox.checked) {
+        configDiv.style.display = 'grid';
+      } else {
+        configDiv.style.display = 'none';
+        // Limpar seleções quando desmarcar
+        const radios = configDiv.querySelectorAll('input[type="radio"]');
+        radios.forEach(radio => radio.checked = false);
+        const select = configDiv.querySelector('select');
+        if (select) select.value = '0%';
+      }
+      
+      // 🔥 NOVO: Atualizar tarifa principal quando mudar seleção
+      atualizarTarifaPrincipal();
     }
+
+    // 🔥 ADICIONAR: Função para atualizar tarifa principal
+    function atualizarTarifaPrincipal() {
+      const checkboxesFornecedores = document.querySelectorAll('input[name="fornecedor"]:checked');
+      if (checkboxesFornecedores.length > 0) {
+        const primeiroFornecedor = checkboxesFornecedores[0].value.toLowerCase();
+        // As tarifas serão coletadas na função coletarDadosFormulario
+      }
+    }
+
+    function converterMoedaParaNumero(valorMoeda) {
+      if (!valorMoeda) return 0;
+      try {
+        if (typeof valorMoeda === 'number') return valorMoeda;
+        if (typeof valorMoeda === 'string') {
+          const valorLimpo = valorMoeda
+            .replace('R$', '')
+            .replace(/\./g, '')
+            .replace(',', '.')
+            .trim();
+          const numero = parseFloat(valorLimpo);
+          return isNaN(numero) ? 0 : numero;
+        }
+        return parseFloat(valorMoeda) || 0;
+      } catch (error) {
+        console.error("❌ Erro ao converter moeda:", valorMoeda, error);
+        return 0;
+      }
+    }
+
+// 🔥🔥🔥 CORREÇÃO CRÍTICA - FUNÇÃO COLETAR DADOS COMPLETA E CORRIGIDA
+function coletarDadosFormulario() {
+  console.log("🔍 COLETANDO DADOS - INICIANDO");
+  
+  try {
+    // ✅ VALIDAÇÃO BÁSICA DOS CAMPOS PRINCIPAIS
+    const razaoSocial = document.getElementById('razao_social').value.trim();
+    const cnpj = document.getElementById('cnpj_cadastro').value.trim();
+    
+    if (!razaoSocial || !cnpj) {
+      showMessage('error', '❌ Razão Social e CNPJ são obrigatórios!');
+      return null;
+    }
+
+    // ✅ GARANTIR QUE O CNPJ MANTENHA A MÁSCARA
+    const cnpjInput = document.getElementById('cnpj_cadastro');
+    const cnpjFormatado = cnpjInput.value;
+
+    // ✅ Processar adesão
+    let adesaoValue = document.getElementById('adesao').value;
+    if (adesaoValue === 'R$ 0,00' || adesaoValue === '0,00' || adesaoValue === '0') {
+      adesaoValue = 0;
+    } else {
+      adesaoValue = converterMoedaParaNumero(adesaoValue);
+    }
+
+    // ✅ CORREÇÃO CRÍTICA: Coletar TODOS os fornecedores COM VALIDAÇÃO
+    const checkboxesFornecedores = document.querySelectorAll('input[name="fornecedor"]:checked');
+    const fornecedoresComConfiguracoes = [];
+
+    if (checkboxesFornecedores.length === 0) {
+      showMessage('error', '❌ Selecione pelo menos um fornecedor!');
+      return null;
+    }
+
+    checkboxesFornecedores.forEach(checkbox => {
+      const fornecedorNome = checkbox.value;
+      const fornecedorId = fornecedorNome.toLowerCase();
+      
+      // Verificar se tem configuração ativa
+      const configDiv = document.getElementById(`config-${fornecedorId}`);
+      if (!configDiv || configDiv.style.display !== 'grid') {
+        console.warn(`❌ Fornecedor ${fornecedorNome} não tem configuração ativa!`);
+        return;
+      }
+      
+      // Coletar configurações de tarifa
+      const tarifaRadio = document.querySelector(`input[name="tarifa_${fornecedorId}"]:checked`);
+      const percentualSelect = document.querySelector(`select[name="percentual_${fornecedorId}"]`);
+      
+      // 🔥 CORREÇÃO: Se não tem tarifa selecionada, seleciona MDR automaticamente
+      let tarifaSelecionada = tarifaRadio ? tarifaRadio.value : 'MDR';
+      let percentualSelecionado = percentualSelect ? percentualSelect.value : '0%';
+      
+      // Se não tinha tarifa selecionada, seleciona MDR agora
+      if (!tarifaRadio) {
+        const radioMDR = document.querySelector(`input[name="tarifa_${fornecedorId}"][value="MDR"]`);
+        if (radioMDR) {
+          radioMDR.checked = true;
+          console.log(`✅ MDR selecionado automaticamente para ${fornecedorNome}`);
+        }
+      }
+      
+      // Adiciona aos dados
+      fornecedoresComConfiguracoes.push({
+        nome: fornecedorNome,
+        tarifa: tarifaSelecionada,
+        percentual_tarifa: percentualSelecionado
+      });
+    });
+
+    // ✅ MONTAR OBJETO DE DADOS CORRETAMENTE
+    const dados = {
+      razao_social: razaoSocial,
+      nome_fantasia: document.getElementById('nome_fantasia').value,
+      cnpj: cnpjFormatado,
+      tipo: document.getElementById('tipo').value,
+      adesao: adesaoValue,
+      fornecedores: fornecedoresComConfiguracoes,
+      fornecedor: fornecedoresComConfiguracoes.length > 0 ? fornecedoresComConfiguracoes[0].nome : '',
+      tarifa: fornecedoresComConfiguracoes.length > 0 ? fornecedoresComConfiguracoes[0].tarifa : '',
+      percentual_tarifa: fornecedoresComConfiguracoes.length > 0 ? fornecedoresComConfiguracoes[0].percentual_tarifa : '0%',
+      data_status: document.getElementById('data_status').value,
+      observacoes: document.getElementById('observacoes').value,
+      contrato_enviado: document.getElementById('contrato_enviado').value,
+      contrato_assinado: document.getElementById('contrato_assinado').value,
+      ativacao: document.getElementById('ativacao').value,
+      link: document.getElementById('link').value,
+      mensalidade: converterMoedaParaNumero(document.getElementById('mensalidade').value),
+      situacao: document.getElementById('situacao').value,
+      evento: document.getElementById('inputEventoSearch').value || document.getElementById('evento').value
+    };
+
+    console.log("📦 DADOS FINAIS PARA ENVIO:", dados);
+    return dados;
+
+  } catch (error) {
+    console.error("❌ ERRO CRÍTICO ao coletar dados:", error);
+    showMessage('error', '❌ Erro interno ao processar formulário');
+    return null;
   }
 }
 
-
-function preencherDadosCadastro(dados) {
-  if (!dados.encontrado) {
-    showMessage('info', dados.mensagem);
-    limparFormulario();
-    document.getElementById('btnCadastrar').style.display = 'block';
-    document.getElementById('btnAtualizar').style.display = 'none';
-    cadastroAtualId = null;
-    return;
-  }
-
-  cadastroAtualId = dados.id;
-  document.getElementById('razao_social').value = dados.razao_social;
-  document.getElementById('nome_fantasia').value = dados.nome_fantasia;
-  document.getElementById('cnpj_cadastro').value = dados.cnpj; // ✅ AGORA PREENCHE O CNPJ DO CADASTRO
-  document.getElementById('tipo').value = dados.tipo;
-  preencherFornecedoresCheckbox(dados.fornecedor);
-  document.getElementById('data_status').value = dados.data_status;
-  document.getElementById('observacoes').value = dados.observacoes;
-  document.getElementById('contrato_enviado').value = dados.contrato_enviado;
-  document.getElementById('contrato_assinado').value = dados.contrato_assinado;
-  document.getElementById('ativacao').value = dados.ativacao;
-  document.getElementById('link').value = dados.link;
-  document.getElementById('mensalidade').value = formatarMoedaParaInput(dados.mensalidade);
-  // 🔥 NOVO: Preencher tarifa e percentual_tarifa na edição
-if (dados.tarifa) {
-  const radioTarifa = document.querySelector(`input[name="tarifa"][value="${dados.tarifa}"]`);
-  if (radioTarifa) radioTarifa.checked = true;
-}
-if (dados.percentual_tarifa) {
-  document.getElementById('percentual_tarifa').value = dados.percentual_tarifa;
-}
-  document.getElementById('situacao').value = dados.situacao;
-  document.getElementById('situacao').value = dados.situacao;
-
-// 🔥 NOVO: Preencher evento na edição
-if (dados.evento) {
-  // Primeiro atualiza os eventos baseado na situação
-  atualizarEventos();
-  // Depois seleciona o evento específico
-  document.getElementById('evento').value = dados.evento;
-}
-
-  document.getElementById('btnCadastrar').style.display = 'none';
-  document.getElementById('btnAtualizar').style.display = 'block';
-
-  showMessage('success', 'Cadastro encontrado! Modo de edição ativado.');
-}
-
-// 🔥 ADICIONAR ESTA FUNÇÃO NO JavaScript (antes da função cadastrar())
-function limparDados() {
-  limparFormulario();
-  showMessage('info', 'Formulário limpo! Pronto para novo cadastro.');
-}
-
-// 🔥 FUNÇÃO DE DEBUG - Adicione isso ANTES da função cadastrar
-function debugCadastro() {
-  console.log("🔍 DEBUG: Verificando dados do formulário...");
+// 🔥🔥🔥 CORREÇÃO DA VALIDAÇÃO DE CAMPOS OBRIGATÓRIOS
+function validarCamposObrigatorios() {
+  console.log("🔍 Validando campos obrigatórios...");
   
-  const dados = coletarDadosFormulario();
-  console.log("Dados coletados:", dados);
-  
-  if (!dados) {
-    console.log("❌ ERRO: Nenhum dado coletado - verifique fornecedores");
-    return;
-  }
-  
-  console.log("Fornecedores selecionados:", dados.fornecedores);
-  console.log("Quantidade de fornecedores:", dados.fornecedores.length);
-  
-  // Testar comunicação com Google Apps Script
-  console.log("🔄 Testando comunicação com servidor...");
-  google.script.run
-    .withSuccessHandler(function(res) {
-      console.log("✅ Comunicação OK:", res);
-    })
-    .withFailureHandler(function(error) {
-      console.error("❌ Erro de comunicação:", error);
-    })
-    .testar();
-}
+  // Remover destaque anterior
+  document.querySelectorAll('.campo-obrigatorio').forEach(campo => {
+    campo.classList.remove('campo-obrigatorio');
+  });
 
-// 🔥 TESTE DE VALIDAÇÃO - Adicione isso no seu JavaScript
-function testarValidacao() {
-  console.log("🧪 TESTANDO VALIDAÇÃO...");
-  
-  // Simular clique no cadastrar
-  const dados = coletarDadosFormulario();
-  console.log("Dados do formulário:", dados);
-  
-  // Testar campos obrigatórios
-  const camposObrigatorios = [
-    { campo: 'razao_social', nome: 'Razão Social', elemento: 'razao_social' },
-    { campo: 'cnpj', nome: 'CNPJ', elemento: 'cnpj_cadastro' },
-    { campo: 'tipo', nome: 'Tipo', elemento: 'tipo' }
-  ];
-  
   let camposInvalidos = [];
+
+  // ✅ CORREÇÃO DEFINITIVA: Na ATUALIZAÇÃO, só validar campos CRÍTICOS
+  const isAtualizacao = cadastroAtualId !== null;
   
-  for (const obrigatorio of camposObrigatorios) {
-    let valorCampo = dados[obrigatorio.campo];
-    let estaVazio = false;
-    
-    if (obrigatorio.campo === 'tipo') {
-      estaVazio = !valorCampo || valorCampo.toString().trim() === '' || valorCampo === '-- Selecione --';
-    } else {
-      estaVazio = !valorCampo || valorCampo.toString().trim() === '';
+  console.log("🔍 Modo:", isAtualizacao ? "ATUALIZAÇÃO" : "CADASTRO");
+
+  // ✅ CAMPOS SEMPRE OBRIGATÓRIOS (em ambos os modos)
+  const camposSempreObrigatorios = [
+    { 
+      id: 'razao_social', 
+      nome: 'Razão Social', 
+      elemento: document.getElementById('razao_social'),
+      tipo: 'text'
+    },
+    { 
+      id: 'cnpj_cadastro', 
+      nome: 'CNPJ', 
+      elemento: document.getElementById('cnpj_cadastro'),
+      tipo: 'text'
+    },
+    { 
+      id: 'tipo', 
+      nome: 'Tipo', 
+      elemento: document.getElementById('tipo'),
+      tipo: 'select'
+    },
+    { 
+      id: 'mensalidade', 
+      nome: 'Mensalidade', 
+      elemento: document.getElementById('mensalidade'),
+      tipo: 'moeda'
+    },
+    { 
+      id: 'situacao', 
+      nome: 'Situação', 
+      elemento: document.getElementById('situacao'),
+      tipo: 'select'
     }
-    
+  ];
+
+  // ✅ CAMPOS OBRIGATÓRIOS APENAS NO CADASTRO (NÃO na atualização)
+  const camposApenasCadastro = [
+    { 
+      id: 'contrato_enviado', 
+      nome: 'Contrato Enviado', 
+      elemento: document.getElementById('contrato_enviado'),
+      tipo: 'select'
+    },
+    { 
+      id: 'contrato_assinado', 
+      nome: 'Contrato Assinado', 
+      elemento: document.getElementById('contrato_assinado'),
+      tipo: 'select'
+    }
+  ];
+
+  // Juntar os campos a validar
+  let camposParaValidar = [...camposSempreObrigatorios];
+  
+  // ✅ CORREÇÃO: Só adicionar campos de contrato se for NOVO CADASTRO
+  if (!isAtualizacao) {
+    camposParaValidar = [...camposParaValidar, ...camposApenasCadastro];
+  }
+
+  // Validar cada campo
+  for (const campo of camposParaValidar) {
+    let valor = campo.elemento.value;
+    let estaVazio = false;
+
+    switch(campo.tipo) {
+      case 'select':
+        estaVazio = !valor || valor === '' || valor === '-- Selecione --';
+        break;
+      case 'moeda':
+        estaVazio = !valor || valor === 'R$ 0,00' || valor === '0,00';
+        break;
+      default:
+        estaVazio = !valor || valor.toString().trim() === '';
+    }
+
     if (estaVazio) {
-      camposInvalidos.push(obrigatorio.nome);
-      console.log(`❌ Campo vazio: ${obrigatorio.nome}`);
+      campo.elemento.classList.add('campo-obrigatorio');
+      camposInvalidos.push(campo.nome);
+      
+      // Scroll para o primeiro campo inválido
+      if (camposInvalidos.length === 1) {
+        campo.elemento.scrollIntoView({ behavior: 'smooth', block: 'center' });
+      }
     }
   }
-  
-  console.log(`📊 Resultado: ${camposInvalidos.length} campos inválidos`);
+
+  console.log(`📊 Validação: ${camposInvalidos.length} campos inválidos`);
+  console.log(`🔍 Campos inválidos:`, camposInvalidos);
   return camposInvalidos;
 }
 
-// Chame essa função no console do navegador para testar
-
-function cadastrar() {
-  console.log("🎯 CADASTRAR: Iniciando validação...");
+// 🔥🔥🔥 CORREÇÃO DA FUNÇÃO ATUALIZAR - AGORA FUNCIONA!
+function atualizar() {
+  console.log("🎯 ATUALIZAR: Iniciando atualização...");
   
-  // 🔥 CORREÇÃO: Coletar dados PRIMEIRO
-  const dados = coletarDadosFormulario();
-  console.log("📋 Dados coletados:", dados);
-  console.log("🔤 CNPJ que será enviado:", dados.cnpj); // ✅ DEBUG IMPORTANTE - VERIFIQUE SE ESTÁ FORMATADO AQUI!
-
- const camposObrigatorios = [
-  { campo: 'razao_social', nome: 'Razão Social', elemento: 'razao_social' },
-  { campo: 'cnpj', nome: 'CNPJ', elemento: 'cnpj_cadastro' },
-  { campo: 'tipo', nome: 'Tipo', elemento: 'tipo' },
-  { campo: 'mensalidade', nome: 'Mensalidade', elemento: 'mensalidade' }
-];
-
-  let camposInvalidos = [];
+  // ✅ DEBUG 1: Verificar se tem ID
+  console.log("🔍 DEBUG 1: cadastroAtualId =", cadastroAtualId);
   
-  // 🔥 CORREÇÃO: Remover destaque anterior de TODOS os campos
-  document.querySelectorAll('.form-control, select').forEach(campo => {
-    campo.classList.remove('campo-obrigatorio');
-    // Remover também o estilo inline se existir
-    campo.style.borderColor = '';
-    campo.style.backgroundColor = '';
-  });
-
-  // 🔥 VALIDAR CAMPOS INDIVIDUAIS
-  for (const obrigatorio of camposObrigatorios) {
-    const elemento = document.getElementById(obrigatorio.elemento);
-    let valorCampo = dados ? dados[obrigatorio.campo] : null;
-    let estaVazio = false;
-    
-    // Verificar se é select
-    if (obrigatorio.campo === 'tipo') {
-      estaVazio = !valorCampo || valorCampo.toString().trim() === '' || valorCampo === '-- Selecione --';
-    } else {
-      estaVazio = !valorCampo || valorCampo.toString().trim() === '';
-    }
-    
-    if (estaVazio) {
-      elemento.classList.add('campo-obrigatorio');
-      elemento.style.borderColor = 'var(--danger)';
-      elemento.style.backgroundColor = '#fff5f5';
-      
-      if (camposInvalidos.length === 0) {
-        elemento.focus(); // Focar no primeiro campo inválido
-      }
-      camposInvalidos.push(obrigatorio.nome);
-      
-      console.log(`❌ Campo obrigatório vazio: ${obrigatorio.nome}`);
-    }
+  if (!cadastroAtualId) {
+    showMessage('error', '❌ Nenhum cadastro selecionado para atualizar!');
+    return;
   }
 
-  // 🔥 VALIDAR FORNECEDORES
-  let fornecedorInvalido = false;
-  if (!dados || !dados.fornecedores || dados.fornecedores.length === 0) {
-    console.log("❌ ERRO: Nenhum fornecedor selecionado");
-    
-    // Destacar a seção de fornecedores
-    const fornecedorSection = document.querySelector('[style*="grid-column: 1 / -1"]');
-    if (fornecedorSection) {
-      fornecedorSection.style.border = '2px solid var(--danger)';
-      fornecedorSection.style.background = '#fff5f5';
-    }
-    
-    camposInvalidos.push('Fornecedor');
-    fornecedorInvalido = true;
-  } else {
-    // Remover destaque se estiver ok
-    const fornecedorSection = document.querySelector('[style*="grid-column: 1 / -1"]');
-    if (fornecedorSection) {
-      fornecedorSection.style.border = '2px dashed var(--primary)';
-      fornecedorSection.style.background = 'linear-gradient(135deg, #f8f9fa 0%, #e9ecef 100%)';
-    }
-  }
-
-  // 🔥 SE HOUVER CAMPOS INVÁLIDOS, MOSTRAR ERRO E PARAR
+  // ✅ VALIDAÇÃO DE CAMPOS OBRIGATÓRIOS
+  const camposInvalidos = validarCamposObrigatorios();
+  console.log("🔍 DEBUG 2: Campos inválidos:", camposInvalidos);
+  
   if (camposInvalidos.length > 0) {
-    const mensagemErro = `❌ CAMPOS OBRIGATÓRIOS NÃO PREENCHIDOS:\n${camposInvalidos.join('\n')}`;
-    console.error(mensagemErro);
-    
-    // Mostrar mensagem de erro BEM VISÍVEL
     showMessage('error', `❌ Preencha os campos obrigatórios: ${camposInvalidos.join(', ')}`);
-    
-    // Scroll para o primeiro campo inválido
-    const primeiroCampo = document.querySelector('.campo-obrigatorio');
-    if (primeiroCampo) {
-      primeiroCampo.scrollIntoView({ behavior: 'smooth', block: 'center' });
-    }
-    
-    return; // 🔥 PARAR A EXECUÇÃO AQUI - NÃO CADASTRAR
+    return;
   }
 
-  // 🔥 SE CHEGOU AQUI, TODOS OS CAMPOS SÃO VÁLIDOS
-  console.log("✅ TODAS AS VALIDAÇÕES PASSARAM!");
-  console.log("📤 Dados para cadastro:", dados);
+  // ✅ VALIDAÇÃO DE FORNECEDORES
+  const fornecedoresSelecionados = document.querySelectorAll('input[name="fornecedor"]:checked');
+  console.log("🔍 DEBUG 3: Fornecedores selecionados:", fornecedoresSelecionados.length);
   
-  dados.acao = 'cadastrar';
+  if (fornecedoresSelecionados.length === 0) {
+    showMessage('error', '❌ Selecione pelo menos um fornecedor!');
+    return;
+  }
 
-  // 🔄 MOSTRAR LOADING
-  showLoading("Cadastrando...", "Salvando os dados no sistema");
+  // Coletar dados
+  console.log("🔍 DEBUG 4: Chamando coletarDadosFormulario()...");
+  const dados = coletarDadosFormulario();
+  console.log("🔍 DEBUG 5: Dados coletados:", dados);
+  
+  if (!dados) {
+    showMessage('error', '❌ Erro ao coletar dados do formulário');
+    return;
+  }
+  
+  dados.acao = 'atualizar';
+  dados.id = cadastroAtualId;
+  
+  console.log("📤 Dados para atualização:", dados);
+
+  // Mostrar loading
+  showLoading(`Atualizando ${dados.fornecedores.length} fornecedor(es)...`, `Loja: ${dados.razao_social}`);
+
+  const btnAtualizar = document.getElementById('btnAtualizar');
+  const btnOriginalHTML = btnAtualizar.innerHTML;
+  btnAtualizar.innerHTML = '<i class="fas fa-spinner fa-spin"></i> Atualizando...';
+  btnAtualizar.disabled = true;
+
+  console.log("🔍 DEBUG 6: Chamando Google Apps Script...");
+
+  // ✅ CORREÇÃO CRÍTICA: Usar processarCadastro que já funciona
+  google.script.run
+    .withSuccessHandler(function(res) {
+      console.log("✅ DEBUG 7: Resposta da atualização:", res);
+      hideLoading();
+      
+      btnAtualizar.innerHTML = btnOriginalHTML;
+      btnAtualizar.disabled = false;
+      
+      if (res && res.success) {
+        showMessage('success', '✅ ' + res.message);
+        
+        // Atualizar a lista de cadastros se estiver visível
+        if (document.getElementById('secaoCadastros').style.display === 'block') {
+          mostrarTodosCadastros();
+        }
+        
+        // Voltar para modo cadastro
+        limparFormulario();
+      } else {
+        showMessage('error', '❌ ' + (res ? res.message : 'Resposta inválida do servidor'));
+      }
+    })
+    .withFailureHandler(function(error) {
+      console.error("❌ DEBUG 8: Erro na atualização:", error);
+      hideLoading();
+      
+      btnAtualizar.innerHTML = btnOriginalHTML;
+      btnAtualizar.disabled = false;
+      showMessage('error', '❌ Erro ao atualizar: ' + error.message);
+    })
+    .processarCadastro(dados); // ✅ USAR processarCadastro QUE JÁ FUNCIONA
+}
+
+// 🔥🔥🔥 CORREÇÃO DA FUNÇÃO CADASTRAR - MULTIPLOS FORNECEDORES FUNCIONANDO!
+function cadastrar() {
+  console.log("🎯 CADASTRAR: Iniciando cadastro MULTIPLOS FORNECEDORES");
+  
+  // ✅ VALIDAÇÃO DE CAMPOS OBRIGATÓRIOS
+  const camposInvalidos = validarCamposObrigatorios();
+  if (camposInvalidos.length > 0) {
+    showMessage('error', `❌ Preencha os campos obrigatórios: ${camposInvalidos.join(', ')}`);
+    return;
+  }
+
+  // ✅ VALIDAÇÃO DE FORNECEDORES
+  const fornecedoresSelecionados = document.querySelectorAll('input[name="fornecedor"]:checked');
+  if (fornecedoresSelecionados.length === 0) {
+    showMessage('error', '❌ Selecione pelo menos um fornecedor!');
+    return;
+  }
+
+  // Coletar dados BASE (comuns a todos os fornecedores)
+  const dadosBase = coletarDadosFormulario();
+  if (!dadosBase) {
+    showMessage('error', '❌ Erro ao coletar dados do formulário');
+    return;
+  }
+
+  console.log("🔢 Fornecedores selecionados:", dadosBase.fornecedores.length);
+  console.log("📋 Lista de fornecedores:", dadosBase.fornecedores);
+
+  // ✅ CORREÇÃO CRÍTICA: Para CADASTRO, evento é FIXO "Novo cadastro"
+  dadosBase.evento = "Novo cadastro";
+  dadosBase.acao = 'cadastrar';
+
+  // Mostrar loading
+  showLoading(`Cadastrando ${dadosBase.fornecedores.length} fornecedor(es)...`, `Loja: ${dadosBase.razao_social}`);
 
   const btnCadastrar = document.getElementById('btnCadastrar');
   btnCadastrar.innerHTML = '<i class="fas fa-spinner fa-spin"></i> Cadastrando...';
   btnCadastrar.disabled = true;
 
-  // 🔥 ENVIAR PARA O GOOGLE APPS SCRIPT
+  // ✅ ENVIAR para Google Apps Script - CADA FORNECEDOR VIRA UM REGISTRO
   google.script.run
     .withSuccessHandler(function(res) {
-      console.log("✅ Resposta do servidor:", res);
+      console.log("✅ Resposta do cadastro MULTIPLO:", res);
       hideLoading();
       
       btnCadastrar.innerHTML = '<i class="fas fa-plus-circle"></i> Cadastrar';
       btnCadastrar.disabled = false;
       
       if (res.success) {
-        showMessage('success', '✅ ' + res.message);
+        showMessage('success', `✅ ${res.message} - ${res.registrosCriados} registro(s) criado(s)`);
         limparFormulario();
       } else {
         showMessage('error', '❌ ' + res.message);
       }
     })
     .withFailureHandler(function(error) {
-      console.error("❌ Erro do servidor:", error);
+      console.error("❌ Erro no cadastro:", error);
       hideLoading();
       
       btnCadastrar.innerHTML = '<i class="fas fa-plus-circle"></i> Cadastrar';
       btnCadastrar.disabled = false;
       showMessage('error', '❌ Erro: ' + error.message);
     })
-    .salvarCadastro(dados);
+    .salvarCadastro(dadosBase);
 }
 
-function atualizar() {
-  if (!cadastroAtualId) {
-    showMessage('error', 'Nenhum cadastro selecionado para atualizar');
-    return;
-  }
-
-  const dados = coletarDadosFormulario();
-  if (!dados) {
-    showMessage('error', 'Selecione pelo menos um fornecedor');
-    return;
-  }
-  
-  dados.acao = 'atualizar';
-  dados.id = cadastroAtualId;
-
- const camposObrigatorios = [
-  { campo: 'razao_social', nome: 'Razão Social', elemento: 'razao_social' },
-  { campo: 'cnpj', nome: 'CNPJ', elemento: 'cnpj_cadastro' },
-  { campo: 'tipo', nome: 'Tipo', elemento: 'tipo' },
-  { campo: 'mensalidade', nome: 'Mensalidade', elemento: 'mensalidade' }
-];
-
-  let camposInvalidos = [];
-  
-  document.querySelectorAll('.form-control, select').forEach(campo => {
-    campo.classList.remove('campo-obrigatorio');
-    campo.style.borderColor = '';
-    campo.style.backgroundColor = '';
-  });
-
-  for (const obrigatorio of camposObrigatorios) {
-    const elemento = document.getElementById(obrigatorio.elemento);
-    let valorCampo = dados ? dados[obrigatorio.campo] : null;
-    let estaVazio = false;
-    
-    if (obrigatorio.campo === 'tipo') {
-      estaVazio = !valorCampo || valorCampo.toString().trim() === '' || valorCampo === '-- Selecione --';
-    } else {
-      estaVazio = !valorCampo || valorCampo.toString().trim() === '';
-    }
-    
-    if (estaVazio) {
-      elemento.classList.add('campo-obrigatorio');
-      elemento.style.borderColor = 'var(--danger)';
-      elemento.style.backgroundColor = '#fff5f5';
+    function mostrarPopupResultado(mensagemPrincipal, detalhes) {
+      // Usar o modal de detalhes TEMPORARIAMENTE
+      const modal = document.getElementById('modalDetalhes');
+      const content = document.getElementById('modalDetalhesContent');
       
-      if (camposInvalidos.length === 0) {
-        elemento.focus();
+      let detalhesHTML = '';
+      if (detalhes && Array.isArray(detalhes)) {
+        detalhesHTML = `
+          <div style="margin-top: 15px; padding: 15px; background: #f8f9fa; border-radius: 8px;">
+            <h4 style="color: var(--primary); margin-bottom: 10px;">📋 Detalhes do Cadastro:</h4>
+            <div style="max-height: 200px; overflow-y: auto;">
+              ${detalhes.map(detalhe => `
+                <div style="padding: 5px 0; border-bottom: 1px solid #e0e0e0; display: flex; align-items: center; gap: 8px;">
+                  ${detalhe.includes('✅') ? 
+                    '<span style="color: var(--success);">✅</span>' : 
+                    '<span style="color: var(--danger);">❌</span>'
+                  }
+                  <span>${detalhe.replace('✅', '').replace('❌', '')}</span>
+                </div>
+              `).join('')}
+            </div>
+          </div>
+        `;
       }
-      camposInvalidos.push(obrigatorio.nome);
+
+      content.innerHTML = `
+        <div style="text-align: center; padding: 20px;">
+          <div style="font-size: 4rem; color: var(--success); margin-bottom: 15px;">✅</div>
+          <h3 style="color: var(--success); margin-bottom: 15px;">Cadastro Realizado!</h3>
+          <p style="font-size: 1.1rem; margin-bottom: 20px; line-height: 1.4;">${mensagemPrincipal}</p>
+          ${detalhesHTML}
+          <div style="margin-top: 25px; padding-top: 20px; border-top: 1px solid var(--border);">
+            <button class="btn btn-success" onclick="fecharModalDetalhes()">
+              <i class="fas fa-check"></i> Continuar
+            </button>
+          </div>
+        </div>
+      `;
+      
+      modal.style.display = 'flex';
     }
-  }
 
-  // Validar fornecedores
-  if (!dados.fornecedores || dados.fornecedores.length === 0) {
-    const fornecedorSection = document.querySelector('[style*="grid-column: 1 / -1"]');
-    if (fornecedorSection) {
-      fornecedorSection.style.border = '2px solid var(--danger)';
-      fornecedorSection.style.background = '#fff5f5';
-    }
-    camposInvalidos.push('Fornecedor');
-  }
-
-  if (camposInvalidos.length > 0) {
-    showMessage('error', `❌ Preencha os campos obrigatórios: ${camposInvalidos.join(', ')}`);
-    return;
-  }
-
-  // 🔄 MOSTRAR LOADING
-  showLoading("Atualizando...", "Salvando as alterações");
-
-  const btnAtualizar = document.getElementById('btnAtualizar');
-  btnAtualizar.innerHTML = '<i class="fas fa-spinner fa-spin"></i> Atualizando...';
-  btnAtualizar.disabled = true;
-
-  google.script.run
-    .withSuccessHandler(function(res) {
-      hideLoading();
-      
-      btnAtualizar.innerHTML = '<i class="fas fa-save"></i> Atualizar';
-      btnAtualizar.disabled = false;
-      
-      if (res.success) {
-        showMessage('success', '✅ ' + res.message);
-      } else {
-        showMessage('error', '❌ ' + res.message);
-      }
-    })
-    .withFailureHandler(function(error) {
-      hideLoading();
-      
-      btnAtualizar.innerHTML = '<i class="fas fa-save"></i> Atualizar';
-      btnAtualizar.disabled = false;
-      showMessage('error', '❌ Erro: ' + error.message);
-    })
-    .salvarCadastro(dados);
-}
-
-// 🔥 ADICIONE ESTA FUNÇÃO: Remover destaque de erro ao digitar
-function configurarValidacaoEmTempoReal() {
-  const campos = document.querySelectorAll('#razao_social, #cnpj_cadastro, #tipo');
-  campos.forEach(campo => {
-    campo.addEventListener('input', function() {
-      this.style.borderColor = '';
-    });
-  });
-}
-
-// 🔥 CHAME ESTA FUNÇÃO NO DOMContentLoaded:
-document.addEventListener('DOMContentLoaded', function() {
-  console.log('Sistema de Gestão de Cadastros - RESULT inicializado');
-  document.getElementById('mensalidade').value = 'R$ 0,00';
-  document.getElementById('situacao').value = 'Cadastrado';
-  configurarValidacaoEmTempoReal(); // ✅ NOVA LINHA
-});
-
-// 🔥 FUNÇÃO PARA ATUALIZAR EVENTOS COM BASE NA SITUAÇÃO
-function atualizarEventos() {
-  const situacao = document.getElementById('situacao').value;
-  const selectEvento = document.getElementById('evento');
-  
-  // Limpar opções atuais
-  selectEvento.innerHTML = '<option value="">-- Selecione um evento --</option>';
-  
-// ✅ LISTA DE EVENTOS ORGANIZADA POR CATEGORIAS
-const eventosEmAndamento = [
-  "Aguardando Aceite da Loja",
-  "Aguardando Aceite do Fornecedor", 
-  "Aguardando Documentos",
-  "Aguardando retorno",
-  "Agendamento de demonstração",
-  "Cliente interessado",
-  "Cliente não interessado",
-  "Condição Especial",
-  "Contrato assinado",
-  "Desistiu",
-  "Documentação Incompleta",
-  "Em Implantação",
-  "Em Treinamento",
-  "Envio de boleto",
-  "Envio de WhatsApp",
-  "Follow-up necessário",
-  "Fornecedor alterado",
-  "Ligação realizada",
-  "Negociação em andamento",
-  "Pagamento Efetuado",
-  "Pagamento Pendente",
-  "Proposta enviada",
-  "Quantidade de lojas alterada",
-  "Recado Registrado",
-  "Reunião agendada",
-  "Sem Retorno",
-  "Solicitou mais informações",
-  "Telefone alterado"
-].sort();
-
-const eventosParado = [
-  "Cancelado",
-  "Bloqueado", 
-  "Desistiu"
-].sort();
-
-const eventosCadastrado = [
-  "Loja cadastrada"
-];
-  
-  let eventos = [];
-  
-  switch(situacao) {
-    case 'Em andamento':
-      eventos = eventosEmAndamento;
-      break;
-    case 'Parado':
-      eventos = eventosParado;
-      break;
-    case 'Cadastrado':
-      eventos = eventosCadastrado;
-      break;
-    case 'Descredenciado':
-      eventos = ['Descredenciado'];
-      break;
-    default:
-      eventos = [];
-  }
-  
-  // Adicionar opções ao select
-  eventos.forEach(evento => {
-    const option = document.createElement('option');
-    option.value = evento;
-    option.textContent = evento;
-    selectEvento.appendChild(option);
-  });
-}
-
-// 🔥 CONFIGURAR EVENTO ONCHANGE NA SITUAÇÃO
-document.addEventListener('DOMContentLoaded', function() {
-  // ... código existente ...
-  
-  // ✅ CONFIGURAR EVENTO PARA ATUALIZAR EVENTOS
-  document.getElementById('situacao').addEventListener('change', atualizarEventos);
-  
-  // ✅ INICIALIZAR EVENTOS COM BASE NA SITUAÇÃO PADRÃO
-  atualizarEventos();
-});
-
-function coletarDadosFormulario() {
-  // ✅ GARANTIR QUE O CNPJ MANTENHA A MÁSCARA
-  const cnpjInput = document.getElementById('cnpj_cadastro');
-  const cnpjFormatado = cnpjInput.value; // Já vem formatado pelo oninput
-  
-  console.log("📋 CNPJ coletado:", cnpjFormatado); // Para debug
-
-    // 🔥 NOVO: Processar adesão (0 = "Isento")
-  let adesaoValue = document.getElementById('adesao').value;
-  if (adesaoValue === 'R$ 0,00' || adesaoValue === '0,00' || adesaoValue === '0') {
-    adesaoValue = 'Isento';
-  }
-  
-  // 🔥 NOVO: Coletar múltiplos fornecedores selecionados
-  const checkboxesFornecedores = document.querySelectorAll('input[name="fornecedor"]:checked');
-  const fornecedoresSelecionados = Array.from(checkboxesFornecedores).map(cb => cb.value);
-  
-  return {
-  razao_social: document.getElementById('razao_social').value,
-  nome_fantasia: document.getElementById('nome_fantasia').value,
-  cnpj: cnpjFormatado,
-  tipo: document.getElementById('tipo').value,
-  adesao: adesaoValue,
-  // 🔥 NOVO: Coletar tarifa e percentual
-  tarifa: document.querySelector('input[name="tarifa"]:checked')?.value || '',
-  percentual_tarifa: document.getElementById('percentual_tarifa').value,
-  fornecedores: fornecedoresSelecionados,
-    data_status: document.getElementById('data_status').value,
-    observacoes: document.getElementById('observacoes').value,
-    contrato_enviado: document.getElementById('contrato_enviado').value,
-    contrato_assinado: document.getElementById('contrato_assinado').value,
-    ativacao: document.getElementById('ativacao').value,
-    link: document.getElementById('link').value,
-    mensalidade: document.getElementById('mensalidade').value,
-    situacao: document.getElementById('situacao').value,
-evento: document.getElementById('evento').value // ✅ NOVA LINHA - EVENTO
-  };
-}
-
-  function limparFormulario() {
+function limparFormulario() {
   document.getElementById('razao_social').value = '';
   document.getElementById('nome_fantasia').value = '';
   document.getElementById('cnpj_cadastro').value = '';
   document.getElementById('tipo').value = '';
   
-  // 🔥 NOVO: Limpar checkboxes de fornecedor
+  // 🔥 CORREÇÃO: Limpar checkboxes E configurações de fornecedor
   const checkboxes = document.querySelectorAll('input[name="fornecedor"]');
-  checkboxes.forEach(cb => cb.checked = false);
+  checkboxes.forEach(cb => {
+    cb.checked = false;
+    const fornecedorId = cb.getAttribute('onchange').split("'")[1];
+    const configDiv = document.getElementById(`config-${fornecedorId}`);
+    if (configDiv) {
+      configDiv.style.display = 'none';
+      // Limpar seleções dentro da configuração
+      const radios = configDiv.querySelectorAll('input[type="radio"]');
+      radios.forEach(radio => radio.checked = false);
+      const select = configDiv.querySelector('select');
+      if (select) select.value = '0%';
+    }
+  });
+  
   document.getElementById('data_status').value = '';
   document.getElementById('observacoes').value = '';
   document.getElementById('contrato_enviado').value = '';
@@ -1809,29 +2491,70 @@ evento: document.getElementById('evento').value // ✅ NOVA LINHA - EVENTO
   document.getElementById('ativacao').value = '';
   document.getElementById('link').value = '';
   document.getElementById('mensalidade').value = 'R$ 0,00';
+  
+  // 🔥 CORREÇÃO: Resetar situação para "Novo registro" e adesão para "R$ 0,00"
   document.getElementById('situacao').value = 'Novo registro';
+  document.getElementById('adesao').value = 'R$ 0,00';
+  
+  // 🔥🔥🔥 ADICIONE ESTAS 3 LINHAS AQUI - LIMPAR EVENTO SEARCH
+  document.getElementById('inputEventoSearch').value = '';
+  document.getElementById('evento').value = '';
+  document.getElementById('suggestionsEventoSearch').style.display = 'none';
+  
+  // 🔥 CORREÇÃO: Atualizar eventos baseado na nova situação
   atualizarEventos();
-// 🔥 NOVO: Limpar tarifa e percentual_tarifa
-const radiosTarifa = document.querySelectorAll('input[name="tarifa"]');
-radiosTarifa.forEach(radio => radio.checked = false);
-document.getElementById('percentual_tarifa').value = '0%';
+  
   document.getElementById('btnCadastrar').style.display = 'block';
   document.getElementById('btnAtualizar').style.display = 'none';
   cadastroAtualId = null;
-}
-
-function limparBusca() {
-  document.getElementById('cnpj').value = '';
-  document.getElementById('cnpj_cadastro').value = '';
-  limparFormulario();
   
-  // 🔥 NOVO: Esconder a tabela também
-  document.getElementById('secaoCadastros').style.display = 'none';
-  showMessage('info', 'Busca limpa e tabela ocultada!');
+  // 🔥 CORREÇÃO: Remover destaque de campos obrigatórios
+  document.querySelectorAll('.campo-obrigatorio').forEach(campo => {
+    campo.classList.remove('campo-obrigatorio');
+    campo.style.borderColor = '';
+    campo.style.backgroundColor = '';
+  });
 }
 
+    
+function filtrarTabela(situacao) {
+  // Remover classe active de todos os botões
+  document.querySelectorAll('.filtros-container .btn').forEach(btn => {
+    btn.classList.remove('active');
+    btn.style.backgroundColor = '';
+    btn.style.color = '';
+  });
+  
+  // Adicionar classe active ao botão clicado
+  const botaoClicado = event.target;
+  botaoClicado.classList.add('active');
+  
+  // Destacar visualmente o botão ativo
+  if (situacao === 'all') {
+    botaoClicado.style.backgroundColor = 'var(--primary)';
+    botaoClicado.style.color = 'white';
+  }
 
-function mostrarTodosCadastros() {
+  configurarFiltroEvento(situacao);
+  
+  let cadastrosFiltradosTemp = todosCadastros;
+  let titulo = 'Todos os Cadastros';
+
+  if (situacao !== 'all') {
+    // ✅ CORREÇÃO: Filtrar pela situação correta
+    cadastrosFiltradosTemp = todosCadastros.filter(cad => cad.situacao === situacao);
+    titulo = `Cadastros - ${situacao}`;
+  }
+
+  // ✅ CORREÇÃO: SEMPRE AGRUPAR OS CADASTROS POR CNPJ
+  cadastrosFiltrados = cadastrosFiltradosTemp;
+  
+  // ✅ CORREÇÃO: Usar a função de exibição agrupada
+  const cadastrosAgrupados = agruparCadastrosPorCNPJ(cadastrosFiltradosTemp);
+  exibirTabelaCadastrosAgrupada(cadastrosAgrupados, titulo);
+}
+
+    function mostrarTodosCadastros() {
   console.log("🎯 Iniciando carregamento de cadastros...");
   
   // 🔄 MOSTRAR LOADING
@@ -1841,30 +2564,37 @@ function mostrarTodosCadastros() {
   const loading = document.getElementById('loadingCadastros');
   const tableContainer = document.getElementById('tableContainer');
   const filtrosContainer = document.getElementById('filtrosContainer');
-  
+  const secao = document.getElementById('secaoCadastros');
+
   loading.style.display = 'flex';
   tableContainer.style.display = 'none';
   filtrosContainer.style.display = 'none';
+  secao.style.display = 'block';
 
   google.script.run
     .withSuccessHandler(function(cadastros) {
-  // 🔄 ESCONDER LOADING
-  hideLoading();
-  
-  console.log("✅ Cadastros recebidos:", cadastros);
-  
-  if (cadastros && cadastros.length > 0) {
-  // ✅ ORDENAR POR NOME AUTOMATICAMENTE - CORREÇÃO APLICADA
-  const cadastrosOrdenados = cadastros.sort((a, b) => {
-    const nomeA = (a.razao_social || '').toLowerCase();
-    const nomeB = (b.razao_social || '').toLowerCase();
-    return nomeA.localeCompare(nomeB);
-  });
-    todosCadastros = cadastrosOrdenados;
-    cadastrosFiltrados = [...cadastrosOrdenados];
-    
-    exibirTabelaCadastros(cadastrosOrdenados, 'Todos os Cadastros');
+      // 🔄 ESCONDER LOADING
+      hideLoading();
+      
+      console.log("✅ Cadastros recebidos:", cadastros);
+      
+      if (cadastros && cadastros.length > 0) {
+        // ✅ ORDENAR POR NOME AUTOMATICAMENTE
+        const cadastrosOrdenados = cadastros.sort((a, b) => {
+          const nomeA = (a.razao_social || '').toLowerCase();
+          const nomeB = (b.razao_social || '').toLowerCase();
+          return nomeA.localeCompare(nomeB);
+        });
+        
+        todosCadastros = cadastrosOrdenados;
+        cadastrosFiltrados = [...cadastrosOrdenados];
+        
+        // ✅ CORREÇÃO: Usar a função agrupada
+        const cadastrosAgrupados = agruparCadastrosPorCNPJ(cadastrosOrdenados);
+        exibirTabelaCadastrosAgrupada(cadastrosAgrupados, 'Todos os Cadastros');
+        
         document.getElementById('filtrosContainer').style.display = 'flex';
+        configurarFiltroEvento('all'); // ✅ MOSTRAR FILTRO DE EVENTOS
         
         showMessage('success', `✅ ${cadastros.length} cadastros carregados com sucesso!`);
       } else {
@@ -1872,7 +2602,7 @@ function mostrarTodosCadastros() {
         tableContainer.style.display = 'block';
         document.getElementById('tabelaCadastrosBody').innerHTML = `
           <tr>
-            <td colspan="7" style="text-align: center; padding: 40px;">
+            <td colspan="6" style="text-align: center; padding: 40px;">
               <i class="fas fa-inbox" style="font-size: 3rem; color: var(--gray); margin-bottom: 15px;"></i>
               <h3>Nenhum cadastro encontrado</h3>
               <p>Não há cadastros na base de dados.</p>
@@ -1893,284 +2623,639 @@ function mostrarTodosCadastros() {
     .buscarTodosCadastros();
 }
 
-    function exibirTabelaCadastros(cadastros, titulo) {
-      const secao = document.getElementById('secaoCadastros');
-      const tituloElement = document.getElementById('tituloCadastros');
-      const tableContainer = document.getElementById('tableContainer');
-      const tabelaBody = document.getElementById('tabelaCadastrosBody');
-      const loading = document.getElementById('loadingCadastros');
-
-      tituloElement.textContent = `${titulo} (${cadastros.length})`;
-      tabelaBody.innerHTML = '';
-
-      if (cadastros.length === 0) {
-        tabelaBody.innerHTML = `
-          <tr>
-            <td colspan="7" style="text-align: center; padding: 40px;">
-              <i class="fas fa-search" style="font-size: 3rem; color: var(--gray); margin-bottom: 15px;"></i>
-              <h3>Nenhum resultado encontrado</h3>
-              <p>Tente alterar os filtros de pesquisa.</p>
-            </td>
-          </tr>
-        `;
-      } else {
-        cadastros.forEach(cadastro => {
-          const row = criarLinhaTabelaMelhorada(cadastro);
-          tabelaBody.appendChild(row);
-        });
-      }
-
-      loading.style.display = 'none';
-      tableContainer.style.display = 'block';
-      secao.style.display = 'block';
-      atualizarContador();
-      
-      // Scroll suave para a seção
-      setTimeout(() => {
-        secao.scrollIntoView({ behavior: 'smooth', block: 'start' });
-      }, 300);
+    function limparDados() {
+      limparFormulario();
+      showMessage('info', 'Formulário limpo! Pronto para novo cadastro.');
     }
 
-    function formatarPercentual(valor) {
-  if (!valor) return 'N/A';
+    function buscarPorCNPJ() {
+      // 🔥 CORREÇÃO: Pegar CNPJ do campo de busca e remover formatação
+      const cnpjBusca = document.getElementById('cnpj').value.replace(/\D/g, '');
+      
+      if (!cnpjBusca) {
+        showMessage('error', 'Digite um CNPJ para buscar');
+        return;
+      }
+
+      showMessage('info', '🔍 Buscando cadastro...');
+
+      google.script.run
+        .withSuccessHandler(function(dados) {
+          preencherDadosCadastro(dados);
+        })
+        .withFailureHandler(function(error) {
+          showMessage('error', 'Erro: ' + error.message);
+        })
+        .buscarCadastroPorCNPJ(cnpjBusca); // ✅ Envia apenas números
+    }
+
+    function preencherFornecedorComTarifas(dados) {
+  console.log("🔧 Preenchendo fornecedor com tarifas:", dados);
   
-  // Se já estiver com % (ex: "8%"), retorna como está
-  if (typeof valor === 'string' && valor.includes('%')) {
-    return valor;
+  // Limpar seleções anteriores
+  const checkboxes = document.querySelectorAll('input[name="fornecedor"]');
+  checkboxes.forEach(cb => {
+    cb.checked = false;
+    const fornecedorId = cb.value.toLowerCase();
+    const configDiv = document.getElementById(`config-${fornecedorId}`);
+    if (configDiv) {
+      configDiv.style.display = 'none';
+      const radios = configDiv.querySelectorAll('input[type="radio"]');
+      radios.forEach(radio => radio.checked = false);
+      const select = configDiv.querySelector('select');
+      if (select) select.value = '0%';
+    }
+  });
+  
+  if (!dados.fornecedor) {
+    console.log("ℹ️ Nenhum fornecedor para preencher");
+    return;
   }
   
-  // Se for número decimal (ex: 0.08), converte para porcentagem
-  const numero = parseFloat(valor);
-  if (!isNaN(numero)) {
-    return (numero * 100) + '%';
+  // Encontrar o checkbox do fornecedor
+  const checkbox = document.querySelector(`input[name="fornecedor"][value="${dados.fornecedor}"]`);
+  if (checkbox) {
+    checkbox.checked = true;
+    
+    // Ativar configurações do fornecedor
+    const fornecedorId = dados.fornecedor.toLowerCase();
+    const configDiv = document.getElementById(`config-${fornecedorId}`);
+    
+    if (configDiv) {
+      configDiv.style.display = 'grid';
+      
+      // 🔥 CORREÇÃO CRÍTICA: Preencher tipo de tarifa (MDR/TIS)
+      if (dados.tarifa) {
+        const radioTarifa = configDiv.querySelector(`input[name="tarifa_${fornecedorId}"][value="${dados.tarifa}"]`);
+        if (radioTarifa) {
+          radioTarifa.checked = true;
+          console.log("✅ Tipo de tarifa selecionado:", dados.tarifa);
+        } else {
+          console.log("⚠️ Tarifa não encontrada:", dados.tarifa, "para", fornecedorId);
+          // 🔥 CORREÇÃO: Selecionar MDR como padrão se não encontrar
+          const radioPadrao = configDiv.querySelector(`input[name="tarifa_${fornecedorId}"][value="MDR"]`);
+          if (radioPadrao) {
+            radioPadrao.checked = true;
+            console.log("✅ MDR selecionado como padrão");
+          }
+        }
+      } else {
+        console.log("⚠️ Nenhuma tarifa nos dados para", fornecedorId);
+        // 🔥 CORREÇÃO: Selecionar MDR como padrão se não houver tarifa
+        const radioPadrao = configDiv.querySelector(`input[name="tarifa_${fornecedorId}"][value="MDR"]`);
+        if (radioPadrao) {
+          radioPadrao.checked = true;
+          console.log("✅ MDR selecionado como padrão (sem tarifa nos dados)");
+        }
+      }
+      
+      // Preencher percentual da tarifa
+      if (dados.percentual_tarifa !== undefined && dados.percentual_tarifa !== null) {
+        const selectPercentual = configDiv.querySelector(`select[name="percentual_${fornecedorId}"]`);
+        if (selectPercentual) {
+          let percentualValue = dados.percentual_tarifa;
+          
+          // Converter para formato correto
+          if (typeof percentualValue === 'number') {
+            percentualValue = Math.round(percentualValue * 100) + '%';
+          } else if (typeof percentualValue === 'string' && !percentualValue.includes('%')) {
+            if (percentualValue.includes('.')) {
+              const numero = parseFloat(percentualValue);
+              if (!isNaN(numero)) {
+                percentualValue = Math.round(numero * 100) + '%';
+              } else {
+                percentualValue = percentualValue + '%';
+              }
+            } else {
+              percentualValue = percentualValue + '%';
+            }
+          }
+          
+          selectPercentual.value = percentualValue;
+          console.log("✅ Percentual definido:", percentualValue);
+        }
+      } else {
+        console.log("⚠️ Nenhum percentual nos dados para", fornecedorId);
+        // 🔥 CORREÇÃO: Definir 0% como padrão
+        const selectPercentual = configDiv.querySelector(`select[name="percentual_${fornecedorId}"]`);
+        if (selectPercentual) {
+          selectPercentual.value = '0%';
+          console.log("✅ 0% definido como padrão (sem percentual nos dados)");
+        }
+      }
+    }
+  } else {
+    console.log("❌ Fornecedor não encontrado no HTML:", dados.fornecedor);
   }
-  
-  return valor || 'N/A';
 }
 
-function criarLinhaTabelaMelhorada(cadastro) {
+    function preencherDadosCadastro(dados) {
+      if (!dados.encontrado) {
+        showMessage('info', dados.mensagem);
+        limparFormulario();
+        document.getElementById('btnCadastrar').style.display = 'block';
+        document.getElementById('btnAtualizar').style.display = 'none';
+        cadastroAtualId = null;
+        return;
+      }
+
+      cadastroAtualId = dados.id;
+      document.getElementById('razao_social').value = dados.razao_social;
+      document.getElementById('nome_fantasia').value = dados.nome_fantasia;
+      document.getElementById('cnpj_cadastro').value = dados.cnpj;
+      document.getElementById('tipo').value = dados.tipo;
+      
+      // 🔥 CORREÇÃO: Preencher adesão corretamente
+      if (dados.adesao === 'Isento' || dados.adesao === 0 || dados.adesao === '0') {
+        document.getElementById('adesao').value = 'R$ 0,00';
+      } else {
+        document.getElementById('adesao').value = formatarMoedaParaInput(dados.adesao);
+      }
+      
+      // 🔥 CORREÇÃO: Preencher fornecedor com tarifas
+      preencherFornecedorComTarifas(dados);
+      
+      document.getElementById('data_status').value = dados.data_status;
+      document.getElementById('observacoes').value = dados.observacoes;
+      document.getElementById('contrato_enviado').value = dados.contrato_enviado;
+      document.getElementById('contrato_assinado').value = dados.contrato_assinado;
+      document.getElementById('ativacao').value = dados.ativacao;
+      document.getElementById('link').value = dados.link;
+      document.getElementById('mensalidade').value = formatarMoedaParaInput(dados.mensalidade);
+      document.getElementById('situacao').value = dados.situacao;
+
+      // 🔥 CORREÇÃO: Preencher evento
+      if (dados.evento) {
+        atualizarEventos();
+        document.getElementById('evento').value = dados.evento;
+      }
+
+      document.getElementById('btnCadastrar').style.display = 'none';
+      document.getElementById('btnAtualizar').style.display = 'block';
+
+      showMessage('success', 'Cadastro encontrado! Modo de edição ativado.');
+    }
+
+ function limparBusca() {
+  limparFormulario();
+  
+  // 🔥 CORREÇÃO: Esconder a tabela também
+  document.getElementById('secaoCadastros').style.display = 'none';
+  showMessage('info', 'Formulário limpo e busca cancelada!');
+}
+
+  // 🔥 FUNÇÃO PARA ATUALIZAR EVENTOS COM BASE NA SITUAÇÃO - VERSÃO CORRIGIDA
+function atualizarEventos() {
+  const situacao = document.getElementById('situacao').value;
+  const selectEvento = document.getElementById('evento');
+  
+  console.log("🎯 Atualizando eventos para situação:", situacao);
+  
+  // Limpar opções atuais
+  selectEvento.innerHTML = '<option value="">-- Selecione um evento --</option>';
+  
+  let eventos = [];
+  
+  // ✅ CORREÇÃO: Usar as variáveis globais que JÁ EXISTEM
+  // NÃO criar novas variáveis dentro da função!
+  switch(situacao) {
+    case 'Em andamento':
+      eventos = eventosEmAndamento; // ✅ Já existe globalmente
+      break;
+    case 'Não concluído':
+      eventos = eventosNaoConcluido; // ✅ Já existe globalmente
+      break;
+    case 'Cadastrado':
+      eventos = eventosCadastrado; // ✅ Já existe globalmente
+      break;
+    case 'Novo registro':
+      // ✅ CORREÇÃO: "Novo registro" mostra eventos de "Em andamento"
+      eventos = eventosEmAndamento; // ✅ Já existe globalmente
+      break;
+    case 'Descredenciado':
+      eventos = ['Descredenciado'];
+      break;
+    default:
+      eventos = [];
+  }
+  
+  console.log("📋 Eventos disponíveis:", eventos);
+  
+  // Adicionar opções ao select
+  eventos.forEach(evento => {
+    const option = document.createElement('option');
+    option.value = evento;
+    option.textContent = evento;
+    selectEvento.appendChild(option);
+  });
+  
+  console.log("✅ Eventos atualizados para situação:", situacao);
+}
+
+    // 🔄 FUNÇÕES DE LOADING
+    function showLoading(message = "Salvando dados...", submessage = "Aguarde um momento") {
+      const overlay = document.getElementById('loadingOverlay');
+      const loadingText = overlay.querySelector('.loading-text');
+      const loadingSubtext = overlay.querySelector('.loading-subtext');
+      
+      loadingText.textContent = message;
+      loadingSubtext.textContent = submessage;
+      overlay.style.display = 'flex';
+    }
+
+    function hideLoading() {
+      const overlay = document.getElementById('loadingOverlay');
+      overlay.style.display = 'none';
+    }
+
+    // 🔥 CORREÇÃO: Verificar se o elemento existe antes de adicionar event listener
+    const modalDetalhes = document.getElementById('modalDetalhes');
+    if (modalDetalhes) {
+      modalDetalhes.addEventListener('click', function(e) {
+        if (e.target === this) {
+          fecharModalDetalhes();
+        }
+      });
+    }
+
+    // Fechar modal com ESC
+    document.addEventListener('keydown', function(e) {
+      if (e.key === 'Escape') {
+        fecharModalDetalhes();
+      }
+    });
+
+    function fecharModalDetalhes() {
+      const modal = document.getElementById('modalDetalhes');
+      modal.style.display = 'none';
+    }
+
+    // 🔥 ADICIONAR PARA EVITAR ERROS COM DATAS
+    function formatarDataParaExibicao(data) {
+      if (!data) return '';
+      
+      try {
+        // Se já estiver no formato brasileiro, retorna como está
+        if (typeof data === 'string' && data.includes('/')) {
+          return data;
+        }
+        
+        // Se for objeto Date ou string ISO, formata
+        const dateObj = new Date(data);
+        if (!isNaN(dateObj.getTime())) {
+          return dateObj.toLocaleDateString('pt-BR');
+        }
+        
+        return data;
+      } catch (error) {
+        return data; // Retorna o valor original em caso de erro
+      }
+    }
+
+function getSituacaoClass(situacao) {
+  if (!situacao) return 'situacao-cadastrado';
+  
+  // 🔥 CORREÇÃO DEFINITIVA: Captura TODAS as variações de "Novo Registro"
+  const situacaoLower = situacao.toLowerCase().trim();
+  const situacaoSemAcentos = situacaoLower.normalize('NFD').replace(/[\u0300-\u036f]/g, '');
+  
+  // Verifica TODAS as possíveis variações de "Novo Registro"
+  if (situacaoLower.includes('novo registro') || 
+      situacaoLower === 'novo registro' ||
+      situacaoLower === 'novo registr' ||
+      situacaoSemAcentos.includes('novo registro') ||
+      situacao.includes('Novo Registro') ||
+      situacao.includes('Novo registro')) {
+    return 'situacao-novo-registro';
+  }
+  else if (situacaoLower.includes('cadastrado')) return 'situacao-cadastrado';
+  else if (situacaoLower.includes('em andamento')) return 'situacao-andamento';
+  else if (situacaoLower.includes('não concluído') || situacaoLower.includes('nao concluido')) return 'situacao-nao-concluido';
+  else if (situacaoLower.includes('descredenciado')) return 'situacao-descredenciado';
+  else return 'situacao-cadastrado';
+}
+
+
+    // 🔥 ADICIONAR: Função para configurar validação em tempo real
+    function configurarValidacaoEmTempoReal() {
+      const campos = document.querySelectorAll('#razao_social, #cnpj_cadastro, #tipo');
+      campos.forEach(campo => {
+        campo.addEventListener('input', function() {
+          this.style.borderColor = '';
+        });
+      });
+    }
+
+    // 🔥 ADICIONAR: Função para remover autorização (útil para testes)
+    function limparAutorizacao() {
+      localStorage.removeItem('usuarioAutorizado');
+      location.reload();
+    }
+
+// 🔥🔥🔥 COLE ESTAS FUNÇÕES NO FINAL DO JAVASCRIPT 🔥🔥🔥
+
+// 🔥 FUNÇÃO PARA AGRUPAR CADASTROS POR CNPJ
+function agruparCadastrosPorCNPJ(cadastros) {
+  const agrupados = {};
+  
+  cadastros.forEach(cadastro => {
+    if (!agrupados[cadastro.cnpj]) {
+      agrupados[cadastro.cnpj] = {
+        razao_social: cadastro.razao_social,
+        nome_fantasia: cadastro.nome_fantasia,
+        cnpj: cadastro.cnpj,
+        tipo: cadastro.tipo,
+        mensalidade: cadastro.mensalidade,
+        adesao: cadastro.adesao,
+        situacao: cadastro.situacao,
+        evento: cadastro.evento,
+        fornecedores: []
+      };
+    }
+    
+    agrupados[cadastro.cnpj].fornecedores.push({
+      nome: cadastro.fornecedor,
+      tarifa: cadastro.tarifa,
+      percentual_tarifa: cadastro.percentual_tarifa,
+      evento: cadastro.evento,
+      id: cadastro.id,
+      situacao: cadastro.situacao
+    });
+  });
+  
+  return Object.values(agrupados);
+}
+
+// 🔥 FUNÇÃO PARA EXIBIR TABELA AGRUPADA
+function exibirTabelaCadastrosAgrupada(cadastrosAgrupados, titulo) {
+  const secao = document.getElementById('secaoCadastros');
+  const tituloElement = document.getElementById('tituloCadastros');
+  const tableContainer = document.getElementById('tableContainer');
+  const tabelaBody = document.getElementById('tabelaCadastrosBody');
+  const loading = document.getElementById('loadingCadastros');
+
+  tituloElement.textContent = `${titulo} (${cadastrosAgrupados.length})`;
+  tabelaBody.innerHTML = '';
+
+  if (cadastrosAgrupados.length === 0) {
+    tabelaBody.innerHTML = `
+      <tr>
+        <td colspan="6" style="text-align: center; padding: 40px;">
+          <i class="fas fa-search" style="font-size: 3rem; color: var(--gray); margin-bottom: 15px;"></i>
+          <h3>Nenhum resultado encontrado</h3>
+          <p>Tente alterar os filtros de pesquisa.</p>
+        </td>
+      </tr>
+    `;
+  } else {
+    cadastrosAgrupados.forEach(cadastro => {
+      const row = criarLinhaTabelaAgrupada(cadastro);
+      tabelaBody.appendChild(row);
+    });
+  }
+
+  loading.style.display = 'none';
+  tableContainer.style.display = 'block';
+  secao.style.display = 'block';
+  atualizarContador();
+  
+  setTimeout(() => {
+    secao.scrollIntoView({ behavior: 'smooth', block: 'start' });
+  }, 300);
+}
+
+// 🔥 FUNÇÃO PARA PADRONIZAR O TEXTO DA SITUAÇÃO
+function padronizarSituacao(situacao) {
+  if (!situacao) return 'Novo registro';
+  
+  const situacaoLower = situacao.toLowerCase().trim();
+  const situacaoSemAcentos = situacaoLower.normalize('NFD').replace(/[\u0300-\u036f]/g, '');
+  
+  // Padroniza para "Novo registro" (minúsculo)
+  if (situacaoLower.includes('novo registro') || 
+      situacaoLower === 'novo registr' ||
+      situacaoSemAcentos.includes('novo registro') ||
+      situacao.includes('Novo Registro') ||
+      situacao.includes('Novo registro')) {
+    return 'Novo registro';
+  }
+  else if (situacaoLower.includes('cadastrado')) return 'Cadastrado';
+  else if (situacaoLower.includes('em andamento')) return 'Em andamento';
+  else if (situacaoLower.includes('não concluído') || situacaoLower.includes('nao concluido')) return 'Não concluído';
+  else if (situacaoLower.includes('descredenciado')) return 'Descredenciado';
+  
+  return situacao; // Mantém original se não identificar
+}
+
+// 🔥 FUNÇÃO PARA CRIAR LINHA DA TABELA AGRUPADA
+function criarLinhaTabelaAgrupada(cadastro) {
   const row = document.createElement('tr');
   row.style.cursor = 'pointer';
   
-// Classes de situação - ✅ CORREÇÃO: "Novo registro" com r minúsculo
-let situacaoClass = 'situacao-cadastrado'; // padrão
-if (cadastro.situacao === 'Novo registro') situacaoClass = 'situacao-novo-registro';
-else if (cadastro.situacao === 'Em andamento') situacaoClass = 'situacao-andamento';
-else if (cadastro.situacao === 'Parado') situacaoClass = 'situacao-parado';
-else if (cadastro.situacao === 'Descredenciado') situacaoClass = 'situacao-descredenciado';
- row.innerHTML = `
-  <td>
-    <div style="font-weight: 600; color: var(--primary);">${cadastro.razao_social || 'N/A'}</div>
-    <div style="font-size: 0.8rem; color: var(--gray);">${cadastro.nome_fantasia || 'Sem nome fantasia'}</div>
-    <div style="font-size: 0.7rem; color: var(--gray); margin-top: 2px;">${cadastro.tipo || 'N/A'}</div>
-  </td>
-  <td>
-    <div style="font-family: monospace; font-size: 0.85rem;">${cadastro.cnpj || 'N/A'}</div>
-  </td>
-  <td>
-    <div style="font-weight: 500;">${cadastro.fornecedor || 'N/A'}</div>
-  </td>
-  <td>
-    <div style="font-size: 0.8rem; max-width: 150px; overflow: hidden; text-overflow: ellipsis; white-space: nowrap;">
-      ${cadastro.evento || 'N/A'}
+  // Classes de situação - USA A MESMA PADRONIZAÇÃO
+const situacaoPadronizada = padronizarSituacao(cadastro.situacao);
+let situacaoClass = 'situacao-cadastrado';
+if (situacaoPadronizada === 'Novo registro') situacaoClass = 'situacao-novo-registro';
+else if (situacaoPadronizada === 'Em andamento') situacaoClass = 'situacao-andamento';
+else if (situacaoPadronizada === 'Não concluído') situacaoClass = 'situacao-nao-concluido';
+else if (situacaoPadronizada === 'Descredenciado') situacaoClass = 'situacao-descredenciado';
+
+    row.innerHTML = `
+  <td style="vertical-align: top; padding: 15px 8px;">
+    <div style="font-weight: 600; color: var(--primary); margin-bottom: 4px;">${cadastro.razao_social || 'N/A'}</div>
+    <div style="font-size: 0.8rem; color: var(--gray); margin-bottom: 4px;">${cadastro.nome_fantasia || 'Sem nome fantasia'}</div>
+    <div style="font-size: 0.7rem; color: var(--info);">
+      <strong>Evento:</strong> ${cadastro.evento || 'N/A'}
+    </div>
+    <div style="font-size: 0.7rem; color: var(--warning);">
+      <strong>Situação:</strong> <span class="status-badge ${getSituacaoClass(cadastro.situacao)}">${padronizarSituacao(cadastro.situacao) || 'N/A'}</span>
     </div>
   </td>
-  <td>
-    <span class="status-badge ${situacaoClass}">${cadastro.situacao || 'N/A'}</span>
+  <td style="vertical-align: top; padding: 15px 8px;">
+    <div style="font-family: monospace; font-size: 0.85rem;">${cadastro.cnpj || 'N/A'}</div>
   </td>
-  <td style="font-weight: 600; color: var(--success);">
-    ${formatarMoedaParaInput(cadastro.mensalidade)}
+  <td style="vertical-align: top; padding: 15px 8px;">
+    <div style="font-weight: 500; background: var(--primary); color: white; padding: 4px 8px; border-radius: 12px; text-align: center; margin-bottom: 4px;">
+      ${cadastro.fornecedores.length} fornecedor(es)
+    </div>
+    <div style="font-size: 0.7rem; color: var(--gray);">
+      ${cadastro.fornecedores.map(f => f.nome).join(', ')}
+    </div>
   </td>
-  <td style="font-weight: 600; color: var(--info);">
-    ${cadastro.adesao === 'Isento' || cadastro.adesao === 0 ? 'Isento' : formatarMoedaParaInput(cadastro.adesao)}
-  </td>
-  <td>
-    <div style="font-weight: 500; color: var(--primary);">${cadastro.tarifa || 'N/A'}</div>
-  </td>
-  <td>
-    <div style="font-weight: 500; color: var(--success);">${formatarPercentual(cadastro.percentual_tarifa)}</div>
-  </td>
-  <td class="acoes-cell">
-    <button class="btn btn-primary btn-sm" onclick="selecionarCadastroParaEditar(event, '${cadastro.cnpj}', '${cadastro.fornecedor}', ${cadastro.id})" title="Editar este cadastro">
-      <i class="fas fa-edit"></i> Editar
-    </button>
-    <button class="btn btn-info btn-sm" onclick="verDetalhesRapido(event, '${cadastro.cnpj}', '${cadastro.fornecedor}', ${cadastro.id})" title="Ver detalhes">
-      <i class="fas fa-eye"></i> Visualizar
-    </button>
-  </td>
+  <td style="vertical-align: middle; font-weight: 600; color: var(--success); padding: 15px 8px; text-align: center;">
+  ${formatarMoedaParaInput(cadastro.mensalidade)}
+</td>
+<td style="vertical-align: middle; font-weight: 600; color: var(--info); padding: 15px 8px; text-align: center;">
+  ${cadastro.adesao === 'Isento' || cadastro.adesao === 0 ? 'Isento' : formatarMoedaParaInput(cadastro.adesao)}
+</td>
+  <td class="acoes-cell" style="vertical-align: middle; padding: 0; height: 100%; text-align: center;">
+  <button class="btn btn-info btn-sm btn-visualizar-compact" onclick="verDetalhesAgrupados('${cadastro.cnpj}')" title="Visualizar">
+    <i class="fas fa-eye"></i> Visualizar
+  </button>
+</td>
 `;
 
   return row;
 }
 
-// 🔥 FUNÇÃO PARA SELECIONAR CADASTRO PARA EDIÇÃO - CORRIGIDA
-function selecionarCadastroParaEditar(event, cnpj, fornecedor, id) {
-  event.stopPropagation(); // Impede que o clique na linha também seja acionado
+// 🔥 FUNÇÃO PARA VER TODAS AS LOJAS DE UM CNPJ (VERSÃO QUE FUNCIONA)
+function verDetalhesAgrupados(cnpj) {
+  console.log("🔍🔍🔍 DEBUG: Função verDetalhesAgrupados CHAMADA");
+  console.log("🔍 CNPJ:", cnpj);
+  console.log("🔍 todosCadastros length:", todosCadastros ? todosCadastros.length : 'NULL');
   
-  console.log(`🎯 Selecionando cadastro: ID ${id}, CNPJ ${cnpj}, Fornecedor ${fornecedor}`);
+  if (!todosCadastros || todosCadastros.length === 0) {
+    console.log("❌ ERRO: todosCadastros está vazio ou não definido");
+    showMessage('error', '❌ Dados não carregados. Clique em "Ver Todos os Cadastros" primeiro.');
+    return;
+  }
   
-  showMessage('info', `🔍 Buscando cadastro...`);
+  // 🔥 CORREÇÃO: Filtrar das lojas que JÁ TEMOS carregadas
+  const lojasDoCNPJ = todosCadastros.filter(cadastro => {
+    console.log("🔍 Comparando:", cadastro.cnpj, "com", cnpj);
+    return cadastro.cnpj === cnpj;
+  });
   
-  // Buscar o cadastro específico pelo ID (mais preciso que CNPJ)
-  google.script.run
-    .withSuccessHandler(function(dados) {
-      if (dados.encontrado) {
-        preencherDadosCadastro(dados);
-        showMessage('success', `✅ Cadastro de "${dados.razao_social}" carregado para edição!`);
-        
-        // FECHAR a tabela ao editar (nova funcionalidade)
-        document.getElementById('secaoCadastros').style.display = 'none';
-        
-        // Scroll para o topo
-        window.scrollTo({ top: 0, behavior: 'smooth' });
-      } else {
-        showMessage('error', '❌ Cadastro não encontrado!');
-      }
-    })
-    .withFailureHandler(function(error) {
-      showMessage('error', '❌ Erro ao buscar cadastro: ' + error.message);
-    })
-    .buscarCadastroPorID(id); // USA A NOVA FUNÇÃO!
-}
-
-    function filtrarTabela(situacao) {
-      const tabelaBody = document.getElementById('tabelaCadastrosBody');
-      const tituloElement = document.getElementById('tituloCadastros');
-      
-      let cadastrosFiltradosTemp = todosCadastros;
-      let titulo = 'Todos os Cadastros';
-
-      if (situacao !== 'all') {
-        cadastrosFiltradosTemp = todosCadastros.filter(cad => cad.situacao === situacao);
-        titulo = `Cadastros - ${situacao}`;
-      }
-
-      cadastrosFiltrados = cadastrosFiltradosTemp;
-      tituloElement.textContent = `${titulo} (${cadastrosFiltradosTemp.length})`;
-      tabelaBody.innerHTML = '';
-
-      if (cadastrosFiltradosTemp.length === 0) {
-        tabelaBody.innerHTML = `
-          <tr>
-            <td colspan="7" style="text-align: center; padding: 40px;">
-              <i class="fas fa-inbox" style="font-size: 3rem; color: var(--gray); margin-bottom: 15px;"></i>
-              <p>Nenhum cadastro encontrado.</p>
-            </td>
-          </tr>
-        `;
-      } else {
-        cadastrosFiltradosTemp.forEach(cadastro => {
-          const row = criarLinhaTabelaMelhorada(cadastro);
-          tabelaBody.appendChild(row);
-        });
-      }
-      
-      atualizarContador();
-    }
-
-    function filtrarPesquisa() {
-      const termo = document.getElementById('pesquisaCadastros').value.toLowerCase().trim();
-      
-      if (!termo) {
-        cadastrosFiltrados = [...todosCadastros];
-        exibirTabelaCadastros(cadastrosFiltrados, 'Todos os Cadastros');
-        return;
-      }
-
-      const resultados = todosCadastros.filter(cadastro => {
-        const razaoSocial = (cadastro.razao_social || '').toLowerCase();
-        const cnpj = (cadastro.cnpj || '').toLowerCase();
-        const fornecedor = (cadastro.fornecedor || '').toLowerCase();
-        const nomeFantasia = (cadastro.nome_fantasia || '').toLowerCase();
-        
-        return razaoSocial.includes(termo) || 
-               cnpj.includes(termo) || 
-               fornecedor.includes(termo) ||
-               nomeFantasia.includes(termo);
-      });
-
-      cadastrosFiltrados = resultados;
-      
-      if (resultados.length === 0) {
-        exibirTabelaCadastros([], `Nenhum resultado para "${termo}"`);
-      } else {
-        exibirTabelaCadastros(resultados, `Resultados para "${termo}"`);
-      }
-    }
-
-    function ordenarCadastros() {
-      const criterio = document.getElementById('ordenacaoCadastros').value;
-      const cadastrosOrdenados = [...cadastrosFiltrados];
-      
-      cadastrosOrdenados.sort((a, b) => {
-        const valorA = (a[criterio] || '').toString().toLowerCase();
-        const valorB = (b[criterio] || '').toString().toLowerCase();
-        
-        return valorA.localeCompare(valorB);
-      });
-
-      exibirTabelaCadastros(cadastrosOrdenados, 'Todos os Cadastros');
-    }
-
-    function recarregarCadastros() {
-      console.log("🔄 Recarregando cadastros...");
-      mostrarTodosCadastros();
-    }
-
-    function verDetalhesRapido(event, cnpj, fornecedor, id) {
-  event.stopPropagation();
+  console.log("✅ Lojas encontradas:", lojasDoCNPJ.length);
+  console.log("✅ Lojas:", lojasDoCNPJ);
   
-  console.log(`👁️ Buscando detalhes do cadastro: ID ${id}, CNPJ ${cnpj}`);
-  
-  showMessage('info', 'Carregando detalhes...');
-  
-  // Buscar dados completos do cadastro
-  google.script.run
-    .withSuccessHandler(function(dados) {
-      if (dados.encontrado) {
-        exibirModalDetalhes(dados);
-      } else {
-        showMessage('error', 'Cadastro não encontrado para visualização');
-      }
-    })
-    .withFailureHandler(function(error) {
-      showMessage('error', 'Erro ao carregar detalhes: ' + error.message);
-    })
-    .buscarCadastroPorID(id); // Usa a mesma função do editar
-}
-
-// 🔥 ADICIONAR PARA EVITAR ERROS COM DATAS
-function formatarDataParaExibicao(data) {
-  if (!data) return '';
-  
-  try {
-    // Se já estiver no formato brasileiro, retorna como está
-    if (typeof data === 'string' && data.includes('/')) {
-      return data;
-    }
-    
-    // Se for objeto Date ou string ISO, formata
-    const dateObj = new Date(data);
-    if (!isNaN(dateObj.getTime())) {
-      return dateObj.toLocaleDateString('pt-BR');
-    }
-    
-    return data;
-  } catch (error) {
-    return data; // Retorna o valor original em caso de erro
+  if (lojasDoCNPJ.length > 0) {
+    console.log("🎯 Chamando exibirModalLojasAgrupadas");
+    exibirModalLojasAgrupadas(cnpj, lojasDoCNPJ);
+  } else {
+    console.log("❌ Nenhuma loja encontrada para CNPJ:", cnpj);
+    showMessage('error', '❌ Nenhuma loja encontrada para este CNPJ');
   }
 }
 
-// 🔥 FUNÇÃO: EXIBIR MODAL COM DETALHES - CORRIGIDA
-function exibirModalDetalhes(dados) {
+// 🔥 FUNÇÃO PARA COR DA BORDA POR SITUAÇÃO (PADRONIZADA)
+function getCorBordaSituacao(situacao) {
+  // 🔥 CORREÇÃO: Padronizar para minúsculo
+  const situacaoLower = situacao ? situacao.toLowerCase() : '';
+  
+  if (situacaoLower.includes('novo registro')) return '#bfe1f6';
+  else if (situacaoLower.includes('cadastrado')) return '#D1E7DD';
+  else if (situacaoLower.includes('em andamento')) return '#FFF3CD';
+  else if (situacaoLower.includes('não concluído') || situacaoLower.includes('nao concluido')) return '#E2E3E5';
+  else if (situacaoLower.includes('descredenciado')) return '#F8D7DA';
+  else return 'var(--border)';
+}
+
+// 🔥 FUNÇÃO PARA EXIBIR MODAL COM TODAS AS LOJAS
+function exibirModalLojasAgrupadas(cnpj, lojas) {
   const modal = document.getElementById('modalDetalhes');
   const content = document.getElementById('modalDetalhesContent');
   
-  // Formatar mensalidade
-  const mensalidadeFormatada = formatarMoedaParaInput(dados.mensalidade);
+  let lojasHTML = '';
   
-  // Criar HTML dos detalhes - CORRETO E LIMPO
+  if (lojas && lojas.length > 0) {
+    lojasHTML = lojas.map(loja => `
+      <div class="loja-item" style="border: 3px solid ${getCorBordaSituacao(loja.situacao)}; border-radius: 8px; padding: 15px; margin-bottom: 10px; background: white; box-shadow: 0 2px 8px rgba(0,0,0,0.1);">
+        <div style="display: flex; justify-content: space-between; align-items: flex-start; margin-bottom: 10px;">
+          <h4 style="margin: 0; color: var(--primary);">🏪 ${loja.fornecedor || 'Fornecedor'}</h4>
+          <span class="status-badge ${getSituacaoClass(loja.situacao)}">${loja.situacao || 'N/A'}</span>
+        </div>
+        
+        <div style="display: grid; grid-template-columns: 1fr 1fr; gap: 10px; margin-bottom: 10px;">
+          <div><strong>📅 Evento:</strong> ${loja.evento || 'N/A'}</div>
+          <div><strong>💰 Tarifa:</strong> ${loja.tarifa || 'N/A'} ${loja.percentual_tarifa || ''}</div>
+          <div><strong>💵 Mensalidade:</strong> ${formatarMoedaParaInput(loja.mensalidade)}</div>
+          <div><strong>🤝 Adesão:</strong> ${loja.adesao === 'Isento' || loja.adesao === 0 ? 'Isento' : formatarMoedaParaInput(loja.adesao)}</div>
+        </div>
+        
+        <div style="margin-top: 10px; display: flex; gap: 10px;">
+          <button class="btn btn-warning btn-sm" onclick="editarCadastroModal('${loja.id}')">
+            <i class="fas fa-edit"></i> Editar
+          </button>
+          <button class="btn btn-info btn-sm" onclick="verDetalhesCadastroModal('${loja.id}')">
+            <i class="fas fa-eye"></i> Detalhes
+          </button>
+        </div>
+      </div>
+    `).join('');
+  } else {
+    lojasHTML = `
+      <div style="text-align: center; padding: 40px; color: var(--gray);">
+        <i class="fas fa-store-slash" style="font-size: 3rem; margin-bottom: 15px;"></i>
+        <h4>Nenhuma loja encontrada</h4>
+        <p>Não há lojas cadastradas para este CNPJ.</p>
+      </div>
+    `;
+  }
+
   content.innerHTML = `
+    <div style="margin-bottom: 15px;">
+      <div style="font-family: monospace; background: #f8f9fa; padding: 10px; border-radius: 6px; text-align: center;">
+        <strong>CNPJ:</strong> ${cnpj}
+      </div>
+    </div>
+    
+    <div style="max-height: 60vh; overflow-y: auto;">
+      <h4 style="color: var(--primary); margin-bottom: 15px;">
+        📊 ${lojas ? lojas.length : 0} loja(s) encontrada(s)
+      </h4>
+      ${lojasHTML}
+    </div>
+  `;
+  
+  modal.style.display = 'flex';
+}
+
+// 🔥 FUNÇÃO PARA EDITAR UMA LOJA ESPECÍFICA (do modal)
+function editarCadastroModal(id) {
+  console.log("✏️ Editando cadastro ID:", id);
+  showLoading("Carregando dados...", "Buscando informações da loja");
+  
+  google.script.run
+    .withSuccessHandler(function(dados) {
+      hideLoading();
+      fecharModalDetalhes(); // Fecha o modal das lojas
+      preencherDadosCadastro(dados); // Preenche o formulário principal
+      
+      // Scroll para o formulário
+      document.getElementById('razao_social').scrollIntoView({ behavior: 'smooth' });
+      showMessage('success', '✅ Cadastro carregado para edição!');
+    })
+    .withFailureHandler(function(error) {
+      hideLoading();
+      showMessage('error', '❌ Erro ao carregar cadastro: ' + error.message);
+    })
+    .buscarCadastroPorID(id);
+}
+
+// 🔥 FUNÇÃO PARA VER DETALHES DE UMA LOJA ESPECÍFICA (do modal)
+function verDetalhesCadastroModal(id) {
+  console.log("👀 Visualizando detalhes ID:", id);
+  showLoading("Carregando detalhes...", "Buscando informações completas");
+  
+  google.script.run
+    .withSuccessHandler(function(dados) {
+      hideLoading();
+      exibirModalDetalhesCompleto(dados); // Mostra modal com todos os detalhes
+    })
+    .withFailureHandler(function(error) {
+      hideLoading();
+      showMessage('error', '❌ Erro ao carregar detalhes: ' + error.message);
+    })
+    .buscarCadastroPorID(id);
+}
+
+// 🔥 FUNÇÃO PARA EXIBIR MODAL COM DETALHES COMPLETOS
+function exibirModalDetalhesCompleto(dados) {
+  const modal = document.getElementById('modalDetalhes');
+  const content = document.getElementById('modalDetalhesContent');
+  
+  const mensalidadeFormatada = formatarMoedaParaInput(dados.mensalidade);
+  const adesaoFormatada = dados.adesao === 'Isento' || dados.adesao === 0 ? 'Isento' : formatarMoedaParaInput(dados.adesao);
+
+  content.innerHTML = `
+    <div class="modal-header">
+      <h3 class="modal-title">📋 Detalhes Completo da Loja</h3>
+      <button class="btn-close" onclick="fecharModalDetalhes()">
+        <i class="fas fa-times"></i>
+      </button>
+    </div>
+    
     <div class="detalhes-grid">
       <div class="detalhe-item">
         <span class="detalhe-label">🏢 Razão Social</span>
@@ -2197,10 +3282,14 @@ function exibirModalDetalhes(dados) {
         <div class="detalhe-valor">${dados.fornecedor || 'N/A'}</div>
       </div>
       
+      <div class="detalhe-item">
+        <span class="detalhe-label">💰 Tarifa</span>
+        <div class="detalhe-valor">${dados.tarifa || 'N/A'} ${dados.percentual_tarifa || ''}</div>
+      </div>
       
       <div class="detalhe-item">
-        <span class="detalhe-label">📅 Data Status</span>
-        <div class="detalhe-valor">${formatarDataParaExibicao(dados.data_status) || 'N/A'}</div>
+        <span class="detalhe-label">📅 Evento</span>
+        <div class="detalhe-valor">${dados.evento || 'N/A'}</div>
       </div>
 
       <div class="detalhe-item">
@@ -2211,6 +3300,11 @@ function exibirModalDetalhes(dados) {
       <div class="detalhe-item">
         <span class="detalhe-label">✍️ Contrato Assinado</span>
         <div class="detalhe-valor">${dados.contrato_assinado || 'N/A'}</div>
+      </div>
+      
+      <div class="detalhe-item">
+        <span class="detalhe-label">📅 Data Status</span>
+        <div class="detalhe-valor">${formatarDataParaExibicao(dados.data_status) || 'N/A'}</div>
       </div>
       
       <div class="detalhe-item">
@@ -2226,8 +3320,13 @@ function exibirModalDetalhes(dados) {
       </div>
       
       <div class="detalhe-item">
-        <span class="detalhe-label">💰 Mensalidade</span>
+        <span class="detalhe-label">💵 Mensalidade</span>
         <div class="detalhe-valor" style="color: var(--success); font-weight: 600;">${mensalidadeFormatada}</div>
+      </div>
+      
+      <div class="detalhe-item">
+        <span class="detalhe-label">🤝 Adesão</span>
+        <div class="detalhe-valor" style="color: var(--info); font-weight: 600;">${adesaoFormatada}</div>
       </div>
       
       <div class="detalhe-item">
@@ -2236,126 +3335,409 @@ function exibirModalDetalhes(dados) {
           <span class="status-badge ${getSituacaoClass(dados.situacao)}">${dados.situacao || 'N/A'}</span>
         </div>
       </div>
+      
+      <div class="detalhe-item" style="grid-column: 1 / -1;">
+        <span class="detalhe-label">📝 Observações</span>
+        <div class="detalhe-valor">${dados.observacoes || 'Nenhuma observação'}</div>
+      </div>
     </div>
-    
-   ${dados.observacoes ? `
-<div class="detalhe-item">
-  <span class="detalhe-label">📝 Status</span> <!-- ✅ AGORA É "Status" -->
-  <div class="detalhe-valor" style="background: #fffbf0; border-left-color: var(--warning);">
-    ${dados.observacoes}
-  </div>
-</div>
-` : ''}
-    
-    <div style="margin-top: 20px; padding: 15px; background: #f8f9fa; border-radius: 10px; text-align: center;">
-      <p style="margin: 0; color: var(--gray); font-size: 0.9rem;">
-        <i class="fas fa-info-circle"></i>
-        Clique em "Editar" para modificar estes dados
-      </p>
-    </div>
-  `;
-  
-  // Exibir modal
-  modal.style.display = 'flex';
-}
 
-// 🔥 FUNÇÃO: FECHAR MODAL
-function fecharModalDetalhes() {
-  const modal = document.getElementById('modalDetalhes');
-  modal.style.display = 'none';
-}
-
-// 🔥 FUNÇÃO AUXILIAR: Classe CSS para situação
-function getSituacaoClass(situacao) {
-  switch(situacao) {
-    case 'Cadastrado': return 'situacao-cadastrado';
-    case 'Em andamento': return 'situacao-andamento';
-    case 'Parado': return 'situacao-parado';
-    case 'Descredenciado': return 'situacao-descredenciado';
-    default: return 'situacao-cadastrado';
-  }
-}
-
-    function atualizarContador() {
-      const contador = document.getElementById('contadorCadastros');
-      contador.textContent = `${cadastrosFiltrados.length} cadastro${cadastrosFiltrados.length !== 1 ? 's' : ''}`;
-    }
-
-    // Fechar sugestões quando clicar fora
-    document.addEventListener('click', function(e) {
-      if (!e.target.closest('.search-container')) {
-        document.getElementById('suggestions').style.display = 'none';
-      }
-    });
-
-// 🔄 FUNÇÕES DE LOADING
-function showLoading(message = "Salvando dados...", submessage = "Aguarde um momento") {
-  const overlay = document.getElementById('loadingOverlay');
-  const loadingText = overlay.querySelector('.loading-text');
-  const loadingSubtext = overlay.querySelector('.loading-subtext');
-  
-  loadingText.textContent = message;
-  loadingSubtext.textContent = submessage;
-  overlay.style.display = 'flex';
-}
-
-function hideLoading() {
-  const overlay = document.getElementById('loadingOverlay');
-  overlay.style.display = 'none';
-}
-
-// Fechar modal clicando fora do conteúdo
-document.getElementById('modalDetalhes').addEventListener('click', function(e) {
-  if (e.target === this) {
-    fecharModalDetalhes();
-  }
-});
-
-// Fechar modal com ESC
-document.addEventListener('keydown', function(e) {
-  if (e.key === 'Escape') {
-    fecharModalDetalhes();
-  }
-});
-
-    // 🔥 INICIALIZAÇÃO
-    document.addEventListener('DOMContentLoaded', function() {
-      console.log('Sistema de Gestão de Cadastros - RESULT inicializado');
-      document.getElementById('mensalidade').value = 'R$ 0,00';
-      document.getElementById('situacao').value = 'Cadastrado';
-    });
-  </script>
-
-<!-- 🔄 OVERLAY DE CARREGAMENTO -->
-<div id="loadingOverlay">
-  <div class="loading-content">
-    <div class="loading-spinner-large"></div>
-    <p class="loading-text">Salvando dados...</p>
-    <p class="loading-subtext">Aguarde um momento</p>
-  </div>
-</div>
-
-<!-- 🔥 MODAL DE DETALHES -->
-<div id="modalDetalhes" class="modal-overlay">
-  <div class="modal-content">
-    <div class="modal-header">
-      <h3 class="modal-title">📋 Detalhes Completo do Cadastro</h3>
-      <button class="btn-close" onclick="fecharModalDetalhes()">
-        <i class="fas fa-times"></i>
-      </button>
-    </div>
-    
-    <div id="modalDetalhesContent">
-      <!-- Conteúdo será preenchido via JavaScript -->
-    </div>
-    
     <div style="text-align: center; margin-top: 25px; padding-top: 20px; border-top: 1px solid var(--border);">
-      <button class="btn btn-primary" onclick="fecharModalDetalhes()">
+      <button class="btn btn-warning" onclick="editarCadastroModal('${dados.id}')">
+        <i class="fas fa-edit"></i> Editar Esta Loja
+      </button>
+      <button class="btn btn-primary" onclick="fecharModalDetalhes()" style="margin-left: 10px;">
         <i class="fas fa-check"></i> Fechar
       </button>
     </div>
-  </div>
-</div>
+  `;
+  
+  modal.style.display = 'flex';
+}
 
+function configurarFiltroEvento(situacao) {
+  const container = document.getElementById('filtroEventoContainer');
+  container.style.display = 'block';
+  
+  // 🔥 CORREÇÃO: Salvar a situação atual CORRETAMENTE
+  container.setAttribute('data-situacao-atual', situacao);
+  console.log("🎯 Situação do filtro definida para:", situacao);
+}
+
+function filtrarSugestoesEvento() {
+  const input = document.getElementById('inputFiltroEvento');
+  const suggestions = document.getElementById('suggestionsEvento');
+  const container = document.getElementById('filtroEventoContainer');
+  const termo = input.value.toLowerCase().trim();
+  
+  // Mostrar/ocultar botão limpar
+  const btnLimpar = document.getElementById('btnLimparFiltro');
+  btnLimpar.style.display = termo ? 'block' : 'none';
+  
+  if (termo.length < 1) {
+    suggestions.style.display = 'none';
+    return;
+  }
+  
+  // 🔥 CORREÇÃO: Pegar apenas os eventos da situação atual
+  const situacaoAtual = container.dataset.situacaoAtual || 'all';
+  let eventosDaSituacao = [];
+  
+  switch(situacaoAtual) {
+    case 'all':
+      // Se é "Todos", mostrar eventos de todas as situações
+      eventosDaSituacao = [
+        ...eventosEmAndamento,
+        ...eventosNaoConcluido,
+        ...eventosCadastrado,
+        'Descredenciado'
+      ];
+      break;
+    case 'Novo registro':
+    case 'Em andamento':
+      eventosDaSituacao = eventosEmAndamento;
+      break;
+    case 'Não concluído':
+      eventosDaSituacao = eventosNaoConcluido;
+      break;
+    case 'Cadastrado':
+      eventosDaSituacao = eventosCadastrado;
+      break;
+    case 'Descredenciado':
+      eventosDaSituacao = ['Descredenciado'];
+      break;
+    default:
+      eventosDaSituacao = [];
+  }
+  
+  // Filtrar eventos que correspondem ao termo
+  const eventosFiltrados = eventosDaSituacao.filter(evento => 
+    evento.toLowerCase().includes(termo)
+  );
+  
+  if (eventosFiltrados.length === 0) {
+    suggestions.style.display = 'none';
+    return;
+  }
+  
+  // 🔥 CORREÇÃO: Agrupar por situação (mesmo sendo uma só, para manter a estrutura)
+  let html = '';
+  
+  // Se é "Todos", agrupar por situação original
+  if (situacaoAtual === 'all') {
+    const eventosAgrupados = {
+      'Em andamento': eventosFiltrados.filter(evento => eventosEmAndamento.includes(evento)),
+      'Não concluído': eventosFiltrados.filter(evento => eventosNaoConcluido.includes(evento)),
+      'Cadastrado': eventosFiltrados.filter(evento => eventosCadastrado.includes(evento)),
+      'Descredenciado': eventosFiltrados.filter(evento => evento === 'Descredenciado')
+    };
+    
+    Object.keys(eventosAgrupados).forEach(situacao => {
+      if (eventosAgrupados[situacao].length > 0) {
+        html += `<div class="suggestion-evento-section">${situacao}</div>`;
+        eventosAgrupados[situacao].forEach(evento => {
+          html += `
+            <div class="suggestion-evento-item" onclick="selecionarEventoFiltro('${evento}')">
+              ${evento}
+            </div>
+          `;
+        });
+      }
+    });
+  } else {
+    // Se é uma situação específica, mostrar só os eventos dela
+    html += `<div class="suggestion-evento-section">${situacaoAtual}</div>`;
+    eventosFiltrados.forEach(evento => {
+      html += `
+        <div class="suggestion-evento-item" onclick="selecionarEventoFiltro('${evento}')">
+          ${evento}
+        </div>
+      `;
+    });
+  }
+  
+  suggestions.innerHTML = html;
+  suggestions.style.display = 'block';
+}
+
+function selecionarEventoFiltro(evento) {
+  const input = document.getElementById('inputFiltroEvento');
+  const suggestions = document.getElementById('suggestionsEvento');
+  
+  input.value = evento;
+  suggestions.style.display = 'none';
+  
+  // Aplicar o filtro
+  aplicarFiltroEvento(evento);
+}
+
+function aplicarFiltroEvento(evento) {
+  // Adicionar à lista de filtros ativos
+  const tagsContainer = document.getElementById('tagsFiltrosAtivos');
+  const filtroExistente = Array.from(tagsContainer.children).find(tag => 
+    tag.textContent.includes(evento)
+  );
+  
+  if (!filtroExistente) {
+    const tag = document.createElement('div');
+    tag.className = 'filtro-chip ativo';
+    tag.innerHTML = `
+      ${evento}
+      <button class="remover" onclick="removerFiltroEvento('${evento}')">
+        <i class="fas fa-times"></i>
+      </button>
+    `;
+    tagsContainer.appendChild(tag);
+    tagsContainer.style.display = 'flex';
+  }
+
+  // 🔥🔥🔥 NOVA LINHA - APLICAR TODOS OS FILTROS (OR)
+  aplicarFiltrosAtivos();
+}
+
+function removerFiltroEvento(evento) {
+  const tagsContainer = document.getElementById('tagsFiltrosAtivos');
+  const tagParaRemover = Array.from(tagsContainer.children).find(tag => 
+    tag.textContent.includes(evento)
+  );
+  
+  if (tagParaRemover) {
+    tagParaRemover.remove();
+  }
+
+  // 🔥🔥🔥 SEMPRE REAPLICAR OS FILTROS RESTANTES
+  aplicarFiltrosAtivos();
+}
+
+// 🔥🔥🔥 FUNÇÃO PARA APLICAR FILTRO OR (MOSTRAR LOJAS COM PELO MENOS 1 DOS EVENTOS)
+function aplicarFiltrosAtivos() {
+  const tagsContainer = document.getElementById('tagsFiltrosAtivos');
+  const eventosAtivos = Array.from(tagsContainer.children).map(tag => 
+    tag.textContent.trim().replace('×', '').trim()
+  );
+  
+  if (eventosAtivos.length > 0) {
+    // 🔥 FILTRO OR: Mostrar cadastros que tenham QUALQUER um dos eventos selecionados
+    cadastrosFiltrados = todosCadastros.filter(cadastro => 
+      eventosAtivos.includes(cadastro.evento)
+    );
+    
+    const cadastrosAgrupados = agruparCadastrosPorCNPJ(cadastrosFiltrados);
+    exibirTabelaCadastrosAgrupada(cadastrosAgrupados, `Filtrado por: ${eventosAtivos.join(' OU ')}`);
+    
+    tagsContainer.style.display = 'flex';
+  } else {
+    // Se não há filtros, mostrar todos
+    tagsContainer.style.display = 'none';
+    recarregarCadastros();
+  }
+}
+
+
+function limparFiltroEvento() {
+  const input = document.getElementById('inputFiltroEvento');
+  const suggestions = document.getElementById('suggestionsEvento');
+  const btnLimpar = document.getElementById('btnLimparFiltro');
+  
+  input.value = '';
+  suggestions.style.display = 'none';
+  btnLimpar.style.display = 'none';
+  
+  // Remover todos os filtros
+  const tagsContainer = document.getElementById('tagsFiltrosAtivos');
+  tagsContainer.innerHTML = '';
+  tagsContainer.style.display = 'none';
+  
+  recarregarCadastros();
+}
+
+
+// 🔥 FUNÇÃO PARA CARREGAR EVENTOS NO FILTRO
+function carregarEventosParaFiltro(situacao) {
+  const filtroEvento = document.getElementById('filtroEvento');
+  
+  // Limpar opções atuais (mantendo "Todos os eventos")
+  const opcaoTodos = filtroEvento.querySelector('option[value=""]');
+  filtroEvento.innerHTML = '';
+  if (opcaoTodos) {
+    filtroEvento.appendChild(opcaoTodos);
+  }
+  
+  // Coletar eventos únicos baseados na situação
+  let eventosUnicos = [];
+  
+  if (situacao === 'all') {
+    eventosUnicos = [...new Set(todosCadastros
+      .filter(cad => cad.evento && cad.evento.trim() !== '')
+      .map(cad => cad.evento)
+    )].sort();
+  } else {
+    eventosUnicos = [...new Set(todosCadastros
+      .filter(cad => cad.situacao === situacao && cad.evento && cad.evento.trim() !== '')
+      .map(cad => cad.evento)
+    )].sort();
+  }
+  
+  // Adicionar eventos ao select
+  eventosUnicos.forEach(evento => {
+    const option = document.createElement('option');
+    option.value = evento;
+    option.textContent = evento;
+    filtroEvento.appendChild(option);
+  });
+}
+
+// 🔥 FUNÇÃO PARA FILTRAR PESQUISA
+function filtrarPesquisa() {
+  const termo = document.getElementById('pesquisaCadastros').value.toLowerCase().trim();
+  console.log("🔍 Pesquisando por:", termo);
+  
+  if (!termo) {
+    // Se campo vazio, mostrar todos
+    cadastrosFiltrados = [...todosCadastros];
+  } else {
+    // Filtrar por múltiplos campos
+    cadastrosFiltrados = todosCadastros.filter(cadastro => 
+      (cadastro.razao_social && cadastro.razao_social.toLowerCase().includes(termo)) ||
+      (cadastro.nome_fantasia && cadastro.nome_fantasia.toLowerCase().includes(termo)) ||
+      (cadastro.cnpj && cadastro.cnpj.includes(termo)) ||
+      (cadastro.fornecedor && cadastro.fornecedor.toLowerCase().includes(termo)) ||
+      (cadastro.evento && cadastro.evento.toLowerCase().includes(termo))
+    );
+  }
+  
+  const cadastrosAgrupados = agruparCadastrosPorCNPJ(cadastrosFiltrados);
+  exibirTabelaCadastrosAgrupada(cadastrosAgrupados, `Resultados para: "${termo}"`);
+}
+
+// 🔥 FUNÇÃO PARA ATUALIZAR CONTADOR
+function atualizarContador() {
+  const contador = document.getElementById('contadorCadastros');
+  const cadastrosVisiveis = document.querySelectorAll('#tabelaCadastrosBody tr').length;
+  contador.textContent = `${cadastrosVisiveis} cadastro${cadastrosVisiveis !== 1 ? 's' : ''}`;
+}
+
+// 🔥 FUNÇÕES ADICIONAIS PARA COMPLETAR
+function ordenarCadastros() {
+  const criterio = document.getElementById('ordenacaoCadastros').value;
+  console.log("🔀 Ordenando por:", criterio);
+  
+  if (cadastrosFiltrados.length === 0) return;
+  
+  const cadastrosOrdenados = [...cadastrosFiltrados].sort((a, b) => {
+    const valorA = a[criterio] || '';
+    const valorB = b[criterio] || '';
+    
+    if (typeof valorA === 'string' && typeof valorB === 'string') {
+      return valorA.localeCompare(valorB);
+    }
+    return 0;
+  });
+  
+  const cadastrosAgrupados = agruparCadastrosPorCNPJ(cadastrosOrdenados);
+  exibirTabelaCadastrosAgrupada(cadastrosAgrupados, 'Cadastros Ordenados');
+}
+
+function recarregarCadastros() {
+  console.log("🔄 Recarregando cadastros...");
+  mostrarTodosCadastros();
+}
+
+function filtrarSugestoesEventoSearch() {
+  const input = document.getElementById('inputEventoSearch');
+  const suggestions = document.getElementById('suggestionsEventoSearch');
+  const termo = input.value.toLowerCase().trim();
+  
+  if (termo.length < 1) {
+    suggestions.style.display = 'none';
+    return;
+  }
+  
+  // 🔥 OBTER EVENTOS BASEADO NA SITUAÇÃO ATUAL DO FORMULÁRIO
+  const situacaoAtual = document.getElementById('situacao').value;
+  let eventosDaSituacao = [];
+  
+  switch(situacaoAtual) {
+    case 'Novo registro':
+    case 'Em andamento':
+      eventosDaSituacao = eventosEmAndamento;
+      break;
+    case 'Não concluído':
+      eventosDaSituacao = eventosNaoConcluido;
+      break;
+    case 'Cadastrado':
+      eventosDaSituacao = eventosCadastrado;
+      break;
+    case 'Descredenciado':
+      eventosDaSituacao = ['Descredenciado'];
+      break;
+    default:
+      eventosDaSituacao = [];
+  }
+  
+  // Filtrar eventos que correspondem ao termo
+  const eventosFiltrados = eventosDaSituacao.filter(evento => 
+    evento.toLowerCase().includes(termo)
+  );
+  
+  if (eventosFiltrados.length === 0) {
+    suggestions.innerHTML = `
+      <div class="suggestion-evento-item-search" style="color: var(--gray); font-style: italic;">
+        <i class="fas fa-search" style="margin-right: 8px;"></i>
+        Nenhum evento encontrado para "${termo}"
+      </div>
+    `;
+    suggestions.style.display = 'block';
+    return;
+  }
+  
+  // Montar HTML das sugestões
+  let html = '';
+  
+  // Agrupar por situação
+  html += `<div class="suggestion-evento-section-search">${situacaoAtual}</div>`;
+  
+  eventosFiltrados.forEach(evento => {
+    html += `
+      <div class="suggestion-evento-item-search" onclick="selecionarEventoSearch('${evento}')">
+        <i class="fas fa-calendar-alt" style="margin-right: 8px;"></i>
+        ${evento}
+      </div>
+    `;
+  });
+  
+  suggestions.innerHTML = html;
+  suggestions.style.display = 'block';
+}
+
+// Função para selecionar evento no search
+function selecionarEventoSearch(evento) {
+  const input = document.getElementById('inputEventoSearch');
+  const suggestions = document.getElementById('suggestionsEventoSearch');
+  const selectEvento = document.getElementById('evento');
+  
+  // Definir valores
+  input.value = evento;
+  selectEvento.value = evento;
+  
+  // Ocultar sugestões
+  suggestions.style.display = 'none';
+  
+  console.log("✅ Evento selecionado:", evento);
+}
+
+// 🔥 ADICIONAR: Event listener para fechar sugestões ao clicar fora
+document.addEventListener('click', function(e) {
+  const suggestions = document.getElementById('suggestionsEventoSearch');
+  const input = document.getElementById('inputEventoSearch');
+  
+  if (suggestions && suggestions.style.display === 'block') {
+    if (!suggestions.contains(e.target) && e.target !== input) {
+      suggestions.style.display = 'none';
+    }
+  }
+});
+
+  </script>
 </body>
 </html>
