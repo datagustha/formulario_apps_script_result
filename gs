@@ -224,7 +224,7 @@ function cadastrarNovo(aba, dados) {
   }
 }
 
-// 🔥🔥🔥 FUNÇÃO ATUALIZAR CADASTRO - CORRIGIDA E FUNCIONANDO
+// 🔥🔥🔥 FUNÇÃO ATUALIZAR CADASTRO - CORRIGIDA (DATA ATIVAÇÃO NÃO MUDA)
 function atualizarCadastro(aba, dados) {
   try {
     console.log("✏️ ATUALIZAR CADASTRO - INICIANDO");
@@ -235,6 +235,13 @@ function atualizarCadastro(aba, dados) {
     if (linhaAtualizar < 2 || linhaAtualizar > aba.getLastRow()) {
       return { success: false, message: "Registro não encontrado" };
     }
+
+    // 🔥🔥🔥 CORREÇÃO 1: BUSCAR A DATA DE ATIVAÇÃO ORIGINAL
+    const dadosAtuais = aba.getRange(linhaAtualizar, 1, 1, 17).getValues()[0];
+    const dataAtivacaoOriginal = dadosAtuais[10]; // Coluna K - Ativação
+    
+    console.log("📅 Data ativação original:", dataAtivacaoOriginal);
+    console.log("📅 Tipo da data original:", typeof dataAtivacaoOriginal);
 
     // 🔥 CORREÇÃO: Processar fornecedores corretamente
     let fornecedorParaAtualizar = '';
@@ -259,6 +266,24 @@ function atualizarCadastro(aba, dados) {
     // Garantir que a situação seja válida
     const situacaoValida = (dados.situacao && dados.situacao.trim() !== '') ? dados.situacao : 'Novo registro';
 
+    // 🔥🔥🔥 CORREÇÃO 2: MANTER A DATA DE ATIVAÇÃO ORIGINAL
+    let dataAtivacaoParaSalvar = dataAtivacaoOriginal;
+    
+    // Se for um objeto Date, formatar corretamente
+    if (dataAtivacaoOriginal instanceof Date) {
+      dataAtivacaoParaSalvar = Utilities.formatDate(dataAtivacaoOriginal, Session.getScriptTimeZone(), "dd/MM/yyyy");
+    }
+    // Se já for string, manter como está
+    else if (typeof dataAtivacaoOriginal === 'string') {
+      dataAtivacaoParaSalvar = dataAtivacaoOriginal;
+    }
+    // Se estiver vazia, usar a data atual (apenas para novos registros)
+    else if (!dataAtivacaoOriginal || dataAtivacaoOriginal === '') {
+      dataAtivacaoParaSalvar = Utilities.formatDate(new Date(), Session.getScriptTimeZone(), "dd/MM/yyyy");
+    }
+
+    console.log("📅 Data ativação que será salva:", dataAtivacaoParaSalvar);
+
     // Array com 17 colunas na ORDEM CORRETA
     const novosDados = [
       normalizarTexto(dados.razao_social) || '',
@@ -266,14 +291,14 @@ function atualizarCadastro(aba, dados) {
       dados.cnpj ? dados.cnpj.toString() : '',
       normalizarTexto(dados.tipo) || '',
       normalizarTexto(fornecedorParaAtualizar),
-      // ✅ CORREÇÃO 1: Data com segundos
+      // ✅ Data ÚLTIMO EVENTO atualizada (com segundos)
       Utilities.formatDate(new Date(), Session.getScriptTimeZone(), "dd/MM/yyyy HH:mm:ss"),
       normalizarTexto(dados.evento) || '',
       normalizarTexto(dados.observacoes) || '',
       normalizarTexto(dados.contrato_enviado) || '',
       normalizarTexto(dados.contrato_assinado) || '',
-      // ✅ CORREÇÃO 2: Data ativação formatada
-      Utilities.formatDate(new Date(), Session.getScriptTimeZone(), "dd/MM/yyyy"),
+      // 🔥🔥🔥 DATA ATIVAÇÃO ORIGINAL (NÃO MUDA)
+      dataAtivacaoParaSalvar,
       dados.link || '',
       mensalidadeNumero,
       tarifaParaAtualizar || '', // 🔥 NÃO aplicar normalizarTexto
@@ -281,6 +306,7 @@ function atualizarCadastro(aba, dados) {
       adesaoNumero,
       normalizarTexto(situacaoValida)
     ];
+
     console.log("📝 Atualizando linha:", linhaAtualizar);
     console.log("📊 Novos dados:", novosDados);
     
