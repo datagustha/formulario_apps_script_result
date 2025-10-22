@@ -426,7 +426,7 @@
       color: #856404;
     }
     
-    .situacao-nao-concluido {
+    .situacao-rejeitado {
       background: #E2E3E5;
       color: #383D41;
     }
@@ -1292,7 +1292,7 @@
               <option value="NOVO REGISTRO">NOVO REGISTRO</option>
               <option value="CADASTRADO">CADASTRADO</option>
               <option value="EM ANDAMENTO">EM ANDAMENTO</option>
-              <option value="NAO CONCLUIDO">NAO CONCLUIDO</option>
+              <option value="REJEITADO">REJEITADO</option>
               <option value="DESCREDENCIADO">DESCREDENCIADO</option>
             </select>
           </div>
@@ -1588,8 +1588,8 @@
     <button type="button" class="btn btn-warning btn-sm" onclick="filtrarTabela('EM ANDAMENTO')">
       Em Andamento
     </button>
-    <button type="button" class="btn btn-danger btn-sm" onclick="filtrarTabela('NAO CONCLUIDO')">
-      Não Concluídos
+    <button type="button" class="btn btn-danger btn-sm" onclick="filtrarTabela('REJEITADO')">
+      Rejeitado
     </button>
     <button type="button" class="btn btn-secondary btn-sm" onclick="filtrarTabela('DESCREDENCIADO')">
       Descredenciados
@@ -1775,8 +1775,8 @@
       "SOLICITOU MAIS INFORMACOES", "TELEFONE ALTERADO"
     ].sort();
 
-    const eventosNaoConcluido = [
-      "CANCELADO", "BLOQUEADO", "DESISTIU", "CLIENTE NAO INTERESSADO", "SEM RETORNO",
+    const eventosRejeitado = [
+      "REJEITADO", "BLOQUEADO", "DESISTIU", "CLIENTE NAO INTERESSADO", "SEM RETORNO",
       "NEGOCIACAO PARADA", "PROCESSO ESTAGNADO"
     ].sort();
 
@@ -3329,8 +3329,8 @@ function atualizarEventos() {
   // ✅ CORREÇÃO: Usar comparações consistentes
   if (situacao === 'NOVO REGISTRO' || situacao === 'EM ANDAMENTO') {
     eventos = eventosEmAndamento;
-  } else if (situacao === 'NAO CONCLUIDO') {
-    eventos = eventosNaoConcluido;
+  } else if (situacao === 'REJEITADO') {
+    eventos = eventosRejeitado;
   } else if (situacao === 'CADASTRADO') {
     eventos = eventosCadastrado;
   } else if (situacao === 'DESCREDENCIADO') {
@@ -3430,7 +3430,7 @@ function getSituacaoClass(situacao) {
   if (situacaoUpper.includes('NOVO REGISTRO')) return 'situacao-novo-registro';
   else if (situacaoUpper.includes('CADASTRADO')) return 'situacao-cadastrado';
   else if (situacaoUpper.includes('EM ANDAMENTO')) return 'situacao-andamento';
-  else if (situacaoUpper.includes('NÃO CONCLUÍDO') || situacaoUpper.includes('NAO CONCLUIDO')) return 'situacao-nao-concluido';
+  else if (situacaoUpper.includes('REJEITADO') || situacaoUpper.includes('REJEITADO')) return 'situacao-rejeitado';
   else if (situacaoUpper.includes('DESCREDENCIADO')) return 'situacao-descredenciado';
   else return 'situacao-cadastrado';
 }
@@ -3533,7 +3533,7 @@ function padronizarSituacao(situacao) {
   if (situacaoUpper.includes('NOVO REGISTRO')) return 'NOVO REGISTRO';
   else if (situacaoUpper.includes('CADASTRADO')) return 'CADASTRADO';
   else if (situacaoUpper.includes('EM ANDAMENTO')) return 'EM ANDAMENTO';
-  else if (situacaoUpper.includes('NÃO CONCLUÍDO') || situacaoUpper.includes('NAO CONCLUIDO')) return 'NÃO CONCLUÍDO';
+  else if (situacaoUpper.includes('REJEITADO') || situacaoUpper.includes('REJEITADO')) return 'REJEITADO';
   else if (situacaoUpper.includes('DESCREDENCIADO')) return 'DESCREDENCIADO';
   
   return situacaoUpper;
@@ -3549,7 +3549,7 @@ const situacaoPadronizada = padronizarSituacao(cadastro.situacao);
 let situacaoClass = 'situacao-cadastrado';
 if (situacaoPadronizada === 'Novo registro') situacaoClass = 'situacao-novo-registro';
 else if (situacaoPadronizada === 'Em andamento') situacaoClass = 'situacao-andamento';
-else if (situacaoPadronizada === 'Não concluído') situacaoClass = 'situacao-nao-concluido';
+else if (situacaoPadronizada === 'Rejeitado') situacaoClass = 'situacao-rejeitado';
 else if (situacaoPadronizada === 'Descredenciado') situacaoClass = 'situacao-descredenciado';
 
     row.innerHTML = `
@@ -3628,7 +3628,7 @@ function getCorBordaSituacao(situacao) {
   if (situacaoLower.includes('novo registro')) return '#bfe1f6';
   else if (situacaoLower.includes('cadastrado')) return '#D1E7DD';
   else if (situacaoLower.includes('em andamento')) return '#FFF3CD';
-  else if (situacaoLower.includes('não concluído') || situacaoLower.includes('nao concluido')) return '#E2E3E5';
+  else if (situacaoLower.includes('rejeitado') || situacaoLower.includes('rejeitado')) return '#E2E3E5';
   else if (situacaoLower.includes('descredenciado')) return '#F8D7DA';
   else return 'var(--border)';
 }
@@ -3947,7 +3947,7 @@ function filtrarSugestoesEvento() {
       // Se é "Todos", mostrar eventos de todas as situações
       eventosDaSituacao = [
         ...eventosEmAndamento,
-        ...eventosNaoConcluido,
+        ...eventosRejeitado,
         ...eventosCadastrado,
         'Descredenciado'
       ];
@@ -3956,8 +3956,8 @@ function filtrarSugestoesEvento() {
     case 'Em andamento':
       eventosDaSituacao = eventosEmAndamento;
       break;
-    case 'Não concluído':
-      eventosDaSituacao = eventosNaoConcluido;
+    case 'Rejeitado':
+      eventosDaSituacao = eventosRejeitado;
       break;
     case 'Cadastrado':
       eventosDaSituacao = eventosCadastrado;
@@ -3986,7 +3986,7 @@ function filtrarSugestoesEvento() {
   if (situacaoAtual === 'all') {
     const eventosAgrupados = {
       'Em andamento': eventosFiltrados.filter(evento => eventosEmAndamento.includes(evento)),
-      'Não concluído': eventosFiltrados.filter(evento => eventosNaoConcluido.includes(evento)),
+      'Rejeitado': eventosFiltrados.filter(evento => eventosRejeitado.includes(evento)),
       'Cadastrado': eventosFiltrados.filter(evento => eventosCadastrado.includes(evento)),
       'Descredenciado': eventosFiltrados.filter(evento => evento === 'Descredenciado')
     };
@@ -4223,9 +4223,9 @@ function filtrarSugestoesEventoSearch() {
   } else if (situacaoAtual === 'EM ANDAMENTO') {
     eventosDaSituacao = eventosEmAndamento;
     console.log("📝 Carregando eventos EM ANDAMENTO:", eventosEmAndamento);
-  } else if (situacaoAtual === 'NAO CONCLUIDO') {
-    eventosDaSituacao = eventosNaoConcluido;
-    console.log("📝 Carregando eventos NAO CONCLUIDO:", eventosNaoConcluido);
+  } else if (situacaoAtual === 'REJEITADO') {
+    eventosDaSituacao = eventosRejeitado;
+    console.log("📝 Carregando eventos REJEITADO:", eventosRejeitado);
   } else if (situacaoAtual === 'CADASTRADO') {
     eventosDaSituacao = eventosCadastrado;
     console.log("📝 Carregando eventos CADASTRADO:", eventosCadastrado);
@@ -4281,7 +4281,7 @@ function testarEventos() {
   console.log("NOVO REGISTRO:", eventosNovoRegistro);
   console.log("CADASTRADO:", eventosCadastrado);
   console.log("EM ANDAMENTO:", eventosEmAndamento);
-  console.log("NÃO CONCLUÍDO:", eventosNaoConcluido);
+  console.log("REJEITADO:", eventosRejeitado);
   console.log("DESCREDENCIADO:", eventosDescredenciado);
   
   // Testar a função
@@ -4337,7 +4337,7 @@ setTimeout(() => {
   console.log("=== 🔥 TESTE DE EVENTOS ===");
   console.log("Eventos Em Andamento:", eventosEmAndamento);
   console.log("Eventos Cadastrado:", eventosCadastrado);
-  console.log("Eventos Não Concluído:", eventosNaoConcluido);
+  console.log("Eventos Rejeitado:", eventosRejeitado);
 }, 2000);
 
 
