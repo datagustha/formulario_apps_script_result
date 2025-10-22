@@ -435,6 +435,12 @@
       background: #F8D7DA;
       color: #721C24;
     }
+
+    .situacao-desistiu {
+      background: #e6cff2 !important;
+      color: #4a1e6b !important;
+      border: 1px solid #d4b5e6 !important;
+    }
     
     .cadastro-info {
       margin-bottom: 8px;
@@ -1294,8 +1300,9 @@
               <option value="EM ANDAMENTO">EM ANDAMENTO</option>
               <option value="REJEITADO">REJEITADO</option>
               <option value="DESCREDENCIADO">DESCREDENCIADO</option>
+              <option value="DESISTIU">DESISTIU</option> <!-- NOVA SITUAÇÃO AQUI -->
             </select>
-          </div>
+            </div> <!-- 🔥 ADICIONE ESTA LINHA - FECHA O form-group DA SITUAÇÃO -->
 
           <!-- 🔥 FORNECEDORES COM TARIFAS INDIVIDUAIS -->
           <div class="form-group" style="grid-column: 1 / -1;">
@@ -1575,26 +1582,31 @@
   <div style="font-weight: 600; color: var(--primary); margin-bottom: 10px;">
     <i class="fas fa-filter"></i> Filtrar por Situação:
   </div>
-  <div class="filtros-container" id="filtrosContainer" style="display: none;">
-    <button type="button" class="btn btn-outline btn-sm" onclick="filtrarTabela('all')">
-      Todos
-    </button>
-    <button type="button" class="btn btn-sm" onclick="filtrarTabela('NOVO REGISTRO')" style="background-color: #bfe1f6; color: #2D3047; border: 1px solid #a1c9e4;">
-      Novos
-    </button>
-    <button type="button" class="btn btn-success btn-sm" onclick="filtrarTabela('CADASTRADO')">
-      Cadastrados
-    </button>
-    <button type="button" class="btn btn-warning btn-sm" onclick="filtrarTabela('EM ANDAMENTO')">
-      Em Andamento
-    </button>
-    <button type="button" class="btn btn-danger btn-sm" onclick="filtrarTabela('REJEITADO')">
-      Rejeitado
-    </button>
-    <button type="button" class="btn btn-secondary btn-sm" onclick="filtrarTabela('DESCREDENCIADO')">
-      Descredenciados
-    </button>
-  </div>
+    <div class="filtros-container" id="filtrosContainer" style="display: none;">
+  <button type="button" class="btn btn-outline btn-sm" onclick="filtrarTabela('all')">
+    Todos
+  </button>
+  <button type="button" class="btn btn-sm" onclick="filtrarTabela('NOVO REGISTRO')" style="background-color: #bfe1f6; color: #2D3047; border: 1px solid #a1c9e4;">
+    Novos
+  </button>
+  <button type="button" class="btn btn-success btn-sm" onclick="filtrarTabela('CADASTRADO')">
+    Cadastrados
+  </button>
+  <button type="button" class="btn btn-warning btn-sm" onclick="filtrarTabela('EM ANDAMENTO')">
+    Em Andamento
+  </button>
+  <!-- 🔥 CORREÇÃO: REJEITADO AGORA É CINZA -->
+  <button type="button" class="btn btn-secondary btn-sm" onclick="filtrarTabela('REJEITADO')">
+    Rejeitado
+  </button>
+  <!-- 🔥 CORREÇÃO: DESCREDENCIADO AGORA É VERMELHO -->
+  <button type="button" class="btn btn-danger btn-sm" onclick="filtrarTabela('DESCREDENCIADO')">
+    Descredenciados
+  </button>
+  <!-- NOVO BOTÃO DESISTIU -->
+  <button type="button" class="btn btn-sm" onclick="filtrarTabela('DESISTIU')" style="background-color: #e6cff2; color: #4a1e6b; border: 1px solid #d4b5e6;">
+    Desistiu
+  </button>
 </div>
 
   <!-- BARRA DE PESQUISA MELHORADA -->
@@ -1784,6 +1796,13 @@
       "DESCREDENCIADO", "CONTRATO CANCELADO", "LOJA DESATIVADA", "FORNECEDOR REMOVIDO",
       "PROCESSO ENCERRADO", "CADASTRO EXPIRADO"
     ].sort();
+
+    // 🔥 NOVOS EVENTOS PARA SITUAÇÃO "DESISTIU"
+const eventosDesistiu = [
+  "DESISTIU", "CLIENTE DESISTIU", "DESISTÊNCIA DO CLIENTE", "DESISTÊNCIA VOLUNTÁRIA",
+  "DESISTIU DO PROCESSO", "DESISTIU DA NEGOCIAÇÃO", "DESISTIU DO CADASTRO",
+  "NÃO QUIS CONTINUAR", "DESINTERESSE DO CLIENTE", "ABANDONOU O PROCESSO"
+].sort();
 
     // ✅ VERIFICAR SE USUÁRIO JÁ ESTÁ AUTORIZADO AO CARREGAR A PÁGINA
     document.addEventListener('DOMContentLoaded', function() {
@@ -3334,7 +3353,9 @@ function atualizarEventos() {
   } else if (situacao === 'CADASTRADO') {
     eventos = eventosCadastrado;
   } else if (situacao === 'DESCREDENCIADO') {
-    eventos = ['DESCREDENCIADO'];
+    eventos = eventosDescredenciado;
+  } else if (situacao === 'DESISTIU') {
+    eventos = eventosDesistiu; // 🔥 NOVOS EVENTOS PARA DESISTIU
   }
   
   console.log("📋 Eventos disponíveis:", eventos);
@@ -3350,6 +3371,7 @@ function atualizarEventos() {
   // ✅ CORREÇÃO: Atualizar também o campo de search
   atualizarEventosSearch();
 }
+
 
 // 🔥 ADICIONE ESTA FUNÇÃO PARA ATUALIZAR O CAMPO DE SEARCH
 function atualizarEventosSearch() {
@@ -3432,6 +3454,7 @@ function getSituacaoClass(situacao) {
   else if (situacaoUpper.includes('EM ANDAMENTO')) return 'situacao-andamento';
   else if (situacaoUpper.includes('REJEITADO') || situacaoUpper.includes('REJEITADO')) return 'situacao-rejeitado';
   else if (situacaoUpper.includes('DESCREDENCIADO')) return 'situacao-descredenciado';
+  else if (situacaoUpper.includes('DESISTIU')) return 'situacao-desistiu'; // NOVA SITUAÇÃO
   else return 'situacao-cadastrado';
 }
 
@@ -3535,6 +3558,7 @@ function padronizarSituacao(situacao) {
   else if (situacaoUpper.includes('EM ANDAMENTO')) return 'EM ANDAMENTO';
   else if (situacaoUpper.includes('REJEITADO') || situacaoUpper.includes('REJEITADO')) return 'REJEITADO';
   else if (situacaoUpper.includes('DESCREDENCIADO')) return 'DESCREDENCIADO';
+  else if (situacaoUpper.includes('DESISTIU')) return 'DESISTIU'; // NOVA SITUAÇÃO
   
   return situacaoUpper;
 }
@@ -3630,6 +3654,7 @@ function getCorBordaSituacao(situacao) {
   else if (situacaoLower.includes('em andamento')) return '#FFF3CD';
   else if (situacaoLower.includes('rejeitado') || situacaoLower.includes('rejeitado')) return '#E2E3E5';
   else if (situacaoLower.includes('descredenciado')) return '#F8D7DA';
+  else if (situacaoLower.includes('desistiu')) return '#e6cff2'; // NOVA SITUAÇÃO
   else return 'var(--border)';
 }
 
@@ -3927,6 +3952,15 @@ function configurarFiltroEvento(situacao) {
   console.log("🎯 Situação do filtro definida para:", situacao);
 }
 
+function configurarFiltroEvento(situacao) {
+  const container = document.getElementById('filtroEventoContainer');
+  container.style.display = 'block';
+  
+  // 🔥 CORREÇÃO: Salvar a situação atual CORRETAMENTE
+  container.setAttribute('data-situacao-atual', situacao);
+  console.log("🎯 Situação do filtro definida para:", situacao);
+}
+
 function filtrarSugestoesEvento() {
   const input = document.getElementById('inputFiltroEvento');
   const suggestions = document.getElementById('suggestionsEvento');
@@ -3949,7 +3983,8 @@ function filtrarSugestoesEvento() {
         ...eventosEmAndamento,
         ...eventosRejeitado,
         ...eventosCadastrado,
-        'Descredenciado'
+        ...eventosDescredenciado,
+        ...eventosDesistiu // 🔥 ADICIONAR EVENTOS DESISTIU
       ];
       break;
     case 'Novo registro':
@@ -3963,7 +3998,10 @@ function filtrarSugestoesEvento() {
       eventosDaSituacao = eventosCadastrado;
       break;
     case 'Descredenciado':
-      eventosDaSituacao = ['Descredenciado'];
+      eventosDaSituacao = eventosDescredenciado;
+      break;
+    case 'Desistiu':
+      eventosDaSituacao = eventosDesistiu; // 🔥 NOVOS EVENTOS PARA DESISTIU
       break;
     default:
       eventosDaSituacao = [];
@@ -4232,6 +4270,9 @@ function filtrarSugestoesEventoSearch() {
   } else if (situacaoAtual === 'DESCREDENCIADO') {
     eventosDaSituacao = eventosDescredenciado;
     console.log("📝 Carregando eventos DESCREDENCIADO:", eventosDescredenciado);
+  } else if (situacaoAtual === 'DESISTIU') {
+    eventosDaSituacao = eventosDesistiu; // 🔥 NOVOS EVENTOS PARA DESISTIU
+    console.log("📝 Carregando eventos DESISTIU:", eventosDesistiu);
   }
   
   console.log("🎯 Total de eventos carregados:", eventosDaSituacao.length);
