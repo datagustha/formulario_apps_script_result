@@ -77,15 +77,39 @@ function debugDatas(dados) {
 }
 
 // 🔥🔥🔥 FUNÇÃO CADASTRAR NOVO - COM DEBUG MAXIMO
+// 🔥🔥🔥 FUNÇÃO CADASTRAR NOVO - CORRIGIDA (PERMITE MÚLTIPLOS FORNECEDORES)
+// 🔥🔥🔥 FUNÇÃO CADASTRAR NOVO - CORRIGIDA (PERMITE MÚLTIPLOS FORNECEDORES)
 function cadastrarNovo(aba, dados) {
   try {
     console.log("🆕 CADASTRAR NOVO - INICIANDO COM DEBUG");
     console.log("📋 Dados recebidos:", dados);
     
-    // Verificar se já existe algum cadastro com este CNPJ
-    const cadastroExistente = buscarCadastroPorCNPJ(dados.cnpj);
-    if (cadastroExistente.encontrado) {
-      return { success: false, message: "❌ Este CNPJ já está cadastrado!" };
+    // ✅ NOVA VERIFICAÇÃO: Verificar se já existe MESMO CNPJ + MESMO FORNECEDOR
+    const fornecedoresParaCadastrar = dados.fornecedores || [];
+    const fornecedoresDuplicados = [];
+    
+    // Buscar todos os cadastros existentes deste CNPJ
+    const cadastrosExistentes = buscarTodosCadastrosPorCNPJ(dados.cnpj);
+    
+    for (let fornecedor of fornecedoresParaCadastrar) {
+      const nomeFornecedor = fornecedor.nome || fornecedor;
+      
+      // Verificar se já existe este CNPJ + este fornecedor
+      const jaExiste = cadastrosExistentes.some(cad => 
+        cad.fornecedor === nomeFornecedor
+      );
+      
+      if (jaExiste) {
+        fornecedoresDuplicados.push(nomeFornecedor);
+      }
+    }
+    
+    // Se há fornecedores duplicados, avisar
+    if (fornecedoresDuplicados.length > 0) {
+      return { 
+        success: false, 
+        message: `❌ Este CNPJ já possui cadastro para o(s) fornecedor(es): ${fornecedoresDuplicados.join(', ')}` 
+      };
     }
 
     const ultimaLinha = aba.getLastRow();
@@ -130,13 +154,30 @@ function cadastrarNovo(aba, dados) {
       let mensalidadeNumero = parseFloat(dados.mensalidade) || 0;
       let adesaoNumero = processarAdesaoParaSalvar(dados.adesao);
 
-      // 🔥🔥🔥 CORREÇÃO: Datas FRESCAS para CADA fornecedor
+      // 🔥🔥🔥 CORREÇÃO: Datas - USAR DATA DO USUÁRIO SE INFORMADA, SENÃO VAZIO
       const dataAtual = new Date();
-      const dataAtivacao = Utilities.formatDate(dataAtual, Session.getScriptTimeZone(), "dd/MM/yyyy");
       const dataUltimoEvento = Utilities.formatDate(dataAtual, Session.getScriptTimeZone(), "dd/MM/yyyy HH:mm:ss");
 
+      // ✅ CORREÇÃO: Usar data informada pelo usuário OU ficar vazio (CORRIGIDO FUSO HORÁRIO)
+let dataAtivacaoParaSalvar = '';
+if (dados.ativacao && dados.ativacao.trim() !== '') {
+  // Se usuário informou data, formatar corretamente (CORREÇÃO FUSO HORÁRIO)
+  try {
+    // 🔥 CORREÇÃO: Adicionar 1 dia para compensar o fuso horário
+    const dataUsuario = new Date(dados.ativacao);
+    dataUsuario.setDate(dataUsuario.getDate() + 1); // 🔥 ADICIONA 1 DIA
+    dataAtivacaoParaSalvar = Utilities.formatDate(dataUsuario, Session.getScriptTimeZone(), "dd/MM/yyyy");
+    console.log("📅 Data ativação informada pelo usuário (CORRIGIDA):", dataAtivacaoParaSalvar);
+  } catch (e) {
+    console.error("❌ Erro ao processar data do usuário:", e);
+    dataAtivacaoParaSalvar = ''; // Manter vazio se houver erro
+  }
+} else {
+  console.log("📅 Nenhuma data de ativação informada - campo ficará vazio");
+}
+
       console.log(`📅 Datas geradas para fornecedor ${i + 1}:`);
-      console.log(`   Data Ativação: ${dataAtivacao}`);
+      console.log(`   Data Ativação: ${dataAtivacaoParaSalvar}`);
       console.log(`   Data Último Evento: ${dataUltimoEvento}`);
 
       // Array com 17 colunas na ORDEM CORRETA
@@ -152,11 +193,11 @@ function cadastrarNovo(aba, dados) {
         normalizarTexto(dados.observacoes) || '',
         normalizarTexto(dados.contrato_enviado) || '',
         normalizarTexto(dados.contrato_assinado) || '',
-        // Data ATIVAÇÃO
-        dataAtivacao,
+        // 🔥 DATA ATIVAÇÃO - usar a data informada pelo usuário (pode ser vazia)
+        dataAtivacaoParaSalvar,
         dados.link || '',
         mensalidadeNumero,
-        tarifaFornecedor || '', // NÃO aplicar normalizarTexto
+        tarifaFornecedor || '',
         percentualTarifaFornecedor,
         adesaoNumero,
         normalizarTexto(situacaoParaSalvar)
@@ -221,6 +262,48 @@ function cadastrarNovo(aba, dados) {
       success: false, 
       message: "Erro ao cadastrar: " + error.message 
     };
+  }
+}
+
+// 🔥 NOVA FUNÇÃO: Buscar todos os cadastros de um CNPJ
+function buscarTodosCadastrosPorCNPJ(cnpj) {
+  try {
+    console.log("🔍 Buscando TODOS os cadastros do CNPJ:", cnpj);
+    
+    const ss = SpreadsheetApp.openById(CONFIG.ID_PLANILHA);
+    const aba = ss.getSheetByName(CONFIG.ABA_PRINCIPAL);
+    if (!aba) return [];
+    
+    const ultimaLinha = aba.getLastRow();
+    if (ultimaLinha < 2) return [];
+    
+    const dados = aba.getRange(2, 1, ultimaLinha - 1, 17).getValues();
+    const cnpjBuscado = cnpj.toString().replace(/\D/g, '');
+    
+    const cadastrosEncontrados = [];
+    
+    for (let i = 0; i < dados.length; i++) {
+      const linha = dados[i];
+      const cnpjCadastro = linha[2]?.toString().replace(/\D/g, '') || '';
+      
+      // Pular linhas vazias
+      if (!linha[0] || linha[0].toString().trim() === '') continue;
+      
+      if (cnpjCadastro === cnpjBuscado) {
+        cadastrosEncontrados.push({
+          id: i + 2,
+          fornecedor: linha[4]?.toString().trim() || '',
+          situacao: linha[16]?.toString().trim() || ''
+        });
+      }
+    }
+    
+    console.log(`✅ Encontrados ${cadastrosEncontrados.length} cadastros para o CNPJ`);
+    return cadastrosEncontrados;
+    
+  } catch (error) {
+    console.error("❌ Erro em buscarTodosCadastrosPorCNPJ:", error);
+    return [];
   }
 }
 
