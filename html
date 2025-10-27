@@ -2795,7 +2795,7 @@ function validarCamposObrigatorios() {
         estaVazio = !valor || valor === '' || valor === '-- Selecione --';
         break;
       case 'moeda':
-        estaVazio = !valor || valor === 'R$ 0,00' || valor === '0,00';
+          estaVazio = !valor || valor.toString().trim() === '';
         break;
       default:
         estaVazio = !valor || valor.toString().trim() === '';
