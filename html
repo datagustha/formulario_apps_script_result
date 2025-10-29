@@ -1012,11 +1012,17 @@
   right: 0 !important;
 }
 
+/* 🔥 CORREÇÃO DO LABEL DA OBSERVAÇÃO */
+.form-group:has(#observacoes) .form-label {
+  margin-left: 100px !important;
+  width: 85% !important;
+}
+
 /* 🔥 OBSERVAÇÃO MAIS PARA DIREITA */
 #observacoes {
-  margin-left: auto; /* 🔥 EMPURRA PARA DIREITA */
-  width: 90%; /* 🔥 LARGURA UM POUCO MENOR PARA DAR ESPAÇO */
-  max-width: 100%;
+  margin-left: 50px !important;
+  width: 90% !important;
+  min-height: 100px;
 }
 
 /* 🔥 BOTÕES MAIS PARA DIREITA */
@@ -1098,8 +1104,134 @@
 .data-table td:nth-child(6) {
     vertical-align: middle !important;
 }
-  
 
+/* 🔥🔥🔥 ESTILOS PARA WAITLABELS */
+.waitlabel-selector {
+  background: linear-gradient(135deg, #f8f9fa 0%, #e9ecef 100%);
+  padding: 20px;
+  border-radius: 12px;
+  border: 2px solid var(--border);
+  margin-bottom: 25px;
+}
+
+.waitlabel-title {
+  font-size: 1.3rem;
+  font-weight: 700;
+  color: var(--primary);
+  margin-bottom: 15px;
+  display: flex;
+  align-items: center;
+  gap: 10px;
+}
+
+.waitlabel-buttons {
+  display: flex;
+  gap: 10px;
+  flex-wrap: wrap;
+}
+
+.waitlabel-btn {
+  padding: 12px 20px;
+  border: 2px solid var(--border);
+  border-radius: 8px;
+  background: white;
+  color: var(--dark);
+  font-weight: 600;
+  cursor: pointer;
+  transition: all 0.3s ease;
+  display: flex;
+  align-items: center;
+  gap: 8px;
+  min-width: 140px;
+  justify-content: center;
+}
+
+.waitlabel-btn:hover {
+  transform: translateY(-2px);
+  box-shadow: 0 4px 12px rgba(0,0,0,0.1);
+}
+
+.waitlabel-btn.active {
+  transform: translateY(-2px);
+  box-shadow: 0 4px 15px rgba(0,0,0,0.2);
+  border-width: 3px;
+}
+
+.waitlabel-indicator {
+  display: inline-block;
+  width: 12px;
+  height: 12px;
+  border-radius: 50%;
+  margin-right: 5px;
+}
+
+/* Cores específicas para cada waitlabel */
+.waitlabel-sim_facilita { background-color: #7E3E9A; border-color: #7E3E9A; color: white; }
+.waitlabel-result { background-color: #2D3047; border-color: #2D3047; color: white; }
+.waitlabel-set_9 { background-color: #0682c5; border-color: #0682c5; color: white; }
+.waitlabel-doktorbank { background-color: #E61B72; border-color: #E61B72; color: white; }
+.waitlabel-dr_parcela { background-color: #4DFD88; border-color: #4DFD88; color: var(--dark); }
+
+.waitlabel-btn.active.waitlabel-sim_facilita { border-color: #7E3E9A; box-shadow: 0 0 0 3px rgba(126, 62, 154, 0.3); }
+.waitlabel-btn.active.waitlabel-result { border-color: #2D3047; box-shadow: 0 0 0 3px rgba(45, 48, 71, 0.3); }
+.waitlabel-btn.active.waitlabel-set_9 { border-color: #0682c5; box-shadow: 0 0 0 3px rgba(6, 130, 197, 0.3); }
+.waitlabel-btn.active.waitlabel-doktorbank { border-color: #E61B72; box-shadow: 0 0 0 3px rgba(230, 27, 114, 0.3); }
+.waitlabel-btn.active.waitlabel-dr_parcela { border-color: #4DFD88; box-shadow: 0 0 0 3px rgba(77, 253, 136, 0.3); }
+
+/* 🔥 ESTILOS PARA O BOTÃO APLICAR A TODOS */
+.btn-aplicar-todos {
+  background: linear-gradient(135deg, #FF6B35 0%, #FF8E35 100%) !important;
+  color: white !important;
+  border: 2px solid #FF6B35 !important;
+  font-weight: 700 !important;
+}
+
+.btn-aplicar-todos:hover {
+  background: linear-gradient(135deg, #E55A2B 0%, #E57C2B 100%) !important;
+  transform: translateY(-2px) !important;
+  box-shadow: 0 4px 15px rgba(255, 107, 53, 0.3) !important;
+}
+
+/* 🔥 ESTILOS PARA CHECKBOXES APLICAR A TODOS */
+.checkbox-aplicar-todos {
+  display: flex;
+  align-items: center;
+  gap: 8px;
+  margin-top: 8px;
+  padding: 8px 12px;
+  background: #fff8f0;
+  border-radius: 6px;
+  border-left: 3px solid #FF6B35;
+}
+
+.checkbox-aplicar-todos input[type="checkbox"] {
+  width: 18px;
+  height: 18px;
+  accent-color: #FF6B35;
+}
+
+.checkbox-aplicar-todos label {
+  font-size: 0.85rem;
+  color: #FF6B35;
+  font-weight: 600;
+  cursor: pointer;
+}
+
+/* 🔥 MODO APLICAR A TODOS ATIVO */
+.modo-aplicar-todos .form-group {
+  border: 2px solid #fff8f0;
+  border-radius: 8px;
+  padding: 15px;
+  background: #fffdfa;
+}
+
+.modo-aplicar-todos .card-header {
+  background: linear-gradient(135deg, #fff8f0 0%, #fff0e0 100%);
+  border-radius: 8px;
+  padding: 15px;
+  margin-bottom: 20px;
+}
+  
     @media (max-width: 768px) {
       .content {
         padding: 20px;
@@ -1146,6 +1278,14 @@
       .acoes-cell {
         flex-direction: column;
       }
+      
+      .waitlabel-buttons {
+        flex-direction: column;
+      }
+      
+      .waitlabel-btn {
+        min-width: 100%;
+      }
     }
   </style>
 </head>
@@ -1165,7 +1305,19 @@
       </div>
     </div>
     
-        <!-- BOTÕES DE AÇÃO SIMPLIFICADOS -->
+    <div class="content">
+      <!-- 🔥🔥🔥 SEÇÃO WAITLABELS - ADICIONADA AQUI -->
+      <div class="waitlabel-selector">
+        <div class="waitlabel-title">
+          <i class="fas fa-layer-group"></i>
+          Selecione o Waitlabel:
+        </div>
+        <div class="waitlabel-buttons" id="waitlabelButtons">
+          <!-- Os botões serão preenchidos via JavaScript -->
+        </div>
+      </div>
+
+      <!-- BOTÕES DE AÇÃO SIMPLIFICADOS -->
       <div class="action-buttons">
         <button type="button" class="btn btn-primary" onclick="mostrarTodosCadastros()">
           <i class="fas fa-store"></i>
@@ -1177,13 +1329,13 @@
         </button>
       </div>
 
-      
-      
       <!-- CARD DADOS DO CADASTRO -->
-      <div class="card">
+      <div class="card" id="cardCadastro">
         <div class="card-header">
           <i class="fas fa-info-circle"></i>
           <h2 class="card-title">Dados do Cadastro</h2>
+          <!-- 🔥 LOCAL PARA TÍTULO DO MODO APLICAR A TODOS -->
+          <div id="tituloAplicarTodos" style="display: none;"></div>
         </div>
         
         <div class="form-grid">
@@ -1223,11 +1375,9 @@
               <option value="">-- Selecione --</option>
               <option value="GERAL">GERAL</option>
               <option value="SORRIA SIM">SORRIA SIM</option>
-              <option value="SORRIFÁCIL">SORRIFÁCIL</option>
+              <option value="SORRIFACIL">SORRIFACIL</option>
             </select>
           </div>
-          
-          
           
           <div class="form-group">
             <label class="form-label obrigatorio">
@@ -1300,9 +1450,9 @@
               <option value="EM ANDAMENTO">EM ANDAMENTO</option>
               <option value="REJEITADO">REJEITADO</option>
               <option value="DESCREDENCIADO">DESCREDENCIADO</option>
-              <option value="DESISTIU">DESISTIU</option> <!-- NOVA SITUAÇÃO AQUI -->
+              <option value="DESISTIU">DESISTIU</option>
             </select>
-            </div> <!-- 🔥 ADICIONE ESTA LINHA - FECHA O form-group DA SITUAÇÃO -->
+          </div>
 
           <!-- 🔥 FORNECEDORES COM TARIFAS INDIVIDUAIS -->
           <div class="form-group" style="grid-column: 1 / -1;">
@@ -1520,33 +1670,44 @@
             </div>
           </div>
 
-      <!-- 🔥 MANTENHA EXATAMENTE ASSIM - SÓ ADICIONE UM ID NO FORM-GROUP -->
-<div class="form-group" id="eventoFormGroup">
-  <label class="form-label">
-    <i class="fas fa-calendar-check"></i>
-    Evento
-  </label>
-  
-  <!-- 🔥 MANTENHA O SELECT ORIGINAL, MAS VAMOS ESCONDER ELE -->
-  <select id="evento" class="form-control" style="display: none;">
-    <option value="">-- Selecione um evento --</option>
-  </select>
-  
-<!-- 🔥 AUMENTAR LARGURA DIRETAMENTE NO INPUT -->
-<div style="position: relative; width: 100%;">
-  <input type="text" 
-         id="inputEventoSearch" 
-         class="form-control" 
-         placeholder="Digite para buscar evento..."
-         oninput="filtrarSugestoesEventoSearch()"
-         style="padding-right: 40px; width: 100%; min-width: 400px;">
-  
-  <div class="suggestions-evento" id="suggestionsEventoSearch" style="display: none;">
-  </div>
-</div>
-</div>
+                    <!-- 🔥 MANTENHA EXATAMENTE ASSIM - SÓ ADICIONE UM ID NO FORM-GROUP -->
+          <div class="form-group" id="eventoFormGroup">
+            <label class="form-label">
+              <i class="fas fa-calendar-check"></i>
+              Evento
+            </label>
+            
+            <!-- 🔥 MANTENHA O SELECT ORIGINAL, MAS VAMOS ESCONDER ELE -->
+            <select id="evento" class="form-control" style="display: none;">
+              <option value="">-- Selecione um evento --</option>
+            </select>
+            
+            <!-- 🔥 AUMENTAR LARGURA DIRETAMENTE NO INPUT -->
+            <div style="position: relative; width: 100%;">
+              <input type="text" 
+                     id="inputEventoSearch" 
+                     class="form-control" 
+                     placeholder="Digite para buscar evento..."
+                     oninput="filtrarSugestoesEventoSearch()"
+                     style="padding-right: 40px; width: 100%; min-width: 400px;">
+              
+              <div class="suggestions-evento" id="suggestionsEventoSearch" style="display: none;">
+              </div>
+            </div>
 
-        <!-- OBSERVAÇÃO ALINHADA À DIREITA -->
+            <!-- ✅ ✅ ✅ CORREÇÃO DO CHECKBOX - MUDAR data-campo para "inputEventoSearch" -->
+            <div class="checkbox-aplicar-todos">
+              <input type="checkbox" id="check_eventos" data-campo="inputEventoSearch" onchange="toggleCampoParaTodos('inputEventoSearch')">
+              <label for="check_eventos">
+                  <i class="fas fa-copy"></i> Aplicar Evento a todos
+              </label>
+            </div>
+          </div> <!-- ← ESTE </div> FECHA TUDO -->
+
+          
+
+ 
+<!-- OBSERVAÇÃO ALINHADA À DIREITA -->
 <div class="form-group" style="display: flex; justify-content: flex-end;">
   <div style="width: 95%;">
     <label class="form-label">
@@ -1554,133 +1715,142 @@
       Observação
     </label>
     <textarea id="observacoes" class="form-control" rows="3" style="width: 100%;"></textarea>
+    <!-- 🔥 REMOVIDO O CHECKBOX DA OBSERVAÇÃO -->
   </div>
 </div>
 
-<!-- BOTÕES ALINHADOS À DIREITA -->
-<div class="btn-group" style="justify-content: flex-end; margin-left: auto; width: fit-content;">
-  <button type="button" class="btn btn-success" onclick="cadastrar()" id="btnCadastrar">
-    <i class="fas fa-plus-circle"></i>
-    Cadastrar
-  </button>
-  <button type="button" class="btn btn-warning" onclick="atualizar()" id="btnAtualizar" style="display: none;">
-    <i class="fas fa-save"></i>
-    Atualizar
-  </button>
-</div>
+          <!-- BOTÕES ALINHADOS À DIREITA -->
+          <div class="btn-group" style="justify-content: flex-end; margin-left: auto; width: fit-content;">
+            <button type="button" class="btn btn-success" onclick="cadastrar()" id="btnCadastrar">
+              <i class="fas fa-plus-circle"></i>
+              Cadastrar
+            </button>
+            <button type="button" class="btn btn-warning" onclick="atualizar()" id="btnAtualizar" style="display: none;">
+              <i class="fas fa-save"></i>
+              Atualizar
+            </button>
+
+            <!-- 🔥 BOTÃO APLICAR A TODOS (APARECE QUANDO CONFIGURADO) -->
+            <button type="button" class="btn btn-aplicar-todos" id="btnAplicarATodos" onclick="aplicarAlteracoesATodos()" style="display: none;">
+              <i class="fas fa-copy"></i>
+              Aplicar a Todos
+            </button>
+          </div>
+        </div>
       </div>
 
-    <!-- SEÇÃO: TODOS OS CADASTROS -->
-<div class="cadastros-container" id="secaoCadastros" style="display: none;">
-  <div class="card-header">
-    <i class="fas fa-store"></i>
-    <h2 class="card-title" id="tituloCadastros">Todos os Cadastros</h2>
-  </div>
+      <!-- SEÇÃO: TODOS OS CADASTROS -->
+      <div class="cadastros-container" id="secaoCadastros" style="display: none;">
+        <div class="card-header">
+          <i class="fas fa-store"></i>
+          <h2 class="card-title" id="tituloCadastros">Todos os Cadastros</h2>
+        </div>
 
-  <!-- NOVA SEÇÃO: FILTRO POR SITUAÇÃO -->
-<div style="margin: 20px 0; padding: 15px; background: #f8f9fa; border-radius: 8px; border-left: 4px solid var(--primary);">
-  <div style="font-weight: 600; color: var(--primary); margin-bottom: 10px;">
-    <i class="fas fa-filter"></i> Filtrar por Situação:
-  </div>
-    <div class="filtros-container" id="filtrosContainer" style="display: none;">
-  <button type="button" class="btn btn-outline btn-sm" onclick="filtrarTabela('all')">
-    Todos
-  </button>
-  <button type="button" class="btn btn-sm" onclick="filtrarTabela('NOVO REGISTRO')" style="background-color: #bfe1f6; color: #2D3047; border: 1px solid #a1c9e4;">
-    Novos
-  </button>
-  <button type="button" class="btn btn-success btn-sm" onclick="filtrarTabela('CADASTRADO')">
-    Cadastrados
-  </button>
-  <button type="button" class="btn btn-warning btn-sm" onclick="filtrarTabela('EM ANDAMENTO')">
-    Em Andamento
-  </button>
-  <!-- 🔥 CORREÇÃO: REJEITADO AGORA É CINZA -->
-  <button type="button" class="btn btn-secondary btn-sm" onclick="filtrarTabela('REJEITADO')">
-    Rejeitado
-  </button>
-  <!-- 🔥 CORREÇÃO: DESCREDENCIADO AGORA É VERMELHO -->
-  <button type="button" class="btn btn-danger btn-sm" onclick="filtrarTabela('DESCREDENCIADO')">
-    Descredenciados
-  </button>
-  <!-- NOVO BOTÃO DESISTIU -->
-  <button type="button" class="btn btn-sm" onclick="filtrarTabela('DESISTIU')" style="background-color: #e6cff2; color: #4a1e6b; border: 1px solid #d4b5e6;">
-    Desistiu
-  </button>
-</div>
+        <!-- NOVA SEÇÃO: FILTRO POR SITUAÇÃO -->
+        <div style="margin: 20px 0; padding: 15px; background: #f8f9fa; border-radius: 8px; border-left: 4px solid var(--primary);">
+          <div style="font-weight: 600; color: var(--primary); margin-bottom: 10px;">
+            <i class="fas fa-filter"></i> Filtrar por Situação:
+          </div>
+          <div class="filtros-container" id="filtrosContainer" style="display: none;">
+            <button type="button" class="btn btn-outline btn-sm" onclick="filtrarTabela('all')">
+              Todos
+            </button>
+            <button type="button" class="btn btn-sm" onclick="filtrarTabela('NOVO REGISTRO')" style="background-color: #bfe1f6; color: #2D3047; border: 1px solid #a1c9e4;">
+              Novos
+            </button>
+            <button type="button" class="btn btn-success btn-sm" onclick="filtrarTabela('CADASTRADO')">
+              Cadastrados
+            </button>
+            <button type="button" class="btn btn-warning btn-sm" onclick="filtrarTabela('EM ANDAMENTO')">
+              Em Andamento
+            </button>
+            <!-- 🔥 CORREÇÃO: REJEITADO AGORA É CINZA -->
+            <button type="button" class="btn btn-secondary btn-sm" onclick="filtrarTabela('REJEITADO')">
+              Rejeitado
+            </button>
+            <!-- 🔥 CORREÇÃO: DESCREDENCIADO AGORA É VERMELHO -->
+            <button type="button" class="btn btn-danger btn-sm" onclick="filtrarTabela('DESCREDENCIADO')">
+              Descredenciados
+            </button>
+            <!-- NOVO BOTÃO DESISTIU -->
+            <button type="button" class="btn btn-sm" onclick="filtrarTabela('DESISTIU')" style="background-color: #e6cff2; color: #4a1e6b; border: 1px solid #d4b5e6;">
+              Desistiu
+            </button>
+          </div>
 
-  <!-- BARRA DE PESQUISA MELHORADA -->
-  <div class="form-group" style="margin-bottom: 20px;">
-    <div class="search-container">
-      <input type="text" id="pesquisaCadastros" class="form-control" 
-             placeholder="Pesquisar por nome, CNPJ ou fornecedor..."
-             oninput="filtrarPesquisa()">
-    </div>
-    
-    <div style="display: flex; justify-content: space-between; align-items: center; margin-top: 10px;">
-      <span class="contador-lojas" id="contadorCadastros">0 cadastros</span>
-      
-      <div style="display: flex; gap: 10px; align-items: center;">
-        <select id="ordenacaoCadastros" onchange="ordenarCadastros()" style="padding: 8px 12px; border: 2px solid var(--border); border-radius: 8px;">
-          <option value="razao_social">Ordenar por Razão Social</option>
-          <option value="nome_fantasia">Ordenar por Nome Fantasia</option>
-          <option value="fornecedor">Ordenar por Fornecedor</option>
-          <option value="situacao">Ordenar por Situação</option>
-          <option value="defasagem">Ordenar por Defasagem</option>
-        </select>
-        
-        <button type="button" class="btn btn-info btn-sm" onclick="recarregarCadastros()">
-          <i class="fas fa-sync-alt"></i> Atualizar
-        </button>
+          <!-- BARRA DE PESQUISA MELHORADA -->
+          <div class="form-group" style="margin-bottom: 20px;">
+            <div class="search-container">
+              <input type="text" id="pesquisaCadastros" class="form-control" 
+                     placeholder="Pesquisar por nome, CNPJ ou fornecedor..."
+                     oninput="filtrarPesquisa()">
+            </div>
+            
+            <div style="display: flex; justify-content: space-between; align-items: center; margin-top: 10px;">
+              <span class="contador-lojas" id="contadorCadastros">0 cadastros</span>
+              
+              <div style="display: flex; gap: 10px; align-items: center;">
+                <select id="ordenacaoCadastros" onchange="ordenarCadastros()" style="padding: 8px 12px; border: 2px solid var(--border); border-radius: 8px;">
+                  <option value="razao_social">Ordenar por Razão Social</option>
+                  <option value="nome_fantasia">Ordenar por Nome Fantasia</option>
+                  <option value="fornecedor">Ordenar por Fornecedor</option>
+                  <option value="situacao">Ordenar por Situação</option>
+                  <option value="defasagem">Ordenar por Defasagem</option>
+                </select>
+                
+                <button type="button" class="btn btn-info btn-sm" onclick="recarregarCadastros()">
+                  <i class="fas fa-sync-alt"></i> Atualizar
+                </button>
+              </div>
+            </div>
+          </div>
+
+          <!-- 🔥 FILTRO DE EVENTOS COM SEARCH -->
+          <div class="filtro-search-container" id="filtroEventoContainer" style="display: none; position: relative;">
+            <div style="position: relative; width: 300px;">
+              <input type="text" 
+                     id="inputFiltroEvento" 
+                     class="form-control" 
+                     placeholder="Digite o evento para filtrar..."
+                     oninput="filtrarSugestoesEvento()">
+            </div>
+            
+            <div class="suggestions-evento" id="suggestionsEvento" style="display: none;">
+              <!-- Sugestões aparecerão aqui -->
+            </div>
+            
+            <!-- TAGS DE FILTROS ATIVOS -->
+            <div id="tagsFiltrosAtivos" style="display: flex; gap: 8px; margin-top: 10px; flex-wrap: wrap;"></div>
+          </div>
+
+          <!-- LOADING -->
+          <div class="loading-container" id="loadingCadastros" style="display: none;">
+            <div class="loading-spinner"></div>
+            <p>Carregando cadastros...</p>
+          </div>
+          
+          <!-- TABELA MELHORADA -->
+          <div class="table-container" id="tableContainer" style="display: none;">
+            <div class="table-responsive">
+              <table class="data-table" id="tabelaCadastros">
+                <thead>
+                  <tr>
+                    <th>Razão Social</th>
+                    <th>CNPJ</th>
+                    <th>Fornecedor</th>
+                    <th>Mensalidade</th>
+                    <th>Adesão</th>
+                    <th>Ações</th>
+                  </tr>
+                </thead>
+                <tbody id="tabelaCadastrosBody">
+                  <!-- Dados serão preenchidos via JavaScript -->
+                </tbody>
+              </table>
+            </div>
+          </div>
+        </div>
       </div>
-    </div>
-  </div>
-
- <!-- 🔥 FILTRO DE EVENTOS COM SEARCH -->
-<div class="filtro-search-container" id="filtroEventoContainer" style="display: none; position: relative;">
- <div style="position: relative; width: 300px;">
-  <input type="text" 
-         id="inputFiltroEvento" 
-         class="form-control" 
-         placeholder="Digite o evento para filtrar..."
-         oninput="filtrarSugestoesEvento()">
-</div>
-  
-  <div class="suggestions-evento" id="suggestionsEvento" style="display: none;">
-    <!-- Sugestões aparecerão aqui -->
-  </div>
-  
-  <!-- TAGS DE FILTROS ATIVOS -->
-  <div id="tagsFiltrosAtivos" style="display: flex; gap: 8px; margin-top: 10px; flex-wrap: wrap;"></div>
-</div>
-
-  <!-- LOADING -->
-  <div class="loading-container" id="loadingCadastros" style="display: none;">
-    <div class="loading-spinner"></div>
-    <p>Carregando cadastros...</p>
-  </div>
-  
-  <!-- TABELA MELHORADA -->
-  <div class="table-container" id="tableContainer" style="display: none;">
-    <div class="table-responsive">
-      <table class="data-table" id="tabelaCadastros">
-        <thead>
-          <tr>
-            <th>Razão Social</th>
-            <th>CNPJ</th>
-            <th>Fornecedor</th>
-            <th>Mensalidade</th>
-            <th>Adesão</th>
-            <th>Ações</th>
-          </tr>
-        </thead>
-        <tbody id="tabelaCadastrosBody">
-          <!-- Dados serão preenchidos via JavaScript -->
-        </tbody>
-      </table>
-    </div>
-  </div>
-</div>
       
       <!-- MENSAGENS DO SISTEMA -->
       <div id="messageSuccess" class="message success" style="display: none;">
@@ -1709,8 +1879,7 @@
     </div>
   </div>
 
-  
-    <!-- 🔥 MODAL DE DETALHES - ESTRUTURA CORRIGIDA -->
+  <!-- 🔥 MODAL DE DETALHES - ESTRUTURA CORRIGIDA -->
   <div id="modalDetalhes" class="modal-overlay">
     <div class="modal-content">
       <div class="modal-header">
@@ -1759,83 +1928,908 @@
 
   <script>
 // 🔥 VARIÁVEIS GLOBAIS
-    let cadastroAtualId = null;
-    let todosCadastros = [];
-    let cadastrosFiltrados = [];
-    let campoEditavel = null;
-    const SENHA_PERMITIDA = '519901';
 
-    // 🔥 VARIÁVEIS DOS EVENTOS PARA FILTRO - CONVERTIDAS PARA MAIÚSCULAS
-    const eventosNovoRegistro = [
-      "NOVO CADASTRO", "PRIMEIRO CONTATO", "CLIENTE INTERESSADO", "SOLICITOU MAIS INFORMACOES",
-      "AGENDAMENTO DE DEMONSTRACAO", "PROPOSTA ENVIADA", "AGUARDANDO RETORNO"
-    ].sort();
+// 🔥 VARIÁVEIS PARA "APLICAR A TODOS"
+let camposParaAplicarATodos = {};
+let cnpjAtualParaAplicar = null;
+let cadastroAtualId = null;
+let todosCadastros = [];
+let cadastrosFiltrados = [];
+let campoEditavel = null;
+const SENHA_PERMITIDA = '519901';
+let waitlabelAtual = 'Sim_Facilita'; // 🔥 VARIÁVEL PARA WAITLABEL ATUAL
 
-    const eventosCadastrado = [
-      "LOJA CADASTRADA", "DOCUMENTACAO RECEBIDA", "CONTRATO ENVIADO", "AGUARDANDO ASSINATURA",
-      "CADASTRO APROVADO", "AGUARDANDO ATIVACAO"
-    ].sort();
+// 🔥 CONFIGURAÇÃO DOS WAITLABELS
+const WAITLABELS_CONFIG = {
+  WAITLABELS: ['Sim_Facilita', 'Result', 'Set_9', 'Doktorbank', 'Dr_Parcela'],
+  CORES: {
+    'Sim_Facilita': '#7E3E9A',
+    'Result': '#2D3047', 
+    'Set_9': '#0682c5',
+    'Doktorbank': '#E61B72',
+    'Dr_Parcela': '#4DFD88'
+  }
+};
 
-    const eventosEmAndamento = [
-      "AGUARDANDO ACEITE DA LOJA", "AGUARDANDO ACEITE DO FORNECEDOR", "AGUARDANDO DOCUMENTOS",
-      "AGUARDANDO RETORNO", "AGENDAMENTO DE DEMONSTRACAO", "CLIENTE INTERESSADO", 
-      "CLIENTE NAO INTERESSADO", "CONDICAO ESPECIAL", "CONTRATO ASSINADO", "DESISTIU",
-      "DOCUMENTACAO INCOMPLETA", "EM IMPLANTACAO", "EM TREINAMENTO", "ENVIO DE BOLETO",
-      "ENVIO DE WHATSAPP", "FOLLOW-UP NECESSARIO", "FORNECEDOR ALTERADO", "LIGACAO REALIZADA",
-      "NEGOCIACAO EM ANDAMENTO", "PAGAMENTO EFETUADO", "PAGAMENTO PENDENTE", "PROPOSTA ENVIADA",
-      "QUANTIDADE DE LOJAS ALTERADA", "RECADO REGISTRADO", "REUNIAO AGENDADA", "SEM RETORNO",
-      "SOLICITOU MAIS INFORMACOES", "TELEFONE ALTERADO"
-    ].sort();
+// 🔥 VARIÁVEIS DOS EVENTOS PARA FILTRO - CONVERTIDAS PARA MAIÚSCULAS
+const eventosNovoRegistro = [
+  "NOVO CADASTRO", "PRIMEIRO CONTATO", "CLIENTE INTERESSADO", "SOLICITOU MAIS INFORMACOES",
+  "AGENDAMENTO DE DEMONSTRACAO", "PROPOSTA ENVIADA", "AGUARDANDO RETORNO"
+].sort();
 
-    const eventosRejeitado = [
-      "REJEITADO", "BLOQUEADO", "DESISTIU", "CLIENTE NAO INTERESSADO", "SEM RETORNO",
-      "NEGOCIACAO PARADA", "PROCESSO ESTAGNADO"
-    ].sort();
+const eventosCadastrado = [
+  "LOJA CADASTRADA", "DOCUMENTACAO RECEBIDA", "CONTRATO ENVIADO", "AGUARDANDO ASSINATURA",
+  "CADASTRO APROVADO", "AGUARDANDO ATIVACAO"
+].sort();
 
-    const eventosDescredenciado = [
-      "DESCREDENCIADO", "CONTRATO CANCELADO", "LOJA DESATIVADA", "FORNECEDOR REMOVIDO",
-      "PROCESSO ENCERRADO", "CADASTRO EXPIRADO"
-    ].sort();
+const eventosEmAndamento = [
+  "AGUARDANDO ACEITE DA LOJA", "AGUARDANDO ACEITE DO FORNECEDOR", "AGUARDANDO DOCUMENTOS",
+  "AGUARDANDO RETORNO", "AGENDAMENTO DE DEMONSTRACAO", "CLIENTE INTERESSADO", 
+  "CLIENTE NAO INTERESSADO", "CONDICAO ESPECIAL", "CONTRATO ASSINADO", "DESISTIU",
+  "DOCUMENTACAO INCOMPLETA", "EM IMPLANTACAO", "EM TREINAMENTO", "ENVIO DE BOLETO",
+  "ENVIO DE WHATSAPP", "FOLLOW-UP NECESSARIO", "FORNECEDOR ALTERADO", "LIGACAO REALIZADA",
+  "NEGOCIACAO EM ANDAMENTO", "PAGAMENTO EFETUADO", "PAGAMENTO PENDENTE", "PROPOSTA ENVIADA",
+  "QUANTIDADE DE LOJAS ALTERADA", "RECADO REGISTRADO", "REUNIAO AGENDADA", "SEM RETORNO",
+  "SOLICITOU MAIS INFORMACOES", "TELEFONE ALTERADO"
+].sort();
 
-    // 🔥 NOVOS EVENTOS PARA SITUAÇÃO "DESISTIU"
+const eventosRejeitado = [
+  "REJEITADO", "BLOQUEADO", "DESISTIU", "CLIENTE NAO INTERESSADO", "SEM RETORNO",
+  "NEGOCIACAO PARADA", "PROCESSO ESTAGNADO"
+].sort();
+
+const eventosDescredenciado = [
+  "DESCREDENCIADO", "CONTRATO CANCELADO", "LOJA DESATIVADA", "FORNECEDOR REMOVIDO",
+  "PROCESSO ENCERRADO", "CADASTRO EXPIRADO"
+].sort();
+
+// 🔥 NOVOS EVENTOS PARA SITUAÇÃO "DESISTIU"
 const eventosDesistiu = [
   "DESISTIU", "CLIENTE DESISTIU", "DESISTÊNCIA DO CLIENTE", "DESISTÊNCIA VOLUNTÁRIA",
   "DESISTIU DO PROCESSO", "DESISTIU DA NEGOCIAÇÃO", "DESISTIU DO CADASTRO",
   "NÃO QUIS CONTINUAR", "DESINTERESSE DO CLIENTE", "ABANDONOU O PROCESSO"
 ].sort();
 
-    // ✅ VERIFICAR SE USUÁRIO JÁ ESTÁ AUTORIZADO AO CARREGAR A PÁGINA
-    document.addEventListener('DOMContentLoaded', function() {
-      console.log('Sistema de Gestão de Cadastros - RESULT inicializado');
-      
-      // Inicializar valores padrão
-      document.getElementById('mensalidade').value = 'R$ 0,00';
-      document.getElementById('situacao').value = 'Cadastrado';
-      
-      // Configurações iniciais
-      configurarValidacaoEmTempoReal();
-      document.getElementById('situacao').addEventListener('change', atualizarEventos);
-      atualizarEventos();
-      
-      // 🔥 CORREÇÃO: Configurar proteção APÓS o DOM estar carregado
-      setTimeout(() => {
-        configurarCamposProtegidos();
-      }, 500);
-      
-      // Configurar eventos do modal de senha
-      configurarModalSenha();
-      
-      // 🔥🔥🔥 ADICIONE ESTAS LINHAS AQUI - CONFIGURAR EVENTO DO CAMPO DE EVENTO
-      const inputEvento = document.getElementById('inputEventoSearch');
-      if (inputEvento) {
-        inputEvento.addEventListener('focus', function() {
-          console.log("🎯 Campo de evento recebeu foco - mostrando sugestões");
-          filtrarSugestoesEventoSearch();
-        });
-      }
+// ✅ VERIFICAR SE USUÁRIO JÁ ESTÁ AUTORIZADO AO CARREGAR A PÁGINA
+document.addEventListener('DOMContentLoaded', function() {
+  console.log('Sistema de Gestão de Cadastros - RESULT inicializado');
+  
+  // 🔥 INICIALIZAR WAITLABELS
+  inicializarWaitlabels();
+  
+  // Inicializar valores padrão
+  document.getElementById('mensalidade').value = 'R$ 0,00';
+  document.getElementById('situacao').value = 'Cadastrado';
+  
+  // Configurações iniciais
+  configurarValidacaoEmTempoReal();
+  document.getElementById('situacao').addEventListener('change', atualizarEventos);
+  atualizarEventos();
+  
+  // 🔥 CORREÇÃO: Configurar proteção APÓS o DOM estar carregado
+  setTimeout(() => {
+    configurarCamposProtegidos();
+  }, 500);
+  
+  // Configurar eventos do modal de senha
+  configurarModalSenha();
+  
+  // 🔥🔥🔥 NOVA LINHA: Sincronizar campos de evento
+  sincronizarCamposEvento();
+  
+  // 🔥🔥🔥 CORREÇÃO: Configurar evento do campo de evento
+  const inputEvento = document.getElementById('inputEventoSearch');
+  if (inputEvento) {
+    inputEvento.addEventListener('focus', function() {
+      console.log("🎯 Campo de evento recebeu foco - mostrando sugestões");
+      filtrarSugestoesEventoSearch();
     });
+  }
+});
 
-    // 🔥 CORREÇÃO EXTRA - REMOVER SCROLL HORIZONTAL DINAMICAMENTE
+// 🔥🔥🔥 FUNÇÕES PARA WAITLABELS
+function inicializarWaitlabels() {
+  console.log("🎯 Inicializando waitlabels...");
+  
+  // Buscar waitlabel atual do servidor
+  google.script.run
+    .withSuccessHandler(function(waitlabel) {
+      waitlabelAtual = waitlabel;
+      console.log("✅ Waitlabel atual:", waitlabelAtual);
+      criarBotoesWaitlabels();
+      atualizarInterfaceWaitlabel();
+    })
+    .withFailureHandler(function(error) {
+      console.error("❌ Erro ao buscar waitlabel:", error);
+      criarBotoesWaitlabels(); // Criar mesmo com erro
+    })
+    .getWaitlabelAtual();
+}
+
+// 🔥 FUNÇÕES PARA "APLICAR A TODOS"
+function toggleCampoParaTodos(campoId) {
+    console.log("🎯 Toggle campo para aplicar a todos:", campoId);
+    
+    // ✅ CORREÇÃO: Se for o campo de evento search, usar 'evento' como ID
+    const campoParaAplicar = campoId === 'inputEventoSearch' ? 'evento' : campoId;
+    
+    // Alternar estado do campo
+    camposParaAplicarATodos[campoParaAplicar] = !camposParaAplicarATodos[campoParaAplicar];
+    
+    // Atualizar visual do checkbox
+    const checkbox = document.querySelector(`[data-campo="${campoId}"]`);
+    if (checkbox) {
+        checkbox.checked = camposParaAplicarATodos[campoParaAplicar];
+    }
+    
+    console.log("📋 Campos selecionados para aplicar:", camposParaAplicarATodos);
+}
+
+function aplicarAlteracoesATodos() {
+    console.log("🎯 Aplicando alterações a todos do mesmo CNPJ...");
+    
+    const btnAplicar = document.getElementById('btnAplicarATodos');
+    if (btnAplicar && btnAplicar.disabled) {
+        console.log("⏳ Botão já está processando, aguarde...");
+        return;
+    }
+    
+    if (btnAplicar) {
+        btnAplicar.disabled = true;
+        btnAplicar.innerHTML = '<i class="fas fa-spinner fa-spin"></i> Aplicando...';
+    }
+    
+    const camposSelecionados = Object.keys(camposParaAplicarATodos).filter(campo => camposParaAplicarATodos[campo]);
+    
+    if (camposSelecionados.length === 0) {
+        showMessage('error', '❌ Selecione pelo menos um campo para aplicar a todos!');
+        if (btnAplicar) {
+            btnAplicar.disabled = false;
+            btnAplicar.innerHTML = '<i class="fas fa-copy"></i> Aplicar a Todos';
+        }
+        return;
+    }
+    
+    const dadosAtuais = coletarDadosFormulario();
+    if (!dadosAtuais) {
+        showMessage('error', '❌ Erro ao coletar dados do formulário');
+        if (btnAplicar) {
+            btnAplicar.disabled = false;
+            btnAplicar.innerHTML = '<i class="fas fa-copy"></i> Aplicar a Todos';
+        }
+        return;
+    }
+    
+    const cnpjCorreto = document.getElementById('cnpj_cadastro')?.value || dadosAtuais.cnpj;
+    
+    if (!cnpjCorreto) {
+        showMessage('error', '❌ CNPJ não identificado!');
+        if (btnAplicar) {
+            btnAplicar.disabled = false;
+            btnAplicar.innerHTML = '<i class="fas fa-copy"></i> Aplicar a Todos';
+        }
+        return;
+    }
+    
+    // MOSTRAR POPUP BONITO EM VEZ DO CONFIRM
+    mostrarPopupAplicarTodos(cnpjCorreto, camposSelecionados, dadosAtuais);
+}
+    
+// Função para popup MAIS BONITO com tema roxo
+// Função para popup MAIS BONITO com tema roxo
+function mostrarPopupAplicarTodos(cnpj, camposSelecionados, dados) {
+    // ✅ CORREÇÃO: Formatar os valores ANTES de mostrar no popup
+    const formatarValorParaPopup = (campo, valor) => {
+        // Formatar data
+        if (campo === 'ativacao' && valor && valor !== 'Não preenchido') {
+            if (valor.includes('-')) {
+                const partes = valor.split('-');
+                if (partes.length === 3) {
+                    return `${partes[2]}/${partes[1]}/${partes[0]}`;
+                }
+            }
+            return valor;
+        }
+        
+        // Formatar moeda
+        if ((campo === 'mensalidade' || campo === 'adesao') && valor && valor !== 'Não preenchido') {
+            if (typeof valor === 'number' || !isNaN(parseFloat(valor))) {
+                const numero = parseFloat(valor);
+                return numero.toLocaleString('pt-BR', {
+                    style: 'currency',
+                    currency: 'BRL'
+                });
+            } else if (typeof valor === 'string') {
+                // Tentar extrair número da string
+                const numeroMatch = valor.match(/[\d,\.]+/);
+                if (numeroMatch) {
+                    const numero = parseFloat(numeroMatch[0].replace(/\./g, '').replace(',', '.'));
+                    if (!isNaN(numero)) {
+                        return numero.toLocaleString('pt-BR', {
+                            style: 'currency',
+                            currency: 'BRL'
+                        });
+                    }
+                }
+            }
+        }
+        
+        // Capitalizar evento
+        if (campo === 'evento' && valor && valor !== 'Não preenchido') {
+            return valor.charAt(0).toUpperCase() + valor.slice(1).toLowerCase();
+        }
+        
+        return valor;
+    };
+
+    // Criar modal customizado ESTILOSO
+    const modalHTML = `
+        <div id="modalAplicarTodos" style="position:fixed; top:0; left:0; width:100%; height:100%; background:rgba(0,0,0,0.6); display:flex; justify-content:center; align-items:center; z-index:9999; font-family: 'Segoe UI', Arial, sans-serif;">
+            <div style="background:linear-gradient(135deg, #ffffff 0%, #f8f6ff 100%); padding:25px; border-radius:15px; width:450px; box-shadow:0 10px 30px rgba(0,0,0,0.3); border:3px solid #8B5FBF; position:relative;">
+                <!-- Header com gradiente roxo -->
+                <div style="background:linear-gradient(135deg, #8B5FBF 0%, #6A4C9C 100%); color:white; padding:15px; margin:-25px -25px 20px -25px; border-radius:12px 12px 0 0; text-align:center;">
+                    <h3 style="margin:0; font-size:20px; font-weight:600;">🎯 Aplicar Alterações em Lote</h3>
+                </div>
+                
+                <!-- Informações -->
+                <div style="margin-bottom:20px;">
+                    <div style="display:flex; align-items:center; margin-bottom:10px;">
+                        <span style="background:#8B5FBF; color:white; padding:5px 10px; border-radius:20px; font-size:12px; font-weight:bold;">📋 CNPJ</span>
+                        <span style="margin-left:10px; font-weight:600; color:#333;">${cnpj}</span>
+                    </div>
+                    
+                    <div style="display:flex; align-items:center; margin-bottom:15px;">
+                        <span style="background:#8B5FBF; color:white; padding:5px 10px; border-radius:20px; font-size:12px; font-weight:bold;">🏢 Registros</span>
+                        <span style="margin-left:10px; color:#666;">Todos com este CNPJ</span>
+                    </div>
+                </div>
+                
+                <!-- Campos que serão alterados -->
+                <div style="background:#f0ebfa; padding:15px; border-radius:10px; margin-bottom:20px; border-left:4px solid #8B5FBF;">
+                    <div style="display:flex; align-items:center; margin-bottom:10px;">
+                        <span style="color:#8B5FBF; font-weight:bold; font-size:16px;">📝 Campos Selecionados</span>
+                    </div>
+                    <div style="max-height:150px; overflow-y:auto;">
+                      ${camposSelecionados.map(campo => {
+                          const nomeCampo = formatarNomeCampoPopup(campo); // ✅ USA A NOVA FUNÇÃO
+                          let valorCampo = dados[campo] || document.getElementById(campo)?.value || 'Não preenchido';
+
+                          // ✅ APLICAR FORMATAÇÃO DIRETAMENTE AQUI
+                          valorCampo = formatarValorParaPopup(campo, valorCampo);
+
+                          return `
+                              <div style="display:flex; justify-content:space-between; align-items:center; padding:8px 5px; border-bottom:1px solid #e0e0e0;">
+                                  <span style="color:#555; font-weight:500;">${nomeCampo}</span>
+                                  <span style="background:#8B5FBF; color:white; padding:4px 8px; border-radius:12px; font-size:12px; font-weight:bold;">${valorCampo}</span>
+                              </div>
+                          `;
+                      }).join('')}
+                    </div>
+                </div>
+                
+                <!-- Aviso -->
+                <div style="background:#fff3cd; border:2px solid #ffc107; padding:12px; border-radius:8px; margin-bottom:20px; display:flex; align-items:center;">
+                    <span style="color:#856404; font-size:24px; margin-right:10px;">⚠️</span>
+                    <span style="color:#856404; font-size:13px; font-weight:500;">Esta ação atualizará TODOS os registros e não pode ser desfeita</span>
+                </div>
+                
+                <!-- Botões -->
+                <div style="display:flex; gap:12px; justify-content:flex-end;">
+                    <button onclick="fecharPopupAplicarTodos(false)" style="padding:12px 20px; border:2px solid #6c757d; background:white; color:#6c757d; border-radius:8px; cursor:pointer; font-weight:600; transition:all 0.3s; display:flex; align-items:center; gap:5px;">
+                        <span>✖</span> Cancelar
+                    </button>
+                    <button onclick="fecharPopupAplicarTodos(true)" style="padding:12px 25px; background:linear-gradient(135deg, #28a745 0%, #20c997 100%); color:white; border:none; border-radius:8px; cursor:pointer; font-weight:600; transition:all 0.3s; display:flex; align-items:center; gap:5px; box-shadow:0 4px 15px rgba(40, 167, 69, 0.3);">
+                        <span>✅</span> Aplicar a Todos
+                    </button>
+                </div>
+            </div>
+        </div>
+    `;
+    
+    document.body.insertAdjacentHTML('beforeend', modalHTML);
+}
+
+// Funções auxiliares
+// ✅ CORREÇÃO: Função para padronizar nomes dos campos
+const formatarNomeCampoPopup = (campo) => {
+    const nomes = {
+        'razao_social': 'Razão Social',
+        'nome_fantasia': 'Nome Fantasia', 
+        'cnpj_cadastro': 'CNPJ',
+        'tipo': 'Tipo',
+        'contrato_enviado': 'Contrato Enviado',
+        'contrato_assinado': 'Contrato Assinado',
+        'ativacao': 'Ativação',
+        'link': 'Link',
+        'mensalidade': 'Mensalidade',
+        'adesao': 'Adesão',
+        'situacao': 'Situação',
+        'evento': 'Evento',
+        'observacoes': 'Observações',
+        'inputEventoSearch': 'Evento'
+    };
+    
+    return nomes[campo] || campo;
+};
+
+function obterValorCampo(campo, dados) {
+    let valor = dados[campo] || document.getElementById(campo)?.value || 'Não preenchido';
+    
+    // ✅ CORREÇÃO 1: Formatar data para BR
+    if (campo === 'ativacao' && valor && valor !== 'Não preenchido') {
+        // Formato: 2025-10-02 → 02/10/2025
+        if (valor.includes('-')) {
+            const partes = valor.split('-');
+            if (partes.length === 3) {
+                valor = `${partes[2]}/${partes[1]}/${partes[0]}`;
+            }
+        }
+    }
+    
+    // ✅ CORREÇÃO 2: Formatar moeda para Mensalidade e Adesão
+    if ((campo === 'mensalidade' || campo === 'adesao') && valor && valor !== 'Não preenchido') {
+        if (typeof valor === 'number' || !isNaN(parseFloat(valor))) {
+            // Se for número, formatar como moeda
+            const numero = parseFloat(valor);
+            valor = numero.toLocaleString('pt-BR', {
+                style: 'currency',
+                currency: 'BRL'
+            });
+        } else if (typeof valor === 'string' && !valor.includes('R$')) {
+            // Se for string sem formatação, tentar converter
+            const numero = parseFloat(valor.replace(/[^\d,]/g, '').replace(',', '.'));
+            if (!isNaN(numero)) {
+                valor = numero.toLocaleString('pt-BR', {
+                    style: 'currency',
+                    currency: 'BRL'
+                });
+            }
+        }
+    }
+    
+    // ✅ CORREÇÃO 3: Capitalizar primeira letra do Evento
+    if (campo === 'evento' && valor && valor !== 'Não preenchido') {
+        valor = valor.charAt(0).toUpperCase() + valor.slice(1).toLowerCase();
+    }
+    
+    return valor;
+}
+
+function fecharPopupAplicarTodos(confirmado) {
+    const modal = document.getElementById('modalAplicarTodos');
+    if (modal) modal.remove();
+    
+    if (confirmado) {
+        // Continuar com o processo original de aplicar a todos
+        const btnAplicar = document.getElementById('btnAplicarATodos');
+        const camposSelecionados = Object.keys(camposParaAplicarATodos).filter(campo => camposParaAplicarATodos[campo]);
+        const dadosAtuais = coletarDadosFormulario();
+        const cnpjCorreto = document.getElementById('cnpj_cadastro')?.value || dadosAtuais.cnpj;
+        
+        console.log("🚀 CHAMANDO GOOGLE APPS SCRIPT...");
+        showLoading(`Aplicando alterações para ${camposSelecionados.length} campo(s)...`, "Atualizando todos os registros do mesmo CNPJ");
+        
+        google.script.run
+            .withSuccessHandler(function(res) {
+                console.log("✅ RESPOSTA DO GS:", res);
+                hideLoading();
+                
+                if (btnAplicar) {
+                    btnAplicar.disabled = false;
+                    btnAplicar.innerHTML = '<i class="fas fa-copy"></i> Aplicar a Todos';
+                }
+                
+                if (res && res.success) {
+                    showMessage('success', `✅ ${res.registrosAtualizados} registro(s) atualizado(s) com sucesso!`);
+                    limparSelecaoAplicarATodos();
+                    if (document.getElementById('secaoCadastros').style.display === 'block') {
+                        mostrarTodosCadastros();
+                    }
+                } else {
+                    showMessage('error', '❌ ' + (res ? res.message : 'Erro ao aplicar alterações'));
+                }
+            })
+            .withFailureHandler(function(error) {
+                console.error("❌ ERRO DO GS:", error);
+                hideLoading();
+                
+                if (btnAplicar) {
+                    btnAplicar.disabled = false;
+                    btnAplicar.innerHTML = '<i class="fas fa-copy"></i> Aplicar a Todos';
+                }
+                
+                showMessage('error', '❌ Erro: ' + error.message);
+            })
+            .aplicarAlteracoesATodos(cnpjCorreto, dadosAtuais, camposSelecionados);
+    } else {
+        // Usuário cancelou - reativar botão
+        const btnAplicar = document.getElementById('btnAplicarATodos');
+        if (btnAplicar) {
+            btnAplicar.disabled = false;
+            btnAplicar.innerHTML = '<i class="fas fa-copy"></i> Aplicar a Todos';
+        }
+    }
+}
+
+function limparSelecaoAplicarATodos() {
+    camposParaAplicarATodos = {};
+    cnpjAtualParaAplicar = null;
+    
+    // Limpar checkboxes visuais
+    document.querySelectorAll('[data-campo]').forEach(checkbox => {
+        checkbox.checked = false;
+    });
+    
+    // Remover botão "Aplicar a Todos"
+    const btnAplicar = document.getElementById('btnAplicarATodos');
+    if (btnAplicar) {
+        btnAplicar.style.display = 'none';
+    }
+    
+    // Remover checkboxes dos campos
+    document.querySelectorAll('.checkbox-aplicar-todos').forEach(checkbox => {
+        checkbox.remove();
+    });
+    
+    // Remover título
+    const titulo = document.getElementById('tituloAplicarTodos');
+    if (titulo) {
+        titulo.style.display = 'none';
+        titulo.innerHTML = '';
+    }
+    
+    // Remover classe do card
+    document.getElementById('cardCadastro').classList.remove('modo-aplicar-todos');
+}
+
+// 🔥 FUNÇÃO PARA CONFIGURAR "APLICAR A TODOS"
+function configurarAplicarATodos(cnpj, id) {
+    console.log("🎯 CONFIGURANDO APLICAR A TODOS - CNPJ:", cnpj, "ID:", id);
+    
+    // Fechar modal atual
+    fecharModalDetalhes();
+    
+    // Carregar o cadastro para edição
+    editarCadastroModal(id);
+    
+    // Configurar para aplicar a todos do mesmo CNPJ
+    setTimeout(() => {
+        cnpjAtualParaAplicar = cnpj;
+        cadastroAtualId = id;
+        
+        // Mostrar interface de "Aplicar a Todos"
+        mostrarInterfaceAplicarATodos();
+        
+        showMessage('info', '🎯 Modo "Aplicar a Todos" ativado! Selecione os campos que deseja aplicar.');
+    }, 1000);
+}
+
+// 🔥 FUNÇÃO PARA MOSTRAR INTERFACE "APLICAR A TODOS"
+function mostrarInterfaceAplicarATodos() {
+    // Adicionar checkboxes em todos os campos
+    adicionarCheckboxesAosCampos();
+    
+    // Mostrar botão principal
+    mostrarBotaoAplicarATodos();
+    
+    // Adicionar título especial
+    const titulo = document.getElementById('tituloAplicarTodos');
+    if (titulo) {
+        titulo.style.display = 'block';
+        titulo.innerHTML = `
+            <div style="background: linear-gradient(135deg, #FF6B35 0%, #FF8E35 100%); color: white; padding: 10px 15px; border-radius: 8px; margin-top: 10px; text-align: center;">
+                <i class="fas fa-copy"></i> <strong>MODO APLICAR A TODOS</strong> - CNPJ: ${cnpjAtualParaAplicar}
+                <br><small>Selecione os campos que deseja aplicar a todos os registros deste CNPJ</small>
+            </div>
+        `;
+    }
+    
+    // Adicionar classe especial ao card
+    document.getElementById('cardCadastro').classList.add('modo-aplicar-todos');
+}
+
+// 🔥 FUNÇÃO PARA ADICIONAR CHECKBOXES AOS CAMPOS
+function adicionarCheckboxesAosCampos() {
+    const camposAplicaveis = [
+        'razao_social', 'nome_fantasia', 'tipo', 'contrato_enviado', 
+        'contrato_assinado', 'ativacao', 'link', 'mensalidade', 
+        'adesao', 'situacao', 'inputEventoSearch'
+    ];
+    
+    camposAplicaveis.forEach(campoId => {
+        const campoElement = document.getElementById(campoId);
+        if (campoElement) {
+            const formGroup = campoElement.closest('.form-group');
+            if (formGroup && !formGroup.querySelector('.checkbox-aplicar-todos')) {
+                const checkboxHtml = `
+                    <div class="checkbox-aplicar-todos">
+                        <input type="checkbox" id="check_${campoId}" data-campo="${campoId}" 
+                               onchange="toggleCampoParaTodos('${campoId}')">
+                        <label for="check_${campoId}">
+                            <i class="fas fa-copy"></i> Aplicar este campo a todos
+                        </label>
+                    </div>
+                `;
+                formGroup.insertAdjacentHTML('beforeend', checkboxHtml);
+            }
+        }
+    });
+}
+
+// 🔥 DEBUG COMPLETO DO BOTÃO - COLE ISSO NO SEU CÓDIGO
+function debugBotaoAplicarTodos() {
+    console.log("=== 🐛 DEBUG INICIADO ===");
+    
+    // 1. Verificar se o botão existe
+    const btn = document.getElementById('btnAplicarATodos');
+    console.log("1. Botão encontrado?", !!btn);
+    
+    if (!btn) {
+        console.log("❌ ERRO: Botão não existe no DOM!");
+        console.log("🔍 Procurando por qualquer botão...");
+        const todosBotoes = document.querySelectorAll('button');
+        console.log("Total de botões na página:", todosBotoes.length);
+        todosBotoes.forEach((botao, index) => {
+            console.log(`Botão ${index}:`, botao.textContent, botao.id);
+        });
+        return;
+    }
+    
+    // 2. Verificar estilo e visibilidade
+    console.log("2. Display:", btn.style.display);
+    console.log("3. Visibilidade:", btn.style.visibility);
+    console.log("4. Opacidade:", btn.style.opacity);
+    console.log("5. Desabilitado:", btn.disabled);
+    console.log("6. Posição:", btn.getBoundingClientRect());
+    
+    // 3. Verificar eventos
+    console.log("7. Tem onclick?", !!btn.onclick);
+    console.log("8. Tem event listeners?", btn.hasAttribute('onclick'));
+    
+    // 4. Forçar visibilidade para teste
+    btn.style.display = 'block';
+    btn.style.background = '#ff0000';
+    btn.style.color = 'white';
+    btn.style.border = '3px solid yellow';
+    btn.style.fontSize = '16px';
+    btn.style.fontWeight = 'bold';
+    btn.style.zIndex = '99999';
+    
+    // 5. Adicionar evento de clique DIRETO
+    btn.onclick = function(e) {
+        console.log("🎯🎯🎯 CLIQUE CAPTURADO DIRETAMENTE!");
+        e.preventDefault();
+        e.stopPropagation();
+        alert("BOTÃO CLICADO - FUNCIONA!");
+        return false;
+    };
+    
+    console.log("✅ Botão configurado para teste - deve estar VERMELHO!");
+}
+
+// 🔥 FUNÇÃO PARA MOSTRAR BOTÃO PRINCIPAL "APLICAR A TODOS"
+function mostrarBotaoAplicarATodos() {
+    const btnAplicar = document.getElementById('btnAplicarATodos');
+    if (btnAplicar) {
+        btnAplicar.style.display = 'block';
+    }
+}
+
+function criarBotoesWaitlabels() {
+  const container = document.getElementById('waitlabelButtons');
+  let html = '';
+  
+  WAITLABELS_CONFIG.WAITLABELS.forEach(waitlabel => {
+    const cor = WAITLABELS_CONFIG.CORES[waitlabel];
+    const isActive = waitlabel === waitlabelAtual;
+    const classeAtiva = isActive ? 'active' : '';
+    
+    html += `
+      <button class="waitlabel-btn waitlabel-${waitlabel.toLowerCase()} ${classeAtiva}" 
+              onclick="selecionarWaitlabel('${waitlabel}')"
+              style="border-color: ${cor}; ${isActive ? `background: ${cor}; color: white;` : ''}">
+        <span class="waitlabel-indicator" style="background: ${cor};"></span>
+        ${formatarNomeWaitlabel(waitlabel)}
+      </button>
+    `;
+  });
+  
+  container.innerHTML = html;
+}
+
+function formatarNomeWaitlabel(nome) {
+  const formatacoes = {
+    'Sim_Facilita': 'Sim Facilita',
+    'Set_9': 'Set 9',
+    'Doktorbank': 'DoktorBank',
+    'Dr_Parcela': 'Dr Parcela',
+    'Result': 'Result'
+  };
+  return formatacoes[nome] || nome;
+}
+
+function selecionarWaitlabel(waitlabel) {
+  console.log("🎯 Selecionando waitlabel:", waitlabel);
+  
+  // Atualizar visualmente
+  waitlabelAtual = waitlabel;
+  criarBotoesWaitlabels();
+  atualizarInterfaceWaitlabel();
+  
+  // Salvar no servidor
+  google.script.run
+    .withSuccessHandler(function(res) {
+      console.log("✅ Waitlabel salvo:", res);
+      showMessage('success', `✅ Waitlabel alterado para: ${formatarNomeWaitlabel(waitlabel)}`);
+    })
+    .withFailureHandler(function(error) {
+      console.error("❌ Erro ao salvar waitlabel:", error);
+      showMessage('error', '❌ Erro ao alterar waitlabel');
+    })
+    .setWaitlabelAtual(waitlabel);
+}
+
+function atualizarInterfaceWaitlabel() {
+  // Atualizar cor do header baseado no waitlabel
+  const header = document.querySelector('.header');
+  const cor = WAITLABELS_CONFIG.CORES[waitlabelAtual] || '#7E3E9A';
+  header.style.background = cor;
+  
+  // Atualizar título da seção de cadastros
+  const titulo = document.getElementById('tituloCadastros');
+  if (titulo) {
+    titulo.textContent = `Cadastros - ${formatarNomeWaitlabel(waitlabelAtual)}`;
+  }
+  
+  console.log("🎨 Interface atualizada para waitlabel:", waitlabelAtual);
+}
+
+// 🔥 MODIFICAR FUNÇÕES EXISTENTES PARA USAR WAITLABEL
+function cadastrar() {
+  console.log("🎯 CADASTRAR: Iniciando cadastro no waitlabel:", waitlabelAtual);
+  
+  // ✅ VALIDAÇÃO DE CAMPOS OBRIGATÓRIOS
+  const camposInvalidos = validarCamposObrigatorios();
+  if (camposInvalidos.length > 0) {
+    showMessage('error', `❌ Preencha os campos obrigatórios: ${camposInvalidos.join(', ')}`);
+    return;
+  }
+
+  // ✅ VALIDAÇÃO DE FORNECEDORES
+  const fornecedoresSelecionados = document.querySelectorAll('input[name="fornecedor"]:checked');
+  if (fornecedoresSelecionados.length === 0) {
+    showMessage('error', '❌ Selecione pelo menos um fornecedor!');
+    return;
+  }
+
+  // Coletar dados BASE (comuns a todos os fornecedores)
+  const dadosBase = coletarDadosFormulario();
+  if (!dadosBase) {
+    showMessage('error', '❌ Erro ao coletar dados do formulário');
+    return;
+  }
+
+  console.log("🔢 Fornecedores selecionados:", dadosBase.fornecedores.length);
+  console.log("📋 Lista de fornecedores:", dadosBase.fornecedores);
+
+  // ✅ CORREÇÃO CRÍTICA: Para CADASTRO, evento é FIXO "Novo cadastro"
+  dadosBase.evento = "Novo cadastro";
+  dadosBase.acao = 'cadastrar';
+
+  // Mostrar loading
+  showLoading(`Cadastrando ${dadosBase.fornecedores.length} fornecedor(es) no ${formatarNomeWaitlabel(waitlabelAtual)}...`, `Loja: ${dadosBase.razao_social}`);
+
+  const btnCadastrar = document.getElementById('btnCadastrar');
+  btnCadastrar.innerHTML = '<i class="fas fa-spinner fa-spin"></i> Cadastrando...';
+  btnCadastrar.disabled = true;
+
+  // ✅ ENVIAR para Google Apps Script - USANDO WAITLABEL
+  google.script.run
+    .withSuccessHandler(function(res) {
+      console.log("✅ Resposta do cadastro MULTIPLO:", res);
+      hideLoading();
+      
+      btnCadastrar.innerHTML = '<i class="fas fa-plus-circle"></i> Cadastrar';
+      btnCadastrar.disabled = false;
+      
+      if (res.success) {
+        showMessage('success', `✅ ${res.message} - ${res.registrosCriados} registro(s) criado(s)`);
+        limparFormulario();
+      } else {
+        showMessage('error', '❌ ' + res.message);
+      }
+    })
+    .withFailureHandler(function(error) {
+      console.error("❌ Erro no cadastro:", error);
+      hideLoading();
+      
+      btnCadastrar.innerHTML = '<i class="fas fa-plus-circle"></i> Cadastrar';
+      btnCadastrar.disabled = false;
+      showMessage('error', '❌ Erro: ' + error.message);
+    })
+    .processarCadastroComWaitlabel(dadosBase, waitlabelAtual);
+}
+
+function atualizar() {
+  console.log("🎯 ATUALIZAR: Iniciando atualização no waitlabel:", waitlabelAtual);
+  
+  // ✅ DEBUG 1: Verificar se tem ID
+  console.log("🔍 DEBUG 1: cadastroAtualId =", cadastroAtualId);
+  
+  if (!cadastroAtualId) {
+    showMessage('error', '❌ Nenhum cadastro selecionado para atualizar!');
+    return;
+  }
+
+  // ✅ VALIDAÇÃO DE CAMPOS OBRIGATÓRIOS
+  const camposInvalidos = validarCamposObrigatorios();
+  console.log("🔍 DEBUG 2: Campos inválidos:", camposInvalidos);
+  
+  if (camposInvalidos.length > 0) {
+    showMessage('error', `❌ Preencha os campos obrigatórios: ${camposInvalidos.join(', ')}`);
+    return;
+  }
+
+  // ✅ VALIDAÇÃO DE FORNECEDORES
+  const fornecedoresSelecionados = document.querySelectorAll('input[name="fornecedor"]:checked');
+  console.log("🔍 DEBUG 3: Fornecedores selecionados:", fornecedoresSelecionados.length);
+  
+  if (fornecedoresSelecionados.length === 0) {
+    showMessage('error', '❌ Selecione pelo menos um fornecedor!');
+    return;
+  }
+
+  // Coletar dados
+  console.log("🔍 DEBUG 4: Chamando coletarDadosFormulario()...");
+  const dados = coletarDadosFormulario();
+  console.log("🔍 DEBUG 5: Dados coletados:", dados);
+  
+  if (!dados) {
+    showMessage('error', '❌ Erro ao coletar dados do formulário');
+    return;
+  }
+  
+  dados.acao = 'atualizar';
+  dados.id = cadastroAtualId;
+  
+  console.log("📤 Dados para atualização:", dados);
+
+  // Mostrar loading
+  showLoading(`Atualizando ${dados.fornecedores.length} fornecedor(es) no ${formatarNomeWaitlabel(waitlabelAtual)}...`, `Loja: ${dados.razao_social}`);
+
+  const btnAtualizar = document.getElementById('btnAtualizar');
+  const btnOriginalHTML = btnAtualizar.innerHTML;
+  btnAtualizar.innerHTML = '<i class="fas fa-spinner fa-spin"></i> Atualizando...';
+  btnAtualizar.disabled = true;
+
+  console.log("🔍 DEBUG 6: Chamando Google Apps Script...");
+
+  // ✅ CORREÇÃO CRÍTICA: Usar processarCadastroComWaitlabel
+  google.script.run
+    .withSuccessHandler(function(res) {
+      console.log("✅ DEBUG 7: Resposta da atualização:", res);
+      hideLoading();
+      
+      btnAtualizar.innerHTML = btnOriginalHTML;
+      btnAtualizar.disabled = false;
+      
+      if (res && res.success) {
+        showMessage('success', '✅ ' + res.message);
+        
+        // Atualizar a lista de cadastros se estiver visível
+        if (document.getElementById('secaoCadastros').style.display === 'block') {
+          mostrarTodosCadastros();
+        }
+        
+        // Voltar para modo cadastro
+        limparFormulario();
+      } else {
+        showMessage('error', '❌ ' + (res ? res.message : 'Resposta inválida do servidor'));
+      }
+    })
+    .withFailureHandler(function(error) {
+      console.error("❌ DEBUG 8: Erro na atualização:", error);
+      hideLoading();
+      
+      btnAtualizar.innerHTML = btnOriginalHTML;
+      btnAtualizar.disabled = false;
+      showMessage('error', '❌ Erro ao atualizar: ' + error.message);
+    })
+    .processarCadastroComWaitlabel(dados, waitlabelAtual);
+}
+
+function mostrarTodosCadastros() {
+  console.log("🎯 Iniciando carregamento de cadastros do waitlabel:", waitlabelAtual);
+  
+  // 🔄 MOSTRAR LOADING
+  showLoading(`Carregando cadastros do ${formatarNomeWaitlabel(waitlabelAtual)}...`, "Buscando todos os registros");
+  
+  // Mostrar loading da tabela também
+  const loading = document.getElementById('loadingCadastros');
+  const tableContainer = document.getElementById('tableContainer');
+  const filtrosContainer = document.getElementById('filtrosContainer');
+  const secao = document.getElementById('secaoCadastros');
+
+  loading.style.display = 'flex';
+  tableContainer.style.display = 'none';
+  filtrosContainer.style.display = 'none';
+  secao.style.display = 'block';
+
+  // ✅ USAR FUNÇÃO COM WAITLABEL
+  google.script.run
+    .withSuccessHandler(function(cadastros) {
+      // 🔄 ESCONDER LOADING
+      hideLoading();
+      
+      console.log("✅ Cadastros recebidos:", cadastros);
+      
+      if (cadastros && cadastros.length > 0) {
+        // ✅ ORDENAR POR NOME AUTOMATICAMENTE
+        const cadastrosOrdenados = cadastros.sort((a, b) => {
+          const nomeA = (a.razao_social || '').toLowerCase();
+          const nomeB = (b.razao_social || '').toLowerCase();
+          return nomeA.localeCompare(nomeB);
+        });
+        
+        todosCadastros = cadastrosOrdenados;
+        cadastrosFiltrados = [...cadastrosOrdenados];
+        
+        // ✅ CORREÇÃO: Usar a função agrupada
+        const cadastrosAgrupados = agruparCadastrosPorCNPJ(cadastrosOrdenados);
+        exibirTabelaCadastrosAgrupada(cadastrosAgrupados, `Cadastros - ${formatarNomeWaitlabel(waitlabelAtual)}`);
+        
+        document.getElementById('filtrosContainer').style.display = 'flex';
+        configurarFiltroEvento('all'); // ✅ MOSTRAR FILTRO DE EVENTOS
+        
+        showMessage('success', `✅ ${cadastros.length} cadastros carregados do ${formatarNomeWaitlabel(waitlabelAtual)}!`);
+      } else {
+        loading.style.display = 'none';
+        tableContainer.style.display = 'block';
+        document.getElementById('tabelaCadastrosBody').innerHTML = `
+          <tr>
+            <td colspan="6" style="text-align: center; padding: 40px;">
+              <i class="fas fa-inbox" style="font-size: 3rem; color: var(--gray); margin-bottom: 15px;"></i>
+              <h3>Nenhum cadastro encontrado</h3>
+              <p>Não há cadastros no waitlabel ${formatarNomeWaitlabel(waitlabelAtual)}.</p>
+            </td>
+          </tr>
+        `;
+        showMessage('info', `📝 Nenhum cadastro encontrado no ${formatarNomeWaitlabel(waitlabelAtual)}.`);
+      }
+    })
+    .withFailureHandler(function(error) {
+      // 🔄 ESCONDER LOADING EM CASO DE ERRO
+      hideLoading();
+      
+      console.error("❌ Erro ao carregar cadastros:", error);
+      loading.style.display = 'none';
+      showMessage('error', '❌ Erro ao carregar cadastros: ' + error.message);
+    })
+    .buscarTodosCadastrosComWaitlabel(waitlabelAtual);
+}
+
+// 🔥 ADICIONAR: Função para buscar cadastro por CNPJ considerando waitlabel
+function buscarPorCNPJComWaitlabel() {
+  const cnpjBusca = document.getElementById('cnpj').value.replace(/\D/g, '');
+  
+  if (!cnpjBusca) {
+    showMessage('error', 'Digite um CNPJ para buscar');
+    return;
+  }
+
+  showMessage('info', `🔍 Buscando cadastro no ${formatarNomeWaitlabel(waitlabelAtual)}...`);
+
+  google.script.run
+    .withSuccessHandler(function(dados) {
+      preencherDadosCadastro(dados);
+    })
+    .withFailureHandler(function(error) {
+      showMessage('error', 'Erro: ' + error.message);
+    })
+    .buscarTodosCadastrosPorCNPJComWaitlabel(cnpjBusca, waitlabelAtual);
+}
+
+// 🔥 CORREÇÃO EXTRA - REMOVER SCROLL HORIZONTAL DINAMICAMENTE
 function corrigirScrollHorizontal() {
   const suggestions = document.getElementById('suggestionsEventoSearch');
   if (suggestions) {
@@ -1866,62 +2860,60 @@ filtrarSugestoesEventoSearch = function() {
   setTimeout(corrigirScrollHorizontal, 10);
 };
 
-    // 🔥 CÓDIGO TEMPORÁRIO PARA DEBUG - TESTAR SE A FUNÇÃO É CHAMADA
-    function testarAtualizacaoEventos() {
-      console.log("🧪 TESTE: Chamando atualizarEventos() manualmente...");
-      atualizarEventos();
-    }
+// 🔥 CÓDIGO TEMPORÁRIO PARA DEBUG - TESTAR SE A FUNÇÃO É CHAMADA
+function testarAtualizacaoEventos() {
+  console.log("🧪 TESTE: Chamando atualizarEventos() manualmente...");
+  atualizarEventos();
+}
 
-    // Testa após 2 segundos (para você ver no console)
-    setTimeout(testarAtualizacaoEventos, 2000);
 // Testa após 2 segundos (para você ver no console)
 setTimeout(testarAtualizacaoEventos, 2000);
 
-    // 🔥 FUNÇÕES DO MODAL DE SENHA - CORRIGIDAS
-    function configurarModalSenha() {
-      // Configurar evento de Enter no input de senha
-      const inputSenha = document.getElementById('inputSenha');
-      if (inputSenha) {
-        inputSenha.addEventListener('keydown', function(e) {
-          if (e.key === 'Enter') {
-            validarSenha();
-          }
-        });
+// 🔥 FUNÇÕES DO MODAL DE SENHA - CORRIGIDAS
+function configurarModalSenha() {
+  // Configurar evento de Enter no input de senha
+  const inputSenha = document.getElementById('inputSenha');
+  if (inputSenha) {
+    inputSenha.addEventListener('keydown', function(e) {
+      if (e.key === 'Enter') {
+        validarSenha();
       }
-      
-      // Fechar modal ao clicar fora
-      const modalSenha = document.getElementById('modalSenha');
-      if (modalSenha) {
-        modalSenha.addEventListener('click', function(e) {
-          if (e.target === this) {
-            fecharModalSenha();
-          }
-        });
+    });
+  }
+  
+  // Fechar modal ao clicar fora
+  const modalSenha = document.getElementById('modalSenha');
+  if (modalSenha) {
+    modalSenha.addEventListener('click', function(e) {
+      if (e.target === this) {
+        fecharModalSenha();
       }
-      
-      // Fechar modal com ESC
-      document.addEventListener('keydown', function(e) {
-        if (e.key === 'Escape' && document.getElementById('modalSenha').style.display === 'flex') {
-          fecharModalSenha();
-        }
-      });
+    });
+  }
+  
+  // Fechar modal com ESC
+  document.addEventListener('keydown', function(e) {
+    if (e.key === 'Escape' && document.getElementById('modalSenha').style.display === 'flex') {
+      fecharModalSenha();
     }
+  });
+}
 
-    function solicitarSenha(campo) {
-      campoEditavel = campo;
-      
-      // Mostrar modal
-      document.getElementById('modalSenha').style.display = 'flex';
-      
-      // Limpar e focar no input
-      const inputSenha = document.getElementById('inputSenha');
-      if (inputSenha) {
-        inputSenha.value = '';
-        inputSenha.focus();
-      }
-    }
+function solicitarSenha(campo) {
+  campoEditavel = campo;
+  
+  // Mostrar modal
+  document.getElementById('modalSenha').style.display = 'flex';
+  
+  // Limpar e focar no input
+  const inputSenha = document.getElementById('inputSenha');
+  if (inputSenha) {
+    inputSenha.value = '';
+    inputSenha.focus();
+  }
+}
 
-  function validarSenha() {
+function validarSenha() {
   const inputSenha = document.getElementById('inputSenha');
   if (!inputSenha) {
     console.log("❌ inputSenha não encontrado");
@@ -2058,13 +3050,13 @@ function restaurarDadosFormulario(dados) {
   console.log("✅ Dados restaurados com sucesso!");
 }
 
-    function fecharModalSenha() {
-      document.getElementById('modalSenha').style.display = 'none';
-      campoEditavel = null;
-    }
+function fecharModalSenha() {
+  document.getElementById('modalSenha').style.display = 'none';
+  campoEditavel = null;
+}
 
-    // 🔥 FUNÇÃO PARA LIBERAR TODOS OS CAMPOS PROTEGIDOS - CORRIGIDA
- function liberarTodosCamposProtegidos() {
+// 🔥 FUNÇÃO PARA LIBERAR TODOS OS CAMPOS PROTEGIDOS - CORRIGIDA
+function liberarTodosCamposProtegidos() {
   console.log("🔓 LIBERANDO TODOS OS CAMPOS...");
   
   // 🔥 CORREÇÃO: SALVAR OS DADOS ANTES DE LIBERAR
@@ -2128,8 +3120,8 @@ function restaurarDadosFormulario(dados) {
   console.log("🎯 TODOS OS CAMPOS FORAM LIBERADOS COM SUCESSO!");
 }
 
-    // 🔥 FUNÇÃO PRINCIPAL PARA CONFIGURAR PROTEÇÃO
-  function configurarCamposProtegidos() {
+// 🔥 FUNÇÃO PRINCIPAL PARA CONFIGURAR PROTEÇÃO
+function configurarCamposProtegidos() {
   console.log("🎯 CONFIGURAR CAMPOS PROTEGIDOS - INICIANDO PROTECÇÃO FORÇADA");
   
   // 🔥 CORREÇÃO: SALVAR OS DADOS EXISTENTES ANTES DE PROTEGER
@@ -2228,101 +3220,110 @@ function restaurarDadosFormulario(dados) {
   console.log("🎯 PROTECÇÃO FORÇADA FINALIZADA - Campos devem estar BLOQUEADOS mas dados preservados");
 }
 
-    // 🔥 FUNÇÃO TEMPORÁRIA PARA TESTAR ENVIO DO FORMULÁRIO
-    function testarEnvioFormulario() {
-      console.log("🧪 TESTANDO ENVIO DO FORMULÁRIO...");
-      
-      // Coletar dados do formulário normalmente (a mesma função que o cadastrar usa)
-      const dados = coletarDadosFormulario();
-      
-      console.log("📤 Dados coletados para envio:", dados);
-      console.log("🔢 Fornecedores coletados:", dados.fornecedores);
-      
-      if (!dados.fornecedores || dados.fornecedores.length === 0) {
-        alert("❌ Nenhum fornecedor selecionado! Selecione pelo menos um.");
-        return;
-      }
-      
-      // Enviar para debug no GS
-      google.script.run
-        .withSuccessHandler(function(res) {
-          console.log("✅ RESPOSTA DO DEBUG:", res);
-          alert(`DEBUG CONCLUÍDO:\n\n• Fornecedores enviados: ${res.quantidadeFornecedores}\n• Estrutura: ${JSON.stringify(res.estruturaFornecedores, null, 2)}\n\nVerifique o console do GS para detalhes completos.`);
-        })
-        .withFailureHandler(function(error) {
-          console.error("❌ ERRO NO DEBUG:", error);
-          alert("Erro no debug: " + error.message);
-        })
-        .debugFormulario(dados);
-    }
+// 🔥 FUNÇÃO TEMPORÁRIA PARA TESTAR ENVIO DO FORMULÁRIO
+function testarEnvioFormulario() {
+  console.log("🧪 TESTANDO ENVIO DO FORMULÁRIO...");
+  
+  // Coletar dados do formulário normalmente (a mesma função que o cadastrar usa)
+  const dados = coletarDadosFormulario();
+  
+  console.log("📤 Dados coletados para envio:", dados);
+  console.log("🔢 Fornecedores coletados:", dados.fornecedores);
+  
+  if (!dados.fornecedores || dados.fornecedores.length === 0) {
+    alert("❌ Nenhum fornecedor selecionado! Selecione pelo menos um.");
+    return;
+  }
+  
+  // Enviar para debug no GS
+  google.script.run
+    .withSuccessHandler(function(res) {
+      console.log("✅ RESPOSTA DO DEBUG:", res);
+      alert(`DEBUG CONCLUÍDO:\n\n• Fornecedores enviados: ${res.quantidadeFornecedores}\n• Estrutura: ${JSON.stringify(res.estruturaFornecedores, null, 2)}\n\nVerifique o console do GS para detalhes completos.`);
+    })
+    .withFailureHandler(function(error) {
+      console.error("❌ ERRO NO DEBUG:", error);
+      alert("Erro no debug: " + error.message);
+    })
+    .debugFormulario(dados);
+}
 
-    function formatarCNPJ(input) {
-      // Salva a posição do cursor
-      const cursorPos = input.selectionStart;
-      
-      let value = input.value.replace(/\D/g, '');
-      
-      // Aplica a formatação
-      if (value.length > 12) {
-        value = value.replace(/^(\d{2})(\d{3})(\d{3})(\d{4})(\d{2})/, '$1.$2.$3/$4-$5');
-      } else if (value.length > 8) {
-        value = value.replace(/^(\d{2})(\d{3})(\d{3})/, '$1.$2.$3/');
-      } else if (value.length > 5) {
-        value = value.replace(/^(\d{2})(\d{3})/, '$1.$2.');
-      } else if (value.length > 2) {
-        value = value.replace(/^(\d{2})/, '$1.');
-      }
-      
-      input.value = value;
-      
-      // Restaura a posição do cursor
-      input.setSelectionRange(cursorPos, cursorPos);
-    }
+function formatarCNPJ(input) {
+  // Salva a posição do cursor
+  const cursorPos = input.selectionStart;
+  
+  let value = input.value.replace(/\D/g, '');
+  
+  // Aplica a formatação
+  if (value.length > 12) {
+    value = value.replace(/^(\d{2})(\d{3})(\d{3})(\d{4})(\d{2})/, '$1.$2.$3/$4-$5');
+  } else if (value.length > 8) {
+    value = value.replace(/^(\d{2})(\d{3})(\d{3})/, '$1.$2.$3/');
+  } else if (value.length > 5) {
+    value = value.replace(/^(\d{2})(\d{3})/, '$1.$2.');
+  } else if (value.length > 2) {
+    value = value.replace(/^(\d{2})/, '$1.');
+  }
+  
+  input.value = value;
+  
+  // Restaura a posição do cursor
+  input.setSelectionRange(cursorPos, cursorPos);
+}
 
-    function formatarMoeda(input) {
-      let value = input.value.replace(/\D/g, '');
-      value = (value / 100).toFixed(2);
-      value = value.replace('.', ',');
-      value = value.replace(/(\d)(?=(\d{3})+\,)/g, "$1.");
-      input.value = 'R$ ' + value;
-    }
 
-    function formatarMoedaParaInput(valor) {
-      if (!valor) return 'R$ 0,00';
-      const numero = typeof valor === 'number' ? valor : parseFloat(valor);
-      return 'R$ ' + numero.toLocaleString('pt-BR', { minimumFractionDigits: 2 });
-    }
+// 🔥 FUNÇÃO SIMPLES: Para usar ENQUANTO não corrige o Google Sheets
+function formatarCNPJParaExibicao(cnpj) {
+    if (!cnpj || cnpj === 'N/A' || cnpj === '') return 'N/A';
+    
+    // 🔥 MOSTRA EXATAMENTE O QUE VEIO - o problema é na origem
+    return cnpj.toString();
+}
 
-    function showMessage(type, text) {
-      const successEl = document.getElementById('messageSuccess');
-      const errorEl = document.getElementById('messageError');
-      const infoEl = document.getElementById('messageInfo');
+function formatarMoeda(input) {
+  let value = input.value.replace(/\D/g, '');
+  value = (value / 100).toFixed(2);
+  value = value.replace('.', ',');
+  value = value.replace(/(\d)(?=(\d{3})+\,)/g, "$1.");
+  input.value = 'R$ ' + value;
+}
 
-      successEl.style.display = 'none';
-      errorEl.style.display = 'none';
-      infoEl.style.display = 'none';
+function formatarMoedaParaInput(valor) {
+  if (!valor) return 'R$ 0,00';
+  const numero = typeof valor === 'number' ? valor : parseFloat(valor);
+  return 'R$ ' + numero.toLocaleString('pt-BR', { minimumFractionDigits: 2 });
+}
 
-      if (type === 'success') {
-        successEl.querySelector('span').textContent = text;
-        successEl.style.display = 'flex';
-      } else if (type === 'error') {
-        errorEl.querySelector('span').textContent = text;
-        errorEl.style.display = 'flex';
-      } else if (type === 'info') {
-        infoEl.querySelector('span').textContent = text;
-        infoEl.style.display = 'flex';
-      }
+function showMessage(type, text) {
+  const successEl = document.getElementById('messageSuccess');
+  const errorEl = document.getElementById('messageError');
+  const infoEl = document.getElementById('messageInfo');
 
-      setTimeout(() => {
-        successEl.style.display = 'none';
-        errorEl.style.display = 'none';
-        infoEl.style.display = 'none';
-      }, 5000);
-    }
+  successEl.style.display = 'none';
+  errorEl.style.display = 'none';
+  infoEl.style.display = 'none';
 
- // 🔥 FUNÇOES AUXILIAR
+  if (type === 'success') {
+    successEl.querySelector('span').textContent = text;
+    successEl.style.display = 'flex';
+  } else if (type === 'error') {
+    errorEl.querySelector('span').textContent = text;
+    errorEl.style.display = 'flex';
+  } else if (type === 'info') {
+    infoEl.querySelector('span').textContent = text;
+    infoEl.style.display = 'flex';
+  }
 
- // 🔥 ADICIONE ESTA FUNÇÃO AUXILIAR PARA PADRONIZAR FORNECEDORES
+  setTimeout(() => {
+    successEl.style.display = 'none';
+    errorEl.style.display = 'none';
+    infoEl.style.display = 'none';
+  }, 5000);
+}
+
+// 🔥 FUNÇOES AUXILIAR
+
+// 🔥 ADICIONE ESTA FUNÇÃO AUXILIAR PARA PADRONIZAR FORNECEDORES
 function padronizarNomeFornecedor(nome) {
   if (!nome) return '';
   
@@ -2339,22 +3340,121 @@ function padronizarNomeFornecedor(nome) {
   return fornecedoresPadronizados[nomeLower] || nome.toUpperCase();
 }
 
-// 🔥 ATUALIZE a parte dos fornecedores na função coletarDadosFormulario:
-// (Dentro da função coletarDadosFormulario, procure esta parte):
 
-checkboxesFornecedores.forEach(checkbox => {
-  const fornecedorNome = checkbox.value;
-  // 🔥 CORREÇÃO: Padronizar para MAIÚSCULAS
-  const fornecedorPadronizado = padronizarNomeFornecedor(fornecedorNome);
-  const fornecedorId = fornecedorNome.toLowerCase();
+
+function coletarDadosFormulario() {
+  console.log("🔍 COLETANDO DADOS - INICIANDO");
   
-  // ... resto do código permanece igual
-  fornecedoresComConfiguracoes.push({
-    nome: fornecedorPadronizado, // 🔥 AGORA EM MAIÚSCULAS
-    tarifa: tarifaSelecionada,
-    percentual_tarifa: percentualSelecionado
-  });
-});
+  try {
+    // ✅ VALIDAÇÃO BÁSICA DOS CAMPOS PRINCIPAIS
+    const razaoSocial = document.getElementById('razao_social').value.trim();
+    const cnpj = document.getElementById('cnpj_cadastro').value.trim();
+    
+    if (!razaoSocial || !cnpj) {
+      showMessage('error', '❌ Razão Social e CNPJ são obrigatórios!');
+      return null;
+    }
+
+    // ✅ GARANTIR QUE O CNPJ MANTENHA A MÁSCARA
+    const cnpjInput = document.getElementById('cnpj_cadastro');
+    const cnpjFormatado = cnpjInput.value;
+
+    // ✅ Processar adesão - CORREÇÃO APLICADA
+      let adesaoValue = document.getElementById('adesao').value;
+      console.log("💰 Adesão original:", adesaoValue);
+
+      if (adesaoValue === 'R$ 0,00' || adesaoValue === '0,00' || adesaoValue === '0' || adesaoValue === 'R$ 0') {
+        adesaoValue = 0;
+        console.log("✅ Adesão definida como isenta (0)");
+      } else {
+        // ✅ CORREÇÃO: Usar a função normal (já corrigida)
+        adesaoValue = converterMoedaParaNumero(adesaoValue);
+        console.log("✅ Adesão convertida para número:", adesaoValue);
+      }
+      console.log("🎯🎯🎯 ADESÃO FINAL PARA ENVIO:", adesaoValue, "Tipo:", typeof adesaoValue);
+
+    // ✅ CORREÇÃO CRÍTICA: Coletar evento do campo CORRETO
+    const eventoValue = document.getElementById('inputEventoSearch').value || 
+                       document.getElementById('evento').value || '';
+    console.log("✅ Evento coletado:", eventoValue);
+
+    // ✅ CORREÇÃO CRÍTICA: Coletar TODOS os fornecedores COM VALIDAÇÃO
+    const checkboxesFornecedores = document.querySelectorAll('input[name="fornecedor"]:checked');
+    const fornecedoresComConfiguracoes = [];
+
+    if (checkboxesFornecedores.length === 0) {
+      showMessage('error', '❌ Selecione pelo menos um fornecedor!');
+      return null;
+    }
+
+    checkboxesFornecedores.forEach(checkbox => {
+      const fornecedorNome = checkbox.value;
+      // 🔥 CORREÇÃO: Padronizar para MAIÚSCULAS
+      const fornecedorPadronizado = padronizarNomeFornecedor(fornecedorNome);
+      const fornecedorId = fornecedorNome.toLowerCase();
+      
+      // Verificar se tem configuração ativa
+      const configDiv = document.getElementById(`config-${fornecedorId}`);
+      if (!configDiv || configDiv.style.display !== 'grid') {
+        console.warn(`❌ Fornecedor ${fornecedorNome} não tem configuração ativa!`);
+        return;
+      }
+      
+      // Coletar configurações de tarifa
+      const tarifaRadio = document.querySelector(`input[name="tarifa_${fornecedorId}"]:checked`);
+      const percentualSelect = document.querySelector(`select[name="percentual_${fornecedorId}"]`);
+      
+      // 🔥 CORREÇÃO: Se não tem tarifa selecionada, seleciona MDR automaticamente
+      let tarifaSelecionada = tarifaRadio ? tarifaRadio.value : 'MDR';
+      let percentualSelecionado = percentualSelect ? percentualSelect.value : '0%';
+      
+      // Se não tinha tarifa selecionada, seleciona MDR agora
+      if (!tarifaRadio) {
+        const radioMDR = document.querySelector(`input[name="tarifa_${fornecedorId}"][value="MDR"]`);
+        if (radioMDR) {
+          radioMDR.checked = true;
+          console.log(`✅ MDR selecionado automaticamente para ${fornecedorNome}`);
+        }
+      }
+      
+      // Adiciona aos dados
+      fornecedoresComConfiguracoes.push({
+        nome: fornecedorPadronizado,
+        tarifa: tarifaSelecionada,
+        percentual_tarifa: percentualSelecionado
+      });
+    });
+
+    // ✅ MONTAR OBJETO DE DADOS CORRETAMENTE
+    const dados = {
+      razao_social: razaoSocial,
+      nome_fantasia: document.getElementById('nome_fantasia').value,
+      cnpj: cnpjFormatado,
+      tipo: document.getElementById('tipo').value,
+      adesao: adesaoValue,
+      fornecedores: fornecedoresComConfiguracoes,
+      fornecedor: fornecedoresComConfiguracoes.length > 0 ? fornecedoresComConfiguracoes[0].nome : '',
+      tarifa: fornecedoresComConfiguracoes.length > 0 ? fornecedoresComConfiguracoes[0].tarifa : '',
+      percentual_tarifa: fornecedoresComConfiguracoes.length > 0 ? fornecedoresComConfiguracoes[0].percentual_tarifa : '0%',
+      observacoes: document.getElementById('observacoes').value,
+      contrato_enviado: document.getElementById('contrato_enviado').value,
+      contrato_assinado: document.getElementById('contrato_assinado').value,
+      ativacao: document.getElementById('ativacao').value,
+      link: document.getElementById('link').value,
+      mensalidade: converterMoedaParaNumero(document.getElementById('mensalidade').value),
+      situacao: document.getElementById('situacao').value,
+      evento: eventoValue // ✅ AGORA CORRETO - PEGA DO CAMPO CERTO
+    };
+
+    console.log("📦 DADOS FINAIS PARA ENVIO:", dados);
+    return dados;
+
+  } catch (error) {
+    console.error("❌ ERRO CRÍTICO ao coletar dados:", error);
+    showMessage('error', '❌ Erro interno ao processar formulário');
+    return null;
+  }
+}
 
 // 🔥 CORREÇÃO DEFINITIVA - FUNÇÃO CALCULAR DEFASAGEM MELHORADA
 function calcularDefasagem(dataUltimoEvento) {
@@ -2468,152 +3568,73 @@ function formatarPercentualParaExibicao(percentual) {
   }
 }
 
-    function toggleFornecedorConfig(checkbox, fornecedorId) {
-      const configDiv = document.getElementById(`config-${fornecedorId}`);
-      
-      if (checkbox.checked) {
-        configDiv.style.display = 'grid';
-      } else {
-        configDiv.style.display = 'none';
-        // Limpar seleções quando desmarcar
-        const radios = configDiv.querySelectorAll('input[type="radio"]');
-        radios.forEach(radio => radio.checked = false);
-        const select = configDiv.querySelector('select');
-        if (select) select.value = '0%';
-      }
-      
-      // 🔥 NOVO: Atualizar tarifa principal quando mudar seleção
-      atualizarTarifaPrincipal();
-    }
+function toggleFornecedorConfig(checkbox, fornecedorId) {
+  const configDiv = document.getElementById(`config-${fornecedorId}`);
+  
+  if (checkbox.checked) {
+    configDiv.style.display = 'grid';
+  } else {
+    configDiv.style.display = 'none';
+    // Limpar seleções quando desmarcar
+    const radios = configDiv.querySelectorAll('input[type="radio"]');
+    radios.forEach(radio => radio.checked = false);
+    const select = configDiv.querySelector('select');
+    if (select) select.value = '0%';
+  }
+  
+  // 🔥 NOVO: Atualizar tarifa principal quando mudar seleção
+  atualizarTarifaPrincipal();
+}
 
-    // 🔥 ADICIONAR: Função para atualizar tarifa principal
-    function atualizarTarifaPrincipal() {
-      const checkboxesFornecedores = document.querySelectorAll('input[name="fornecedor"]:checked');
-      if (checkboxesFornecedores.length > 0) {
-        const primeiroFornecedor = checkboxesFornecedores[0].value.toLowerCase();
-        // As tarifas serão coletadas na função coletarDadosFormulario
-      }
-    }
+// 🔥 ADICIONAR: Função para atualizar tarifa principal
+function atualizarTarifaPrincipal() {
+  const checkboxesFornecedores = document.querySelectorAll('input[name="fornecedor"]:checked');
+  if (checkboxesFornecedores.length > 0) {
+    const primeiroFornecedor = checkboxesFornecedores[0].value.toLowerCase();
+    // As tarifas serão coletadas na função coletarDadosFormulario
+  }
+}
 
-    function converterMoedaParaNumero(valorMoeda) {
-      if (!valorMoeda) return 0;
-      try {
-        if (typeof valorMoeda === 'number') return valorMoeda;
-        if (typeof valorMoeda === 'string') {
-          const valorLimpo = valorMoeda
-            .replace('R$', '')
-            .replace(/\./g, '')
-            .replace(',', '.')
-            .trim();
-          const numero = parseFloat(valorLimpo);
-          return isNaN(numero) ? 0 : numero;
-        }
-        return parseFloat(valorMoeda) || 0;
-      } catch (error) {
-        console.error("❌ Erro ao converter moeda:", valorMoeda, error);
-        return 0;
-      }
-    }
 
-// 🔥🔥🔥 CORREÇÃO CRÍTICA - FUNÇÃO COLETAR DADOS COMPLETA E CORRIGIDA
-function coletarDadosFormulario() {
-  console.log("🔍 COLETANDO DADOS - INICIANDO");
+function converterMoedaParaNumero(valorMoeda) {
+  if (!valorMoeda) return 0;
   
   try {
-    // ✅ VALIDAÇÃO BÁSICA DOS CAMPOS PRINCIPAIS
-    const razaoSocial = document.getElementById('razao_social').value.trim();
-    const cnpj = document.getElementById('cnpj_cadastro').value.trim();
+    console.log("🔢 CONVERTENDO MOEDA - Valor original:", valorMoeda, "Tipo:", typeof valorMoeda);
     
-    if (!razaoSocial || !cnpj) {
-      showMessage('error', '❌ Razão Social e CNPJ são obrigatórios!');
-      return null;
+    // Se já é número, retorna como está
+    if (typeof valorMoeda === 'number') {
+      console.log("✅ Já é número, retornando:", valorMoeda);
+      return valorMoeda;
     }
-
-    // ✅ GARANTIR QUE O CNPJ MANTENHA A MÁSCARA
-    const cnpjInput = document.getElementById('cnpj_cadastro');
-    const cnpjFormatado = cnpjInput.value;
-
-    // ✅ Processar adesão
-    let adesaoValue = document.getElementById('adesao').value;
-    if (adesaoValue === 'R$ 0,00' || adesaoValue === '0,00' || adesaoValue === '0') {
-      adesaoValue = 0;
-    } else {
-      adesaoValue = converterMoedaParaNumero(adesaoValue);
-    }
-
-    // ✅ CORREÇÃO CRÍTICA: Coletar TODOS os fornecedores COM VALIDAÇÃO
-    const checkboxesFornecedores = document.querySelectorAll('input[name="fornecedor"]:checked');
-    const fornecedoresComConfiguracoes = [];
-
-    if (checkboxesFornecedores.length === 0) {
-      showMessage('error', '❌ Selecione pelo menos um fornecedor!');
-      return null;
-    }
-
-    checkboxesFornecedores.forEach(checkbox => {
-      const fornecedorNome = checkbox.value;
-      const fornecedorId = fornecedorNome.toLowerCase();
+    
+    if (typeof valorMoeda === 'string') {
+      // ✅ CORREÇÃO DEFINITIVA: REMOVER a multiplicação por 100
+      let valorLimpo = valorMoeda
+        .replace('R$', '')
+        .replace(/\./g, '')
+        .replace(',', '.')
+        .trim();
       
-      // Verificar se tem configuração ativa
-      const configDiv = document.getElementById(`config-${fornecedorId}`);
-      if (!configDiv || configDiv.style.display !== 'grid') {
-        console.warn(`❌ Fornecedor ${fornecedorNome} não tem configuração ativa!`);
-        return;
+      console.log("🔧 Valor limpo:", valorLimpo);
+      
+      const numero = parseFloat(valorLimpo);
+      
+      if (isNaN(numero)) {
+        console.log("❌ Não é um número válido:", valorLimpo);
+        return 0;
       }
       
-      // Coletar configurações de tarifa
-      const tarifaRadio = document.querySelector(`input[name="tarifa_${fornecedorId}"]:checked`);
-      const percentualSelect = document.querySelector(`select[name="percentual_${fornecedorId}"]`);
-      
-      // 🔥 CORREÇÃO: Se não tem tarifa selecionada, seleciona MDR automaticamente
-      let tarifaSelecionada = tarifaRadio ? tarifaRadio.value : 'MDR';
-      let percentualSelecionado = percentualSelect ? percentualSelect.value : '0%';
-      
-      // Se não tinha tarifa selecionada, seleciona MDR agora
-      if (!tarifaRadio) {
-        const radioMDR = document.querySelector(`input[name="tarifa_${fornecedorId}"][value="MDR"]`);
-        if (radioMDR) {
-          radioMDR.checked = true;
-          console.log(`✅ MDR selecionado automaticamente para ${fornecedorNome}`);
-        }
-      }
-      
-      // Adiciona aos dados
-      fornecedoresComConfiguracoes.push({
-        nome: fornecedorNome,
-        tarifa: tarifaSelecionada,
-        percentual_tarifa: percentualSelecionado
-      });
-    });
-
-    // ✅ MONTAR OBJETO DE DADOS CORRETAMENTE
-    const dados = {
-      razao_social: razaoSocial,
-      nome_fantasia: document.getElementById('nome_fantasia').value,
-      cnpj: cnpjFormatado,
-      tipo: document.getElementById('tipo').value,
-      adesao: adesaoValue,
-      fornecedores: fornecedoresComConfiguracoes,
-      fornecedor: fornecedoresComConfiguracoes.length > 0 ? fornecedoresComConfiguracoes[0].nome : '',
-      tarifa: fornecedoresComConfiguracoes.length > 0 ? fornecedoresComConfiguracoes[0].tarifa : '',
-      percentual_tarifa: fornecedoresComConfiguracoes.length > 0 ? fornecedoresComConfiguracoes[0].percentual_tarifa : '0%',
-      observacoes: document.getElementById('observacoes').value,
-      contrato_enviado: document.getElementById('contrato_enviado').value,
-      contrato_assinado: document.getElementById('contrato_assinado').value,
-      ativacao: document.getElementById('ativacao').value,
-      link: document.getElementById('link').value,
-      mensalidade: converterMoedaParaNumero(document.getElementById('mensalidade').value),
-      situacao: document.getElementById('situacao').value,
-      evento: document.getElementById('inputEventoSearch').value || document.getElementById('evento').value
-    };
-
-    console.log("📦 DADOS FINAIS PARA ENVIO:", dados);
-    return dados;
-
+      // ✅✅✅ CORREÇÃO: REMOVER COMPLETAMENTE a multiplicação por 100
+      console.log("✅ Número convertido (SEM multiplicação):", numero);
+      return numero;
+    }
+    
+    return parseFloat(valorMoeda) || 0;
+    
   } catch (error) {
-    console.error("❌ ERRO CRÍTICO ao coletar dados:", error);
-    showMessage('error', '❌ Erro interno ao processar formulário');
-    return null;
+    console.error("❌ ERRO CRÍTICO ao converter moeda:", valorMoeda, error);
+    return 0;
   }
 }
 
@@ -2633,12 +3654,11 @@ function debugContratoEnviado(dados) {
 }
 
 // 🔥 FUNÇÃO COM DEBUG: Preencher dados do cadastro
-// 🔥 FUNÇÃO CORRIGIDA: Preencher dados do cadastro
 function preencherDadosCadastro(dados) {
   console.log("🎯 PREENCHER DADOS CADASTRO: Iniciando");
   console.log("📦 Dados recebidos:", dados);
 
-    // DEBUG ESPECÍFICO
+  // DEBUG ESPECÍFICO
   console.log("🔍 DEBUG FORNECEDOR:");
   console.log("Fornecedor:", dados.fornecedor);
   console.log("Tarifa:", dados.tarifa);
@@ -2686,14 +3706,39 @@ function preencherDadosCadastro(dados) {
   document.getElementById('situacao').value = dados.situacao || 'Novo registro';
   document.getElementById('adesao').value = dados.adesao === 'Isento' || dados.adesao === 0 ? 'R$ 0,00' : formatarMoedaParaInput(dados.adesao);
   
-  // Preencher evento
+  // ✅✅✅ CORREÇÃO CRÍTICA: Preencher evento nos DOIS campos
   if (dados.evento) {
     document.getElementById('inputEventoSearch').value = dados.evento;
     document.getElementById('evento').value = dados.evento;
+    console.log("✅ Evento preenchido nos dois campos:", dados.evento);
+  } else {
+    // Limpar se não tiver evento
+    document.getElementById('inputEventoSearch').value = '';
+    document.getElementById('evento').value = '';
   }
   
   // Preencher fornecedor
   preencherFornecedorComTarifas(dados);
+
+  // 🔥 PONTO 3: BLOQUEAR CAMPO FORNECEDOR QUANDO EDITANDO
+  console.log("🔒 BLOQUEANDO CAMPOS DE FORNECEDOR PARA EDIÇÃO");
+  const checkboxesFornecedores = document.querySelectorAll('input[name="fornecedor"]');
+  const configsFornecedores = document.querySelectorAll('[id^="config-"]');
+
+  checkboxesFornecedores.forEach(checkbox => {
+      checkbox.disabled = true;
+      checkbox.style.cursor = 'not-allowed';
+      checkbox.style.opacity = '0.7';
+  });
+
+  configsFornecedores.forEach(config => {
+      const inputs = config.querySelectorAll('input, select');
+      inputs.forEach(input => {
+          input.disabled = true;
+          input.style.cursor = 'not-allowed';
+          input.style.opacity = '0.7';
+      });
+  });
   
   // Atualizar eventos
   atualizarEventos();
@@ -2817,202 +3862,48 @@ function validarCamposObrigatorios() {
   return camposInvalidos;
 }
 
-// 🔥🔥🔥 CORREÇÃO DA FUNÇÃO ATUALIZAR - AGORA FUNCIONA!
-function atualizar() {
-  console.log("🎯 ATUALIZAR: Iniciando atualização...");
+function mostrarPopupResultado(mensagemPrincipal, detalhes) {
+  // Usar o modal de detalhes TEMPORARIAMENTE
+  const modal = document.getElementById('modalDetalhes');
+  const content = document.getElementById('modalDetalhesContent');
   
-  // ✅ DEBUG 1: Verificar se tem ID
-  console.log("🔍 DEBUG 1: cadastroAtualId =", cadastroAtualId);
-  
-  if (!cadastroAtualId) {
-    showMessage('error', '❌ Nenhum cadastro selecionado para atualizar!');
-    return;
-  }
-
-  // ✅ VALIDAÇÃO DE CAMPOS OBRIGATÓRIOS
-  const camposInvalidos = validarCamposObrigatorios();
-  console.log("🔍 DEBUG 2: Campos inválidos:", camposInvalidos);
-  
-  if (camposInvalidos.length > 0) {
-    showMessage('error', `❌ Preencha os campos obrigatórios: ${camposInvalidos.join(', ')}`);
-    return;
-  }
-
-  // ✅ VALIDAÇÃO DE FORNECEDORES
-  const fornecedoresSelecionados = document.querySelectorAll('input[name="fornecedor"]:checked');
-  console.log("🔍 DEBUG 3: Fornecedores selecionados:", fornecedoresSelecionados.length);
-  
-  if (fornecedoresSelecionados.length === 0) {
-    showMessage('error', '❌ Selecione pelo menos um fornecedor!');
-    return;
-  }
-
-  // Coletar dados
-  console.log("🔍 DEBUG 4: Chamando coletarDadosFormulario()...");
-  const dados = coletarDadosFormulario();
-  console.log("🔍 DEBUG 5: Dados coletados:", dados);
-  
-  if (!dados) {
-    showMessage('error', '❌ Erro ao coletar dados do formulário');
-    return;
-  }
-  
-  dados.acao = 'atualizar';
-  dados.id = cadastroAtualId;
-  
-  console.log("📤 Dados para atualização:", dados);
-
-  // Mostrar loading
-  showLoading(`Atualizando ${dados.fornecedores.length} fornecedor(es)...`, `Loja: ${dados.razao_social}`);
-
-  const btnAtualizar = document.getElementById('btnAtualizar');
-  const btnOriginalHTML = btnAtualizar.innerHTML;
-  btnAtualizar.innerHTML = '<i class="fas fa-spinner fa-spin"></i> Atualizando...';
-  btnAtualizar.disabled = true;
-
-  console.log("🔍 DEBUG 6: Chamando Google Apps Script...");
-
-  // ✅ CORREÇÃO CRÍTICA: Usar processarCadastro que já funciona
-  google.script.run
-    .withSuccessHandler(function(res) {
-      console.log("✅ DEBUG 7: Resposta da atualização:", res);
-      hideLoading();
-      
-      btnAtualizar.innerHTML = btnOriginalHTML;
-      btnAtualizar.disabled = false;
-      
-      if (res && res.success) {
-        showMessage('success', '✅ ' + res.message);
-        
-        // Atualizar a lista de cadastros se estiver visível
-        if (document.getElementById('secaoCadastros').style.display === 'block') {
-          mostrarTodosCadastros();
-        }
-        
-        // Voltar para modo cadastro
-        limparFormulario();
-      } else {
-        showMessage('error', '❌ ' + (res ? res.message : 'Resposta inválida do servidor'));
-      }
-    })
-    .withFailureHandler(function(error) {
-      console.error("❌ DEBUG 8: Erro na atualização:", error);
-      hideLoading();
-      
-      btnAtualizar.innerHTML = btnOriginalHTML;
-      btnAtualizar.disabled = false;
-      showMessage('error', '❌ Erro ao atualizar: ' + error.message);
-    })
-    .processarCadastro(dados); // ✅ USAR processarCadastro QUE JÁ FUNCIONA
-}
-
-// 🔥🔥🔥 CORREÇÃO DA FUNÇÃO CADASTRAR - MULTIPLOS FORNECEDORES FUNCIONANDO!
-function cadastrar() {
-  console.log("🎯 CADASTRAR: Iniciando cadastro MULTIPLOS FORNECEDORES");
-  
-  // ✅ VALIDAÇÃO DE CAMPOS OBRIGATÓRIOS
-  const camposInvalidos = validarCamposObrigatorios();
-  if (camposInvalidos.length > 0) {
-    showMessage('error', `❌ Preencha os campos obrigatórios: ${camposInvalidos.join(', ')}`);
-    return;
-  }
-
-  // ✅ VALIDAÇÃO DE FORNECEDORES
-  const fornecedoresSelecionados = document.querySelectorAll('input[name="fornecedor"]:checked');
-  if (fornecedoresSelecionados.length === 0) {
-    showMessage('error', '❌ Selecione pelo menos um fornecedor!');
-    return;
-  }
-
-  // Coletar dados BASE (comuns a todos os fornecedores)
-  const dadosBase = coletarDadosFormulario();
-  if (!dadosBase) {
-    showMessage('error', '❌ Erro ao coletar dados do formulário');
-    return;
-  }
-
-  console.log("🔢 Fornecedores selecionados:", dadosBase.fornecedores.length);
-  console.log("📋 Lista de fornecedores:", dadosBase.fornecedores);
-
-  // ✅ CORREÇÃO CRÍTICA: Para CADASTRO, evento é FIXO "Novo cadastro"
-  dadosBase.evento = "Novo cadastro";
-  dadosBase.acao = 'cadastrar';
-
-  // Mostrar loading
-  showLoading(`Cadastrando ${dadosBase.fornecedores.length} fornecedor(es)...`, `Loja: ${dadosBase.razao_social}`);
-
-  const btnCadastrar = document.getElementById('btnCadastrar');
-  btnCadastrar.innerHTML = '<i class="fas fa-spinner fa-spin"></i> Cadastrando...';
-  btnCadastrar.disabled = true;
-
-  // ✅ ENVIAR para Google Apps Script - CADA FORNECEDOR VIRA UM REGISTRO
-  google.script.run
-    .withSuccessHandler(function(res) {
-      console.log("✅ Resposta do cadastro MULTIPLO:", res);
-      hideLoading();
-      
-      btnCadastrar.innerHTML = '<i class="fas fa-plus-circle"></i> Cadastrar';
-      btnCadastrar.disabled = false;
-      
-      if (res.success) {
-        showMessage('success', `✅ ${res.message} - ${res.registrosCriados} registro(s) criado(s)`);
-        limparFormulario();
-      } else {
-        showMessage('error', '❌ ' + res.message);
-      }
-    })
-    .withFailureHandler(function(error) {
-      console.error("❌ Erro no cadastro:", error);
-      hideLoading();
-      
-      btnCadastrar.innerHTML = '<i class="fas fa-plus-circle"></i> Cadastrar';
-      btnCadastrar.disabled = false;
-      showMessage('error', '❌ Erro: ' + error.message);
-    })
-    .salvarCadastro(dadosBase);
-}
-
-    function mostrarPopupResultado(mensagemPrincipal, detalhes) {
-      // Usar o modal de detalhes TEMPORARIAMENTE
-      const modal = document.getElementById('modalDetalhes');
-      const content = document.getElementById('modalDetalhesContent');
-      
-      let detalhesHTML = '';
-      if (detalhes && Array.isArray(detalhes)) {
-        detalhesHTML = `
-          <div style="margin-top: 15px; padding: 15px; background: #f8f9fa; border-radius: 8px;">
-            <h4 style="color: var(--primary); margin-bottom: 10px;">📋 Detalhes do Cadastro:</h4>
-            <div style="max-height: 200px; overflow-y: auto;">
-              ${detalhes.map(detalhe => `
-                <div style="padding: 5px 0; border-bottom: 1px solid #e0e0e0; display: flex; align-items: center; gap: 8px;">
-                  ${detalhe.includes('✅') ? 
-                    '<span style="color: var(--success);">✅</span>' : 
-                    '<span style="color: var(--danger);">❌</span>'
-                  }
-                  <span>${detalhe.replace('✅', '').replace('❌', '')}</span>
-                </div>
-              `).join('')}
+  let detalhesHTML = '';
+  if (detalhes && Array.isArray(detalhes)) {
+    detalhesHTML = `
+      <div style="margin-top: 15px; padding: 15px; background: #f8f9fa; border-radius: 8px;">
+        <h4 style="color: var(--primary); margin-bottom: 10px;">📋 Detalhes do Cadastro:</h4>
+        <div style="max-height: 200px; overflow-y: auto;">
+          ${detalhes.map(detalhe => `
+            <div style="padding: 5px 0; border-bottom: 1px solid #e0e0e0; display: flex; align-items: center; gap: 8px;">
+              ${detalhe.includes('✅') ? 
+                '<span style="color: var(--success);">✅</span>' : 
+                '<span style="color: var(--danger);">❌</span>'
+              }
+              <span>${detalhe.replace('✅', '').replace('❌', '')}</span>
             </div>
-          </div>
-        `;
-      }
-
-      content.innerHTML = `
-        <div style="text-align: center; padding: 20px;">
-          <div style="font-size: 4rem; color: var(--success); margin-bottom: 15px;">✅</div>
-          <h3 style="color: var(--success); margin-bottom: 15px;">Cadastro Realizado!</h3>
-          <p style="font-size: 1.1rem; margin-bottom: 20px; line-height: 1.4;">${mensagemPrincipal}</p>
-          ${detalhesHTML}
-          <div style="margin-top: 25px; padding-top: 20px; border-top: 1px solid var(--border);">
-            <button class="btn btn-success" onclick="fecharModalDetalhes()">
-              <i class="fas fa-check"></i> Continuar
-            </button>
-          </div>
+          `).join('')}
         </div>
-      `;
-      
-      modal.style.display = 'flex';
-    }
+      </div>
+    `;
+  }
+
+  content.innerHTML = `
+    <div style="text-align: center; padding: 20px;">
+      <div style="font-size: 4rem; color: var(--success); margin-bottom: 15px;">✅</div>
+      <h3 style="color: var(--success); margin-bottom: 15px;">Cadastro Realizado!</h3>
+      <p style="font-size: 1.1rem; margin-bottom: 20px; line-height: 1.4;">${mensagemPrincipal}</p>
+      ${detalhesHTML}
+      <div style="margin-top: 25px; padding-top: 20px; border-top: 1px solid var(--border);">
+        <button class="btn btn-success" onclick="fecharModalDetalhes()">
+          <i class="fas fa-check"></i> Continuar
+        </button>
+      </div>
+    </div>
+  `;
+  
+  modal.style.display = 'flex';
+}
+
 
 function limparFormulario() {
   document.getElementById('razao_social').value = '';
@@ -3059,15 +3950,55 @@ function limparFormulario() {
   document.getElementById('btnAtualizar').style.display = 'none';
   cadastroAtualId = null;
   
+  // 🔥 CORREÇÃO: LIBERAR CAMPOS DE FORNECEDOR QUANDO VOLTAR AO MODO CADASTRO
+  console.log("🔓 LIBERANDO CAMPOS DE FORNECEDOR PARA NOVO CADASTRO");
+  const checkboxesFornecedores = document.querySelectorAll('input[name="fornecedor"]');
+  const configsFornecedores = document.querySelectorAll('[id^="config-"]');
+
+  checkboxesFornecedores.forEach(checkbox => {
+      checkbox.disabled = false;
+      checkbox.style.cursor = 'pointer';
+      checkbox.style.opacity = '1';
+  });
+
+  configsFornecedores.forEach(config => {
+      const inputs = config.querySelectorAll('input, select');
+      inputs.forEach(input => {
+          input.disabled = false;
+          input.style.cursor = 'pointer';
+          input.style.opacity = '1';
+      });
+  });
+  
   // 🔥 CORREÇÃO: Remover destaque de campos obrigatórios
   document.querySelectorAll('.campo-obrigatorio').forEach(campo => {
     campo.classList.remove('campo-obrigatorio');
     campo.style.borderColor = '';
     campo.style.backgroundColor = '';
   });
+  
+  // 🔥🔥🔥 NOVA LINHA: Limpar seleção "Aplicar a Todos"
+  limparSelecaoAplicarATodos();
+  
+  // 🔥🔥🔥 ESCONDER BOTÃO "APLICAR A TODOS" AO LIMPAR
+  document.getElementById('btnAplicarATodos').style.display = 'none';
 }
 
+// 🔥 CONFIGURAR BOTÕES "APLICAR A TODOS" NO FORMULÁRIO
+function configurarBotoesAplicarATodos(cnpj) {
+    console.log("🎯 Configurando botões aplicar a todos para CNPJ:", cnpj);
+    cnpjAtualParaAplicar = cnpj;
     
+    // Limpar seleção anterior
+    limparSelecaoAplicarATodos();
+    
+    // 🔥 ADICIONAR CHECKBOXES AOS CAMPOS
+    adicionarCheckboxesAosCampos();
+    
+    // 🔥 MOSTRAR BOTÃO "APLICAR A TODOS"
+    mostrarBotaoAplicarATodos();
+}
+
 function filtrarTabela(situacao) {
   // Remover classe active de todos os botões
   document.querySelectorAll('.filtros-container .btn').forEach(btn => {
@@ -3081,12 +4012,12 @@ function filtrarTabela(situacao) {
   configurarFiltroEvento(situacao);
   
   let cadastrosFiltradosTemp = todosCadastros;
-  let titulo = 'Todos os Cadastros';
+  let titulo = `Cadastros - ${formatarNomeWaitlabel(waitlabelAtual)}`;
 
   if (situacao !== 'all') {
     // ✅ CORREÇÃO: Filtrar pela situação correta
     cadastrosFiltradosTemp = todosCadastros.filter(cad => cad.situacao === situacao);
-    titulo = `Cadastros - ${situacao}`;
+    titulo = `Cadastros - ${formatarNomeWaitlabel(waitlabelAtual)} - ${situacao}`;
   }
 
   // ✅ CORREÇÃO: SEMPRE AGRUPAR OS CADASTROS POR CNPJ
@@ -3097,100 +4028,31 @@ function filtrarTabela(situacao) {
   exibirTabelaCadastrosAgrupada(cadastrosAgrupados, titulo);
 }
 
-    function mostrarTodosCadastros() {
-  console.log("🎯 Iniciando carregamento de cadastros...");
-  
-  // 🔄 MOSTRAR LOADING
-  showLoading("Carregando cadastros...", "Buscando todos os registros");
-  
-  // Mostrar loading da tabela também
-  const loading = document.getElementById('loadingCadastros');
-  const tableContainer = document.getElementById('tableContainer');
-  const filtrosContainer = document.getElementById('filtrosContainer');
-  const secao = document.getElementById('secaoCadastros');
-
-  loading.style.display = 'flex';
-  tableContainer.style.display = 'none';
-  filtrosContainer.style.display = 'none';
-  secao.style.display = 'block';
-
-  google.script.run
-    .withSuccessHandler(function(cadastros) {
-      // 🔄 ESCONDER LOADING
-      hideLoading();
-      
-      console.log("✅ Cadastros recebidos:", cadastros);
-      
-      if (cadastros && cadastros.length > 0) {
-        // ✅ ORDENAR POR NOME AUTOMATICAMENTE
-        const cadastrosOrdenados = cadastros.sort((a, b) => {
-          const nomeA = (a.razao_social || '').toLowerCase();
-          const nomeB = (b.razao_social || '').toLowerCase();
-          return nomeA.localeCompare(nomeB);
-        });
-        
-        todosCadastros = cadastrosOrdenados;
-        cadastrosFiltrados = [...cadastrosOrdenados];
-        
-        // ✅ CORREÇÃO: Usar a função agrupada
-        const cadastrosAgrupados = agruparCadastrosPorCNPJ(cadastrosOrdenados);
-        exibirTabelaCadastrosAgrupada(cadastrosAgrupados, 'Todos os Cadastros');
-        
-        document.getElementById('filtrosContainer').style.display = 'flex';
-        configurarFiltroEvento('all'); // ✅ MOSTRAR FILTRO DE EVENTOS
-        
-        showMessage('success', `✅ ${cadastros.length} cadastros carregados com sucesso!`);
-      } else {
-        loading.style.display = 'none';
-        tableContainer.style.display = 'block';
-        document.getElementById('tabelaCadastrosBody').innerHTML = `
-          <tr>
-            <td colspan="6" style="text-align: center; padding: 40px;">
-              <i class="fas fa-inbox" style="font-size: 3rem; color: var(--gray); margin-bottom: 15px;"></i>
-              <h3>Nenhum cadastro encontrado</h3>
-              <p>Não há cadastros na base de dados.</p>
-            </td>
-          </tr>
-        `;
-        showMessage('info', '📝 Nenhum cadastro encontrado na base de dados.');
-      }
-    })
-    .withFailureHandler(function(error) {
-      // 🔄 ESCONDER LOADING EM CASO DE ERRO
-      hideLoading();
-      
-      console.error("❌ Erro ao carregar cadastros:", error);
-      loading.style.display = 'none';
-      showMessage('error', '❌ Erro ao carregar cadastros: ' + error.message);
-    })
-    .buscarTodosCadastros();
+function limparDados() {
+  limparFormulario();
+  showMessage('info', 'Formulário limpo! Pronto para novo cadastro.');
 }
 
-    function limparDados() {
-      limparFormulario();
-      showMessage('info', 'Formulário limpo! Pronto para novo cadastro.');
-    }
+function buscarPorCNPJ() {
+  // 🔥 CORREÇÃO: Pegar CNPJ do campo de busca e remover formatação
+  const cnpjBusca = document.getElementById('cnpj').value.replace(/\D/g, '');
+  
+  if (!cnpjBusca) {
+    showMessage('error', 'Digite um CNPJ para buscar');
+    return;
+  }
 
-    function buscarPorCNPJ() {
-      // 🔥 CORREÇÃO: Pegar CNPJ do campo de busca e remover formatação
-      const cnpjBusca = document.getElementById('cnpj').value.replace(/\D/g, '');
-      
-      if (!cnpjBusca) {
-        showMessage('error', 'Digite um CNPJ para buscar');
-        return;
-      }
+  showMessage('info', `🔍 Buscando cadastro no ${formatarNomeWaitlabel(waitlabelAtual)}...`);
 
-      showMessage('info', '🔍 Buscando cadastro...');
-
-      google.script.run
-        .withSuccessHandler(function(dados) {
-          preencherDadosCadastro(dados);
-        })
-        .withFailureHandler(function(error) {
-          showMessage('error', 'Erro: ' + error.message);
-        })
-        .buscarCadastroPorCNPJ(cnpjBusca); // ✅ Envia apenas números
-    }
+  google.script.run
+    .withSuccessHandler(function(dados) {
+      preencherDadosCadastro(dados);
+    })
+    .withFailureHandler(function(error) {
+      showMessage('error', 'Erro: ' + error.message);
+    })
+    .buscarCadastroPorCNPJ(cnpjBusca); // ✅ Envia apenas números
+}
 
 function preencherFornecedorComTarifas(dados) {
   console.log("🔧 PREENCHER FORNECEDOR - INICIANDO");
@@ -3255,7 +4117,9 @@ function preencherFornecedorComTarifas(dados) {
         } else {
           console.log("⚠️ Tarifa não encontrada, usando MDR como padrão");
           const radioMDR = configDiv.querySelector(`input[name="tarifa_${fornecedorId}"][value="MDR"]`);
-          if (radioMDR) radioMDR.checked = true;
+          if (radioMDR) {
+            radioMDR.checked = true;
+          }
         }
       }
       
@@ -3325,7 +4189,7 @@ function debugDadosTarifa(dados) {
   console.log("🎯 Chaves relacionadas a tarifa/percentual:", chavesPercentual);
 }
 
- function limparBusca() {
+function limparBusca() {
   limparFormulario();
   
   // 🔥 CORREÇÃO: Esconder a tabela também
@@ -3372,7 +4236,6 @@ function atualizarEventos() {
   atualizarEventosSearch();
 }
 
-
 // 🔥 ADICIONE ESTA FUNÇÃO PARA ATUALIZAR O CAMPO DE SEARCH
 function atualizarEventosSearch() {
   const situacao = document.getElementById('situacao').value;
@@ -3384,65 +4247,65 @@ function atualizarEventosSearch() {
   console.log("🔄 Campo de search atualizado para situação:", situacao);
 }
 
-    // 🔄 FUNÇÕES DE LOADING
-    function showLoading(message = "Salvando dados...", submessage = "Aguarde um momento") {
-      const overlay = document.getElementById('loadingOverlay');
-      const loadingText = overlay.querySelector('.loading-text');
-      const loadingSubtext = overlay.querySelector('.loading-subtext');
-      
-      loadingText.textContent = message;
-      loadingSubtext.textContent = submessage;
-      overlay.style.display = 'flex';
-    }
+// 🔄 FUNÇÕES DE LOADING
+function showLoading(message = "Salvando dados...", submessage = "Aguarde um momento") {
+  const overlay = document.getElementById('loadingOverlay');
+  const loadingText = overlay.querySelector('.loading-text');
+  const loadingSubtext = overlay.querySelector('.loading-subtext');
+  
+  loadingText.textContent = message;
+  loadingSubtext.textContent = submessage;
+  overlay.style.display = 'flex';
+}
 
-    function hideLoading() {
-      const overlay = document.getElementById('loadingOverlay');
-      overlay.style.display = 'none';
-    }
+function hideLoading() {
+  const overlay = document.getElementById('loadingOverlay');
+  overlay.style.display = 'none';
+}
 
-    // 🔥 CORREÇÃO: Verificar se o elemento existe antes de adicionar event listener
-    const modalDetalhes = document.getElementById('modalDetalhes');
-    if (modalDetalhes) {
-      modalDetalhes.addEventListener('click', function(e) {
-        if (e.target === this) {
-          fecharModalDetalhes();
-        }
-      });
+// 🔥 CORREÇÃO: Verificar se o elemento existe antes de adicionar event listener
+const modalDetalhes = document.getElementById('modalDetalhes');
+if (modalDetalhes) {
+  modalDetalhes.addEventListener('click', function(e) {
+    if (e.target === this) {
+      fecharModalDetalhes();
     }
+  });
+}
 
-    // Fechar modal com ESC
-    document.addEventListener('keydown', function(e) {
-      if (e.key === 'Escape') {
-        fecharModalDetalhes();
-      }
-    });
+// Fechar modal com ESC
+document.addEventListener('keydown', function(e) {
+  if (e.key === 'Escape') {
+    fecharModalDetalhes();
+  }
+});
 
-    function fecharModalDetalhes() {
-      const modal = document.getElementById('modalDetalhes');
-      modal.style.display = 'none';
+function fecharModalDetalhes() {
+  const modal = document.getElementById('modalDetalhes');
+  modal.style.display = 'none';
+}
+
+// 🔥 ADICIONAR PARA EVITAR ERROS COM DATAS
+function formatarDataParaExibicao(data) {
+  if (!data) return '';
+  
+  try {
+    // Se já estiver no formato brasileiro, retorna como está
+    if (typeof data === 'string' && data.includes('/')) {
+      return data;
     }
-
-    // 🔥 ADICIONAR PARA EVITAR ERROS COM DATAS
-    function formatarDataParaExibicao(data) {
-      if (!data) return '';
-      
-      try {
-        // Se já estiver no formato brasileiro, retorna como está
-        if (typeof data === 'string' && data.includes('/')) {
-          return data;
-        }
-        
-        // Se for objeto Date ou string ISO, formata
-        const dateObj = new Date(data);
-        if (!isNaN(dateObj.getTime())) {
-          return dateObj.toLocaleDateString('pt-BR');
-        }
-        
-        return data;
-      } catch (error) {
-        return data; // Retorna o valor original em caso de erro
-      }
+    
+    // Se for objeto Date ou string ISO, formata
+    const dateObj = new Date(data);
+    if (!isNaN(dateObj.getTime())) {
+      return dateObj.toLocaleDateString('pt-BR');
     }
+    
+    return data;
+  } catch (error) {
+    return data; // Retorna o valor original em caso de erro
+  }
+}
 
 function getSituacaoClass(situacao) {
   if (!situacao) return 'situacao-cadastrado';
@@ -3458,22 +4321,21 @@ function getSituacaoClass(situacao) {
   else return 'situacao-cadastrado';
 }
 
+// 🔥 ADICIONAR: Função para configurar validação em tempo real
+function configurarValidacaoEmTempoReal() {
+  const campos = document.querySelectorAll('#razao_social, #cnpj_cadastro, #tipo');
+  campos.forEach(campo => {
+    campo.addEventListener('input', function() {
+      this.style.borderColor = '';
+    });
+  });
+}
 
-    // 🔥 ADICIONAR: Função para configurar validação em tempo real
-    function configurarValidacaoEmTempoReal() {
-      const campos = document.querySelectorAll('#razao_social, #cnpj_cadastro, #tipo');
-      campos.forEach(campo => {
-        campo.addEventListener('input', function() {
-          this.style.borderColor = '';
-        });
-      });
-    }
-
-    // 🔥 ADICIONAR: Função para remover autorização (útil para testes)
-    function limparAutorizacao() {
-      localStorage.removeItem('usuarioAutorizado');
-      location.reload();
-    }
+// 🔥 ADICIONAR: Função para remover autorização (útil para testes)
+function limparAutorizacao() {
+  localStorage.removeItem('usuarioAutorizado');
+  location.reload();
+}
 
 // 🔥🔥🔥 COLE ESTAS FUNÇÕES NO FINAL DO JAVASCRIPT 🔥🔥🔥
 
@@ -3587,9 +4449,11 @@ else if (situacaoPadronizada === 'Descredenciado') situacaoClass = 'situacao-des
       <strong>Situação:</strong> <span class="status-badge ${getSituacaoClass(cadastro.situacao)}">${padronizarSituacao(cadastro.situacao) || 'N/A'}</span>
     </div>
   </td>
-  <td style="vertical-align: top; padding: 15px 8px;">
-    <div style="font-family: monospace; font-size: 0.85rem;">${cadastro.cnpj || 'N/A'}</div>
-  </td>
+<td style="vertical-align: top; padding: 15px 8px;">
+    <div style="font-family: monospace; font-size: 0.85rem; font-weight: 600; color: var(--dark);">
+        ${cadastro.cnpj || 'N/A'}
+    </div>
+</td>
   <td style="vertical-align: top; padding: 15px 8px;">
     <div style="font-weight: 500; background: var(--primary); color: white; padding: 4px 8px; border-radius: 12px; text-align: center; margin-bottom: 4px;">
       ${cadastro.fornecedores.length} fornecedor(es)
@@ -3683,13 +4547,12 @@ function exibirModalLojasAgrupadas(cnpj, lojas) {
   <strong>⏰ Defasagem:</strong> <span style="color: ${calcularDefasagem(loja.ultimo_evento).includes('30') || calcularDefasagem(loja.ultimo_evento).includes('31') ? 'var(--danger)' : 'var(--dark)'}; font-weight: 600;">${calcularDefasagem(loja.ultimo_evento)}</span>
 </div>
         
-        <div style="margin-top: 10px; display: flex; gap: 10px;">
+        <div style="margin-top: 10px; display: flex; gap: 10px; flex-wrap: wrap;">
           <button class="btn btn-warning btn-sm" onclick="editarCadastroModal('${loja.id}')">
             <i class="fas fa-edit"></i> Editar
           </button>
           <button class="btn btn-info btn-sm" onclick="verDetalhesCadastroModal('${loja.id}')">
             <i class="fas fa-eye"></i> Detalhes
-          </button>
         </div>
       </div>
     `).join('');
@@ -3722,55 +4585,69 @@ function exibirModalLojasAgrupadas(cnpj, lojas) {
 }
 
 function editarCadastroModal(id) {
-  console.log("✏️ EDITANDO CADASTRO MODAL - INICIANDO");
-  console.log("🔍 ID recebido:", id);
-  
-  showLoading("Carregando dados...", "Buscando informações da loja");
-  
-  google.script.run
-    .withSuccessHandler(function(dados) {
-      console.log("✅ DADOS RECEBIDOS DO GS:", dados);
-      hideLoading();
-      fecharModalDetalhes(); // Fecha o modal das lojas
-      
-      // 🔥 CORREÇÃO: Chamar a função diretamente, não através do GS
-      if (dados.encontrado) {
-        preencherDadosCadastro(dados); // Preenche o formulário principal
-        // Scroll para o formulário
-        document.getElementById('razao_social').scrollIntoView({ behavior: 'smooth' });
-        showMessage('success', '✅ Cadastro carregado para edição!');
-      } else {
-        showMessage('error', '❌ ' + dados.mensagem);
-      }
-    })
-    .withFailureHandler(function(error) {
-      console.error("❌ ERRO AO CARREGAR CADASTRO:", error);
-      hideLoading();
-      showMessage('error', '❌ Erro ao carregar cadastro: ' + error.message);
-    })
-    .buscarCadastroPorID(id);
+    console.log("✏️ EDITANDO CADASTRO MODAL - INICIANDO");
+    console.log("🔍 ID recebido:", id, "Waitlabel atual:", waitlabelAtual);
+    
+    showLoading("Carregando dados...", "Buscando informações da loja");
+    
+    // 🔥 USAR A NOVA FUNÇÃO COM WAITLABEL
+    google.script.run
+        .withSuccessHandler(function(dados) {
+            console.log("✅ DADOS RECEBIDOS DO GS:", dados);
+            hideLoading();
+            fecharModalDetalhes(); // Fecha o modal das lojas
+            
+            if (dados.encontrado) {
+                preencherDadosCadastro(dados);
+                document.getElementById('razao_social').scrollIntoView({ behavior: 'smooth' });
+                showMessage('success', '✅ Cadastro carregado para edição!');
+                
+                // 🔥🔥🔥 CONFIGURAR BOTÕES "APLICAR A TODOS" - CORREÇÃO COMPLETA
+                configurarBotoesAplicarATodos(dados.cnpj);
+                
+                // 🔥🔥🔥 MOSTRAR O BOTÃO "APLICAR A TODOS"
+                document.getElementById('btnAplicarATodos').style.display = 'block';
+            } else {
+                showMessage('error', '❌ ' + dados.mensagem);
+            }
+        })
+        .withFailureHandler(function(error) {
+            console.error("❌ ERRO AO CARREGAR CADASTRO:", error);
+            hideLoading();
+            showMessage('error', '❌ Erro ao carregar cadastro: ' + error.message);
+        })
+        .buscarCadastroPorIDComWaitlabel(id, waitlabelAtual);
 }
+
 
 // 🔥 FUNÇÃO PARA VER DETALHES DE UMA LOJA ESPECÍFICA (do modal)
 function verDetalhesCadastroModal(id) {
-  console.log("👀 Visualizando detalhes ID:", id);
+  console.log("👀 Visualizando detalhes ID:", id, "Waitlabel:", waitlabelAtual);
   showLoading("Carregando detalhes...", "Buscando informações completas");
   
   google.script.run
     .withSuccessHandler(function(dados) {
       hideLoading();
-      exibirModalDetalhesCompleto(dados); // Mostra modal com todos os detalhes
+      // 🔥 ADICIONAR WAITLABEL AOS DADOS PARA EXIBIÇÃO
+      dados.waitlabel = waitlabelAtual;
+      exibirModalDetalhesCompleto(dados);
     })
     .withFailureHandler(function(error) {
       hideLoading();
       showMessage('error', '❌ Erro ao carregar detalhes: ' + error.message);
     })
-    .buscarCadastroPorID(id);
+    .buscarCadastroPorIDComWaitlabel(id, waitlabelAtual); // 🔥 NOVA FUNÇÃO
 }
 
 function exibirModalDetalhesCompleto(dados) {
   const modal = document.getElementById('modalDetalhes');
   const content = document.getElementById('modalDetalhesContent');
+  
+  // 🔥 ADICIONAR INFORMAÇÃO DO WAITLABEL (NOVA LINHA)
+  const waitlabelInfo = dados.waitlabel ? 
+    `<div style="background: ${WAITLABELS_CONFIG.CORES[dados.waitlabel] || '#7E3E9A'}; color: white; padding: 8px 12px; border-radius: 6px; margin-bottom: 15px; text-align: center;">
+      <strong>📁 Waitlabel:</strong> ${formatarNomeWaitlabel(dados.waitlabel)}
+    </div>` : '';
   
   const mensalidadeFormatada = formatarMoedaParaInput(dados.mensalidade);
   const adesaoFormatada = dados.adesao === 'Isento' || dados.adesao === 0 ? 'Isento' : formatarMoedaParaInput(dados.adesao);
@@ -3784,7 +4661,7 @@ function exibirModalDetalhesCompleto(dados) {
   console.log("Defasagem calculada:", defasagem);
 
   content.innerHTML = `
-    <!-- 🔥 REMOVIDO: Cabeçalho com título e botão X -->
+    ${waitlabelInfo} <!-- 🔥 ADICIONAR AQUI - LINHA NOVA -->
     
     <div class="detalhes-grid">
         <!-- 🔥 SEÇÃO: INFORMAÇÕES PRINCIPAIS -->
@@ -3941,15 +4818,6 @@ function exibirModalDetalhesCompleto(dados) {
   `;
   
   modal.style.display = 'flex';
-}
-
-function configurarFiltroEvento(situacao) {
-  const container = document.getElementById('filtroEventoContainer');
-  container.style.display = 'block';
-  
-  // 🔥 CORREÇÃO: Salvar a situação atual CORRETAMENTE
-  container.setAttribute('data-situacao-atual', situacao);
-  console.log("🎯 Situação do filtro definida para:", situacao);
 }
 
 function configurarFiltroEvento(situacao) {
@@ -4130,7 +4998,6 @@ function aplicarFiltrosAtivos() {
   }
 }
 
-
 function limparFiltroEvento() {
   const input = document.getElementById('inputFiltroEvento');
   const suggestions = document.getElementById('suggestionsEvento');
@@ -4147,7 +5014,6 @@ function limparFiltroEvento() {
   
   recarregarCadastros();
 }
-
 
 // 🔥 FUNÇÃO PARA CARREGAR EVENTOS NO FILTRO
 function carregarEventosParaFiltro(situacao) {
@@ -4381,8 +5247,6 @@ setTimeout(() => {
   console.log("Eventos Rejeitado:", eventosRejeitado);
 }, 2000);
 
-
-
 // Função para selecionar evento no search
 function selecionarEventoSearch(evento) {
   const input = document.getElementById('inputEventoSearch');
@@ -4399,6 +5263,46 @@ function selecionarEventoSearch(evento) {
   console.log("✅ Evento selecionado:", evento);
 }
 
+// 🔥 NOVA FUNÇÃO: Sincronizar campos de evento - ADICIONE ISSO NO FINAL
+function sincronizarCamposEvento() {
+  const inputSearch = document.getElementById('inputEventoSearch');
+  const selectEvento = document.getElementById('evento');
+  
+  if (!inputSearch || !selectEvento) {
+    console.log("❌ Campos de evento não encontrados");
+    return;
+  }
+  
+  console.log("✅ Sincronizando campos de evento...");
+  
+  // Quando o search muda, atualiza o select
+  inputSearch.addEventListener('input', function() {
+    const valor = this.value;
+    console.log("🔄 Input evento alterado:", valor);
+    
+    // Encontrar opção correspondente no select
+    const opcoes = Array.from(selectEvento.options);
+    const opcaoCorrespondente = opcoes.find(opt => opt.text === valor);
+    
+    if (opcaoCorrespondente) {
+      selectEvento.value = opcaoCorrespondente.value;
+      console.log("✅ Select atualizado para:", opcaoCorrespondente.value);
+    } else {
+      selectEvento.value = '';
+      console.log("⚠️ Nenhuma opção correspondente encontrada");
+    }
+  });
+  
+  // Quando o select muda, atualiza o search
+  selectEvento.addEventListener('change', function() {
+    const opcaoSelecionada = this.options[this.selectedIndex];
+    if (opcaoSelecionada && opcaoSelecionada.value) {
+      inputSearch.value = opcaoSelecionada.text;
+      console.log("✅ Input search atualizado para:", opcaoSelecionada.text);
+    }
+  });
+}
+
 // 🔥 TESTE FINAL - VERIFICAR SE TUDO ESTÁ FUNCIONANDO
 setTimeout(() => {
   console.log("=== 🧪 TESTE FINAL DO SISTEMA ===");
@@ -4413,7 +5317,6 @@ setTimeout(() => {
     console.log("🎯 Clique no campo 'Digite para buscar evento...' para testar as sugestões!");
   }
 }, 3000);
-
 
   </script>
 </body>
