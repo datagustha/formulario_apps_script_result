@@ -1165,26 +1165,7 @@
   margin-right: 5px;
 }
 
-/* Cores específicas para cada waitlabel */
-.waitlabel-sim_facilita { background-color: #7E3E9A; border-color: #7E3E9A; color: white; }
-.waitlabel-result { background-color: #2D3047; border-color: #2D3047; color: white; }
-.waitlabel-set_9 { background-color: #0682c5; border-color: #0682c5; color: white; }
-.waitlabel-doktorbank { background-color: #E61B72; border-color: #E61B72; color: white; }
-.waitlabel-dr_parcela { background-color: #4DFD88; border-color: #4DFD88; color: var(--dark); }
 
-.waitlabel-btn.active.waitlabel-sim_facilita { border-color: #7E3E9A; box-shadow: 0 0 0 3px rgba(126, 62, 154, 0.3); }
-.waitlabel-btn.active.waitlabel-result { border-color: #2D3047; box-shadow: 0 0 0 3px rgba(45, 48, 71, 0.3); }
-.waitlabel-btn.active.waitlabel-set_9 { border-color: #0682c5; box-shadow: 0 0 0 3px rgba(6, 130, 197, 0.3); }
-.waitlabel-btn.active.waitlabel-doktorbank { border-color: #E61B72; box-shadow: 0 0 0 3px rgba(230, 27, 114, 0.3); }
-.waitlabel-btn.active.waitlabel-dr_parcela { border-color: #4DFD88; box-shadow: 0 0 0 3px rgba(77, 253, 136, 0.3); }
-
-/* 🔥 ESTILOS PARA O BOTÃO APLICAR A TODOS */
-.btn-aplicar-todos {
-  background: linear-gradient(135deg, #FF6B35 0%, #FF8E35 100%) !important;
-  color: white !important;
-  border: 2px solid #FF6B35 !important;
-  font-weight: 700 !important;
-}
 
 .btn-aplicar-todos:hover {
   background: linear-gradient(135deg, #E55A2B 0%, #E57C2B 100%) !important;
@@ -1295,7 +1276,7 @@
       <div class="logo-container">
         <img src="https://i.ibb.co/B2r5xtbS/sim-cred-5.png" class="logo" alt="SIM CRED">
         <div class="header-content">
-          <h1>Sistema de Prospecções</h1>
+          <h1>Sistema de Cadastros de Lojas</h1>
           <div class="subtitle">Situação e Acompanhamento de Lojas</div>
           <div class="version">
             <i class="fas fa-rocket"></i>
@@ -1310,7 +1291,7 @@
       <div class="waitlabel-selector">
         <div class="waitlabel-title">
           <i class="fas fa-layer-group"></i>
-          Selecione o Waitlabel:
+          Selecione o White Label:
         </div>
         <div class="waitlabel-buttons" id="waitlabelButtons">
           <!-- Os botões serão preenchidos via JavaScript -->
@@ -1944,10 +1925,10 @@ const WAITLABELS_CONFIG = {
   WAITLABELS: ['Sim_Facilita', 'Result', 'Set_9', 'Doktorbank', 'Dr_Parcela'],
   CORES: {
     'Sim_Facilita': '#7E3E9A',
-    'Result': '#2D3047', 
+    'Result': '#2EBE76', 
     'Set_9': '#0682c5',
     'Doktorbank': '#E61B72',
-    'Dr_Parcela': '#4DFD88'
+    'Dr_Parcela': '#696969'
   }
 };
 
@@ -2524,10 +2505,11 @@ function criarBotoesWaitlabels() {
     const isActive = waitlabel === waitlabelAtual;
     const classeAtiva = isActive ? 'active' : '';
     
+    // 🔥 CORREÇÃO: Aplicar cor dinamicamente via style
     html += `
-      <button class="waitlabel-btn waitlabel-${waitlabel.toLowerCase()} ${classeAtiva}" 
+      <button class="waitlabel-btn ${classeAtiva}" 
               onclick="selecionarWaitlabel('${waitlabel}')"
-              style="border-color: ${cor}; ${isActive ? `background: ${cor}; color: white;` : ''}">
+              style="border-color: ${cor}; ${isActive ? `background: ${cor}; color: white;` : `color: ${cor};`}">
         <span class="waitlabel-indicator" style="background: ${cor};"></span>
         ${formatarNomeWaitlabel(waitlabel)}
       </button>
