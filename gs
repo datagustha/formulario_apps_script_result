@@ -10,10 +10,10 @@ const WAITLABELS_CONFIG = {
   WAITLABEL_PADRAO: 'Sim_Facilita',
   CORES: {
     'Sim_Facilita': '#7E3E9A',
-    'Result': '#2D3047', 
+    'Result': '#2EBE76', 
     'Set_9': '#0682c5',
     'Doktorbank': '#E61B72',
-    'Dr_Parcela': '#4DFD88'
+    'Dr_Parcela': '#696969'
   }
 };
 
