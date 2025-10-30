@@ -2906,26 +2906,25 @@ function validarSenha() {
   console.log("🔐 Validando senha:", senha);
   
   if (senha === SENHA_PERMITIDA) {
-    console.log("✅ SENHA CORRETA - Iniciando liberação de campos");
+    console.log("✅ SENHA CORRETA - Configurando autorização diária");
     
-    // 🔥 CORREÇÃO: SALVAR OS DADOS ATUAIS ANTES DE FECHAR O MODAL
-    const dadosAtuais = coletarDadosFormularioTemporario();
+    // 🔥 CALCULAR EXPIRAÇÃO PARA 24 HORAS
+    const agora = new Date();
+    const expiracao = new Date(agora.getTime() + (24 * 60 * 60 * 1000)); // 24 horas
+    
+    // 🔥 SALVAR NO LOCALSTORAGE COM EXPIRAÇÃO
+    localStorage.setItem('usuarioAutorizado', 'true');
+    localStorage.setItem('autorizacaoExpiracao', expiracao.getTime().toString());
+    localStorage.setItem('ultimaAutorizacao', agora.getTime().toString());
+    
+    console.log("💾 Autorização salva até:", expiracao.toLocaleString('pt-BR'));
     
     fecharModalSenha();
-    
-    // Atualizar localStorage
-    localStorage.setItem('usuarioAutorizado', 'true');
-    console.log("💾 localStorage atualizado");
     
     // Liberar TODOS os campos protegidos
     liberarTodosCamposProtegidos();
     
-    // 🔥 CORREÇÃO: RESTAURAR OS DADOS APÓS LIBERAR OS CAMPOS
-    setTimeout(() => {
-      restaurarDadosFormulario(dadosAtuais);
-    }, 100);
-    
-    showMessage('success', '✅ Todos os campos foram liberados para edição!');
+    showMessage('success', '✅ Todos os campos liberados por 24 horas!');
     
   } else {
     console.log("❌ SENHA INCORRETA");
@@ -3104,78 +3103,119 @@ function liberarTodosCamposProtegidos() {
 
 // 🔥 FUNÇÃO PRINCIPAL PARA CONFIGURAR PROTEÇÃO
 function configurarCamposProtegidos() {
-  console.log("🎯 CONFIGURAR CAMPOS PROTEGIDOS - INICIANDO PROTECÇÃO FORÇADA");
+  console.log("🎯 CONFIGURAR CAMPOS PROTEGIDOS - VERIFICANDO AUTORIZAÇÃO DIÁRIA");
   
-  // 🔥 CORREÇÃO: SALVAR OS DADOS EXISTENTES ANTES DE PROTEGER
-  const dadosAtuais = coletarDadosFormularioTemporario();
+  // 🔥 VERIFICAR SE TEM AUTORIZAÇÃO VÁLIDA (1 VEZ POR DIA)
+  const autorizado = localStorage.getItem('usuarioAutorizado');
+  const expiracao = localStorage.getItem('autorizacaoExpiracao');
+  const agora = new Date().getTime();
   
-  // 🔥 FORÇAR: Ignorar localStorage e SEMPRE proteger inicialmente
-  console.log("🔒 PROTECÇÃO FORÇADA: Ignorando localStorage");
+  let usuarioEstaAutorizado = false;
   
-  const camposProtegidos = [
-    'razao_social', 'nome_fantasia', 'cnpj_cadastro', 'tipo', 
-    'mensalidade', 'adesao', 'situacao', 'data_status',
-    'contrato_enviado', 'contrato_assinado', 'ativacao', 'link'
-  ];
-  
-  console.log("🔒 Protegendo campos principais...");
-  
-  // Proteger campos principais - FORÇADO
-  camposProtegidos.forEach(id => {
-    const campo = document.getElementById(id);
-    if (campo) {
-      console.log(`🔒 Protegendo: ${id}`);
-      campo.setAttribute('readonly', 'true');
-      campo.disabled = false; // Garantir que não está disabled
-      campo.style.backgroundColor = '#f8f9fa';
-      campo.style.cursor = 'not-allowed';
-      campo.style.opacity = '1';
+  if (autorizado === 'true' && expiracao) {
+    const tempoExpiracao = parseInt(expiracao);
+    
+    if (agora < tempoExpiracao) {
+      // 🔥 AUTORIZAÇÃO AINDA VÁLIDA - LIBERAR CAMPOS
+      console.log("✅ Autorização válida até:", new Date(tempoExpiracao).toLocaleString('pt-BR'));
+      usuarioEstaAutorizado = true;
       
-      // Remover qualquer event listener anterior
+      // Liberar campos imediatamente
+      setTimeout(() => {
+        liberarTodosCamposProtegidos();
+        console.log("🔓 Campos liberados automaticamente (autorização diária ativa)");
+      }, 100);
+      
+    } else {
+      // 🔥 AUTORIZAÇÃO EXPIRADA - LIMPAR
+      console.log("❌ Autorização expirada - limpando dados");
+      localStorage.removeItem('usuarioAutorizado');
+      localStorage.removeItem('autorizacaoExpiracao');
+      localStorage.removeItem('ultimaAutorizacao');
+    }
+  }
+  
+  if (!usuarioEstaAutorizado) {
+    console.log("🔒 PROTECÇÃO ATIVA: Usuário não autorizado hoje");
+    
+    // 🔥 SALVAR OS DADOS EXISTENTES ANTES DE PROTEGER
+    const dadosAtuais = coletarDadosFormularioTemporario();
+    
+    const camposProtegidos = [
+      'razao_social', 'nome_fantasia', 'cnpj_cadastro', 'tipo', 
+      'mensalidade', 'adesao', 'situacao', 'data_status',
+      'contrato_enviado', 'contrato_assinado', 'ativacao', 'link'
+    ];
+    
+    console.log("🔒 Protegendo campos principais...");
+    
+    // Proteger campos principais
+    camposProtegidos.forEach(id => {
+      const campo = document.getElementById(id);
+      if (campo) {
+        console.log(`🔒 Protegendo: ${id}`);
+        campo.setAttribute('readonly', 'true');
+        campo.disabled = false;
+        campo.style.backgroundColor = '#f8f9fa';
+        campo.style.cursor = 'not-allowed';
+        campo.style.opacity = '1';
+        
+        // Remover qualquer event listener anterior
+        const novoCampo = campo.cloneNode(true);
+        campo.parentNode.replaceChild(novoCampo, campo);
+        
+        // Adicionar novo event listener
+        document.getElementById(id).addEventListener('focus', function(e) {
+          e.preventDefault();
+          console.log(`🔓 Campo ${id} solicitando senha`);
+          solicitarSenha(this);
+        });
+      }
+    });
+    
+    // Proteger campos dos fornecedores
+    console.log("🔒 Protegendo campos dos fornecedores...");
+    const camposFornecedor = document.querySelectorAll(`
+      input[name="fornecedor"], 
+      input[name^="tarifa_"], 
+      select[name^="percentual_"]
+    `);
+    
+    camposFornecedor.forEach(campo => {
+      campo.disabled = true;
+      campo.style.cursor = 'not-allowed';
+      campo.style.opacity = '0.6';
+      
+      // Clonar e substituir para limpar event listeners
       const novoCampo = campo.cloneNode(true);
       campo.parentNode.replaceChild(novoCampo, campo);
       
-      // Adicionar novo event listener
-      document.getElementById(id).addEventListener('focus', function(e) {
-        e.preventDefault();
-        console.log(`🔓 Campo ${id} solicitando senha`);
-        solicitarSenha(this);
-      });
-    }
-  });
-  
-  // Proteger campos dos fornecedores - FORÇADO
-  console.log("🔒 Protegendo campos dos fornecedores...");
-  const camposFornecedor = document.querySelectorAll(`
-    input[name="fornecedor"], 
-    input[name^="tarifa_"], 
-    select[name^="percentual_"]
-  `);
-  
-  camposFornecedor.forEach(campo => {
-    campo.disabled = true;
-    campo.style.cursor = 'not-allowed';
-    campo.style.opacity = '0.6';
+      // Re-aplicar event listeners
+      if (campo.type === 'checkbox' || campo.type === 'radio') {
+        novoCampo.addEventListener('click', function(e) {
+          e.preventDefault();
+          solicitarSenha(this);
+        });
+      } else {
+        novoCampo.addEventListener('focus', function(e) {
+          e.preventDefault();
+          solicitarSenha(this);
+        });
+      }
+    });
     
-    // Clonar e substituir para limpar event listeners
-    const novoCampo = campo.cloneNode(true);
-    campo.parentNode.replaceChild(novoCampo, campo);
-    
-    // Re-aplicar event listeners
-    if (campo.type === 'checkbox' || campo.type === 'radio') {
-      novoCampo.addEventListener('click', function(e) {
-        e.preventDefault();
-        solicitarSenha(this);
-      });
-    } else {
-      novoCampo.addEventListener('focus', function(e) {
-        e.preventDefault();
-        solicitarSenha(this);
-      });
-    }
-  });
+    // 🔥 CORREÇÃO CRÍTICA: RESTAURAR OS DADOS APÓS CONFIGURAR A PROTEÇÃO
+    setTimeout(() => {
+      if (dadosAtuais && (dadosAtuais.razao_social || dadosAtuais.cnpj_cadastro)) {
+        console.log("🔄 Restaurando dados após proteção:", dadosAtuais);
+        restaurarDadosFormulario(dadosAtuais);
+      } else {
+        console.log("ℹ️ Nenhum dado para restaurar - formulário vazio");
+      }
+    }, 300);
+  }
   
-  // Campos liberados (não proteger)
+  // Campos liberados (não proteger) - SEMPRE
   console.log("✅ Liberando campos permitidos...");
   const camposLiberados = ['evento', 'observacoes', 'inputEventoSearch'];
   camposLiberados.forEach(id => {
@@ -3189,18 +3229,64 @@ function configurarCamposProtegidos() {
     }
   });
   
-  // 🔥 CORREÇÃO CRÍTICA: RESTAURAR OS DADOS APÓS CONFIGURAR A PROTEÇÃO
-  setTimeout(() => {
-    if (dadosAtuais && (dadosAtuais.razao_social || dadosAtuais.cnpj_cadastro)) {
-      console.log("🔄 Restaurando dados após proteção:", dadosAtuais);
-      restaurarDadosFormulario(dadosAtuais);
-    } else {
-      console.log("ℹ️ Nenhum dado para restaurar - formulário vazio");
-    }
-  }, 300);
-  
-  console.log("🎯 PROTECÇÃO FORÇADA FINALIZADA - Campos devem estar BLOQUEADOS mas dados preservados");
+  console.log("🎯 CONFIGURAÇÃO DE PROTECÇÃO FINALIZADA");
 }
+
+function verificarStatusAutorizacao() {
+  const autorizado = localStorage.getItem('usuarioAutorizado');
+  const expiracao = localStorage.getItem('autorizacaoExpiracao');
+  const ultimaAuth = localStorage.getItem('ultimaAutorizacao');
+  
+  const agora = new Date();
+  
+  console.log("=== 🔐 STATUS DA AUTORIZAÇÃO ===");
+  console.log("Autorizado:", autorizado);
+  
+  if (expiracao) {
+    const dataExpiracao = new Date(parseInt(expiracao));
+    console.log("Expira em:", dataExpiracao.toLocaleString('pt-BR'));
+    console.log("Tempo restante:", Math.round((dataExpiracao - agora) / (1000 * 60 * 60)) + " horas");
+  }
+  
+  if (ultimaAuth) {
+    const dataUltimaAuth = new Date(parseInt(ultimaAuth));
+    console.log("Última autorização:", dataUltimaAuth.toLocaleString('pt-BR'));
+  }
+  
+  if (autorizado === 'true' && expiracao && agora.getTime() < parseInt(expiracao)) {
+    console.log("✅ AUTORIZAÇÃO ATIVA - Campos liberados");
+    return true;
+  } else {
+    console.log("❌ AUTORIZAÇÃO INATIVA - Campos protegidos");
+    return false;
+  }
+}
+
+// 🔥 TESTE: Adicione este botão temporariamente para ver o status
+function adicionarBotaoStatus() {
+  const btnStatus = document.createElement('button');
+  btnStatus.innerHTML = '🔐 Status Autorização';
+  btnStatus.style.position = 'fixed';
+  btnStatus.style.top = '10px';
+  btnStatus.style.right = '10px';
+  btnStatus.style.zIndex = '9999';
+  btnStatus.style.background = '#FF6B35';
+  btnStatus.style.color = 'white';
+  btnStatus.style.border = 'none';
+  btnStatus.style.padding = '10px';
+  btnStatus.style.borderRadius = '5px';
+  btnStatus.style.cursor = 'pointer';
+  
+  btnStatus.onclick = function() {
+    verificarStatusAutorizacao();
+    alert('Verifique o console (F12) para ver o status da autorização!');
+  };
+  
+  document.body.appendChild(btnStatus);
+}
+
+// Executar quando a página carregar
+setTimeout(adicionarBotaoStatus, 2000);
 
 // 🔥 FUNÇÃO TEMPORÁRIA PARA TESTAR ENVIO DO FORMULÁRIO
 function testarEnvioFormulario() {
@@ -3640,13 +3726,12 @@ function preencherDadosCadastro(dados) {
   console.log("🎯 PREENCHER DADOS CADASTRO: Iniciando");
   console.log("📦 Dados recebidos:", dados);
 
-  // DEBUG ESPECÍFICO
-  console.log("🔍 DEBUG FORNECEDOR:");
-  console.log("Fornecedor:", dados.fornecedor);
-  console.log("Tarifa:", dados.tarifa);
-  console.log("Percentual Tarifa:", dados.percentual_tarifa);
-  console.log("Ativação:", dados.ativacao);
-  
+  // DEBUG ESPECÍFICO DOS CAMPOS DE CONTRATO
+  console.log("🔍 DEBUG CONTRATO ENVIADO:", dados.contrato_enviado);
+  console.log("🔍 DEBUG CONTRATO ASSINADO:", dados.contrato_assinado);
+  console.log("🔍 TIPO CONTRATO ENVIADO:", typeof dados.contrato_enviado);
+  console.log("🔍 TIPO CONTRATO ASSINADO:", typeof dados.contrato_assinado);
+
   if (!dados.encontrado) {
     showMessage('error', '❌ ' + dados.mensagem);
     return;
@@ -3659,28 +3744,24 @@ function preencherDadosCadastro(dados) {
   document.getElementById('tipo').value = dados.tipo || '';
   document.getElementById('observacoes').value = dados.observacoes || '';
   
-  // 🔥🔥🔥 CORREÇÃO DEFINITIVA: Usar o nome exato do campo do Google Sheets
-  let contratoEnviadoValue = '';
-  if (dados.Contrato_Enviado !== undefined && dados.Contrato_Enviado !== null) {
-    contratoEnviadoValue = String(dados.Contrato_Enviado).toUpperCase().trim();
-    console.log("✅ Contrato_Enviado encontrado:", contratoEnviadoValue);
-  } else {
-    console.log("⚠️ Contrato_Enviado não encontrado nos dados");
-    contratoEnviadoValue = 'SIM'; // Valor padrão
-  }
+  // 🔥🔥🔥 CORREÇÃO CRÍTICA: Preencher CAMPOS DE CONTRATO CORRETAMENTE
+  console.log("🎯 PREENCHENDO CAMPOS DE CONTRATO:");
   
-  let contratoAssinadoValue = '';
-  if (dados.Contrato_Assinado !== undefined && dados.Contrato_Assinado !== null) {
-    contratoAssinadoValue = String(dados.Contrato_Assinado).toUpperCase().trim();
-    console.log("✅ Contrato_Assinado encontrado:", contratoAssinadoValue);
-  } else {
-    contratoAssinadoValue = 'NAO'; // Valor padrão
-  }
-  
-  // Preencher os campos
+  // Contrato Enviado
+  const contratoEnviadoValue = dados.contrato_enviado || '';
   document.getElementById('contrato_enviado').value = contratoEnviadoValue;
-  document.getElementById('contrato_assinado').value = contratoAssinadoValue;
+  console.log("✅ Contrato Enviado definido como:", contratoEnviadoValue);
   
+  // Contrato Assinado 
+  const contratoAssinadoValue = dados.contrato_assinado || '';
+  document.getElementById('contrato_assinado').value = contratoAssinadoValue;
+  console.log("✅ Contrato Assinado definido como:", contratoAssinadoValue);
+  
+  // Verificar se os valores foram realmente definidos
+  console.log("🔍 VERIFICAÇÃO PÓS-PREENCHIMENTO:");
+  console.log("Contrato Enviado no select:", document.getElementById('contrato_enviado').value);
+  console.log("Contrato Assinado no select:", document.getElementById('contrato_assinado').value);
+
   // Outros campos
   document.getElementById('ativacao').value = dados.ativacao || '';
   document.getElementById('link').value = dados.link || '';
@@ -3737,6 +3818,7 @@ function preencherDadosCadastro(dados) {
   
   showMessage('success', '✅ Cadastro carregado para edição!');
 }
+
 
 // 🔥🔥🔥 CORREÇÃO DA VALIDAÇÃO DE CAMPOS OBRIGATÓRIOS
 function validarCamposObrigatorios() {
