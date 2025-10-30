@@ -325,19 +325,30 @@ function atualizarCadastroComWaitlabel(aba, dados, waitlabel) {
     const situacaoValida = (dados.situacao && dados.situacao.trim() !== '') ? dados.situacao : 'Novo registro';
 
     // 🔥🔥🔥 CORREÇÃO 2: MANTER A DATA DE ATIVAÇÃO ORIGINAL
+    // 🔥🔥🔥 CORREÇÃO DEFINITIVA: USAR A NOVA DATA SE FOI INFORMADA, SENÃO MANTER A ORIGINAL
     let dataAtivacaoParaSalvar = dataAtivacaoOriginal;
     
-    // Se for um objeto Date, formatar corretamente
-    if (dataAtivacaoOriginal instanceof Date) {
-      dataAtivacaoParaSalvar = Utilities.formatDate(dataAtivacaoOriginal, Session.getScriptTimeZone(), "dd/MM/yyyy");
-    }
-    // Se já for string, manter como está
-    else if (typeof dataAtivacaoOriginal === 'string') {
-      dataAtivacaoParaSalvar = dataAtivacaoOriginal;
-    }
-    // Se estiver vazia, usar a data atual (apenas para novos registros)
-    else if (!dataAtivacaoOriginal || dataAtivacaoOriginal === '') {
-      dataAtivacaoParaSalvar = Utilities.formatDate(new Date(), Session.getScriptTimeZone(), "dd/MM/yyyy");
+    // ✅ VERIFICAR SE O USUÁRIO INFORMOU UMA NOVA DATA
+    if (dados.ativacao && dados.ativacao.trim() !== '') {
+      try {
+        // 🔥 USAR A NOVA DATA INFORMADA PELO USUÁRIO
+        const dataUsuario = new Date(dados.ativacao);
+        dataUsuario.setDate(dataUsuario.getDate() + 1); // 🔥 CORREÇÃO FUSO HORÁRIO
+        dataAtivacaoParaSalvar = Utilities.formatDate(dataUsuario, Session.getScriptTimeZone(), "dd/MM/yyyy");
+        console.log("📅 NOVA data ativação informada pelo usuário:", dataAtivacaoParaSalvar);
+      } catch (e) {
+        console.error("❌ Erro ao processar NOVA data do usuário:", e);
+        // Em caso de erro, manter a data original
+        dataAtivacaoParaSalvar = dataAtivacaoOriginal;
+      }
+    } else {
+      // Se usuário não informou nova data, manter a original
+      console.log("📅 Nenhuma NOVA data informada - mantendo data original:", dataAtivacaoOriginal);
+      
+      // Formatar a data original se necessário
+      if (dataAtivacaoOriginal instanceof Date) {
+        dataAtivacaoParaSalvar = Utilities.formatDate(dataAtivacaoOriginal, Session.getScriptTimeZone(), "dd/MM/yyyy");
+      }
     }
 
     console.log("📅 Data ativação que será salva:", dataAtivacaoParaSalvar);
@@ -420,6 +431,11 @@ function buscarTodosCadastrosComWaitlabel(waitlabel) {
       
       // Pular linhas vazias
       if (!linha[0] || linha[0].toString().trim() === '') continue;
+
+      // 🔥🔥🔥 DEBUG DO CONTRATO ASSINADO
+      if (i < 3) { // Debug apenas dos primeiros 3 registros
+        console.log(`🔍 DEBUG Registro ${i + 2} - Contrato Assinado:`, linha[9], "Tipo:", typeof linha[9]);
+      }
       
       // Formatar último evento
       let ultimoEventoFormatado = '';
@@ -513,7 +529,6 @@ function buscarTodosCadastrosPorCNPJComWaitlabel(cnpj, waitlabel) {
   }
 }
 
-// 🔥🔥🔥 FUNÇÃO AUXILIAR PARA PROCESSAR LINHAS (CRÍTICA - FALTANTE)
 function processarLinhaParaRetorno(linha, id) {
   // Formatar último evento
   let ultimoEventoFormatado = '';
@@ -536,6 +551,13 @@ function processarLinhaParaRetorno(linha, id) {
     }
   }
 
+  // 🔥🔥🔥 CORREÇÃO DEFINITIVA: TRATAR CONTRATO ASSINADO DA MESMA FORMA QUE CONTRATO ENVIADO
+  // Contrato Enviado (coluna I - índice 8): linha[8]?.toString().trim() || ''
+  // Contrato Assinado (coluna J - índice 9): linha[9]?.toString().trim() || ''
+
+  console.log("🔍 DEBUG CONTRATO ASSINADO - Valor bruto:", linha[9], "Tipo:", typeof linha[9]);
+  console.log("🔍 DEBUG CONTRATO ENVIADO - Valor bruto:", linha[8], "Tipo:", typeof linha[8]);
+
   // Processar tarifa e percentual
   let tarifa = linha[13]?.toString().trim() || '';
   let percentualTarifa = '0%';
@@ -555,6 +577,7 @@ function processarLinhaParaRetorno(linha, id) {
     percentual_tarifa: percentualTarifa
   };
   
+  // 🔥🔥🔥 CORREÇÃO: MESMO TRATAMENTO PARA AMBOS OS CAMPOS
   return {
     encontrado: true,
     id: id,
@@ -567,8 +590,8 @@ function processarLinhaParaRetorno(linha, id) {
     ultimo_evento: ultimoEventoFormatado,
     evento: linha[6]?.toString().trim() || '',
     observacoes: linha[7]?.toString().trim() || '',
-    contrato_enviado: linha[8]?.toString().trim() || '',
-    contrato_assinado: linha[9]?.toString().trim() || '',
+    contrato_enviado: linha[8]?.toString().trim() || '', // ✅ Funciona
+    contrato_assinado: linha[9]?.toString().trim() || '', // 🔥 AGORA MESMO TRATAMENTO
     ativacao: ativacaoFormatada,
     link: linha[11]?.toString().trim() || '',
     mensalidade: parseFloat(linha[12]) || 0,
@@ -581,7 +604,7 @@ function processarLinhaParaRetorno(linha, id) {
 
 function buscarCadastroPorIDComWaitlabel(id, waitlabel) {
   try {
-    console.log("🔍 Buscando cadastro por ID:", id, "no waitlabel:", waitlabel);
+    console.log("🔍🔍🔍 DEBUG COMPLETO - Buscando cadastro por ID:", id, "no waitlabel:", waitlabel);
     
     const ss = SpreadsheetApp.openById(CONFIG.ID_PLANILHA);
     const aba = ss.getSheetByName(waitlabel);
@@ -595,9 +618,29 @@ function buscarCadastroPorIDComWaitlabel(id, waitlabel) {
     if (!linha[0] || linha[0].toString().trim() === '') {
       return { encontrado: false, mensagem: "Registro vazio ou não encontrado" };
     }
+
+    // 🔥🔥🔥 DEBUG SUPER DETALHADO - VERIFICAR O QUE ESTÁ SENDO PROCESSADO
+    console.log("=== 🎯 DEBUG CONTRATO ASSINADO NA FONTE ===");
+    console.log("📊 Linha completa:", linha);
+    console.log("🔍 Coluna 8 (Contrato Enviado) BRUTO:", linha[8], "Tipo:", typeof linha[8]);
+    console.log("🔍 Coluna 9 (Contrato Assinado) BRUTO:", linha[9], "Tipo:", typeof linha[9]);
+    console.log("🔍 Coluna 8 como string:", linha[8]?.toString());
+    console.log("🔍 Coluna 9 como string:", linha[9]?.toString());
+    console.log("🔍 Coluna 8 trimmed:", linha[8]?.toString().trim());
+    console.log("🔍 Coluna 9 trimmed:", linha[9]?.toString().trim());
+    
+    // 🔥🔥🔥 TESTE DIRETO - PROCESSAR NA MÃO
+    const contratoEnviadoTeste = linha[8]?.toString().trim() || '';
+    const contratoAssinadoTeste = linha[9]?.toString().trim() || '';
+    console.log("🧪 TESTE DIRETO - Contrato Enviado:", contratoEnviadoTeste);
+    console.log("🧪 TESTE DIRETO - Contrato Assinado:", contratoAssinadoTeste);
     
     const resultado = processarLinhaParaRetorno(linha, id);
     resultado.waitlabel = waitlabel;
+    
+    console.log("=== ✅ RESULTADO FINAL DA FUNÇÃO processarLinhaParaRetorno ===");
+    console.log("Contrato Enviado no resultado:", resultado.contrato_enviado);
+    console.log("Contrato Assinado no resultado:", resultado.contrato_assinado);
     
     return resultado;
     
@@ -1709,6 +1752,117 @@ function debugDatas(dados) {
   }
   
   return { success: true, message: "Debug realizado - verifique logs" };
+}
+
+// 🔥🔥🔥 FUNÇÃO TEMPORÁRIA PARA DEBUG DO TWO SISTERS
+function debugTwoSisters() {
+  try {
+    console.log("=== 🎯 DEBUG ESPECÍFICO TWO SISTERS ===");
+    
+    const ss = SpreadsheetApp.openById(CONFIG.ID_PLANILHA);
+    const aba = ss.getSheetByName('Result');
+    
+    if (!aba) {
+      console.log("❌ Aba Result não encontrada");
+      return;
+    }
+    
+    // Buscar especificamente a linha 2 (que é o TWO SISTERS)
+    const linha = aba.getRange(2, 1, 1, 17).getValues()[0];
+    
+    console.log("📊 LINHA COMPLETA DO TWO SISTERS:");
+    for (let i = 0; i < linha.length; i++) {
+      const letraColuna = String.fromCharCode(65 + i);
+      console.log(`Coluna ${letraColuna} [${i}]:`, linha[i], "Tipo:", typeof linha[i]);
+    }
+    
+    console.log("=== 🔍 DETALHES CONTRATO ASSINADO ===");
+    console.log("Coluna J [9] - Contrato Assinado:", linha[9]);
+    console.log("Como string:", linha[9]?.toString());
+    console.log("Trimmed:", linha[9]?.toString().trim());
+    console.log("Uppercase:", linha[9]?.toString().trim().toUpperCase());
+    console.log("É exatamente 'SIM':", linha[9]?.toString().trim().toUpperCase() === 'SIM');
+    
+    // Testar a função processarLinhaParaRetorno
+    console.log("=== 🧪 TESTE processarLinhaParaRetorno ===");
+    const resultado = processarLinhaParaRetorno(linha, 2);
+    console.log("Contrato Assinado no resultado:", resultado.contrato_assinado);
+    
+    return {
+      linhaCompleta: linha,
+      contratoAssinadoBruto: linha[9],
+      contratoAssinadoProcessado: resultado.contrato_assinado
+    };
+    
+  } catch (error) {
+    console.error("❌ Erro no debug:", error);
+    return { error: error.message };
+  }
+}
+
+function testarContratoAssinado() {
+  try {
+    console.log("=== 🧪 TESTE CONTRATO ASSINADO ===");
+    
+    const ss = SpreadsheetApp.openById("1V4iGN14UpIQcwf3qKU0_Wbiy2exdW2WUmrYTniy0upA");
+    const aba = ss.getSheetByName('Result');
+    
+    if (!aba) {
+      console.log("❌ Aba não encontrada");
+      return;
+    }
+    
+    // Buscar linha 2 (TWO SISTERS)
+    const linha = aba.getRange(2, 1, 1, 17).getValues()[0];
+    
+    console.log("📊 LINHA COMPLETA:");
+    for (let i = 0; i < linha.length; i++) {
+      const letraColuna = String.fromCharCode(65 + i);
+      console.log(`Coluna ${letraColuna} [${i}]:`, linha[i], "Tipo:", typeof linha[i]);
+    }
+    
+    console.log("=== 🔍 DETALHES CONTRATOS ===");
+    console.log("Coluna I [8] - Contrato Enviado:", linha[8]);
+    console.log("Coluna J [9] - Contrato Assinado:", linha[9]);
+    
+    // Testar processamento
+    const contratoEnviado = linha[8]?.toString().trim() || '';
+    const contratoAssinado = linha[9]?.toString().trim() || '';
+    
+    console.log("✅ Contrato Enviado processado:", contratoEnviado);
+    console.log("✅ Contrato Assinado processado:", contratoAssinado);
+    
+    return {
+      contrato_enviado: contratoEnviado,
+      contrato_assinado: contratoAssinado
+    };
+    
+  } catch (error) {
+    console.error("❌ Erro no teste:", error);
+    return { error: error.message };
+  }
+}
+
+function testarBuscaComWaitlabel() {
+  try {
+    console.log("=== 🧪 TESTE BUSCA COM WAITLABEL ===");
+    
+    // Testar a busca pelo ID 2 no waitlabel Result
+    const resultado = buscarCadastroPorIDComWaitlabel(2, 'Result');
+    
+    console.log("=== 📋 RESULTADO FINAL ===");
+    console.log("Encontrado:", resultado.encontrado);
+    console.log("Contrato Enviado:", resultado.contrato_enviado);
+    console.log("Contrato Assinado:", resultado.contrato_assinado);
+    console.log("Tipo Contrato Enviado:", typeof resultado.contrato_enviado);
+    console.log("Tipo Contrato Assinado:", typeof resultado.contrato_assinado);
+    
+    return resultado;
+    
+  } catch (error) {
+    console.error("❌ Erro no teste:", error);
+    return { error: error.message };
+  }
 }
 
 function testar() {
