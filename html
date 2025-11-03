@@ -3173,36 +3173,31 @@ function configurarCamposProtegidos() {
       }
     });
     
-    // Proteger campos dos fornecedores
-    console.log("🔒 Protegendo campos dos fornecedores...");
-    const camposFornecedor = document.querySelectorAll(`
-      input[name="fornecedor"], 
-      input[name^="tarifa_"], 
-      select[name^="percentual_"]
-    `);
-    
-    camposFornecedor.forEach(campo => {
-      campo.disabled = true;
-      campo.style.cursor = 'not-allowed';
-      campo.style.opacity = '0.6';
-      
-      // Clonar e substituir para limpar event listeners
-      const novoCampo = campo.cloneNode(true);
-      campo.parentNode.replaceChild(novoCampo, campo);
-      
-      // Re-aplicar event listeners
-      if (campo.type === 'checkbox' || campo.type === 'radio') {
-        novoCampo.addEventListener('click', function(e) {
-          e.preventDefault();
-          solicitarSenha(this);
-        });
-      } else {
-        novoCampo.addEventListener('focus', function(e) {
-          e.preventDefault();
-          solicitarSenha(this);
-        });
-      }
-    });
+    // Proteger APENAS checkboxes dos fornecedores
+console.log("🔒 Protegendo APENAS checkboxes dos fornecedores...");
+const checkboxesFornecedor = document.querySelectorAll('input[name="fornecedor"]');
+const radiosTarifa = document.querySelectorAll('input[name^="tarifa_"]');
+const selectsPercentual = document.querySelectorAll('select[name^="percentual_"]');
+
+// ❌ BLOQUEAR checkboxes (não pode mudar fornecedor)
+checkboxesFornecedor.forEach(checkbox => {
+  checkbox.disabled = true;
+  checkbox.style.cursor = 'not-allowed';
+  checkbox.style.opacity = '0.6';
+});
+
+// ✅ LIBERAR tarifas e percentuais
+radiosTarifa.forEach(radio => {
+  radio.disabled = false;
+  radio.style.cursor = 'pointer';
+  radio.style.opacity = '1';
+});
+
+selectsPercentual.forEach(select => {
+  select.disabled = false;
+  select.style.cursor = 'pointer';
+  select.style.opacity = '1';
+});
     
     // 🔥 CORREÇÃO CRÍTICA: RESTAURAR OS DADOS APÓS CONFIGURAR A PROTEÇÃO
     setTimeout(() => {
@@ -3783,25 +3778,37 @@ function preencherDadosCadastro(dados) {
   // Preencher fornecedor
   preencherFornecedorComTarifas(dados);
 
-  // 🔥 PONTO 3: BLOQUEAR CAMPO FORNECEDOR QUANDO EDITANDO
-  console.log("🔒 BLOQUEANDO CAMPOS DE FORNECEDOR PARA EDIÇÃO");
-  const checkboxesFornecedores = document.querySelectorAll('input[name="fornecedor"]');
-  const configsFornecedores = document.querySelectorAll('[id^="config-"]');
+  // 🔥 CORREÇÃO: BLOQUEAR APENAS CHECKBOX, LIBERAR TARIFA E %
+console.log("🔒 BLOQUEANDO APENAS CHECKBOX - LIBERANDO TARIFA E %");
+const checkboxesFornecedores = document.querySelectorAll('input[name="fornecedor"]');
+const configsFornecedores = document.querySelectorAll('[id^="config-"]');
 
-  checkboxesFornecedores.forEach(checkbox => {
-      checkbox.disabled = true;
-      checkbox.style.cursor = 'not-allowed';
-      checkbox.style.opacity = '0.7';
-  });
+// ✅ BLOQUEAR apenas os checkboxes (não pode mudar fornecedor)
+checkboxesFornecedores.forEach(checkbox => {
+    checkbox.disabled = true;
+    checkbox.style.cursor = 'not-allowed';
+    checkbox.style.opacity = '0.7';
+});
 
-  configsFornecedores.forEach(config => {
-      const inputs = config.querySelectorAll('input, select');
-      inputs.forEach(input => {
-          input.disabled = true;
-          input.style.cursor = 'not-allowed';
-          input.style.opacity = '0.7';
-      });
-  });
+// ✅ LIBERAR tarifa e percentual dentro das configurações
+configsFornecedores.forEach(config => {
+    const radiosTarifa = config.querySelectorAll('input[type="radio"]'); // MDR/TIS
+    const selectsPercentual = config.querySelectorAll('select'); // 0%, 1%, 2%, etc.
+    
+    // 🔥 LIBERAR Radio buttons (MDR/TIS)
+    radiosTarifa.forEach(radio => {
+        radio.disabled = false;
+        radio.style.cursor = 'pointer';
+        radio.style.opacity = '1';
+    });
+    
+    // 🔥 LIBERAR Selects (percentual)
+    selectsPercentual.forEach(select => {
+        select.disabled = false;
+        select.style.cursor = 'pointer';
+        select.style.opacity = '1';
+    });
+});
   
   // Atualizar eventos
   atualizarEventos();
