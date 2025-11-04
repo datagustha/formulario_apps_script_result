@@ -1408,6 +1408,16 @@
             <input type="text" id="mensalidade" class="form-control" placeholder="R$ 0,00" oninput="formatarMoeda(this)">
           </div>
 
+          <!-- 🔥 ADICIONE ESTE CAMPO AQUI - DEPOIS DO CAMPO MENSALIDADE -->
+           <!-- ✅ CORRETO - DEIXE ASSIM SIMPLES -->
+            <div class="form-group">
+  <label class="form-label" style="color: var(--primary); font-weight: 700;">
+    <i class="fas fa-money-bill-wave" style="color: var(--primary);"></i>
+    Mensalidade SIM
+  </label>
+  <input type="text" id="mensalidade_sim" name="mensalidade_sim" class="form-control" placeholder="R$ 0,00" oninput="formatarMoeda(this)">
+</div>
+
           <!-- 🔥 CAMPO ADESÃO -->
           <div class="form-group">
             <label class="form-label">
@@ -2411,11 +2421,11 @@ function mostrarInterfaceAplicarATodos() {
 
 // 🔥 FUNÇÃO PARA ADICIONAR CHECKBOXES AOS CAMPOS
 function adicionarCheckboxesAosCampos() {
-    const camposAplicaveis = [
-        'razao_social', 'nome_fantasia', 'tipo', 'contrato_enviado', 
-        'contrato_assinado', 'ativacao', 'link', 'mensalidade', 
-        'adesao', 'situacao', 'inputEventoSearch'
-    ];
+  const camposAplicaveis = [
+    'razao_social', 'nome_fantasia', 'tipo', 'contrato_enviado', 
+    'contrato_assinado', 'ativacao', 'link', 'mensalidade', 
+    'mensalidade_sim', 'adesao', 'situacao', 'inputEventoSearch' // ✅ JÁ ESTÁ AQUI
+  ];
     
     camposAplicaveis.forEach(campoId => {
         const campoElement = document.getElementById(campoId);
@@ -3505,6 +3515,7 @@ function coletarDadosFormulario() {
       ativacao: document.getElementById('ativacao').value,
       link: document.getElementById('link').value,
       mensalidade: converterMoedaParaNumero(document.getElementById('mensalidade').value),
+      mensalidade_sim: converterMoedaParaNumero(document.getElementById('mensalidade_sim').value),
       situacao: document.getElementById('situacao').value,
       evento: eventoValue // ✅ AGORA CORRETO - PEGA DO CAMPO CERTO
     };
@@ -3761,6 +3772,7 @@ function preencherDadosCadastro(dados) {
   document.getElementById('ativacao').value = dados.ativacao || '';
   document.getElementById('link').value = dados.link || '';
   document.getElementById('mensalidade').value = formatarMoedaParaInput(dados.mensalidade);
+  document.getElementById('mensalidade_sim').value = formatarMoedaParaInput(dados.mensalidade_sim); 
   document.getElementById('situacao').value = dados.situacao || 'Novo registro';
   document.getElementById('adesao').value = dados.adesao === 'Isento' || dados.adesao === 0 ? 'R$ 0,00' : formatarMoedaParaInput(dados.adesao);
   
@@ -4004,6 +4016,7 @@ function limparFormulario() {
   document.getElementById('ativacao').value = '';
   document.getElementById('link').value = '';
   document.getElementById('mensalidade').value = 'R$ 0,00';
+  document.getElementById('mensalidade_sim').value = 'R$ 0,00'; // 🔥 NOVA LINHA
   
   // 🔥 CORREÇÃO: Resetar situação para "Novo registro" e adesão para "R$ 0,00"
   document.getElementById('situacao').value = 'Novo registro';
@@ -4721,6 +4734,7 @@ function exibirModalDetalhesCompleto(dados) {
     </div>` : '';
   
   const mensalidadeFormatada = formatarMoedaParaInput(dados.mensalidade);
+  const mensalidadeSimFormatada = formatarMoedaParaInput(dados.mensalidade_sim || 0); // 🔥 CORREÇÃO 
   const adesaoFormatada = dados.adesao === 'Isento' || dados.adesao === 0 ? 'Isento' : formatarMoedaParaInput(dados.adesao);
   
   // 🔥 CORREÇÃO: Usar o campo correto para calcular defasagem
@@ -4777,6 +4791,11 @@ function exibirModalDetalhesCompleto(dados) {
         <div class="detalhe-item">
             <span class="detalhe-label">💵 Mensalidade</span>
             <div class="detalhe-valor" style="color: var(--success); font-weight: 600;">${mensalidadeFormatada}</div>
+        </div>
+
+        <div class="detalhe-item">
+            <span class="detalhe-label" style="color: var(--primary); font-weight: 700;">💜 Mensalidade SIM</span>
+            <div class="detalhe-valor" style="color: var(--primary); font-weight: 600;">${mensalidadeSimFormatada}</div>
         </div>
         
         <div class="detalhe-item">
