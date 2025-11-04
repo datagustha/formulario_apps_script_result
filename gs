@@ -65,10 +65,10 @@ function processarCadastroComWaitlabel(dados, waitlabel) {
       console.log("📝 Criando nova aba para waitlabel:", waitlabel);
       aba = ss.insertSheet(waitlabel);
       const cabecalho = [
-        'Razão Social', 'Nome Fantasia', 'CNPJ', 'Tipo', 'Fornecedor', 
-        'Ultimo evento', 'Evento', 'Observação', 'Contrato Enviado', 'Contrato Assinado',
-        'Ativação', 'Link', 'Mensalidade', 'Tarifa', '% Tarifa', 'Adesão', 'Situação'
-      ];
+      'Razão Social', 'Nome Fantasia', 'CNPJ', 'Tipo', 'Fornecedor', 
+      'Ultimo evento', 'Evento', 'Observação', 'Contrato Enviado', 'Contrato Assinado',
+      'Ativação', 'Link', 'Mensalidade', 'Mensalidade SIM', 'Tarifa', '% Tarifa', 'Adesão', 'Situação'
+    ];
       aba.getRange('A1:Q1').setValues([cabecalho]);
       aba.getRange(1, 1, 1, cabecalho.length)
         .setBackground(WAITLABELS_CONFIG.CORES[waitlabel] || "#7E3E9A")
@@ -195,26 +195,25 @@ function cadastrarNovoComWaitlabel(aba, dados, waitlabel) {
 
       // Array com 17 colunas na ORDEM CORRETA
       const linhaDados = [
-        normalizarTexto(dados.razao_social) || '',
-        normalizarTexto(dados.nome_fantasia) || '',
-        dados.cnpj ? dados.cnpj.toString() : '',
-        normalizarTexto(dados.tipo) || '',
-        normalizarTexto(nomeFornecedor),
-        // Data ÚLTIMO EVENTO
-        dataUltimoEvento,
-        normalizarTexto(dados.evento) || '',
-        normalizarTexto(dados.observacoes) || '',
-        normalizarTexto(dados.contrato_enviado) || '',
-        normalizarTexto(dados.contrato_assinado) || '',
-        // 🔥 DATA ATIVAÇÃO - usar a data informada pelo usuário (pode ser vazia)
-        dataAtivacaoParaSalvar,
-        dados.link || '',
-        mensalidadeNumero,
-        tarifaFornecedor || '',
-        percentualTarifaFornecedor,
-        adesaoNumero,
-        normalizarTexto(situacaoParaSalvar)
-      ];
+      normalizarTexto(dados.razao_social) || '',
+      normalizarTexto(dados.nome_fantasia) || '',
+      dados.cnpj ? dados.cnpj.toString() : '',
+      normalizarTexto(dados.tipo) || '',
+      normalizarTexto(nomeFornecedor),
+      dataUltimoEvento,
+      normalizarTexto(dados.evento) || '',
+      normalizarTexto(dados.observacoes) || '',
+      normalizarTexto(dados.contrato_enviado) || '',
+      normalizarTexto(dados.contrato_assinado) || '',
+      dataAtivacaoParaSalvar,
+      dados.link || '',
+      mensalidadeNumero,                    // Mensalidade (coluna M)
+      converterMoedaParaNumero(dados.mensalidade_sim) || 0, // 🔥 NOVA COLUNA Mensalidade SIM (coluna N)
+      tarifaFornecedor || '',               // Tarifa (coluna O)
+      percentualTarifaFornecedor,           // % Tarifa (coluna P)
+      adesaoNumero,                         // Adesão (coluna Q)
+      normalizarTexto(situacaoParaSalvar)   // Situação (coluna R)
+    ];
 
       console.log(`📝 Linha de dados ${i + 1}:`, linhaDados);
       
@@ -225,15 +224,16 @@ function cadastrarNovoComWaitlabel(aba, dados, waitlabel) {
         
         // 🔥 FORMATAR COLUNAS IMEDIATAMENTE
         aba.getRange(linhaInserir, 13).setNumberFormat('"R$"#,##0.00'); // Mensalidade (M)
-        aba.getRange(linhaInserir, 16).setNumberFormat('"R$"#,##0.00'); // Adesão (P)
-        aba.getRange(linhaInserir, 15).setNumberFormat('0%'); // % Tarifa (O)
-        aba.getRange(linhaInserir, 14).setNumberFormat('@'); // Tarifa como texto (N)
-        aba.getRange(linhaInserir, 11).setNumberFormat('dd/MM/yyyy'); // 🔥 FORMATAR DATA ATIVAÇÃO (K)
+        aba.getRange(linhaInserir, 14).setNumberFormat('"R$"#,##0.00'); // 🔥 NOVA Mensalidade SIM (N)
+        aba.getRange(linhaInserir, 17).setNumberFormat('"R$"#,##0.00'); // Adesão (Q)
+        aba.getRange(linhaInserir, 16).setNumberFormat('0%');           // % Tarifa (P)
+        aba.getRange(linhaInserir, 15).setNumberFormat('@');            // Tarifa como texto (O)
+        aba.getRange(linhaInserir, 11).setNumberFormat('dd/MM/yyyy');   // Data Ativação (K)
         
         SpreadsheetApp.flush();
         
         // 🔥 VERIFICAR O QUE FOI SALVO
-        const dadosSalvos = aba.getRange(linhaInserir, 1, 1, 17).getValues()[0];
+        const dadosSalvos = aba.getRange(linhaInserir, 1, 1, 18).getValues()[0];
         console.log(`✅ Dados salvos na linha ${linhaInserir}:`, dadosSalvos);
         console.log(`📅 Data ativação salva: ${dadosSalvos[10]}`);
         console.log(`💰 Tarifa salva: ${dadosSalvos[13]}`);
@@ -295,7 +295,7 @@ function atualizarCadastroComWaitlabel(aba, dados, waitlabel) {
     }
 
     // 🔥🔥🔥 CORREÇÃO 1: BUSCAR A DATA DE ATIVAÇÃO ORIGINAL
-    const dadosAtuais = aba.getRange(linhaAtualizar, 1, 1, 17).getValues()[0];
+    const dadosAtuais = aba.getRange(linhaAtualizar, 1, 1, 18).getValues()[0];
     const dataAtivacaoOriginal = dadosAtuais[10]; // Coluna K - Ativação
     
     console.log("📅 Data ativação original:", dataAtivacaoOriginal);
@@ -360,20 +360,19 @@ function atualizarCadastroComWaitlabel(aba, dados, waitlabel) {
       dados.cnpj ? dados.cnpj.toString() : '',
       normalizarTexto(dados.tipo) || '',
       normalizarTexto(fornecedorParaAtualizar),
-      // ✅ Data ÚLTIMO EVENTO atualizada (com segundos)
       Utilities.formatDate(new Date(), Session.getScriptTimeZone(), "dd/MM/yyyy HH:mm:ss"),
       normalizarTexto(dados.evento) || '',
       normalizarTexto(dados.observacoes) || '',
       normalizarTexto(dados.contrato_enviado) || '',
       normalizarTexto(dados.contrato_assinado) || '',
-      // 🔥🔥🔥 DATA ATIVAÇÃO ORIGINAL (NÃO MUDA)
       dataAtivacaoParaSalvar,
       dados.link || '',
-      mensalidadeNumero,
-      tarifaParaAtualizar || '', // 🔥 NÃO aplicar normalizarTexto
-      percentualParaAtualizar,
-      adesaoNumero,
-      normalizarTexto(situacaoValida)
+      mensalidadeNumero,                                    // Mensalidade (M)
+      converterMoedaParaNumero(dados.mensalidade_sim) || 0, // 🔥 NOVA COLUNA Mensalidade SIM (N)
+      tarifaParaAtualizar || '',                            // Tarifa (O)
+      percentualParaAtualizar,                              // % Tarifa (P)
+      adesaoNumero,                                         // Adesão (Q)
+      normalizarTexto(situacaoValida)                       // Situação (R)
     ];
 
     console.log("📝 Atualizando linha:", linhaAtualizar);
@@ -382,10 +381,11 @@ function atualizarCadastroComWaitlabel(aba, dados, waitlabel) {
     aba.getRange(linhaAtualizar, 1, 1, novosDados.length).setValues([novosDados]);
     
     // 🔥🔥🔥 CORREÇÃO: ADICIONAR FORMATAÇÃO DA TARIFA
-    aba.getRange(linhaAtualizar, 13).setNumberFormat('"R$"#,##0.00'); // Mensalidade (coluna M)
-    aba.getRange(linhaAtualizar, 16).setNumberFormat('"R$"#,##0.00'); // Adesão (coluna P)
-    aba.getRange(linhaAtualizar, 15).setNumberFormat('0%'); // % Tarifa (coluna O)
-    aba.getRange(linhaAtualizar, 14).setNumberFormat('@'); // 🔥 Tarifa como texto (coluna N)
+    aba.getRange(linhaAtualizar, 13).setNumberFormat('"R$"#,##0.00'); // Mensalidade (M)
+    aba.getRange(linhaAtualizar, 14).setNumberFormat('"R$"#,##0.00'); // 🔥 NOVA Mensalidade SIM (N)
+    aba.getRange(linhaAtualizar, 17).setNumberFormat('"R$"#,##0.00'); // Adesão (Q)
+    aba.getRange(linhaAtualizar, 16).setNumberFormat('0%');           // % Tarifa (P)
+    aba.getRange(linhaAtualizar, 15).setNumberFormat('@');            // Tarifa como texto (O)
 
     SpreadsheetApp.flush();
 
@@ -421,7 +421,7 @@ function buscarTodosCadastrosComWaitlabel(waitlabel) {
     }
     
     // Buscar dados na ORDEM CORRETA (17 colunas)
-    const dados = aba.getRange(2, 1, ultimaLinha - 1, 17).getValues();
+    const dados = aba.getRange(2, 1, ultimaLinha - 1, 18).getValues();
     console.log("📈 Dados brutos encontrados:", dados.length);
     
     const cadastros = [];
@@ -454,26 +454,27 @@ function buscarTodosCadastrosComWaitlabel(waitlabel) {
       
       // 🔥 CORREÇÃO: ESTRUTURA COM 17 COLUNAS
       const cadastro = {
-        id: i + 2,
-        razao_social: linha[0]?.toString().trim() || '',     // A - Razão Social
-        nome_fantasia: linha[1]?.toString().trim() || '',    // B - Nome Fantasia
-        cnpj: formatarCNPJNoSheets(linha[2]?.toString().trim() || ''), // C - CNPJ
-        tipo: linha[3]?.toString().trim() || '',             // D - Tipo
-        fornecedor: linha[4]?.toString().trim() || '',       // E - Fornecedor
-        ultimo_evento: ultimoEventoFormatado,                // F - Último evento
-        evento: linha[6]?.toString().trim() || '',           // G - Evento
-        observacoes: linha[7]?.toString().trim() || '',      // H - Observação
-        contrato_enviado: linha[8]?.toString().trim() || '', // I - Contrato Enviado
-        contrato_assinado: linha[9]?.toString().trim() || '', // J - Contrato Assinado
-        ativacao: ativacaoFormatada,                         // K - Ativação ⭐
-        link: linha[11]?.toString().trim() || '',            // L - Link
-        mensalidade: parseFloat(linha[12]) || 0,             // M - Mensalidade
-        tarifa: linha[13]?.toString().trim() || '',          // N - Tarifa
-        percentual_tarifa: linha[14]?.toString().trim() || '', // O - % Tarifa
-        adesao: processarAdesao(linha[15]),                  // P - Adesão
-        situacao: (linha[16]?.toString().trim() || 'Novo registro'), // Q - Situação
-        waitlabel: waitlabel // 🔥 ADICIONAR WAITLABEL
-      };
+      id: i + 2,
+      razao_social: linha[0]?.toString().trim() || '',     // A - Razão Social
+      nome_fantasia: linha[1]?.toString().trim() || '',    // B - Nome Fantasia
+      cnpj: formatarCNPJNoSheets(linha[2]?.toString().trim() || ''), // C - CNPJ
+      tipo: linha[3]?.toString().trim() || '',             // D - Tipo
+      fornecedor: linha[4]?.toString().trim() || '',       // E - Fornecedor
+      ultimo_evento: ultimoEventoFormatado,                // F - Último evento
+      evento: linha[6]?.toString().trim() || '',           // G - Evento
+      observacoes: linha[7]?.toString().trim() || '',      // H - Observação
+      contrato_enviado: linha[8]?.toString().trim() || '', // I - Contrato Enviado
+      contrato_assinado: linha[9]?.toString().trim() || '', // J - Contrato Assinado
+      ativacao: ativacaoFormatada,                         // K - Ativação
+      link: linha[11]?.toString().trim() || '',            // L - Link
+      mensalidade: parseFloat(linha[12]) || 0,             // M - Mensalidade
+      mensalidade_sim: parseFloat(linha[13]) || 0,         // 🔥 NOVA COLUNA N - Mensalidade SIM
+      tarifa: linha[14]?.toString().trim() || '',          // O - Tarifa
+      percentual_tarifa: linha[15]?.toString().trim() || '', // P - % Tarifa
+      adesao: processarAdesao(linha[16]),                  // Q - Adesão
+      situacao: (linha[17]?.toString().trim() || 'Novo registro'), // R - Situação
+      waitlabel: waitlabel
+    };
       
       cadastros.push(cadastro);
     }
@@ -498,7 +499,7 @@ function buscarTodosCadastrosPorCNPJComWaitlabel(cnpj, waitlabel) {
     const ultimaLinha = aba.getLastRow();
     if (ultimaLinha < 2) return [];
     
-    const dados = aba.getRange(2, 1, ultimaLinha - 1, 17).getValues();
+    const dados = aba.getRange(2, 1, ultimaLinha - 1, 18).getValues();
     const cnpjBuscado = cnpj.toString().replace(/\D/g, '');
     
     const cadastrosEncontrados = [];
@@ -559,16 +560,16 @@ function processarLinhaParaRetorno(linha, id) {
   console.log("🔍 DEBUG CONTRATO ENVIADO - Valor bruto:", linha[8], "Tipo:", typeof linha[8]);
 
   // Processar tarifa e percentual
-  let tarifa = linha[13]?.toString().trim() || '';
+  let tarifa = linha[14]?.toString().trim() || ''; // Coluna O - Tarifa (índice 14)
   let percentualTarifa = '0%';
-  if (linha[14] !== null && linha[14] !== undefined && linha[14] !== '') {
-    const valor = parseFloat(linha[14]);
-    if (!isNaN(valor)) {
-      percentualTarifa = Math.round(valor * 100) + '%';
-    } else {
-      percentualTarifa = linha[14]?.toString().trim() || '0%';
-    }
+  if (linha[15] !== null && linha[15] !== undefined && linha[15] !== '') { // Coluna P - % Tarifa (índice 15)
+  const valor = parseFloat(linha[15]); // ✅ CORRETO - pega 0.1 da coluna 15
+  if (!isNaN(valor)) {
+    percentualTarifa = Math.round(valor * 100) + '%'; // 0.1 → 10%
+  } else {
+    percentualTarifa = linha[15]?.toString().trim() || '0%'; // ✅ CORRETO
   }
+}
   
   // Estrutura de fornecedor para formulário
   const fornecedorParaFormulario = {
@@ -590,16 +591,46 @@ function processarLinhaParaRetorno(linha, id) {
     ultimo_evento: ultimoEventoFormatado,
     evento: linha[6]?.toString().trim() || '',
     observacoes: linha[7]?.toString().trim() || '',
-    contrato_enviado: linha[8]?.toString().trim() || '', // ✅ Funciona
-    contrato_assinado: linha[9]?.toString().trim() || '', // 🔥 AGORA MESMO TRATAMENTO
+    contrato_enviado: linha[8]?.toString().trim() || '',
+    contrato_assinado: linha[9]?.toString().trim() || '',
     ativacao: ativacaoFormatada,
     link: linha[11]?.toString().trim() || '',
     mensalidade: parseFloat(linha[12]) || 0,
+    mensalidade_sim: parseFloat(linha[13]) || 0, // 🔥 NOVA COLUNA
     tarifa: tarifa,
     percentual_tarifa: percentualTarifa,
-    adesao: processarAdesao(linha[15]),
-    situacao: (linha[16]?.toString().trim() || 'Novo registro')
+    adesao: processarAdesao(linha[16]),
+    situacao: (linha[17]?.toString().trim() || 'Novo registro')
   };
+}
+
+function debugOrdemColunasSimFacilita() {
+  try {
+    const ss = SpreadsheetApp.openById(CONFIG.ID_PLANILHA);
+    const aba = ss.getSheetByName('Sim_Facilita'); // 🔥 Mudei para Sim_Facilita
+    
+    if (!aba) {
+      console.log("❌ Aba Sim_Facilita não encontrada!");
+      return { error: "Aba Sim_Facilita não encontrada" };
+    }
+    
+    const cabecalhos = aba.getRange(1, 1, 1, aba.getLastColumn()).getValues()[0];
+    const primeiraLinha = aba.getRange(2, 1, 1, aba.getLastColumn()).getValues()[0];
+    
+    console.log("=== 🔍 ORDEM REAL DAS COLUNAS - SIM_FACILITA ===");
+    cabecalhos.forEach((cabecalho, index) => {
+      console.log(`Coluna ${index}: "${cabecalho}" = ${primeiraLinha[index]}`);
+    });
+    
+    return {
+      cabecalhos: cabecalhos,
+      dados: primeiraLinha
+    };
+    
+  } catch (error) {
+    console.error("❌ Erro:", error);
+    return { error: error.message };
+  }
 }
 
 function buscarCadastroPorIDComWaitlabel(id, waitlabel) {
@@ -613,7 +644,7 @@ function buscarCadastroPorIDComWaitlabel(id, waitlabel) {
     const ultimaLinha = aba.getLastRow();
     if (ultimaLinha < id) return { encontrado: false, mensagem: "Registro não encontrado" };
     
-    const linha = aba.getRange(id, 1, 1, 17).getValues()[0];
+    const linha = aba.getRange(id, 1, 1, 18).getValues()[0];
     
     if (!linha[0] || linha[0].toString().trim() === '') {
       return { encontrado: false, mensagem: "Registro vazio ou não encontrado" };
@@ -673,7 +704,7 @@ function aplicarAlteracoesATodos(cnpj, dadosParaAplicar, camposSelecionados) {
       return { success: false, message: "Nenhum cadastro encontrado" };
     }
     
-    const dados = aba.getRange(2, 1, ultimaLinha - 1, 17).getValues();
+    const dados = aba.getRange(2, 1, ultimaLinha - 1, 18).getValues();
     const cnpjBuscado = cnpj.toString().replace(/\D/g, '');
     
     let registrosAtualizados = 0;
@@ -751,8 +782,9 @@ function obterIndiceColuna(campo) {
     'ativacao': 10,
     'link': 11,
     'mensalidade': 12,
-    'adesao': 15,
-    'situacao': 16
+    'mensalidade_sim': 13, // 🔥 NOVA COLUNA
+    'adesao': 16, // 🔥 ATUALIZADO: era 15, agora é 16
+    'situacao': 17 // 🔥 ATUALIZADO: era 16, agora é 17
   };
   
   return mapeamentoCampos[campo] !== undefined ? mapeamentoCampos[campo] : -1;
@@ -792,6 +824,8 @@ function obterValorParaCampo(campo, dadosParaAplicar, linhaAtual) {
       return dadosParaAplicar.link || '';
     case 'mensalidade':
       return converterMoedaParaNumero(dadosParaAplicar.mensalidade) || 0;
+    case 'mensalidade_sim': // 🔥 NOVO CASO
+      return converterMoedaParaNumero(dadosParaAplicar.mensalidade_sim) || 0;
     case 'adesao':
       return processarAdesaoParaSalvar(dadosParaAplicar.adesao);
     case 'situacao':
@@ -807,17 +841,22 @@ function obterValorParaCampo(campo, dadosParaAplicar, linhaAtual) {
 
 function aplicarFormatacao(aba, linhaNumero, camposSelecionados) {
   try {
-    aba.getRange(linhaNumero, 13).setNumberFormat('"R$"#,##0.00');
-    aba.getRange(linhaNumero, 16).setNumberFormat('"R$"#,##0.00');
-    aba.getRange(linhaNumero, 15).setNumberFormat('0%');
-    aba.getRange(linhaNumero, 11).setNumberFormat('dd/MM/yyyy');
+    aba.getRange(linhaNumero, 13).setNumberFormat('"R$"#,##0.00'); // Mensalidade (M)
+    aba.getRange(linhaNumero, 14).setNumberFormat('"R$"#,##0.00'); // 🔥 NOVA Mensalidade SIM (N)
+    aba.getRange(linhaNumero, 17).setNumberFormat('"R$"#,##0.00'); // Adesão (Q) - ATUALIZADO
+    aba.getRange(linhaNumero, 16).setNumberFormat('0%');           // % Tarifa (P) - ATUALIZADO
+    aba.getRange(linhaNumero, 11).setNumberFormat('dd/MM/yyyy');   // Data Ativação (K)
     
     if (camposSelecionados.includes('mensalidade')) {
       aba.getRange(linhaNumero, 13).setNumberFormat('"R$"#,##0.00');
     }
     
+    if (camposSelecionados.includes('mensalidade_sim')) { // 🔥 NOVO
+      aba.getRange(linhaNumero, 14).setNumberFormat('"R$"#,##0.00');
+    }
+    
     if (camposSelecionados.includes('adesao')) {
-      aba.getRange(linhaNumero, 16).setNumberFormat('"R$"#,##0.00');
+      aba.getRange(linhaNumero, 17).setNumberFormat('"R$"#,##0.00'); // ATUALIZADO
     }
     
   } catch (error) {
@@ -842,7 +881,7 @@ function excluirTodosFornecedoresCNPJ(cnpj) {
       return { success: false, message: "Nenhum cadastro encontrado" };
     }
     
-    const dados = aba.getRange(2, 1, ultimaLinha - 1, 17).getValues();
+    const dados = aba.getRange(2, 1, ultimaLinha - 1, 18).getValues();
     const cnpjBuscado = cnpj.toString().replace(/\D/g, '');
     
     const linhasParaExcluir = [];
@@ -893,7 +932,7 @@ function contarRegistrosPorCNPJ(cnpj) {
     const ultimaLinha = aba.getLastRow();
     if (ultimaLinha < 2) return 0;
     
-    const dados = aba.getRange(2, 1, ultimaLinha - 1, 17).getValues();
+    const dados = aba.getRange(2, 1, ultimaLinha - 1, 18).getValues();
     const cnpjBuscado = cnpj.toString().replace(/\D/g, '');
     
     let contador = 0;
@@ -1031,10 +1070,10 @@ function processarCadastro(dados) {
       console.log("📝 Criando nova aba...");
       aba = ss.insertSheet(CONFIG.ABA_PRINCIPAL);
       const cabecalho = [
-        'Razão Social', 'Nome Fantasia', 'CNPJ', 'Tipo', 'Fornecedor', 
-        'Ultimo evento', 'Evento', 'Observação', 'Contrato Enviado', 'Contrato Assinado',
-        'Ativação', 'Link', 'Mensalidade', 'Tarifa', '% Tarifa', 'Adesão', 'Situação'
-      ];
+      'Razão Social', 'Nome Fantasia', 'CNPJ', 'Tipo', 'Fornecedor', 
+      'Ultimo evento', 'Evento', 'Observação', 'Contrato Enviado', 'Contrato Assinado',
+      'Ativação', 'Link', 'Mensalidade', 'Mensalidade SIM', 'Tarifa', '% Tarifa', 'Adesão', 'Situação'
+    ];
       aba.getRange('A1:Q1').setValues([cabecalho]);
       aba.getRange(1, 1, 1, cabecalho.length)
         .setBackground("#7E3E9A")
@@ -1198,7 +1237,7 @@ function cadastrarNovo(aba, dados) {
         SpreadsheetApp.flush();
         
         // 🔥 VERIFICAR O QUE FOI SALVO
-        const dadosSalvos = aba.getRange(linhaInserir, 1, 1, 17).getValues()[0];
+        const dadosSalvos = aba.getRange(linhaInserir, 1, 1, 18).getValues()[0];
         console.log(`✅ Dados salvos na linha ${linhaInserir}:`, dadosSalvos);
         console.log(`📅 Data ativação salva: ${dadosSalvos[10]}`);
         console.log(`💰 Tarifa salva: ${dadosSalvos[13]}`);
@@ -1255,7 +1294,7 @@ function atualizarCadastro(aba, dados) {
     }
 
     // 🔥🔥🔥 CORREÇÃO 1: BUSCAR A DATA DE ATIVAÇÃO ORIGINAL
-    const dadosAtuais = aba.getRange(linhaAtualizar, 1, 1, 17).getValues()[0];
+    const dadosAtuais = aba.getRange(linhaAtualizar, 1, 1, 18).getValues()[0];
     const dataAtivacaoOriginal = dadosAtuais[10]; // Coluna K - Ativação
     
     console.log("📅 Data ativação original:", dataAtivacaoOriginal);
@@ -1369,7 +1408,7 @@ function buscarTodosCadastros() {
     }
     
     // Buscar dados na ORDEM CORRETA (17 colunas)
-    const dados = aba.getRange(2, 1, ultimaLinha - 1, 17).getValues();
+    const dados = aba.getRange(2, 1, ultimaLinha - 1, 18).getValues();
     console.log("📈 Dados brutos encontrados:", dados.length);
     
     const cadastros = [];
@@ -1444,7 +1483,7 @@ function buscarCadastroPorCNPJ(cnpj) {
     const ultimaLinha = aba.getLastRow();
     if (ultimaLinha < 2) return { encontrado: false, mensagem: "Nenhum dado encontrado" };
     
-    const dados = aba.getRange(2, 1, ultimaLinha - 1, 17).getValues();
+    const dados = aba.getRange(2, 1, ultimaLinha - 1, 18).getValues();
     const cnpjBuscado = cnpj.toString().replace(/\D/g, '');
     
     console.log("🔎 Procurando CNPJ limpo:", cnpjBuscado);
@@ -1568,7 +1607,7 @@ function buscarCadastroPorID(id) {
     const ultimaLinha = aba.getLastRow();
     if (ultimaLinha < id) return { encontrado: false, mensagem: "Registro não encontrado" };
     
-    const linha = aba.getRange(id, 1, 1, 17).getValues()[0];
+    const linha = aba.getRange(id, 1, 1, 18).getValues()[0];
     
     // Verificar se a linha não está vazia
     if (!linha[0] || linha[0].toString().trim() === '') {
@@ -1674,7 +1713,7 @@ function buscarTodosCadastrosPorCNPJ(cnpj) {
     const ultimaLinha = aba.getLastRow();
     if (ultimaLinha < 2) return [];
     
-    const dados = aba.getRange(2, 1, ultimaLinha - 1, 17).getValues();
+    const dados = aba.getRange(2, 1, ultimaLinha - 1, 18).getValues();
     const cnpjBuscado = cnpj.toString().replace(/\D/g, '');
     
     const cadastrosEncontrados = [];
@@ -1768,7 +1807,7 @@ function debugTwoSisters() {
     }
     
     // Buscar especificamente a linha 2 (que é o TWO SISTERS)
-    const linha = aba.getRange(2, 1, 1, 17).getValues()[0];
+    const linha = aba.getRange(2, 1, 1, 18).getValues()[0];
     
     console.log("📊 LINHA COMPLETA DO TWO SISTERS:");
     for (let i = 0; i < linha.length; i++) {
@@ -1813,7 +1852,7 @@ function testarContratoAssinado() {
     }
     
     // Buscar linha 2 (TWO SISTERS)
-    const linha = aba.getRange(2, 1, 1, 17).getValues()[0];
+    const linha = aba.getRange(2, 1, 1, 18).getValues()[0];
     
     console.log("📊 LINHA COMPLETA:");
     for (let i = 0; i < linha.length; i++) {
