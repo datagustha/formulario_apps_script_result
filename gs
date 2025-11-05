@@ -226,7 +226,7 @@ function cadastrarNovoComWaitlabel(aba, dados, waitlabel) {
         aba.getRange(linhaInserir, 13).setNumberFormat('"R$"#,##0.00'); // Mensalidade (M)
         aba.getRange(linhaInserir, 14).setNumberFormat('"R$"#,##0.00'); // 🔥 NOVA Mensalidade SIM (N)
         aba.getRange(linhaInserir, 17).setNumberFormat('"R$"#,##0.00'); // Adesão (Q)
-        aba.getRange(linhaInserir, 16).setNumberFormat('0%');           // % Tarifa (P)
+        aba.getRange(linhaInserir, 16).setNumberFormat('0.00%'); // % Tarifa (P)
         aba.getRange(linhaInserir, 15).setNumberFormat('@');            // Tarifa como texto (O)
         aba.getRange(linhaInserir, 11).setNumberFormat('dd/MM/yyyy');   // Data Ativação (K)
         
@@ -384,7 +384,7 @@ function atualizarCadastroComWaitlabel(aba, dados, waitlabel) {
     aba.getRange(linhaAtualizar, 13).setNumberFormat('"R$"#,##0.00'); // Mensalidade (M)
     aba.getRange(linhaAtualizar, 14).setNumberFormat('"R$"#,##0.00'); // 🔥 NOVA Mensalidade SIM (N)
     aba.getRange(linhaAtualizar, 17).setNumberFormat('"R$"#,##0.00'); // Adesão (Q)
-    aba.getRange(linhaAtualizar, 16).setNumberFormat('0%');           // % Tarifa (P)
+    aba.getRange(linhaAtualizar, 16).setNumberFormat('0.00%');
     aba.getRange(linhaAtualizar, 15).setNumberFormat('@');            // Tarifa como texto (O)
 
     SpreadsheetApp.flush();
@@ -561,13 +561,16 @@ function processarLinhaParaRetorno(linha, id) {
 
   // Processar tarifa e percentual
   let tarifa = linha[14]?.toString().trim() || ''; // Coluna O - Tarifa (índice 14)
-  let percentualTarifa = '0%';
-  if (linha[15] !== null && linha[15] !== undefined && linha[15] !== '') { // Coluna P - % Tarifa (índice 15)
-  const valor = parseFloat(linha[15]); // ✅ CORRETO - pega 0.1 da coluna 15
+// ✅ CORREÇÃO: MANTER O VALOR EXATO SEM ARREDONDAMENTO
+let percentualTarifa = '0%';
+if (linha[15] !== null && linha[15] !== undefined && linha[15] !== '') {
+  const valor = parseFloat(linha[15]);
   if (!isNaN(valor)) {
-    percentualTarifa = Math.round(valor * 100) + '%'; // 0.1 → 10%
+    // 🔥 CORREÇÃO: Usar toFixed(2) para manter casas decimais
+    percentualTarifa = (valor * 100).toFixed(2) + '%'; // 0.035 → 3.50%
   } else {
-    percentualTarifa = linha[15]?.toString().trim() || '0%'; // ✅ CORRETO
+    // Se já está como string com %, manter como está
+    percentualTarifa = linha[15]?.toString().trim() || '0%';
   }
 }
   
@@ -844,7 +847,7 @@ function aplicarFormatacao(aba, linhaNumero, camposSelecionados) {
     aba.getRange(linhaNumero, 13).setNumberFormat('"R$"#,##0.00'); // Mensalidade (M)
     aba.getRange(linhaNumero, 14).setNumberFormat('"R$"#,##0.00'); // 🔥 NOVA Mensalidade SIM (N)
     aba.getRange(linhaNumero, 17).setNumberFormat('"R$"#,##0.00'); // Adesão (Q) - ATUALIZADO
-    aba.getRange(linhaNumero, 16).setNumberFormat('0%');           // % Tarifa (P) - ATUALIZADO
+    aba.getRange(linhaNumero, 16).setNumberFormat('0.00%');
     aba.getRange(linhaNumero, 11).setNumberFormat('dd/MM/yyyy');   // Data Ativação (K)
     
     if (camposSelecionados.includes('mensalidade')) {
@@ -1532,16 +1535,18 @@ function buscarCadastroPorCNPJ(cnpj) {
         let tarifa = linha[13]?.toString().trim() || '';
 
         // 🔥🔥🔥 CORREÇÃO CRÍTICA: Converter número para porcentagem
-        let percentualTarifa = '0%';
-        if (linha[14] !== null && linha[14] !== undefined && linha[14] !== '') {
-          const valor = parseFloat(linha[14]);
-          if (!isNaN(valor)) {
-            // Converter 0.07 para 7%
-            percentualTarifa = Math.round(valor * 100) + '%';
-          } else {
-            percentualTarifa = linha[14]?.toString().trim() || '0%';
-          }
-        }
+        // ✅ CORREÇÃO: MANTER O VALOR EXATO SEM ARREDONDAMENTO
+let percentualTarifa = '0%';
+if (linha[15] !== null && linha[15] !== undefined && linha[15] !== '') {
+  const valor = parseFloat(linha[15]);
+  if (!isNaN(valor)) {
+    // 🔥 CORREÇÃO: Usar toFixed(2) para manter casas decimais
+    percentualTarifa = (valor * 100).toFixed(2) + '%'; // 0.035 → 3.50%
+  } else {
+    // Se já está como string com %, manter como está
+    percentualTarifa = linha[15]?.toString().trim() || '0%';
+  }
+}
         
         console.log(`💰 Tarifa encontrada: "${tarifa}"`);
         console.log(`📊 % Tarifa encontrada: "${percentualTarifa}"`);
@@ -1641,16 +1646,18 @@ function buscarCadastroPorID(id) {
     let tarifa = linha[13]?.toString().trim() || '';
 
     // 🔥🔥🔥 CORREÇÃO CRÍTICA: Converter número para porcentagem
-    let percentualTarifa = '0%';
-    if (linha[14] !== null && linha[14] !== undefined && linha[14] !== '') {
-      const valor = parseFloat(linha[14]);
-      if (!isNaN(valor)) {
-        // Converter 0.07 para 7%
-        percentualTarifa = Math.round(valor * 100) + '%';
-      } else {
-        percentualTarifa = linha[14]?.toString().trim() || '0%';
-      }
-    }
+    // ✅ CORREÇÃO: MANTER O VALOR EXATO SEM ARREDONDAMENTO
+let percentualTarifa = '0%';
+if (linha[15] !== null && linha[15] !== undefined && linha[15] !== '') {
+  const valor = parseFloat(linha[15]);
+  if (!isNaN(valor)) {
+    // 🔥 CORREÇÃO: Usar toFixed(2) para manter casas decimais
+    percentualTarifa = (valor * 100).toFixed(2) + '%'; // 0.035 → 3.50%
+  } else {
+    // Se já está como string com %, manter como está
+    percentualTarifa = linha[15]?.toString().trim() || '0%';
+  }
+}
   
     console.log(`💰 Tarifa encontrada: "${tarifa}"`);
     console.log(`📊 % Tarifa encontrada: "${percentualTarifa}"`);
@@ -1902,6 +1909,14 @@ function testarBuscaComWaitlabel() {
     console.error("❌ Erro no teste:", error);
     return { error: error.message };
   }
+}
+
+function testarPercentualCorrigido() {
+  const resultado = buscarCadastroPorIDComWaitlabel(988, 'Result');
+  console.log("🎯 RESULTADO DO TESTE:");
+  console.log("Percentual tarifa:", resultado.percentual_tarifa);
+  console.log("Deve ser 3.50% (não 4%)");
+  return resultado;
 }
 
 function testar() {
