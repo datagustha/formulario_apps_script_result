@@ -901,11 +901,6 @@
 }
 
 
-/* 🔥 EXCEÇÃO: Primeira coluna alinhada à esquerda */
-.data-table td:nth-child(1) {
-  text-align: left;
-  vertical-align: top !important;
-}
 
 /* 🔥 LARGURAS DAS COLUNAS */
 .data-table th:nth-child(6),
@@ -1475,21 +1470,11 @@
                   </div>
                   <div>
                     <label style="font-weight: 600; margin-bottom: 8px; display: block;">Valor da Tarifa</label>
-                    <select name="percentual_agil" style="width: 100%; padding: 8px 12px; border: 2px solid var(--border); border-radius: 6px;">
-                      <option value="0%">0%</option>
-                      <option value="1%">1%</option>
-                      <option value="2%">2%</option>
-                      <option value="3%">3%</option>
-                      <option value="4%">4%</option>
-                      <option value="5%">5%</option>
-                      <option value="6%">6%</option>
-                      <option value="7%">7%</option>
-                      <option value="8%">8%</option>
-                      <option value="9%">9%</option>
-                      <option value="10%">10%</option>
-                      <option value="11%">11%</option>
-                      <option value="12%">12%</option>
-                    </select>
+                    <input type="text" 
+                      name="percentual_agil" 
+                      style="width: 100%; padding: 8px 12px; border: 2px solid var(--border); border-radius: 6px;"
+                      placeholder="Digite o % (ex: 3,2%)"
+                      oninput="formatarPercentual(this)">
                   </div>
                 </div>
               </div>
@@ -1516,21 +1501,11 @@
                   </div>
                   <div>
                     <label style="font-weight: 600; margin-bottom: 8px; display: block;">Valor da Tarifa</label>
-                    <select name="percentual_bc" style="width: 100%; padding: 8px 12px; border: 2px solid var(--border); border-radius: 6px;">
-                      <option value="0%">0%</option>
-                      <option value="1%">1%</option>
-                      <option value="2%">2%</option>
-                      <option value="3%">3%</option>
-                      <option value="4%">4%</option>
-                      <option value="5%">5%</option>
-                      <option value="6%">6%</option>
-                      <option value="7%">7%</option>
-                      <option value="8%">8%</option>
-                      <option value="9%">9%</option>
-                      <option value="10%">10%</option>
-                      <option value="11%">11%</option>
-                      <option value="12%">12%</option>
-                    </select>
+                    <input type="text" 
+                      name="percentual_bc" 
+                      style="width: 100%; padding: 8px 12px; border: 2px solid var(--border); border-radius: 6px;"
+                      placeholder="Digite o % (ex: 3,2%)"
+                      oninput="formatarPercentual(this)">
                   </div>
                 </div>
               </div>
@@ -1557,21 +1532,11 @@
                   </div>
                   <div>
                     <label style="font-weight: 600; margin-bottom: 8px; display: block;">Valor da Tarifa</label>
-                    <select name="percentual_parcelex" style="width: 100%; padding: 8px 12px; border: 2px solid var(--border); border-radius: 6px;">
-                      <option value="0%">0%</option>
-                      <option value="1%">1%</option>
-                      <option value="2%">2%</option>
-                      <option value="3%">3%</option>
-                      <option value="4%">4%</option>
-                      <option value="5%">5%</option>
-                      <option value="6%">6%</option>
-                      <option value="7%">7%</option>
-                      <option value="8%">8%</option>
-                      <option value="9%">9%</option>
-                      <option value="10%">10%</option>
-                      <option value="11%">11%</option>
-                      <option value="12%">12%</option>
-                    </select>
+                    <input type="text" 
+                      name="percentual_parcelex" 
+                      style="width: 100%; padding: 8px 12px; border: 2px solid var(--border); border-radius: 6px;"
+                      placeholder="Digite o % (ex: 3,2%)"
+                      oninput="formatarPercentual(this)">
                   </div>
                 </div>
               </div>
@@ -1598,21 +1563,11 @@
                   </div>
                   <div>
                     <label style="font-weight: 600; margin-bottom: 8px; display: block;">Valor da Tarifa</label>
-                    <select name="percentual_agoracred" style="width: 100%; padding: 8px 12px; border: 2px solid var(--border); border-radius: 6px;">
-                      <option value="0%">0%</option>
-                      <option value="1%">1%</option>
-                      <option value="2%">2%</option>
-                      <option value="3%">3%</option>
-                      <option value="4%">4%</option>
-                      <option value="5%">5%</option>
-                      <option value="6%">6%</option>
-                      <option value="7%">7%</option>
-                      <option value="8%">8%</option>
-                      <option value="9%">9%</option>
-                      <option value="10%">10%</option>
-                      <option value="11%">11%</option>
-                      <option value="12%">12%</option>
-                    </select>
+                    <input type="text" 
+                      name="percentual_agoracred" 
+                      style="width: 100%; padding: 8px 12px; border: 2px solid var(--border); border-radius: 6px;"
+                      placeholder="Digite o % (ex: 3,2%)"
+                      oninput="formatarPercentual(this)">
                   </div>
                 </div>
               </div>
@@ -1639,21 +1594,11 @@
                   </div>
                   <div>
                     <label style="font-weight: 600; margin-bottom: 8px; display: block;">Valor da Tarifa</label>
-                    <select name="percentual_afinz" style="width: 100%; padding: 8px 12px; border: 2px solid var(--border); border-radius: 6px;">
-                      <option value="0%">0%</option>
-                      <option value="1%">1%</option>
-                      <option value="2%">2%</option>
-                      <option value="3%">3%</option>
-                      <option value="4%">4%</option>
-                      <option value="5%">5%</option>
-                      <option value="6%">6%</option>
-                      <option value="7%">7%</option>
-                      <option value="8%">8%</option>
-                      <option value="9%">9%</option>
-                      <option value="10%">10%</option>
-                      <option value="11%">11%</option>
-                      <option value="12%">12%</option>
-                    </select>
+                    <input type="text" 
+                      name="percentual_afinz" 
+                      style="width: 100%; padding: 8px 12px; border: 2px solid var(--border); border-radius: 6px;"
+                      placeholder="Digite o % (ex: 3,2%)"
+                      oninput="formatarPercentual(this)">
                   </div>
                 </div>
               </div>
@@ -2980,6 +2925,14 @@ function coletarDadosFormularioTemporario() {
       });
     }
   });
+
+  // 🔥 DEBUG ESPECÍFICO PARA TARIFA
+console.log("🔥🔥🔥 DEBUG TARIFA:");
+console.log("Fornecedor:", fornecedorPadronizado);
+console.log("Tarifa:", tarifaSelecionada);
+console.log("Percentual digitado:", percentualSelecionado);
+console.log("Percentual convertido:", percentualNumerico);
+console.log("Percentual para exibição:", formatarPercentualParaExibicao(percentualNumerico));
   
   dados.fornecedores = fornecedoresSelecionados;
   return dados;
@@ -3475,11 +3428,13 @@ function coletarDadosFormulario() {
       
       // Coletar configurações de tarifa
       const tarifaRadio = document.querySelector(`input[name="tarifa_${fornecedorId}"]:checked`);
-      const percentualSelect = document.querySelector(`select[name="percentual_${fornecedorId}"]`);
+      const percentualInput = document.querySelector(`input[name="percentual_${fornecedorId}"]`);
       
       // 🔥 CORREÇÃO: Se não tem tarifa selecionada, seleciona MDR automaticamente
       let tarifaSelecionada = tarifaRadio ? tarifaRadio.value : 'MDR';
-      let percentualSelecionado = percentualSelect ? percentualSelect.value : '0%';
+      let percentualSelecionado = percentualInput ? percentualInput.value : '0%';
+
+      console.log("🔥 VALOR DO INPUT:", percentualSelecionado);
       
       // Se não tinha tarifa selecionada, seleciona MDR agora
       if (!tarifaRadio) {
@@ -3490,12 +3445,15 @@ function coletarDadosFormulario() {
         }
       }
       
-      // Adiciona aos dados
-      fornecedoresComConfiguracoes.push({
-        nome: fornecedorPadronizado,
-        tarifa: tarifaSelecionada,
-        percentual_tarifa: percentualSelecionado
-      });
+// 🔥 CORREÇÃO: Converter o percentual digitado para número
+let percentualNumerico = converterPercentualParaNumero(percentualSelecionado);
+
+fornecedoresComConfiguracoes.push({
+    nome: fornecedorPadronizado,
+    tarifa: tarifaSelecionada,
+    percentual_tarifa: percentualNumerico, // 🔥 AGORA É NÚMERO (0.035)
+    percentual_exibicao: percentualSelecionado // 🔥 MANTÉM O TEXTO DIGITADO ("3,50%")
+});
     });
 
     // ✅ MONTAR OBJETO DE DADOS CORRETAMENTE
@@ -3601,45 +3559,146 @@ function calcularDefasagem(dataUltimoEvento) {
     }
 }
 
-// 🔥 FUNÇÃO: Formatar percentual para exibição (0.03 → 3%) - VERSÃO CORRIGIDA
 function formatarPercentualParaExibicao(percentual) {
-  if (!percentual && percentual !== 0) return '';
-  
-  console.log("🔍 Percentual recebido:", percentual, "Tipo:", typeof percentual);
-  
-  try {
-    // Se já está em formato de string com %, retorna como está
-    if (typeof percentual === 'string' && percentual.includes('%')) {
-      return percentual;
+    if (!percentual && percentual !== 0) return '';
+    
+    console.log("🎨 Formatando para exibição:", percentual, "Tipo:", typeof percentual);
+    
+    try {
+        // Se é string que parece número (0.0033), converter para número
+        if (typeof percentual === 'string') {
+            if (percentual.match(/^\d*\.?\d+$/)) {
+                console.log("✅ String numérica detectada, convertendo:", percentual);
+                const numero = parseFloat(percentual);
+                if (!isNaN(numero)) {
+                    // Converter: 0.0033 → 0.33%
+                    const valorFormatado = numero * 100; // 0.0033 → 0.33
+                    // ✅ CORREÇÃO: SEMPRE usar 2 casas decimais
+                    const valorString = valorFormatado.toFixed(2); // 0.33 → "0.33"
+                    const valorFinal = valorString.replace('.', ',') + '%'; // "0.33" → "0,33%"
+                    console.log("✅ String convertida:", percentual + " → " + valorFinal);
+                    return valorFinal;
+                }
+            }
+            // Se já tem % no final, retornar como está
+            if (percentual.includes('%')) {
+                console.log("✅ Valor com % - retornando como está:", percentual);
+                return percentual;
+            }
+            console.log("✅ String sem % - adicionando %:", percentual + '%');
+            return percentual + '%';
+        }
+        
+        // Se é número, CONVERTER 0.0033 → 0,33%
+        if (typeof percentual === 'number') {
+            // ✅ CORREÇÃO: SEMPRE multiplicar por 100 para converter decimal em porcentagem
+            let valorFormatado = percentual * 100; // 0.0033 → 0.33
+            
+            // ✅ CORREÇÃO: SEMPRE usar 2 casas decimais
+            const valorString = valorFormatado.toFixed(2); // 0.33 → "0.33"
+            
+            // Substituir ponto por vírgula (formato brasileiro)
+            const valorFinal = valorString.replace('.', ',') + '%'; // "0.33" → "0,33%"
+            
+            console.log("✅ Número convertido:", percentual + " → " + valorFinal);
+            return valorFinal;
+        }
+        
+        return String(percentual);
+        
+    } catch (error) {
+        console.error("❌ Erro ao formatar percentual:", error);
+        return String(percentual || '');
+    }
+}
+
+
+function converterPercentualParaNumero(valorInput) {
+    if (!valorInput) return 0;
+    console.log("🔢 Convertendo para número:", valorInput);
+    
+    try {
+        let valor = valorInput.toString();
+        
+        // Remover % e espaços
+        valor = valor.replace('%', '').replace(/\s/g, '').trim();
+        
+        // ✅ CORREÇÃO CRÍTICA: Substituir VÍRGULA por PONTO antes do parseFloat
+        valor = valor.replace(',', '.');
+        
+        const numero = parseFloat(valor);
+        
+        if (isNaN(numero)) {
+            console.log("❌ Não é um número válido:", valorInput);
+            return 0;
+        }
+        
+        // ✅ CORREÇÃO DEFINITIVA: SEMPRE dividir por 100 quando o original tinha %
+        // Isso resolve o problema do 0,33% → 33%
+        if (valorInput.toString().includes('%')) {
+            const resultado = numero / 100;
+            console.log("✅ Convertido % para decimal:", valorInput, "→", resultado);
+            return resultado;
+        }
+        
+        // Se não tinha %, retornar como está
+        console.log("✅ Já está em decimal:", valorInput, "→", numero);
+        return numero;
+        
+    } catch (error) {
+        console.error("❌ Erro ao converter percentual:", error);
+        return 0;
+    }
+}
+
+
+
+
+// ✅✅✅ FUNÇÃO PARA NORMALIZAR VALOR DO BANCO
+function normalizarPercentualDoSheets(valor) {
+    if (!valor && valor !== 0) return '';
+    
+    console.log("📊 Valor recebido do banco:", valor, "Tipo:", typeof valor);
+    
+    // 🔥 SE JÁ É STRING COM %, RETORNAR COMO ESTÁ
+    if (typeof valor === 'string' && valor.includes('%')) {
+        console.log("✅ Valor do banco já formatado:", valor);
+        return valor;
     }
     
-    // Converter para número
-    let numero;
-    if (typeof percentual === 'string') {
-      // Remove possíveis caracteres não numéricos, mantendo ponto decimal
-      const valorLimpo = percentual.replace(/[^\d.,]/g, '').replace(',', '.');
-      numero = parseFloat(valorLimpo);
-    } else {
-      numero = parseFloat(percentual);
+    // 🔥 SE É NÚMERO, CONVERTER PARA STRING
+    if (typeof valor === 'number') {
+        const valorString = valor.toString().replace('.', ',') + '%';
+        console.log("✅ Número convertido para string:", valorString);
+        return valorString;
     }
     
-    // Se não é um número válido, retorna original
-    if (isNaN(numero)) {
-      return percentual;
-    }
+    // 🔥 QUALQUER OUTRO CASO, CONVERTER PARA STRING
+    console.log("✅ Valor convertido para string:", String(valor));
+    return String(valor);
+}
+
+
+
+
+function validarPercentuais() {
+    const inputsPercentual = document.querySelectorAll('input[name^="percentual_"]');
+    let todosValidos = true;
     
-    // 🔥 CORREÇÃO DEFINITIVA: Se o número é menor que 1, converte para porcentagem
-    if (numero < 1) {
-      return Math.round(numero * 100) + '%';
-    } else {
-      // Se o número é 1 ou maior, assume que já é porcentagem
-      return Math.round(numero) + '%';
-    }
+    inputsPercentual.forEach(input => {
+        if (input.closest('.fornecedor-item').style.display === 'grid') {
+            const valor = input.value.trim();
+            if (valor && !valor.match(/^\d+[,]?\d*%$/)) {
+                input.style.borderColor = 'var(--danger)';
+                todosValidos = false;
+                console.log("❌ Percentual inválido:", valor);
+            } else {
+                input.style.borderColor = '';
+            }
+        }
+    });
     
-  } catch (error) {
-    console.error("❌ Erro ao formatar percentual:", error);
-    return percentual;
-  }
+    return todosValidos;
 }
 
 function toggleFornecedorConfig(checkbox, fornecedorId) {
@@ -3987,26 +4046,31 @@ function mostrarPopupResultado(mensagemPrincipal, detalhes) {
   modal.style.display = 'flex';
 }
 
-
 function limparFormulario() {
+  console.log("🧹 LIMPANDO FORMULÁRIO COMPLETAMENTE");
+  
+  // Limpar campos básicos
   document.getElementById('razao_social').value = '';
   document.getElementById('nome_fantasia').value = '';
   document.getElementById('cnpj_cadastro').value = '';
   document.getElementById('tipo').value = '';
   
-  // 🔥 CORREÇÃO: Limpar checkboxes E configurações de fornecedor
+  // 🔥 CORREÇÃO: Limpar TODOS os campos de fornecedor
   const checkboxes = document.querySelectorAll('input[name="fornecedor"]');
   checkboxes.forEach(cb => {
     cb.checked = false;
-    const fornecedorId = cb.getAttribute('onchange').split("'")[1];
+    const fornecedorId = cb.value.toLowerCase();
     const configDiv = document.getElementById(`config-${fornecedorId}`);
     if (configDiv) {
       configDiv.style.display = 'none';
-      // Limpar seleções dentro da configuração
+      
+      // Limpar radios de tarifa
       const radios = configDiv.querySelectorAll('input[type="radio"]');
       radios.forEach(radio => radio.checked = false);
-      const select = configDiv.querySelector('select');
-      if (select) select.value = '0%';
+      
+      // 🔥 CORREÇÃO CRÍTICA: Limpar inputs de percentual também
+      const percentualInputs = configDiv.querySelectorAll('input[name^="percentual_"]');
+      percentualInputs.forEach(input => input.value = '');
     }
   });
   
@@ -4016,25 +4080,26 @@ function limparFormulario() {
   document.getElementById('ativacao').value = '';
   document.getElementById('link').value = '';
   document.getElementById('mensalidade').value = 'R$ 0,00';
-  document.getElementById('mensalidade_sim').value = 'R$ 0,00'; // 🔥 NOVA LINHA
+  document.getElementById('mensalidade_sim').value = 'R$ 0,00';
   
-  // 🔥 CORREÇÃO: Resetar situação para "Novo registro" e adesão para "R$ 0,00"
-  document.getElementById('situacao').value = 'Novo registro';
+  // 🔥 CORREÇÃO: Resetar situação para "NOVO REGISTRO" e adesão para "R$ 0,00"
+  document.getElementById('situacao').value = 'NOVO REGISTRO';
   document.getElementById('adesao').value = 'R$ 0,00';
   
-  // 🔥🔥🔥 ADICIONE ESTAS 3 LINHAS AQUI - LIMPAR EVENTO SEARCH
+  // Limpar evento
   document.getElementById('inputEventoSearch').value = '';
   document.getElementById('evento').value = '';
   document.getElementById('suggestionsEventoSearch').style.display = 'none';
   
-  // 🔥 CORREÇÃO: Atualizar eventos baseado na nova situação
+  // Atualizar eventos baseado na nova situação
   atualizarEventos();
   
+  // Configurar modo cadastro
   document.getElementById('btnCadastrar').style.display = 'block';
   document.getElementById('btnAtualizar').style.display = 'none';
   cadastroAtualId = null;
   
-  // 🔥 CORREÇÃO: LIBERAR CAMPOS DE FORNECEDOR QUANDO VOLTAR AO MODO CADASTRO
+  // Liberar campos de fornecedor
   console.log("🔓 LIBERANDO CAMPOS DE FORNECEDOR PARA NOVO CADASTRO");
   const checkboxesFornecedores = document.querySelectorAll('input[name="fornecedor"]');
   const configsFornecedores = document.querySelectorAll('[id^="config-"]');
@@ -4054,18 +4119,20 @@ function limparFormulario() {
       });
   });
   
-  // 🔥 CORREÇÃO: Remover destaque de campos obrigatórios
+  // Remover destaque de campos obrigatórios
   document.querySelectorAll('.campo-obrigatorio').forEach(campo => {
     campo.classList.remove('campo-obrigatorio');
     campo.style.borderColor = '';
     campo.style.backgroundColor = '';
   });
   
-  // 🔥🔥🔥 NOVA LINHA: Limpar seleção "Aplicar a Todos"
+  // Limpar seleção "Aplicar a Todos"
   limparSelecaoAplicarATodos();
   
-  // 🔥🔥🔥 ESCONDER BOTÃO "APLICAR A TODOS" AO LIMPAR
+  // Esconder botão "Aplicar a Todos"
   document.getElementById('btnAplicarATodos').style.display = 'none';
+  
+  console.log("✅ Formulário limpo completamente!");
 }
 
 // 🔥 CONFIGURAR BOTÕES "APLICAR A TODOS" NO FORMULÁRIO
@@ -4138,6 +4205,7 @@ function buscarPorCNPJ() {
     .buscarCadastroPorCNPJ(cnpjBusca); // ✅ Envia apenas números
 }
 
+// 🔥 FUNÇÃO CORRIGIDA: Preencher fornecedor com tarifas
 function preencherFornecedorComTarifas(dados) {
   console.log("🔧 PREENCHER FORNECEDOR - INICIANDO");
   console.log("📦 Dados recebidos:", dados);
@@ -4152,8 +4220,12 @@ function preencherFornecedorComTarifas(dados) {
       configDiv.style.display = 'none';
       const radios = configDiv.querySelectorAll('input[type="radio"]');
       radios.forEach(radio => radio.checked = false);
-      const select = configDiv.querySelector('select');
-      if (select) select.value = '0%';
+      
+      // 🔥 CORREÇÃO: Limpar também os inputs de percentual
+      const percentualInput = configDiv.querySelector(`input[name^="percentual_"]`);
+      if (percentualInput) {
+        percentualInput.value = '';
+      }
     }
   });
   
@@ -4207,48 +4279,26 @@ function preencherFornecedorComTarifas(dados) {
         }
       }
       
-      // 🔥 CORREÇÃO: Preencher percentual tarifa
-      if (dados.percentual_tarifa !== undefined && dados.percentual_tarifa !== null) {
-        const selectPercentual = configDiv.querySelector(`select[name="percentual_${fornecedorId}"]`);
-        if (selectPercentual) {
-          let percentualParaSelect = dados.percentual_tarifa;
-          
-          console.log("📊 Percentual original:", percentualParaSelect, "Tipo:", typeof percentualParaSelect);
-          
-          // Converter para formato do select (ex: 0.03 → 3%)
-          if (typeof percentualParaSelect === 'number') {
-            if (percentualParaSelect < 1) {
-              percentualParaSelect = Math.round(percentualParaSelect * 100) + '%';
-            } else {
-              percentualParaSelect = Math.round(percentualParaSelect) + '%';
-            }
-          } else if (typeof percentualParaSelect === 'string') {
-            // Se é string sem %, adicionar %
-            if (percentualParaSelect && !percentualParaSelect.includes('%')) {
-              percentualParaSelect = percentualParaSelect + '%';
-            }
-          }
-          
-          console.log("✅ Percentual para select:", percentualParaSelect);
-          selectPercentual.value = percentualParaSelect;
-          
-          // Se não encontrou, tentar opção mais próxima
-          if (!selectPercentual.value) {
-            const valorNumerico = parseFloat(percentualParaSelect.replace('%', '').replace(',', '.'));
-            if (!isNaN(valorNumerico)) {
-              const opcoes = Array.from(selectPercentual.options);
-              const opcaoCorrespondente = opcoes.find(opt => {
-                const optValor = parseFloat(opt.value.replace('%', ''));
-                return !isNaN(optValor) && optValor === valorNumerico;
-              });
-              if (opcaoCorrespondente) {
-                selectPercentual.value = opcaoCorrespondente.value;
-                console.log("✅ Usando opção correspondente:", opcaoCorrespondente.value);
-              }
-            }
-          }
-        }
-      }
+// 🔥🔥🔥 DEBUG CRÍTICO - ONDE ESTÁ O ARREDONDAMENTO?
+if (dados.percentual_tarifa !== undefined && dados.percentual_tarifa !== null) {
+    const percentualInput = configDiv.querySelector(`input[name="percentual_${fornecedorId}"]`);
+
+    if (percentualInput) {
+        // 🚨 DEBUG COMPLETO
+        console.log("🔴🔴🔴 DEBUG CRÍTICO - percentual_tarifa:");
+        console.log("Valor BRUTO que chegou:", dados.percentual_tarifa);
+        console.log("Tipo do valor:", typeof dados.percentual_tarifa);
+        console.log("Valor exato (toString):", dados.percentual_tarifa.toString());
+        
+        let percentualFormatado = formatarPercentualParaExibicao(dados.percentual_tarifa);
+        console.log("Após formatação:", percentualFormatado);
+        
+        percentualInput.value = percentualFormatado;
+        console.log("✅ Valor colocado no input:", percentualInput.value);
+    } else {
+        console.log("❌ Input de percentual não encontrado para:", fornecedorId);
+    }
+}
     }
   } else {
     console.log("❌ Fornecedor NÃO encontrado:", fornecedorBuscado);
@@ -4623,7 +4673,7 @@ function exibirModalLojasAgrupadas(cnpj, lojas) {
         
         <div style="display: grid; grid-template-columns: 1fr 1fr; gap: 10px; margin-bottom: 10px;">
           <div><strong>📅 Evento:</strong> ${loja.evento || 'N/A'}</div>
-          <div><strong>💰 Tarifa:</strong> ${loja.tarifa || 'N/A'} ${formatarPercentualParaExibicao(loja.percentual_tarifa)}</div>
+          <div><strong>💰 Tarifa:</strong> ${loja.tarifa || 'N/A'} ${formatarPercentualCorrigido(loja.percentual_tarifa)}</div>
           <div><strong>💵 Mensalidade:</strong> ${formatarMoedaParaInput(loja.mensalidade)}</div>
           <div><strong>🤝 Adesão:</strong> ${loja.adesao === 'Isento' || loja.adesao === 0 ? 'Isento' : formatarMoedaParaInput(loja.adesao)}</div>
         </div>
@@ -4666,6 +4716,48 @@ function exibirModalLojasAgrupadas(cnpj, lojas) {
   `;
   
   modal.style.display = 'flex';
+}
+
+// 🔥 FUNÇÃO TEMPORÁRIA PARA CORRIGIR O PROBLEMA NO MODAL
+function formatarPercentualCorrigido(percentual) {
+    if (!percentual && percentual !== 0) return 'N/A';
+    
+    console.log("🔨 Formatando percentual corrigido:", percentual);
+    
+    try {
+        // Converter para número se for string
+        const numero = typeof percentual === 'string' ? parseFloat(percentual) : percentual;
+        
+        if (isNaN(numero)) return String(percentual);
+        
+        // Converter decimal para porcentagem
+        const porcentagem = numero * 100;
+        return porcentagem.toFixed(2).replace('.', ',') + '%';
+        
+    } catch (error) {
+        return String(percentual);
+    }
+}
+
+// 🔥 FUNÇÃO TEMPORÁRIA PARA CORRIGIR O PROBLEMA NO MODAL
+function formatarPercentualCorrigido(percentual) {
+    if (!percentual && percentual !== 0) return 'N/A';
+    
+    console.log("🔨 Formatando percentual corrigido:", percentual);
+    
+    try {
+        // Converter para número se for string
+        const numero = typeof percentual === 'string' ? parseFloat(percentual) : percentual;
+        
+        if (isNaN(numero)) return String(percentual);
+        
+        // Converter decimal para porcentagem
+        const porcentagem = numero * 100;
+        return porcentagem.toFixed(2).replace('.', ',') + '%';
+        
+    } catch (error) {
+        return String(percentual);
+    }
 }
 
 function editarCadastroModal(id) {
@@ -5337,6 +5429,36 @@ setTimeout(() => {
   console.log("Eventos Rejeitado:", eventosRejeitado);
 }, 2000);
 
+// 🔥 TESTE DEFINITIVO - VERIFICAR SE ESTÁ CORRETO
+function testarConversaoPercentual() {
+    console.log("=== 🧪 TESTE AUTOMÁTICO DEFINITIVO ===");
+    
+    // Teste 1: "3,5%" deve virar 0.035 e depois "3,50%"
+    const teste1 = "3,5%";
+    const decimal1 = converterPercentualParaNumero(teste1);
+    const formatado1 = formatarPercentualParaExibicao(decimal1);
+    console.log(`✅ ${teste1} → ${decimal1} → ${formatado1}`);
+    
+    // Teste 2: "0,4%" deve virar 0.004 e depois "0,40%"  
+    const teste2 = "0,4%";
+    const decimal2 = converterPercentualParaNumero(teste2);
+    const formatado2 = formatarPercentualParaExibicao(decimal2);
+    console.log(`✅ ${teste2} → ${decimal2} → ${formatado2}`);
+    
+    // Teste 3: 0.035 deve virar "3,50%"
+    const teste3 = 0.035;
+    const formatado3 = formatarPercentualParaExibicao(teste3);
+    console.log(`✅ ${teste3} → ${formatado3}`);
+    
+    // Teste 4: 0.004 deve virar "0,40%"
+    const teste4 = 0.004;
+    const formatado4 = formatarPercentualParaExibicao(teste4);
+    console.log(`✅ ${teste4} → ${formatado4}`);
+}
+
+// Executar teste quando a página carregar
+setTimeout(testarConversaoPercentual, 1000);
+
 // Função para selecionar evento no search
 function selecionarEventoSearch(evento) {
   const input = document.getElementById('inputEventoSearch');
@@ -5352,6 +5474,33 @@ function selecionarEventoSearch(evento) {
   
   console.log("✅ Evento selecionado:", evento);
 }
+
+// ✅ CORREÇÃO: Função que MANTÉM os números
+function formatarPercentual(input) {
+    console.log("🎯 Digitando percentual:", input.value);
+    
+    const cursorPos = input.selectionStart;
+    let valor = input.value;
+    
+    // ✅ CORREÇÃO: Manter números, vírgula e %
+    valor = valor.replace(/[^\d,%]/g, '');
+    
+    // ✅ CORREÇÃO: Garantir que tem % no final
+    if (valor && !valor.includes('%')) {
+        valor = valor + '%';
+    }
+    
+    input.value = valor;
+    
+    // Manter posição do cursor
+    setTimeout(() => {
+        let novaPos = Math.min(cursorPos, input.value.length);
+        input.setSelectionRange(novaPos, novaPos);
+    }, 0);
+    
+    console.log("✅ Percentual formatado:", input.value);
+}
+
 
 // 🔥 NOVA FUNÇÃO: Sincronizar campos de evento - ADICIONE ISSO NO FINAL
 function sincronizarCamposEvento() {
