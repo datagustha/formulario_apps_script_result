@@ -1342,18 +1342,6 @@
                    oninput="formatarCNPJ(this)">
           </div>
           
-          <div class="form-group">
-            <label class="form-label obrigatorio">
-              <i class="fas fa-tag"></i>
-              Tipo
-            </label>
-            <select id="tipo" class="form-control">
-              <option value="">-- Selecione --</option>
-              <option value="GERAL">GERAL</option>
-              <option value="SORRIA SIM">SORRIA SIM</option>
-              <option value="SORRIFACIL">SORRIFACIL</option>
-            </select>
-          </div>
           
           <div class="form-group">
             <label class="form-label obrigatorio">
@@ -2172,7 +2160,6 @@ const formatarNomeCampoPopup = (campo) => {
         'razao_social': 'Razão Social',
         'nome_fantasia': 'Nome Fantasia', 
         'cnpj_cadastro': 'CNPJ',
-        'tipo': 'Tipo',
         'contrato_enviado': 'Contrato Enviado',
         'contrato_assinado': 'Contrato Assinado',
         'ativacao': 'Ativação',
@@ -2367,7 +2354,7 @@ function mostrarInterfaceAplicarATodos() {
 // 🔥 FUNÇÃO PARA ADICIONAR CHECKBOXES AOS CAMPOS
 function adicionarCheckboxesAosCampos() {
   const camposAplicaveis = [
-    'razao_social', 'nome_fantasia', 'tipo', 'contrato_enviado', 
+    'razao_social', 'nome_fantasia','contrato_enviado', 
     'contrato_assinado', 'ativacao', 'link', 'mensalidade', 
     'mensalidade_sim', 'adesao', 'situacao', 'inputEventoSearch' // ✅ JÁ ESTÁ AQUI
   ];
@@ -2894,7 +2881,6 @@ function coletarDadosFormularioTemporario() {
     razao_social: document.getElementById('razao_social').value,
     nome_fantasia: document.getElementById('nome_fantasia').value,
     cnpj_cadastro: document.getElementById('cnpj_cadastro').value,
-    tipo: document.getElementById('tipo').value,
     observacoes: document.getElementById('observacoes').value,
     contrato_enviado: document.getElementById('contrato_enviado').value,
     contrato_assinado: document.getElementById('contrato_assinado').value,
@@ -2948,7 +2934,6 @@ function restaurarDadosFormulario(dados) {
   document.getElementById('razao_social').value = dados.razao_social || '';
   document.getElementById('nome_fantasia').value = dados.nome_fantasia || '';
   document.getElementById('cnpj_cadastro').value = dados.cnpj_cadastro || '';
-  document.getElementById('tipo').value = dados.tipo || '';
   document.getElementById('observacoes').value = dados.observacoes || '';
   document.getElementById('contrato_enviado').value = dados.contrato_enviado || '';
   document.getElementById('contrato_assinado').value = dados.contrato_assinado || '';
@@ -3008,7 +2993,7 @@ function liberarTodosCamposProtegidos() {
   
   // Liberar campos principais
   const camposProtegidos = [
-    'razao_social', 'nome_fantasia', 'cnpj_cadastro', 'tipo', 
+    'razao_social', 'nome_fantasia', 'cnpj_cadastro', 
     'mensalidade', 'adesao', 'situacao', 'data_status',
     'contrato_enviado', 'contrato_assinado', 'ativacao', 'link'
   ];
@@ -3105,7 +3090,7 @@ function configurarCamposProtegidos() {
     const dadosAtuais = coletarDadosFormularioTemporario();
     
     const camposProtegidos = [
-      'razao_social', 'nome_fantasia', 'cnpj_cadastro', 'tipo', 
+      'razao_social', 'nome_fantasia', 'cnpj_cadastro', 
       'mensalidade', 'adesao', 'situacao', 'data_status',
       'contrato_enviado', 'contrato_assinado', 'ativacao', 'link'
     ];
@@ -3461,7 +3446,6 @@ fornecedoresComConfiguracoes.push({
       razao_social: razaoSocial,
       nome_fantasia: document.getElementById('nome_fantasia').value,
       cnpj: cnpjFormatado,
-      tipo: document.getElementById('tipo').value,
       adesao: adesaoValue,
       fornecedores: fornecedoresComConfiguracoes,
       fornecedor: fornecedoresComConfiguracoes.length > 0 ? fornecedoresComConfiguracoes[0].nome : '',
@@ -3489,6 +3473,7 @@ fornecedoresComConfiguracoes.push({
 }
 
 // 🔥 CORREÇÃO DEFINITIVA - FUNÇÃO CALCULAR DEFASAGEM MELHORADA
+// 🔥 CORREÇÃO DEFINITIVA - FUNÇÃO CALCULAR DEFASAGEM MELHORADA
 function calcularDefasagem(dataUltimoEvento) {
     console.log("🔄 CALCULANDO DEFASAGEM - Data recebida:", dataUltimoEvento);
     
@@ -3501,26 +3486,55 @@ function calcularDefasagem(dataUltimoEvento) {
         // 🔥 CORREÇÃO: Tentar diferentes formatos de data de forma mais robusta
         let dataEvento;
         
-        // Formato brasileiro (dd/mm/aaaa)
-        if (typeof dataUltimoEvento === 'string' && dataUltimoEvento.includes('/')) {
+        // 🔥🔥🔥 NOVA CORREÇÃO: Formato brasileiro COM HORA (dd/mm/aaaa hh:mm:ss)
+        if (typeof dataUltimoEvento === 'string' && dataUltimoEvento.includes('/') && dataUltimoEvento.includes(':')) {
+            console.log("📅 Detectado formato brasileiro com hora");
+            // Divide por espaço para separar data da hora
+            const partes = dataUltimoEvento.split(' ');
+            if (partes.length >= 2) {
+                const dataParte = partes[0]; // "01/11/2025"
+                const horaParte = partes[1]; // "09:58:26"
+                
+                const partesData = dataParte.split('/');
+                const partesHora = horaParte.split(':');
+                
+                if (partesData.length === 3 && partesHora.length >= 2) {
+                    const dia = parseInt(partesData[0], 10);
+                    const mes = parseInt(partesData[1], 10) - 1; // Mês é 0-indexed
+                    const ano = parseInt(partesData[2], 10);
+                    const hora = parseInt(partesHora[0], 10);
+                    const minuto = parseInt(partesHora[1], 10);
+                    const segundo = partesHora[2] ? parseInt(partesHora[2], 10) : 0;
+                    
+                    dataEvento = new Date(ano, mes, dia, hora, minuto, segundo);
+                    console.log("✅ Data com hora processada:", dataEvento);
+                }
+            }
+        }
+        // Formato brasileiro SEM HORA (dd/mm/aaaa)
+        else if (typeof dataUltimoEvento === 'string' && dataUltimoEvento.includes('/')) {
+            console.log("📅 Detectado formato brasileiro sem hora");
             const partesData = dataUltimoEvento.split('/');
             if (partesData.length === 3) {
                 const dia = parseInt(partesData[0], 10);
-                const mes = parseInt(partesData[1], 10) - 1; // Mês é 0-indexed
+                const mes = parseInt(partesData[1], 10) - 1;
                 const ano = parseInt(partesData[2], 10);
                 dataEvento = new Date(ano, mes, dia);
             }
         } 
         // Formato ISO (aaaa-mm-dd)
         else if (typeof dataUltimoEvento === 'string' && dataUltimoEvento.includes('-')) {
+            console.log("📅 Detectado formato ISO");
             dataEvento = new Date(dataUltimoEvento);
         }
         // Se já é um objeto Date
         else if (dataUltimoEvento instanceof Date) {
+            console.log("📅 Já é objeto Date");
             dataEvento = dataUltimoEvento;
         }
         // Tentar parse direto como último recurso
         else {
+            console.log("📅 Tentando parse direto");
             dataEvento = new Date(dataUltimoEvento);
         }
         
@@ -3532,23 +3546,28 @@ function calcularDefasagem(dataUltimoEvento) {
         
         const hoje = new Date();
         
-        // 🔥 CORREÇÃO: Zerar horas para comparar apenas datas
-        hoje.setHours(0, 0, 0, 0);
-        dataEvento.setHours(0, 0, 0, 0);
+        console.log("📊 Datas para cálculo:");
+        console.log("Data evento:", dataEvento);
+        console.log("Data hoje:", hoje);
         
-        // Calcular diferença em dias
+        // 🔥 CORREÇÃO: Calcular diferença em dias considerando horas
         const diffTempo = hoje.getTime() - dataEvento.getTime();
         const diffDias = Math.floor(diffTempo / (1000 * 3600 * 24));
         
-        console.log("📊 Resultado cálculo:");
-        console.log("Data evento:", dataEvento);
-        console.log("Data hoje:", hoje);
+        console.log("Diferença em milissegundos:", diffTempo);
         console.log("Diferença em dias:", diffDias);
         
-        if (diffDias === 0) return 'Hoje';
+        // 🔥 CORREÇÃO: Tratar datas futuras corretamente
+        if (diffDias === 0) {
+            // Mesmo dia - verificar se é hoje ou futuro/passado no mesmo dia
+            const diffHoras = Math.floor(diffTempo / (1000 * 3600));
+            if (diffHoras === 0) return 'Hoje';
+            if (diffHoras > 0) return 'Hoje';
+            if (diffHoras < 0) return 'Sem defesagem';
+        }
         if (diffDias === 1) return '1 dia';
         if (diffDias > 1) return `${diffDias} dias`;
-        if (diffDias < 0) return 'Data futura';
+        if (diffDias < 0) return 'Sem defesagem';
         
         return 'N/A';
         
@@ -3786,115 +3805,78 @@ function debugContratoEnviado(dados) {
   console.log("🔑 Todas as chaves disponíveis:", Object.keys(dados));
 }
 
-// 🔥 FUNÇÃO COM DEBUG: Preencher dados do cadastro
+// 🔥 FUNÇÃO COMPLETAMENTE CORRIGIDA
 function preencherDadosCadastro(dados) {
-  console.log("🎯 PREENCHER DADOS CADASTRO: Iniciando");
+  console.log("🎯 PREENCHER DADOS CADASTRO: Iniciando CORRETAMENTE");
   console.log("📦 Dados recebidos:", dados);
-
-  // DEBUG ESPECÍFICO DOS CAMPOS DE CONTRATO
-  console.log("🔍 DEBUG CONTRATO ENVIADO:", dados.contrato_enviado);
-  console.log("🔍 DEBUG CONTRATO ASSINADO:", dados.contrato_assinado);
-  console.log("🔍 TIPO CONTRATO ENVIADO:", typeof dados.contrato_enviado);
-  console.log("🔍 TIPO CONTRATO ASSINADO:", typeof dados.contrato_assinado);
 
   if (!dados.encontrado) {
     showMessage('error', '❌ ' + dados.mensagem);
     return;
   }
 
-  // Preencher campos básicos
-  document.getElementById('razao_social').value = dados.razao_social || '';
-  document.getElementById('nome_fantasia').value = dados.nome_fantasia || '';
-  document.getElementById('cnpj_cadastro').value = dados.cnpj || '';
-  document.getElementById('tipo').value = dados.tipo || '';
-  document.getElementById('observacoes').value = dados.observacoes || '';
-  
-  // 🔥🔥🔥 CORREÇÃO CRÍTICA: Preencher CAMPOS DE CONTRATO CORRETAMENTE
-  console.log("🎯 PREENCHENDO CAMPOS DE CONTRATO:");
-  
-  // Contrato Enviado
-  const contratoEnviadoValue = dados.contrato_enviado || '';
-  document.getElementById('contrato_enviado').value = contratoEnviadoValue;
-  console.log("✅ Contrato Enviado definido como:", contratoEnviadoValue);
-  
-  // Contrato Assinado 
-  const contratoAssinadoValue = dados.contrato_assinado || '';
-  document.getElementById('contrato_assinado').value = contratoAssinadoValue;
-  console.log("✅ Contrato Assinado definido como:", contratoAssinadoValue);
-  
-  // Verificar se os valores foram realmente definidos
-  console.log("🔍 VERIFICAÇÃO PÓS-PREENCHIMENTO:");
-  console.log("Contrato Enviado no select:", document.getElementById('contrato_enviado').value);
-  console.log("Contrato Assinado no select:", document.getElementById('contrato_assinado').value);
+  try {
+    // ✅ CORREÇÃO: Preencher apenas campos que EXISTEM
+    preencherCampoSeExistir('razao_social', dados.razao_social);
+    preencherCampoSeExistir('nome_fantasia', dados.nome_fantasia);
+    preencherCampoSeExistir('cnpj_cadastro', dados.cnpj);
+    preencherCampoSeExistir('observacoes', dados.observacoes);
+    preencherCampoSeExistir('contrato_enviado', dados.contrato_enviado);
+    preencherCampoSeExistir('contrato_assinado', dados.contrato_assinado);
+    preencherCampoSeExistir('ativacao', dados.ativacao);
+    preencherCampoSeExistir('link', dados.link);
+    preencherCampoSeExistir('situacao', dados.situacao || 'Novo registro');
+    
+    // Campos monetários
+    preencherCampoSeExistir('mensalidade', formatarMoedaParaInput(dados.mensalidade));
+    preencherCampoSeExistir('mensalidade_sim', formatarMoedaParaInput(dados.mensalidade_sim));
+    preencherCampoSeExistir('adesao', dados.adesao === 'Isento' || dados.adesao === 0 ? 'R$ 0,00' : formatarMoedaParaInput(dados.adesao));
+    
+    // ✅✅✅ CORREÇÃO CRÍTICA: Evento e Último Evento
+    console.log("🎯 PREENCHENDO EVENTOS CORRETAMENTE:");
+    console.log("Evento (deve ser TEXTO):", dados.evento);
+    console.log("Último Evento (deve ser DATA):", dados.ultimo_evento);
+    
+    // 🔥 CORREÇÃO DEFINITIVA - Evento é TEXTO, Último Evento é DATA
+    preencherCampoSeExistir('inputEventoSearch', dados.evento);
+    preencherCampoSeExistir('inputUltimoEvento', dados.ultimo_evento);
+    
+    // Preencher fornecedor
+    preencherFornecedorComTarifas(dados);
 
-  // Outros campos
-  document.getElementById('ativacao').value = dados.ativacao || '';
-  document.getElementById('link').value = dados.link || '';
-  document.getElementById('mensalidade').value = formatarMoedaParaInput(dados.mensalidade);
-  document.getElementById('mensalidade_sim').value = formatarMoedaParaInput(dados.mensalidade_sim); 
-  document.getElementById('situacao').value = dados.situacao || 'Novo registro';
-  document.getElementById('adesao').value = dados.adesao === 'Isento' || dados.adesao === 0 ? 'R$ 0,00' : formatarMoedaParaInput(dados.adesao);
-  
-  // ✅✅✅ CORREÇÃO CRÍTICA: Preencher evento nos DOIS campos
-  if (dados.evento) {
-    document.getElementById('inputEventoSearch').value = dados.evento;
-    document.getElementById('evento').value = dados.evento;
-    console.log("✅ Evento preenchido nos dois campos:", dados.evento);
-  } else {
-    // Limpar se não tiver evento
-    document.getElementById('inputEventoSearch').value = '';
-    document.getElementById('evento').value = '';
+    // Configurar modo de atualização
+    cadastroAtualId = dados.id;
+    
+    // ✅ CORREÇÃO: Mostrar botões corretamente
+    const btnCadastrar = document.getElementById('btnCadastrar');
+    const btnAtualizar = document.getElementById('btnAtualizar');
+    
+    if (btnCadastrar) btnCadastrar.style.display = 'none';
+    if (btnAtualizar) btnAtualizar.style.display = 'block';
+
+    // ✅ CORREÇÃO: Scroll suave para o topo
+    setTimeout(() => {
+      window.scrollTo({ top: 0, behavior: 'smooth' });
+    }, 100);
+    
+    console.log("✅✅✅ Formulário preenchido COM SUCESSO!");
+    showMessage('success', '✅ Cadastro carregado para edição!');
+    
+  } catch (error) {
+    console.error("❌ Erro ao preencher formulário:", error);
+    showMessage('error', '❌ Erro ao carregar cadastro: ' + error.message);
   }
-  
-  // Preencher fornecedor
-  preencherFornecedorComTarifas(dados);
+}
 
-  // 🔥 CORREÇÃO: BLOQUEAR APENAS CHECKBOX, LIBERAR TARIFA E %
-console.log("🔒 BLOQUEANDO APENAS CHECKBOX - LIBERANDO TARIFA E %");
-const checkboxesFornecedores = document.querySelectorAll('input[name="fornecedor"]');
-const configsFornecedores = document.querySelectorAll('[id^="config-"]');
-
-// ✅ BLOQUEAR apenas os checkboxes (não pode mudar fornecedor)
-checkboxesFornecedores.forEach(checkbox => {
-    checkbox.disabled = true;
-    checkbox.style.cursor = 'not-allowed';
-    checkbox.style.opacity = '0.7';
-});
-
-// ✅ LIBERAR tarifa e percentual dentro das configurações
-configsFornecedores.forEach(config => {
-    const radiosTarifa = config.querySelectorAll('input[type="radio"]'); // MDR/TIS
-    const selectsPercentual = config.querySelectorAll('select'); // 0%, 1%, 2%, etc.
-    
-    // 🔥 LIBERAR Radio buttons (MDR/TIS)
-    radiosTarifa.forEach(radio => {
-        radio.disabled = false;
-        radio.style.cursor = 'pointer';
-        radio.style.opacity = '1';
-    });
-    
-    // 🔥 LIBERAR Selects (percentual)
-    selectsPercentual.forEach(select => {
-        select.disabled = false;
-        select.style.cursor = 'pointer';
-        select.style.opacity = '1';
-    });
-});
-  
-  // Atualizar eventos
-  atualizarEventos();
-  
-  // Configurar modo de atualização
-  cadastroAtualId = dados.id;
-  document.getElementById('btnCadastrar').style.display = 'none';
-  document.getElementById('btnAtualizar').style.display = 'block';
-  
-  console.log("✅ Formulário preenchido com sucesso!");
-  
-  // Scroll para o formulário
-  document.querySelector('.card').scrollIntoView({ behavior: 'smooth', block: 'start' });
-  
-  showMessage('success', '✅ Cadastro carregado para edição!');
+// 🔥 FUNÇÃO AUXILIAR: Preencher apenas se o campo existir
+function preencherCampoSeExistir(campoId, valor) {
+  const campo = document.getElementById(campoId);
+  if (campo) {
+    campo.value = valor || '';
+    console.log(`✅ Campo ${campoId} preenchido:`, valor);
+  } else {
+    console.log(`⚠️ Campo ${campoId} não encontrado no HTML`);
+  }
 }
 
 
@@ -3927,12 +3909,6 @@ function validarCamposObrigatorios() {
       nome: 'CNPJ', 
       elemento: document.getElementById('cnpj_cadastro'),
       tipo: 'text'
-    },
-    { 
-      id: 'tipo', 
-      nome: 'Tipo', 
-      elemento: document.getElementById('tipo'),
-      tipo: 'select'
     },
     { 
       id: 'mensalidade', 
@@ -4053,7 +4029,6 @@ function limparFormulario() {
   document.getElementById('razao_social').value = '';
   document.getElementById('nome_fantasia').value = '';
   document.getElementById('cnpj_cadastro').value = '';
-  document.getElementById('tipo').value = '';
   
   // 🔥 CORREÇÃO: Limpar TODOS os campos de fornecedor
   const checkboxes = document.querySelectorAll('input[name="fornecedor"]');
@@ -4483,7 +4458,6 @@ function agruparCadastrosPorCNPJ(cadastros) {
         razao_social: cadastro.razao_social,
         nome_fantasia: cadastro.nome_fantasia,
         cnpj: cadastro.cnpj,
-        tipo: cadastro.tipo,
         mensalidade: cadastro.mensalidade,
         adesao: cadastro.adesao,
         situacao: cadastro.situacao,
@@ -4657,9 +4631,21 @@ function getCorBordaSituacao(situacao) {
 }
 
 // 🔥 FUNÇÃO PARA EXIBIR MODAL COM TODAS AS LOJAS
+// 🔥 FUNÇÃO PARA EXIBIR MODAL COM TODAS AS LOJAS
 function exibirModalLojasAgrupadas(cnpj, lojas) {
   const modal = document.getElementById('modalDetalhes');
   const content = document.getElementById('modalDetalhesContent');
+  
+  // 🔥🔥🔥 DEBUG: Verificar o que tem nas lojas
+  console.log("=== 🔍 DEBUG DAS LOJAS NO MODAL AGRUPADO ===");
+  lojas.forEach((loja, index) => {
+    console.log(`🏪 Loja ${index + 1}:`);
+    console.log("   Fornecedor:", loja.fornecedor);
+    console.log("   Último Evento:", loja.ultimo_evento);
+    console.log("   Evento:", loja.evento);
+    console.log("   Ativação:", loja.ativacao);
+    console.log("   Situação:", loja.situacao);
+  });
   
   let lojasHTML = '';
   
@@ -4677,9 +4663,15 @@ function exibirModalLojasAgrupadas(cnpj, lojas) {
           <div><strong>💵 Mensalidade:</strong> ${formatarMoedaParaInput(loja.mensalidade)}</div>
           <div><strong>🤝 Adesão:</strong> ${loja.adesao === 'Isento' || loja.adesao === 0 ? 'Isento' : formatarMoedaParaInput(loja.adesao)}</div>
         </div>
-<div style="background: #f8f9fa; padding: 8px 12px; border-radius: 6px; margin-bottom: 10px; border-left: 3px solid var(--warning);">
-  <strong>⏰ Defasagem:</strong> <span style="color: ${calcularDefasagem(loja.ultimo_evento).includes('30') || calcularDefasagem(loja.ultimo_evento).includes('31') ? 'var(--danger)' : 'var(--dark)'}; font-weight: 600;">${calcularDefasagem(loja.ultimo_evento)}</span>
-</div>
+        
+        <div style="background: #f8f9fa; padding: 8px 12px; border-radius: 6px; margin-bottom: 10px; border-left: 3px solid var(--warning);">
+          <strong>⏰ Defasagem:</strong> 
+          <span style="color: ${calcularDefasagem(loja.ultimo_evento).includes('30') || calcularDefasagem(loja.ultimo_evento).includes('31') ? 'var(--danger)' : 'var(--dark)'}; font-weight: 600;">
+            ${calcularDefasagem(loja.ultimo_evento)}
+          </span>
+          <!-- 🔥 DEBUG: Mostrar qual data está sendo usada -->
+          <br><small style="color: #666;">Data usada: "${loja.ultimo_evento}"</small>
+        </div>
         
         <div style="margin-top: 10px; display: flex; gap: 10px; flex-wrap: wrap;">
           <button class="btn btn-warning btn-sm" onclick="editarCadastroModal('${loja.id}')">
@@ -4687,6 +4679,7 @@ function exibirModalLojasAgrupadas(cnpj, lojas) {
           </button>
           <button class="btn btn-info btn-sm" onclick="verDetalhesCadastroModal('${loja.id}')">
             <i class="fas fa-eye"></i> Detalhes
+          </button>
         </div>
       </div>
     `).join('');
@@ -4804,15 +4797,21 @@ function verDetalhesCadastroModal(id) {
   google.script.run
     .withSuccessHandler(function(dados) {
       hideLoading();
+      console.log("✅✅✅ DADOS RECEBIDOS DO GOOGLE APPS SCRIPT:");
+      console.log("Último evento recebido:", dados.ultimo_evento);
+      console.log("Evento recebido:", dados.evento);
+      console.log("Dados completos:", dados);
+      
       // 🔥 ADICIONAR WAITLABEL AOS DADOS PARA EXIBIÇÃO
       dados.waitlabel = waitlabelAtual;
       exibirModalDetalhesCompleto(dados);
     })
     .withFailureHandler(function(error) {
       hideLoading();
+      console.error("❌ ERRO AO BUSCAR DADOS:", error);
       showMessage('error', '❌ Erro ao carregar detalhes: ' + error.message);
     })
-    .buscarCadastroPorIDComWaitlabel(id, waitlabelAtual); // 🔥 NOVA FUNÇÃO
+    .buscarCadastroPorIDComWaitlabel(id, waitlabelAtual);
 }
 
 function exibirModalDetalhesCompleto(dados) {
@@ -4826,7 +4825,7 @@ function exibirModalDetalhesCompleto(dados) {
     </div>` : '';
   
   const mensalidadeFormatada = formatarMoedaParaInput(dados.mensalidade);
-  const mensalidadeSimFormatada = formatarMoedaParaInput(dados.mensalidade_sim || 0); // 🔥 CORREÇÃO 
+  const mensalidadeSimFormatada = formatarMoedaParaInput(dados.mensalidade_sim || 0);
   const adesaoFormatada = dados.adesao === 'Isento' || dados.adesao === 0 ? 'Isento' : formatarMoedaParaInput(dados.adesao);
   
   // 🔥 CORREÇÃO: Usar o campo correto para calcular defasagem
@@ -4837,8 +4836,37 @@ function exibirModalDetalhesCompleto(dados) {
   console.log("Último evento:", dados.ultimo_evento);
   console.log("Defasagem calculada:", defasagem);
 
+  // 🔥🔥🔥 DEBUG ANTES DE CRIAR O HTML
+  console.log("=== 🔍 DEBUG DEFASAGEM - Modal Completo ===");
+  console.log("Defasagem:", defasagem);
+  console.log("Condição defasagem !== 'N/A':", defasagem !== 'N/A');
+  console.log("Condição defasagem !== '0 dias':", defasagem !== '0 dias'); 
+  console.log("Condição defasagem !== 'Data inválida':", defasagem !== 'Data inválida');
+  console.log("Condição defasagem !== 'Erro no cálculo':", defasagem !== 'Erro no cálculo');
+  console.log("CONDIÇÃO TOTAL:", defasagem !== 'N/A' && defasagem !== '0 dias' && defasagem !== 'Data inválida' && defasagem !== 'Erro no cálculo');
+  console.log("=== FIM DEBUG ===");
+
+  // 🔥🔥🔥 CORREÇÃO: Criar a seção de defasagem separadamente
+  const secaoDefasagem = defasagem !== 'N/A' && defasagem !== '0 dias' && defasagem !== 'Data inválida' && defasagem !== 'Erro no cálculo' ? `
+    <div class="detalhe-item" style="grid-column: 1 / -1; background: #fff5f5; border-left: 4px solid #dc3545; margin-top: 10px;">
+        <span class="detalhe-label" style="font-size: 1.1em; color: #dc3545;">
+            <i class="fas fa-clock"></i> ⚠️ INFORMAÇÕES DE DEFASAGEM
+        </span>
+    </div>
+    
+    <div class="detalhe-item">
+        <span class="detalhe-label">⏰ Defasagem</span>
+        <div class="detalhe-valor">
+            <span style="display: inline-flex; align-items: center; gap: 5px; background: #dc3545; color: white; padding: 4px 10px; border-radius: 15px; font-size: 0.9rem; font-weight: 600;">
+                <i class="fas fa-clock"></i>
+                ${defasagem}
+            </span>
+        </div>
+    </div>
+  ` : '';
+
   content.innerHTML = `
-    ${waitlabelInfo} <!-- 🔥 ADICIONAR AQUI - LINHA NOVA -->
+    ${waitlabelInfo}
     
     <div class="detalhes-grid">
         <!-- 🔥 SEÇÃO: INFORMAÇÕES PRINCIPAIS -->
@@ -4863,10 +4891,6 @@ function exibirModalDetalhesCompleto(dados) {
             <div class="detalhe-valor" style="font-family: monospace;">${dados.cnpj || 'N/A'}</div>
         </div>
         
-        <div class="detalhe-item">
-            <span class="detalhe-label">📊 Tipo</span>
-            <div class="detalhe-valor">${dados.tipo || 'N/A'}</div>
-        </div>
         
         <div class="detalhe-item">
             <span class="detalhe-label">🚚 Fornecedor</span>
@@ -4972,30 +4996,14 @@ function exibirModalDetalhesCompleto(dados) {
             </div>
         </div>
 
-        <!-- 🔥 SEÇÃO: DEFASAGEM - CORREÇÃO DA CONDIÇÃO -->
-        ${defasagem !== 'N/A' && defasagem !== '0 dias' && defasagem !== 'Data inválida' && defasagem !== 'Erro no cálculo' ? `
-        <div class="detalhe-item" style="grid-column: 1 / -1; background: #fff5f5; border-left: 4px solid #dc3545; margin-top: 10px;">
-            <span class="detalhe-label" style="font-size: 1.1em; color: #dc3545;">
-                <i class="fas fa-clock"></i> ⚠️ INFORMAÇÕES DE DEFASAGEM
-            </span>
-        </div>
-        
-        <div class="detalhe-item">
-            <span class="detalhe-label">⏰ Defasagem</span>
-            <div class="detalhe-valor">
-                <span style="display: inline-flex; align-items: center; gap: 5px; background: #dc3545; color: white; padding: 4px 10px; border-radius: 15px; font-size: 0.9rem; font-weight: 600;">
-                    <i class="fas fa-clock"></i>
-                    ${defasagem}
-                </span>
-            </div>
-        </div>
-        ` : ''}
+        <!-- 🔥 SEÇÃO: DEFASAGEM - AGORA CORRETA -->
+        ${secaoDefasagem}
     </div>
 
-<div class="modal-detalhes-actions">
-    <button type="button" class="btn btn-warning" onclick="editarCadastroModal('${dados.id}')">
-        <i class="fas fa-edit"></i> ✏️ Editar Cadastro
-    </button>
+    <div class="modal-detalhes-actions">
+        <button type="button" class="btn btn-warning" onclick="editarCadastroModal('${dados.id}')">
+            <i class="fas fa-edit"></i> ✏️ Editar Cadastro
+        </button>
     </div>
   `;
   
