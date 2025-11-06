@@ -64,11 +64,12 @@ function processarCadastroComWaitlabel(dados, waitlabel) {
     if (!aba) {
       console.log("📝 Criando nova aba para waitlabel:", waitlabel);
       aba = ss.insertSheet(waitlabel);
+      // NOVA ESTRUTURA SEM "Tipo" - 16 colunas
       const cabecalho = [
-      'Razão Social', 'Nome Fantasia', 'CNPJ', 'Tipo', 'Fornecedor', 
-      'Ultimo evento', 'Evento', 'Observação', 'Contrato Enviado', 'Contrato Assinado',
-      'Ativação', 'Link', 'Mensalidade', 'Mensalidade SIM', 'Tarifa', '% Tarifa', 'Adesão', 'Situação'
-    ];
+        'Razão Social', 'Nome Fantasia', 'CNPJ', 'Fornecedor', 
+        'Ultimo evento', 'Evento', 'Observação', 'Contrato Enviado', 'Contrato Assinado',
+        'Ativação', 'Link', 'Mensalidade', 'Mensalidade SIM', 'Tarifa', '% Tarifa', 'Adesão', 'Situação'
+      ];
       aba.getRange('A1:Q1').setValues([cabecalho]);
       aba.getRange(1, 1, 1, cabecalho.length)
         .setBackground(WAITLABELS_CONFIG.CORES[waitlabel] || "#7E3E9A")
@@ -198,7 +199,6 @@ function cadastrarNovoComWaitlabel(aba, dados, waitlabel) {
       normalizarTexto(dados.razao_social) || '',
       normalizarTexto(dados.nome_fantasia) || '',
       dados.cnpj ? dados.cnpj.toString() : '',
-      normalizarTexto(dados.tipo) || '',
       normalizarTexto(nomeFornecedor),
       dataUltimoEvento,
       normalizarTexto(dados.evento) || '',
@@ -223,17 +223,17 @@ function cadastrarNovoComWaitlabel(aba, dados, waitlabel) {
         range.setValues([linhaDados]);
         
         // 🔥 FORMATAR COLUNAS IMEDIATAMENTE
-        aba.getRange(linhaInserir, 13).setNumberFormat('"R$"#,##0.00'); // Mensalidade (M)
-        aba.getRange(linhaInserir, 14).setNumberFormat('"R$"#,##0.00'); // 🔥 NOVA Mensalidade SIM (N)
-        aba.getRange(linhaInserir, 17).setNumberFormat('"R$"#,##0.00'); // Adesão (Q)
-        aba.getRange(linhaInserir, 16).setNumberFormat('0.00%'); // % Tarifa (P)
-        aba.getRange(linhaInserir, 15).setNumberFormat('@');            // Tarifa como texto (O)
-        aba.getRange(linhaInserir, 11).setNumberFormat('dd/MM/yyyy');   // Data Ativação (K)
+        aba.getRange(linhaInserir, 12).setNumberFormat('"R$"#,##0.00'); // L - Mensalidade
+      aba.getRange(linhaInserir, 13).setNumberFormat('"R$"#,##0.00'); // M - Mensalidade SIM
+      aba.getRange(linhaInserir, 15).setNumberFormat('0.00%');        // O - % Tarifa ✅ AGORA É PORCENTAGEM
+      aba.getRange(linhaInserir, 16).setNumberFormat('"R$"#,##0.00'); // P - Adesão ✅ AGORA É MOEDA
+      aba.getRange(linhaInserir, 14).setNumberFormat('@');            // N - Tarifa (texto)
+      aba.getRange(linhaInserir, 10).setNumberFormat('dd/MM/yyyy');   // J - Ativação
         
         SpreadsheetApp.flush();
         
         // 🔥 VERIFICAR O QUE FOI SALVO
-        const dadosSalvos = aba.getRange(linhaInserir, 1, 1, 18).getValues()[0];
+        const dadosSalvos = aba.getRange(linhaInserir, 1, 1, 17).getValues()[0];
         console.log(`✅ Dados salvos na linha ${linhaInserir}:`, dadosSalvos);
         console.log(`📅 Data ativação salva: ${dadosSalvos[10]}`);
         console.log(`💰 Tarifa salva: ${dadosSalvos[13]}`);
@@ -284,24 +284,19 @@ function atualizarCadastroComWaitlabel(aba, dados, waitlabel) {
     console.log("📋 Dados recebidos:", dados);
     console.log("🏷️ Waitlabel:", waitlabel);
     
-    // 🔥🔥🔥 ADICIONE ESTES DEBUGS PARA A ADESÃO
-    console.log("💰💰💰 DEBUG ADESÃO - VALOR RECEBIDO DO HTML:", dados.adesao);
-    console.log("💰💰💰 DEBUG ADESÃO - TIPO:", typeof dados.adesao);
-    
     const linhaAtualizar = parseInt(dados.id);
 
     if (linhaAtualizar < 2 || linhaAtualizar > aba.getLastRow()) {
       return { success: false, message: "Registro não encontrado" };
     }
 
-    // 🔥🔥🔥 CORREÇÃO 1: BUSCAR A DATA DE ATIVAÇÃO ORIGINAL
-    const dadosAtuais = aba.getRange(linhaAtualizar, 1, 1, 18).getValues()[0];
-    const dataAtivacaoOriginal = dadosAtuais[10]; // Coluna K - Ativação
+    // 🔥🔥🔥 BUSCAR OS DADOS ATUAIS
+    const dadosAtuais = aba.getRange(linhaAtualizar, 1, 1, 17).getValues()[0];
+    const dataAtivacaoOriginal = dadosAtuais[9]; // Coluna J - Ativação
     
     console.log("📅 Data ativação original:", dataAtivacaoOriginal);
-    console.log("📅 Tipo da data original:", typeof dataAtivacaoOriginal);
 
-    // 🔥 CORREÇÃO: Processar fornecedores corretamente
+    // Processar fornecedor
     let fornecedorParaAtualizar = '';
     let tarifaParaAtualizar = dados.tarifa || '';
     let percentualParaAtualizar = dados.percentual_tarifa || '0%';
@@ -317,77 +312,79 @@ function atualizarCadastroComWaitlabel(aba, dados, waitlabel) {
       fornecedorParaAtualizar = dados.fornecedor || '';
     }
 
-    // Converter valores monetários para número
+    // Converter valores monetários
     let mensalidadeNumero = converterMoedaParaNumero(dados.mensalidade);
     let adesaoNumero = processarAdesaoParaSalvar(dados.adesao);
 
-    // Garantir que a situação seja válida
+    // Garantir situação válida
     const situacaoValida = (dados.situacao && dados.situacao.trim() !== '') ? dados.situacao : 'Novo registro';
 
-    // 🔥🔥🔥 CORREÇÃO 2: MANTER A DATA DE ATIVAÇÃO ORIGINAL
-    // 🔥🔥🔥 CORREÇÃO DEFINITIVA: USAR A NOVA DATA SE FOI INFORMADA, SENÃO MANTER A ORIGINAL
+    // 🔥🔥🔥 CORREÇÃO: MANTER DATA ATIVAÇÃO ORIGINAL OU USAR NOVA
     let dataAtivacaoParaSalvar = dataAtivacaoOriginal;
     
-    // ✅ VERIFICAR SE O USUÁRIO INFORMOU UMA NOVA DATA
     if (dados.ativacao && dados.ativacao.trim() !== '') {
       try {
-        // 🔥 USAR A NOVA DATA INFORMADA PELO USUÁRIO
         const dataUsuario = new Date(dados.ativacao);
-        dataUsuario.setDate(dataUsuario.getDate() + 1); // 🔥 CORREÇÃO FUSO HORÁRIO
+        dataUsuario.setDate(dataUsuario.getDate() + 1); // Correção fuso horário
         dataAtivacaoParaSalvar = Utilities.formatDate(dataUsuario, Session.getScriptTimeZone(), "dd/MM/yyyy");
-        console.log("📅 NOVA data ativação informada pelo usuário:", dataAtivacaoParaSalvar);
+        console.log("📅 NOVA data ativação:", dataAtivacaoParaSalvar);
       } catch (e) {
-        console.error("❌ Erro ao processar NOVA data do usuário:", e);
-        // Em caso de erro, manter a data original
+        console.error("❌ Erro ao processar data:", e);
         dataAtivacaoParaSalvar = dataAtivacaoOriginal;
       }
     } else {
-      // Se usuário não informou nova data, manter a original
-      console.log("📅 Nenhuma NOVA data informada - mantendo data original:", dataAtivacaoOriginal);
-      
-      // Formatar a data original se necessário
+      console.log("📅 Mantendo data ativação original:", dataAtivacaoOriginal);
       if (dataAtivacaoOriginal instanceof Date) {
         dataAtivacaoParaSalvar = Utilities.formatDate(dataAtivacaoOriginal, Session.getScriptTimeZone(), "dd/MM/yyyy");
       }
     }
 
-    console.log("📅 Data ativação que será salva:", dataAtivacaoParaSalvar);
+    // 🔥🔥🔥 CORREÇÃO CRÍTICA: ATUALIZAR AMBAS AS COLUNAS E e F
+    const dataAtual = new Date();
+    const dataHoraAtual = Utilities.formatDate(dataAtual, Session.getScriptTimeZone(), "dd/MM/yyyy HH:mm:ss");
+    
+    console.log("🕐 Data/hora atual para Último evento:", dataHoraAtual);
+    console.log("📝 Evento digitado pelo usuário:", dados.evento);
 
     // Array com 17 colunas na ORDEM CORRETA
     const novosDados = [
-      normalizarTexto(dados.razao_social) || '',
-      normalizarTexto(dados.nome_fantasia) || '',
-      dados.cnpj ? dados.cnpj.toString() : '',
-      normalizarTexto(dados.tipo) || '',
-      normalizarTexto(fornecedorParaAtualizar),
-      Utilities.formatDate(new Date(), Session.getScriptTimeZone(), "dd/MM/yyyy HH:mm:ss"),
-      normalizarTexto(dados.evento) || '',
-      normalizarTexto(dados.observacoes) || '',
-      normalizarTexto(dados.contrato_enviado) || '',
-      normalizarTexto(dados.contrato_assinado) || '',
-      dataAtivacaoParaSalvar,
-      dados.link || '',
-      mensalidadeNumero,                                    // Mensalidade (M)
-      converterMoedaParaNumero(dados.mensalidade_sim) || 0, // 🔥 NOVA COLUNA Mensalidade SIM (N)
-      tarifaParaAtualizar || '',                            // Tarifa (O)
-      percentualParaAtualizar,                              // % Tarifa (P)
-      adesaoNumero,                                         // Adesão (Q)
-      normalizarTexto(situacaoValida)                       // Situação (R)
-    ];
+  normalizarTexto(dados.razao_social) || '',
+  normalizarTexto(dados.nome_fantasia) || '',
+  dados.cnpj ? dados.cnpj.toString() : '',
+  normalizarTexto(fornecedorParaAtualizar),
+  dataHoraAtual,                                        // COLUNA E
+  normalizarTexto(dados.evento) || '',                  // COLUNA F
+  normalizarTexto(dados.observacoes) || '',
+  normalizarTexto(dados.contrato_enviado) || '',
+  normalizarTexto(dados.contrato_assinado) || '',
+  dataAtivacaoParaSalvar,
+  dados.link || '',
+  mensalidadeNumero,                                    
+  converterMoedaParaNumero(dados.mensalidade_sim) || 0, 
+  tarifaParaAtualizar || '',                            
+  percentualParaAtualizar,                              
+  adesaoNumero,                                         
+  normalizarTexto(situacaoValida)                       
+];
 
     console.log("📝 Atualizando linha:", linhaAtualizar);
-    console.log("📊 Novos dados:", novosDados);
+    console.log("🎯 COLUNA E (Último evento):", novosDados[4]);
+    console.log("🎯 COLUNA F (Evento):", novosDados[5]);
     
+    // Salvar os dados
     aba.getRange(linhaAtualizar, 1, 1, novosDados.length).setValues([novosDados]);
     
-    // 🔥🔥🔥 CORREÇÃO: ADICIONAR FORMATAÇÃO DA TARIFA
-    aba.getRange(linhaAtualizar, 13).setNumberFormat('"R$"#,##0.00'); // Mensalidade (M)
-    aba.getRange(linhaAtualizar, 14).setNumberFormat('"R$"#,##0.00'); // 🔥 NOVA Mensalidade SIM (N)
-    aba.getRange(linhaAtualizar, 17).setNumberFormat('"R$"#,##0.00'); // Adesão (Q)
-    aba.getRange(linhaAtualizar, 16).setNumberFormat('0.00%');
-    aba.getRange(linhaAtualizar, 15).setNumberFormat('@');            // Tarifa como texto (O)
+    // Aplicar formatação
+    aba.getRange(linhaAtualizar, 12).setNumberFormat('"R$"#,##0.00'); // L - Mensalidade
+    aba.getRange(linhaAtualizar, 13).setNumberFormat('"R$"#,##0.00'); // M - Mensalidade SIM
+    aba.getRange(linhaAtualizar, 15).setNumberFormat('0.00%');        // O - % Tarifa
+    aba.getRange(linhaAtualizar, 16).setNumberFormat('"R$"#,##0.00'); // P - Adesão
+    aba.getRange(linhaAtualizar, 14).setNumberFormat('@');            // N - Tarifa (texto)
+    aba.getRange(linhaAtualizar, 10).setNumberFormat('dd/MM/yyyy');   // J - Ativação
 
     SpreadsheetApp.flush();
+
+    console.log("✅ Atualização concluída - ambas as colunas E e F foram atualizadas");
 
     return { 
       success: true, 
@@ -421,7 +418,7 @@ function buscarTodosCadastrosComWaitlabel(waitlabel) {
     }
     
     // Buscar dados na ORDEM CORRETA (17 colunas)
-    const dados = aba.getRange(2, 1, ultimaLinha - 1, 18).getValues();
+    const dados = aba.getRange(2, 1, ultimaLinha - 1, 17).getValues();
     console.log("📈 Dados brutos encontrados:", dados.length);
     
     const cadastros = [];
@@ -432,18 +429,23 @@ function buscarTodosCadastrosComWaitlabel(waitlabel) {
       // Pular linhas vazias
       if (!linha[0] || linha[0].toString().trim() === '') continue;
 
-      // 🔥🔥🔥 DEBUG DO CONTRATO ASSINADO
+      // 🔥🔥🔥 DEBUG DAS COLUNAS E e F
       if (i < 3) { // Debug apenas dos primeiros 3 registros
-        console.log(`🔍 DEBUG Registro ${i + 2} - Contrato Assinado:`, linha[9], "Tipo:", typeof linha[9]);
+        console.log(`🔍 DEBUG Registro ${i + 2}:`);
+        console.log(`   Coluna E [4] - Último evento:`, linha[4], "Tipo:", typeof linha[4]);
+        console.log(`   Coluna F [5] - Evento:`, linha[5], "Tipo:", typeof linha[5]);
       }
       
-      // Formatar último evento
+      // 🔥🔥🔥 CORREÇÃO: Último evento deve ser da COLUNA E (índice 4)
       let ultimoEventoFormatado = '';
-      if (linha[5] && linha[5] instanceof Date) { // ✅ Último evento
-        ultimoEventoFormatado = Utilities.formatDate(linha[5], Session.getScriptTimeZone(), "dd/MM/yyyy");
-      } else if (linha[5]) {
-        ultimoEventoFormatado = linha[5].toString();
+      if (linha[4] && linha[4] instanceof Date) { // ✅ Último evento (COLUNA E - índice 4)
+        ultimoEventoFormatado = Utilities.formatDate(linha[4], Session.getScriptTimeZone(), "dd/MM/yyyy HH:mm:ss"); // 🔥 ADICIONAR HORA
+      } else if (linha[4]) {
+        ultimoEventoFormatado = linha[4].toString();
       }
+      
+      // 🔥🔥🔥 CORREÇÃO: Evento deve ser da COLUNA F (índice 5)
+      let evento = linha[5]?.toString().trim() || '';
       
       let ativacaoFormatada = '';
       if (linha[10] && linha[10] instanceof Date) { // ✅ Ativação
@@ -452,29 +454,28 @@ function buscarTodosCadastrosComWaitlabel(waitlabel) {
         ativacaoFormatada = linha[10].toString();
       }
       
-      // 🔥 CORREÇÃO: ESTRUTURA COM 17 COLUNAS
+      // 🔥 CORREÇÃO: ESTRUTURA COM 17 COLUNAS - CORRIGIDO
       const cadastro = {
-      id: i + 2,
-      razao_social: linha[0]?.toString().trim() || '',     // A - Razão Social
-      nome_fantasia: linha[1]?.toString().trim() || '',    // B - Nome Fantasia
-      cnpj: formatarCNPJNoSheets(linha[2]?.toString().trim() || ''), // C - CNPJ
-      tipo: linha[3]?.toString().trim() || '',             // D - Tipo
-      fornecedor: linha[4]?.toString().trim() || '',       // E - Fornecedor
-      ultimo_evento: ultimoEventoFormatado,                // F - Último evento
-      evento: linha[6]?.toString().trim() || '',           // G - Evento
-      observacoes: linha[7]?.toString().trim() || '',      // H - Observação
-      contrato_enviado: linha[8]?.toString().trim() || '', // I - Contrato Enviado
-      contrato_assinado: linha[9]?.toString().trim() || '', // J - Contrato Assinado
-      ativacao: ativacaoFormatada,                         // K - Ativação
-      link: linha[11]?.toString().trim() || '',            // L - Link
-      mensalidade: parseFloat(linha[12]) || 0,             // M - Mensalidade
-      mensalidade_sim: parseFloat(linha[13]) || 0,         // 🔥 NOVA COLUNA N - Mensalidade SIM
-      tarifa: linha[14]?.toString().trim() || '',          // O - Tarifa
-      percentual_tarifa: linha[15]?.toString().trim() || '', // P - % Tarifa
-      adesao: processarAdesao(linha[16]),                  // Q - Adesão
-      situacao: (linha[17]?.toString().trim() || 'Novo registro'), // R - Situação
-      waitlabel: waitlabel
-    };
+        id: i + 2,
+        razao_social: linha[0]?.toString().trim() || '',     // A - Razão Social (0)
+        nome_fantasia: linha[1]?.toString().trim() || '',    // B - Nome Fantasia (1)
+        cnpj: formatarCNPJNoSheets(linha[2]?.toString().trim() || ''), // C - CNPJ (2)
+        fornecedor: linha[3]?.toString().trim() || '',       // D - Fornecedor (3)
+        ultimo_evento: ultimoEventoFormatado,                // E - Último evento (4) ✅ CORRIGIDO
+        evento: evento,                                      // F - Evento (5) ✅ CORRIGIDO
+        observacoes: linha[6]?.toString().trim() || '',      // G - Observação (6)
+        contrato_enviado: linha[7]?.toString().trim() || '', // H - Contrato Enviado (7)
+        contrato_assinado: linha[8]?.toString().trim() || '', // I - Contrato Assinado (8)
+        ativacao: ativacaoFormatada,                         // J - Ativação (9)
+        link: linha[10]?.toString().trim() || '',            // K - Link (10)
+        mensalidade: parseFloat(linha[11]) || 0,             // L - Mensalidade (11)
+        mensalidade_sim: parseFloat(linha[12]) || 0,         // M - Mensalidade SIM (12)
+        tarifa: linha[13]?.toString().trim() || '',          // N - Tarifa (13)
+        percentual_tarifa: linha[14]?.toString().trim() || '', // O - % Tarifa (14)
+        adesao: processarAdesao(linha[15]),                  // P - Adesão (15)
+        situacao: (linha[16]?.toString().trim() || 'Novo registro'), // Q - Situação (16)
+        waitlabel: waitlabel
+      };
       
       cadastros.push(cadastro);
     }
@@ -488,123 +489,138 @@ function buscarTodosCadastrosComWaitlabel(waitlabel) {
   }
 }
 
-function buscarTodosCadastrosPorCNPJComWaitlabel(cnpj, waitlabel) {
-  try {
-    console.log("🔍 Buscando TODOS os cadastros do CNPJ:", cnpj, "no waitlabel:", waitlabel);
-    
-    const ss = SpreadsheetApp.openById(CONFIG.ID_PLANILHA);
-    const aba = ss.getSheetByName(waitlabel);
-    if (!aba) return [];
-    
-    const ultimaLinha = aba.getLastRow();
-    if (ultimaLinha < 2) return [];
-    
-    const dados = aba.getRange(2, 1, ultimaLinha - 1, 18).getValues();
-    const cnpjBuscado = cnpj.toString().replace(/\D/g, '');
-    
-    const cadastrosEncontrados = [];
-    
-    for (let i = 0; i < dados.length; i++) {
-      const linha = dados[i];
-      const cnpjCadastro = linha[2]?.toString().replace(/\D/g, '') || '';
-      
-      // Pular linhas vazias
-      if (!linha[0] || linha[0].toString().trim() === '') continue;
-      
-      if (cnpjCadastro === cnpjBuscado) {
-        cadastrosEncontrados.push({
-          id: i + 2,
-          fornecedor: linha[4]?.toString().trim() || '',
-          situacao: linha[16]?.toString().trim() || '',
-          waitlabel: waitlabel
-        });
-      }
-    }
-    
-    console.log(`✅ Encontrados ${cadastrosEncontrados.length} cadastros para o CNPJ no ${waitlabel}`);
-    return cadastrosEncontrados;
-    
-  } catch (error) {
-    console.error("❌ Erro em buscarTodosCadastrosPorCNPJComWaitlabel:", error);
-    return [];
-  }
-}
-
 function processarLinhaParaRetorno(linha, id) {
-  // Formatar último evento
+  console.log("=== 🔍 DEBUG processarLinhaParaRetorno - INÍCIO ===");
+  
+  // 🔥🔥🔥 CORREÇÃO CRÍTICA: COLUNAS E e F TROCADAS
+  // Coluna E (índice 4) = ÚLTIMO EVENTO (data)
+  // Coluna F (índice 5) = EVENTO (texto)
+  
   let ultimoEventoFormatado = '';
-  if (linha[5] && linha[5] instanceof Date) {
-    ultimoEventoFormatado = Utilities.formatDate(linha[5], Session.getScriptTimeZone(), "dd/MM/yyyy HH:mm:ss");
-  } else if (linha[5]) {
-    ultimoEventoFormatado = linha[5].toString();
+  if (linha[4] && linha[4] instanceof Date) { // ✅ COLUNA E - ÚLTIMO EVENTO
+    ultimoEventoFormatado = Utilities.formatDate(linha[4], Session.getScriptTimeZone(), "dd/MM/yyyy HH:mm:ss");
+  } else if (linha[4]) {
+    ultimoEventoFormatado = linha[4].toString();
   }
+  
+  let evento = linha[5]?.toString().trim() || ''; // ✅ COLUNA F - EVENTO
+  
+  console.log("🎯🎯🎯 DEBUG CRÍTICO DAS COLUNAS E e F:");
+  console.log("Coluna E [4] - Último evento BRUTO:", linha[4], "Tipo:", typeof linha[4]);
+  console.log("Coluna F [5] - Evento BRUTO:", linha[5], "Tipo:", typeof linha[5]);
+  console.log("Último evento formatado:", ultimoEventoFormatado);
+  console.log("Evento texto:", evento);
   
   // Formatar data ativação
   let ativacaoFormatada = '';
-  if (linha[10] && linha[10] instanceof Date) {
-    ativacaoFormatada = Utilities.formatDate(linha[10], Session.getScriptTimeZone(), "yyyy-MM-dd");
-  } else if (linha[10]) {
-    if (linha[10].includes('/')) {
-      const partes = linha[10].split('/');
+  if (linha[9] && linha[9] instanceof Date) { // ✅ COLUNA J - Ativação
+    ativacaoFormatada = Utilities.formatDate(linha[9], Session.getScriptTimeZone(), "yyyy-MM-dd");
+  } else if (linha[9]) {
+    if (linha[9].includes('/')) {
+      const partes = linha[9].split('/');
       ativacaoFormatada = `${partes[2]}-${partes[1]}-${partes[0]}`;
     } else {
-      ativacaoFormatada = linha[10].toString();
+      ativacaoFormatada = linha[9].toString();
     }
   }
 
-  // 🔥🔥🔥 CORREÇÃO DEFINITIVA: TRATAR CONTRATO ASSINADO DA MESMA FORMA QUE CONTRATO ENVIADO
-  // Contrato Enviado (coluna I - índice 8): linha[8]?.toString().trim() || ''
-  // Contrato Assinado (coluna J - índice 9): linha[9]?.toString().trim() || ''
+  // 🔥🔥🔥 CORREÇÃO: Referências corretas das colunas financeiras
+  console.log("🔍 Dados brutos das colunas financeiras:");
+  console.log("Coluna 13 (N - Tarifa):", linha[13], "Tipo:", typeof linha[13]);
+  console.log("Coluna 14 (O - % Tarifa):", linha[14], "Tipo:", typeof linha[14]);
+  console.log("Coluna 15 (P - Adesão):", linha[15], "Tipo:", typeof linha[15]);
 
-  console.log("🔍 DEBUG CONTRATO ASSINADO - Valor bruto:", linha[9], "Tipo:", typeof linha[9]);
-  console.log("🔍 DEBUG CONTRATO ENVIADO - Valor bruto:", linha[8], "Tipo:", typeof linha[8]);
-
-  // Processar tarifa e percentual
-  let tarifa = linha[14]?.toString().trim() || ''; // Coluna O - Tarifa (índice 14)
-// ✅ CORREÇÃO: MANTER O VALOR EXATO SEM ARREDONDAMENTO
-let percentualTarifa = '0%';
-if (linha[15] !== null && linha[15] !== undefined && linha[15] !== '') {
-  const valor = parseFloat(linha[15]);
-  if (!isNaN(valor)) {
-    // 🔥 CORREÇÃO: Usar toFixed(2) para manter casas decimais
-    percentualTarifa = (valor * 100).toFixed(2) + '%'; // 0.035 → 3.50%
-  } else {
-    // Se já está como string com %, manter como está
-    percentualTarifa = linha[15]?.toString().trim() || '0%';
+  let tarifa = linha[13]?.toString().trim() || ''; // Coluna N - Tarifa
+  
+  let percentualTarifa = '0%';
+  if (linha[14] !== null && linha[14] !== undefined && linha[14] !== '') { // Coluna O - % Tarifa
+    const valor = parseFloat(linha[14]);
+    if (!isNaN(valor)) {
+      percentualTarifa = (valor * 100).toFixed(2) + '%';
+    } else {
+      percentualTarifa = linha[14]?.toString().trim() || '0%';
+    }
   }
-}
+
+  let adesaoProcessada = processarAdesao(linha[15]); // Coluna P - Adesão
+  
+  console.log("💰 Valores processados:");
+  console.log("   Tarifa:", tarifa);
+  console.log("   % Tarifa:", percentualTarifa);
+  console.log("   Adesão:", adesaoProcessada);
   
   // Estrutura de fornecedor para formulário
   const fornecedorParaFormulario = {
-    nome: linha[4]?.toString().trim() || '',
+    nome: linha[3]?.toString().trim() || '',
     tarifa: tarifa,
     percentual_tarifa: percentualTarifa
   };
   
-  // 🔥🔥🔥 CORREÇÃO: MESMO TRATAMENTO PARA AMBOS OS CAMPOS
-  return {
+  // 🔥🔥🔥 CORREÇÃO: ESTRUTURA COM REFERÊNCIAS CORRETAS
+  const resultado = {
     encontrado: true,
     id: id,
-    razao_social: linha[0]?.toString().trim() || '',
-    nome_fantasia: linha[1]?.toString().trim() || '',
-    cnpj: formatarCNPJNoSheets(linha[2]?.toString().trim() || ''),
-    tipo: linha[3]?.toString().trim() || '',
-    fornecedor: linha[4]?.toString().trim() || '',
+    razao_social: linha[0]?.toString().trim() || '',     // A - Razão Social
+    nome_fantasia: linha[1]?.toString().trim() || '',    // B - Nome Fantasia
+    cnpj: formatarCNPJNoSheets(linha[2]?.toString().trim() || ''), // C - CNPJ
+    fornecedor: linha[3]?.toString().trim() || '',       // D - Fornecedor
     fornecedores: [fornecedorParaFormulario],
-    ultimo_evento: ultimoEventoFormatado,
-    evento: linha[6]?.toString().trim() || '',
-    observacoes: linha[7]?.toString().trim() || '',
-    contrato_enviado: linha[8]?.toString().trim() || '',
-    contrato_assinado: linha[9]?.toString().trim() || '',
-    ativacao: ativacaoFormatada,
-    link: linha[11]?.toString().trim() || '',
-    mensalidade: parseFloat(linha[12]) || 0,
-    mensalidade_sim: parseFloat(linha[13]) || 0, // 🔥 NOVA COLUNA
-    tarifa: tarifa,
-    percentual_tarifa: percentualTarifa,
-    adesao: processarAdesao(linha[16]),
-    situacao: (linha[17]?.toString().trim() || 'Novo registro')
+    ultimo_evento: ultimoEventoFormatado,                // ✅ E - ÚLTIMO EVENTO (data)
+    evento: evento,                                      // ✅ F - EVENTO (texto)
+    observacoes: linha[6]?.toString().trim() || '',      // G - Observação
+    contrato_enviado: linha[7]?.toString().trim() || '', // H - Contrato Enviado
+    contrato_assinado: linha[8]?.toString().trim() || '', // I - Contrato Assinado
+    ativacao: ativacaoFormatada,                         // J - Ativação
+    link: linha[10]?.toString().trim() || '',            // K - Link
+    mensalidade: parseFloat(linha[11]) || 0,             // L - Mensalidade
+    mensalidade_sim: parseFloat(linha[12]) || 0,         // M - Mensalidade SIM
+    tarifa: tarifa,                                      // N - Tarifa
+    percentual_tarifa: percentualTarifa,                 // O - % Tarifa
+    adesao: adesaoProcessada,                            // P - Adesão
+    situacao: (linha[16]?.toString().trim() || 'Novo registro') // Q - Situação
   };
+
+  console.log("=== ✅ DEBUG processarLinhaParaRetorno - FIM ===");
+  console.log("🎯 RESULTADO FINAL:");
+  console.log("   Último evento:", resultado.ultimo_evento);
+  console.log("   Evento:", resultado.evento);
+  return resultado;
+}
+
+function debugOrdemColunasReal() {
+  try {
+    const waitlabelAtual = getWaitlabelAtual();
+    const ss = SpreadsheetApp.openById(CONFIG.ID_PLANILHA);
+    const aba = ss.getSheetByName(waitlabelAtual);
+    
+    if (!aba) {
+      console.log("❌ Aba não encontrada:", waitlabelAtual);
+      return { error: "Aba não encontrada" };
+    }
+    
+    const cabecalhos = aba.getRange(1, 1, 1, aba.getLastColumn()).getValues()[0];
+    const primeiraLinha = aba.getRange(2, 1, 1, aba.getLastColumn()).getValues()[0];
+    
+    console.log("=== 🔍 ORDEM REAL DAS COLUNAS ===");
+    cabecalhos.forEach((cabecalho, index) => {
+      const letraColuna = String.fromCharCode(65 + index);
+      console.log(`Coluna ${letraColuna} [${index}]: "${cabecalho}" = ${primeiraLinha[index]}`);
+    });
+    
+    // Foco especial nas colunas E e F
+    console.log("=== 🎯 FOCO COLUNAS E e F ===");
+    console.log("Coluna E [4]:", cabecalhos[4], "=", primeiraLinha[4]);
+    console.log("Coluna F [5]:", cabecalhos[5], "=", primeiraLinha[5]);
+    
+    return {
+      cabecalhos: cabecalhos,
+      dados: primeiraLinha
+    };
+    
+  } catch (error) {
+    console.error("❌ Erro:", error);
+    return { error: error.message };
+  }
 }
 
 function debugOrdemColunasSimFacilita() {
@@ -636,6 +652,7 @@ function debugOrdemColunasSimFacilita() {
   }
 }
 
+
 function buscarCadastroPorIDComWaitlabel(id, waitlabel) {
   try {
     console.log("🔍🔍🔍 DEBUG COMPLETO - Buscando cadastro por ID:", id, "no waitlabel:", waitlabel);
@@ -647,21 +664,32 @@ function buscarCadastroPorIDComWaitlabel(id, waitlabel) {
     const ultimaLinha = aba.getLastRow();
     if (ultimaLinha < id) return { encontrado: false, mensagem: "Registro não encontrado" };
     
-    const linha = aba.getRange(id, 1, 1, 18).getValues()[0];
+    const linha = aba.getRange(id, 1, 1, 17).getValues()[0];
     
     if (!linha[0] || linha[0].toString().trim() === '') {
       return { encontrado: false, mensagem: "Registro vazio ou não encontrado" };
     }
 
     // 🔥🔥🔥 DEBUG SUPER DETALHADO - VERIFICAR O QUE ESTÁ SENDO PROCESSADO
-    console.log("=== 🎯 DEBUG CONTRATO ASSINADO NA FONTE ===");
+    console.log("=== 🎯 DEBUG DAS COLUNAS NA FONTE ===");
     console.log("📊 Linha completa:", linha);
+    
+    // 🔥🔥🔥 DEBUG CRÍTICO - COLUNAS E e F
+    console.log("🎯🎯🎯 DEBUG CRÍTICO - COLUNAS E e F:");
+    console.log("🔍 Coluna E [4] - Último evento BRUTO:", linha[4], "Tipo:", typeof linha[4]);
+    console.log("🔍 Coluna F [5] - Evento BRUTO:", linha[5], "Tipo:", typeof linha[5]);
+    console.log("🔍 Coluna E como string:", linha[4]?.toString());
+    console.log("🔍 Coluna F como string:", linha[5]?.toString());
+    
+    // Debug das colunas financeiras
+    console.log("💰 COLUNAS FINANCEIRAS BRUTAS:");
+    console.log("🔍 Coluna 13 (N - Tarifa) BRUTO:", linha[13], "Tipo:", typeof linha[13]);
+    console.log("🔍 Coluna 14 (O - % Tarifa) BRUTO:", linha[14], "Tipo:", typeof linha[14]);
+    console.log("🔍 Coluna 15 (P - Adesão) BRUTO:", linha[15], "Tipo:", typeof linha[15]);
+    
     console.log("🔍 Coluna 8 (Contrato Enviado) BRUTO:", linha[8], "Tipo:", typeof linha[8]);
     console.log("🔍 Coluna 9 (Contrato Assinado) BRUTO:", linha[9], "Tipo:", typeof linha[9]);
-    console.log("🔍 Coluna 8 como string:", linha[8]?.toString());
-    console.log("🔍 Coluna 9 como string:", linha[9]?.toString());
-    console.log("🔍 Coluna 8 trimmed:", linha[8]?.toString().trim());
-    console.log("🔍 Coluna 9 trimmed:", linha[9]?.toString().trim());
+    console.log("🔍 Coluna 10 (Ativação) BRUTO:", linha[10], "Tipo:", typeof linha[10]);
     
     // 🔥🔥🔥 TESTE DIRETO - PROCESSAR NA MÃO
     const contratoEnviadoTeste = linha[8]?.toString().trim() || '';
@@ -673,8 +701,19 @@ function buscarCadastroPorIDComWaitlabel(id, waitlabel) {
     resultado.waitlabel = waitlabel;
     
     console.log("=== ✅ RESULTADO FINAL DA FUNÇÃO processarLinhaParaRetorno ===");
+    console.log("🎯 DADOS TEMPORAIS:");
+    console.log("   Último evento:", resultado.ultimo_evento);
+    console.log("   Evento:", resultado.evento);
+    console.log("   Ativação:", resultado.ativacao);
     console.log("Contrato Enviado no resultado:", resultado.contrato_enviado);
     console.log("Contrato Assinado no resultado:", resultado.contrato_assinado);
+    console.log("💰 DADOS FINANCEIROS NO RESULTADO:");
+    console.log("   Tarifa:", resultado.tarifa);
+    console.log("   % Tarifa:", resultado.percentual_tarifa);
+    console.log("   Adesão:", resultado.adesao);
+    console.log("   Mensalidade:", resultado.mensalidade);
+    console.log("   Mensalidade SIM:", resultado.mensalidade_sim);
+    console.log("   Ativação:", resultado.ativacao);
     
     return resultado;
     
@@ -684,7 +723,6 @@ function buscarCadastroPorIDComWaitlabel(id, waitlabel) {
   }
 }
 
-// 🔥🔥🔥 FUNÇÕES PARA "APLICAR A TODOS"
 function aplicarAlteracoesATodos(cnpj, dadosParaAplicar, camposSelecionados) {
   try {
     console.log("🎯 APLICAR A TODOS - INICIANDO");
@@ -707,7 +745,7 @@ function aplicarAlteracoesATodos(cnpj, dadosParaAplicar, camposSelecionados) {
       return { success: false, message: "Nenhum cadastro encontrado" };
     }
     
-    const dados = aba.getRange(2, 1, ultimaLinha - 1, 18).getValues();
+    const dados = aba.getRange(2, 1, ultimaLinha - 1, 17).getValues();
     const cnpjBuscado = cnpj.toString().replace(/\D/g, '');
     
     let registrosAtualizados = 0;
@@ -726,6 +764,7 @@ function aplicarAlteracoesATodos(cnpj, dadosParaAplicar, camposSelecionados) {
         
         const novosDados = [...linha];
         
+        // 🔥🔥🔥 CORREÇÃO 1: Aplicar campos selecionados
         camposSelecionados.forEach(campo => {
           const indiceColuna = obterIndiceColuna(campo);
           if (indiceColuna !== -1) {
@@ -734,15 +773,25 @@ function aplicarAlteracoesATodos(cnpj, dadosParaAplicar, camposSelecionados) {
             console.log(`   ✅ Campo "${campo}" [coluna ${indiceColuna + 1}]: "${novoValor}"`);
           }
         });
-        
-        novosDados[5] = Utilities.formatDate(new Date(), Session.getScriptTimeZone(), "dd/MM/yyyy HH:mm:ss");
+
+        // 🔥🔥🔥 CORREÇÃO CRÍTICA: SALVAR CORRETAMENTE NAS COLUNAS E e F
+        if (camposSelecionados.includes('evento')) {
+          // COLUNA E = DATA atual (Último evento)
+          novosDados[4] = Utilities.formatDate(new Date(), Session.getScriptTimeZone(), "dd/MM/yyyy HH:mm:ss");
+          // COLUNA F = TEXTO do evento (já foi salvo acima pelo forEach)
+          console.log("🎯 COLUNA E (Data - Último evento):", novosDados[4]);
+          console.log("🎯 COLUNA F (Evento - texto):", novosDados[5]);
+        } else {
+          // Se não está aplicando evento, atualizar apenas a data do último evento
+          novosDados[4] = Utilities.formatDate(new Date(), Session.getScriptTimeZone(), "dd/MM/yyyy HH:mm:ss");
+        }
         
         try {
           aba.getRange(linhaNumero, 1, 1, novosDados.length).setValues([novosDados]);
           aplicarFormatacao(aba, linhaNumero, camposSelecionados);
           
           registrosAtualizados++;
-          resultados.push(`✅ Linha ${linhaNumero} - ${linha[4]}`);
+          resultados.push(`✅ Linha ${linhaNumero} - ${linha[3]}`);
           
         } catch (erroSalvamento) {
           console.error(`❌ Erro ao salvar linha ${linhaNumero}:`, erroSalvamento);
@@ -771,28 +820,29 @@ function aplicarAlteracoesATodos(cnpj, dadosParaAplicar, camposSelecionados) {
   }
 }
 
+// 🔥🔥🔥 CORREÇÃO 2: Função auxiliar atualizada
 function obterIndiceColuna(campo) {
   const mapeamentoCampos = {
-    'razao_social': 0,
-    'nome_fantasia': 1,  
-    'cnpj': 2,
-    'tipo': 3,
-    'fornecedores': 4,
-    'evento': 6,
-    'observacoes': 7,
-    'contrato_enviado': 8,
-    'contrato_assinado': 9,
-    'ativacao': 10,
-    'link': 11,
-    'mensalidade': 12,
-    'mensalidade_sim': 13, // 🔥 NOVA COLUNA
-    'adesao': 16, // 🔥 ATUALIZADO: era 15, agora é 16
-    'situacao': 17 // 🔥 ATUALIZADO: era 16, agora é 17
+    'razao_social': 0,      // A
+    'nome_fantasia': 1,     // B  
+    'cnpj': 2,              // C
+    'fornecedores': 3,      // D - Fornecedor
+    'evento': 5,            // F - Evento (TEXTO) - CORRETO!
+    'observacoes': 6,       // G - Observação
+    'contrato_enviado': 7,  // H - Contrato Enviado
+    'contrato_assinado': 8, // I - Contrato Assinado
+    'ativacao': 9,          // J - Ativação
+    'link': 10,             // K - Link
+    'mensalidade': 11,      // L - Mensalidade
+    'mensalidade_sim': 12,  // M - Mensalidade SIM
+    'adesao': 15,           // P - Adesão
+    'situacao': 16          // Q - Situação
   };
   
   return mapeamentoCampos[campo] !== undefined ? mapeamentoCampos[campo] : -1;
 }
 
+// 🔥🔥🔥 CORREÇÃO 3: Função auxiliar atualizada
 function obterValorParaCampo(campo, dadosParaAplicar, linhaAtual) {
   switch(campo) {
     case 'razao_social':
@@ -801,10 +851,8 @@ function obterValorParaCampo(campo, dadosParaAplicar, linhaAtual) {
       return normalizarTexto(dadosParaAplicar.nome_fantasia) || '';
     case 'cnpj':
       return dadosParaAplicar.cnpj ? dadosParaAplicar.cnpj.toString() : '';
-    case 'tipo':
-      return normalizarTexto(dadosParaAplicar.tipo) || '';
     case 'evento':
-      return normalizarTexto(dadosParaAplicar.evento) || '';
+      return normalizarTexto(dadosParaAplicar.evento) || ''; // ✅ COLUNA F - EVENTO TEXTO
     case 'observacoes':
       return normalizarTexto(dadosParaAplicar.observacoes) || '';
     case 'contrato_enviado':
@@ -836,7 +884,7 @@ function obterValorParaCampo(campo, dadosParaAplicar, linhaAtual) {
       if (situacao === 'NOVO REGISTRO') situacao = 'Novo Registro';
       return situacao;
     case 'fornecedores':
-      return linhaAtual[4];
+      return linhaAtual[3];
     default:
       return linhaAtual[obterIndiceColuna(campo)];
   }
@@ -844,11 +892,11 @@ function obterValorParaCampo(campo, dadosParaAplicar, linhaAtual) {
 
 function aplicarFormatacao(aba, linhaNumero, camposSelecionados) {
   try {
-    aba.getRange(linhaNumero, 13).setNumberFormat('"R$"#,##0.00'); // Mensalidade (M)
-    aba.getRange(linhaNumero, 14).setNumberFormat('"R$"#,##0.00'); // 🔥 NOVA Mensalidade SIM (N)
-    aba.getRange(linhaNumero, 17).setNumberFormat('"R$"#,##0.00'); // Adesão (Q) - ATUALIZADO
-    aba.getRange(linhaNumero, 16).setNumberFormat('0.00%');
-    aba.getRange(linhaNumero, 11).setNumberFormat('dd/MM/yyyy');   // Data Ativação (K)
+    aba.getRange(linhaNumero, 12).setNumberFormat('"R$"#,##0.00'); // Mensalidade (L) - índice 11
+    aba.getRange(linhaNumero, 13).setNumberFormat('"R$"#,##0.00'); // Mensalidade SIM (M) - índice 12
+    aba.getRange(linhaNumero, 16).setNumberFormat('"R$"#,##0.00'); // Adesão (P) - índice 15
+    aba.getRange(linhaNumero, 15).setNumberFormat('0.00%');        // % Tarifa (O) - índice 14
+    aba.getRange(linhaNumero, 10).setNumberFormat('dd/MM/yyyy');   // Data Ativação (J) - índice 9
     
     if (camposSelecionados.includes('mensalidade')) {
       aba.getRange(linhaNumero, 13).setNumberFormat('"R$"#,##0.00');
@@ -884,7 +932,7 @@ function excluirTodosFornecedoresCNPJ(cnpj) {
       return { success: false, message: "Nenhum cadastro encontrado" };
     }
     
-    const dados = aba.getRange(2, 1, ultimaLinha - 1, 18).getValues();
+    const dados = aba.getRange(2, 1, ultimaLinha - 1, 17).getValues();
     const cnpjBuscado = cnpj.toString().replace(/\D/g, '');
     
     const linhasParaExcluir = [];
@@ -935,7 +983,7 @@ function contarRegistrosPorCNPJ(cnpj) {
     const ultimaLinha = aba.getLastRow();
     if (ultimaLinha < 2) return 0;
     
-    const dados = aba.getRange(2, 1, ultimaLinha - 1, 18).getValues();
+    const dados = aba.getRange(2, 1, ultimaLinha - 1, 17).getValues();
     const cnpjBuscado = cnpj.toString().replace(/\D/g, '');
     
     let contador = 0;
@@ -1073,10 +1121,10 @@ function processarCadastro(dados) {
       console.log("📝 Criando nova aba...");
       aba = ss.insertSheet(CONFIG.ABA_PRINCIPAL);
       const cabecalho = [
-      'Razão Social', 'Nome Fantasia', 'CNPJ', 'Tipo', 'Fornecedor', 
-      'Ultimo evento', 'Evento', 'Observação', 'Contrato Enviado', 'Contrato Assinado',
-      'Ativação', 'Link', 'Mensalidade', 'Mensalidade SIM', 'Tarifa', '% Tarifa', 'Adesão', 'Situação'
-    ];
+        'Razão Social', 'Nome Fantasia', 'CNPJ', 'Fornecedor', 
+        'Ultimo evento', 'Evento', 'Observação', 'Contrato Enviado', 'Contrato Assinado',
+        'Ativação', 'Link', 'Mensalidade', 'Mensalidade SIM', 'Tarifa', '% Tarifa', 'Adesão', 'Situação'
+      ];
       aba.getRange('A1:Q1').setValues([cabecalho]);
       aba.getRange(1, 1, 1, cabecalho.length)
         .setBackground("#7E3E9A")
@@ -1202,26 +1250,24 @@ function cadastrarNovo(aba, dados) {
 
       // Array com 17 colunas na ORDEM CORRETA
       const linhaDados = [
-        normalizarTexto(dados.razao_social) || '',
-        normalizarTexto(dados.nome_fantasia) || '',
-        dados.cnpj ? dados.cnpj.toString() : '',
-        normalizarTexto(dados.tipo) || '',
-        normalizarTexto(nomeFornecedor),
-        // Data ÚLTIMO EVENTO
-        dataUltimoEvento,
-        normalizarTexto(dados.evento) || '',
-        normalizarTexto(dados.observacoes) || '',
-        normalizarTexto(dados.contrato_enviado) || '',
-        normalizarTexto(dados.contrato_assinado) || '',
-        // 🔥 DATA ATIVAÇÃO - usar a data informada pelo usuário (pode ser vazia)
-        dataAtivacaoParaSalvar,
-        dados.link || '',
-        mensalidadeNumero,
-        tarifaFornecedor || '',
-        percentualTarifaFornecedor,
-        adesaoNumero,
-        normalizarTexto(situacaoParaSalvar)
-      ];
+      normalizarTexto(dados.razao_social) || '',           // A (0)
+      normalizarTexto(dados.nome_fantasia) || '',          // B (1)
+      dados.cnpj ? dados.cnpj.toString() : '',             // C (2)
+      normalizarTexto(nomeFornecedor),                     // D (3) - Fornecedor
+      dataUltimoEvento,                                    // E (4) - Último evento
+      normalizarTexto(dados.evento) || '',                 // F (5) - Evento
+      normalizarTexto(dados.observacoes) || '',            // G (6) - Observação
+      normalizarTexto(dados.contrato_enviado) || '',       // H (7) - Contrato Enviado
+      normalizarTexto(dados.contrato_assinado) || '',      // I (8) - Contrato Assinado
+      dataAtivacaoParaSalvar,                              // J (9) - Ativação
+      dados.link || '',                                    // K (10) - Link
+      mensalidadeNumero,                                   // L (11) - Mensalidade
+      converterMoedaParaNumero(dados.mensalidade_sim) || 0,// M (12) - Mensalidade SIM
+      tarifaFornecedor || '',                              // N (13) - Tarifa
+      percentualTarifaFornecedor,                          // O (14) - % Tarifa
+      adesaoNumero,                                        // P (15) - Adesão
+      normalizarTexto(situacaoParaSalvar)                  // Q (16) - Situação
+    ];
 
       console.log(`📝 Linha de dados ${i + 1}:`, linhaDados);
       
@@ -1240,7 +1286,7 @@ function cadastrarNovo(aba, dados) {
         SpreadsheetApp.flush();
         
         // 🔥 VERIFICAR O QUE FOI SALVO
-        const dadosSalvos = aba.getRange(linhaInserir, 1, 1, 18).getValues()[0];
+        const dadosSalvos = aba.getRange(linhaInserir, 1, 1, 17).getValues()[0];
         console.log(`✅ Dados salvos na linha ${linhaInserir}:`, dadosSalvos);
         console.log(`📅 Data ativação salva: ${dadosSalvos[10]}`);
         console.log(`💰 Tarifa salva: ${dadosSalvos[13]}`);
@@ -1297,7 +1343,7 @@ function atualizarCadastro(aba, dados) {
     }
 
     // 🔥🔥🔥 CORREÇÃO 1: BUSCAR A DATA DE ATIVAÇÃO ORIGINAL
-    const dadosAtuais = aba.getRange(linhaAtualizar, 1, 1, 18).getValues()[0];
+    const dadosAtuais = aba.getRange(linhaAtualizar, 1, 1, 17).getValues()[0];
     const dataAtivacaoOriginal = dadosAtuais[10]; // Coluna K - Ativação
     
     console.log("📅 Data ativação original:", dataAtivacaoOriginal);
@@ -1346,25 +1392,23 @@ function atualizarCadastro(aba, dados) {
 
     // Array com 17 colunas na ORDEM CORRETA
     const novosDados = [
-      normalizarTexto(dados.razao_social) || '',
-      normalizarTexto(dados.nome_fantasia) || '',
-      dados.cnpj ? dados.cnpj.toString() : '',
-      normalizarTexto(dados.tipo) || '',
-      normalizarTexto(fornecedorParaAtualizar),
-      // ✅ Data ÚLTIMO EVENTO atualizada (com segundos)
-      Utilities.formatDate(new Date(), Session.getScriptTimeZone(), "dd/MM/yyyy HH:mm:ss"),
-      normalizarTexto(dados.evento) || '',
-      normalizarTexto(dados.observacoes) || '',
-      normalizarTexto(dados.contrato_enviado) || '',
-      normalizarTexto(dados.contrato_assinado) || '',
-      // 🔥🔥🔥 DATA ATIVAÇÃO ORIGINAL (NÃO MUDA)
-      dataAtivacaoParaSalvar,
-      dados.link || '',
-      mensalidadeNumero,
-      tarifaParaAtualizar || '', // 🔥 NÃO aplicar normalizarTexto
-      percentualParaAtualizar,
-      adesaoNumero,
-      normalizarTexto(situacaoValida)
+      normalizarTexto(dados.razao_social) || '',           // A (0)
+      normalizarTexto(dados.nome_fantasia) || '',          // B (1)
+      dados.cnpj ? dados.cnpj.toString() : '',             // C (2)
+      normalizarTexto(fornecedorParaAtualizar),            // D (3)
+      Utilities.formatDate(new Date(), Session.getScriptTimeZone(), "dd/MM/yyyy HH:mm:ss"), // E (4)
+      normalizarTexto(dados.evento) || '',                 // F (5)
+      normalizarTexto(dados.observacoes) || '',            // G (6)
+      normalizarTexto(dados.contrato_enviado) || '',       // H (7)
+      normalizarTexto(dados.contrato_assinado) || '',      // I (8)
+      dataAtivacaoParaSalvar,                              // J (9)
+      dados.link || '',                                    // K (10)
+      mensalidadeNumero,                                   // L (11)
+      converterMoedaParaNumero(dados.mensalidade_sim) || 0,// M (12)
+      tarifaParaAtualizar || '',                           // N (13)
+      percentualParaAtualizar,                             // O (14)
+      adesaoNumero,                                        // P (15)
+      normalizarTexto(situacaoValida)                      // Q (16)
     ];
 
     console.log("📝 Atualizando linha:", linhaAtualizar);
@@ -1411,7 +1455,7 @@ function buscarTodosCadastros() {
     }
     
     // Buscar dados na ORDEM CORRETA (17 colunas)
-    const dados = aba.getRange(2, 1, ultimaLinha - 1, 18).getValues();
+    const dados = aba.getRange(2, 1, ultimaLinha - 1, 17).getValues();
     console.log("📈 Dados brutos encontrados:", dados.length);
     
     const cadastros = [];
@@ -1437,26 +1481,26 @@ function buscarTodosCadastros() {
         ativacaoFormatada = linha[10].toString();
       }
       
-      // 🔥 CORREÇÃO: ESTRUTURA COM 17 COLUNAS
-      const cadastro = {
+            // 🔥 CORREÇÃO: ESTRUTURA COM 17 COLUNAS
+            const cadastro = {
         id: i + 2,
-        razao_social: linha[0]?.toString().trim() || '',     // A - Razão Social
-        nome_fantasia: linha[1]?.toString().trim() || '',    // B - Nome Fantasia
-        cnpj: formatarCNPJNoSheets(linha[2]?.toString().trim() || ''), // C - CNPJ
-        tipo: linha[3]?.toString().trim() || '',             // D - Tipo
-        fornecedor: linha[4]?.toString().trim() || '',       // E - Fornecedor
-        ultimo_evento: ultimoEventoFormatado,                // F - Último evento
-        evento: linha[6]?.toString().trim() || '',           // G - Evento
-        observacoes: linha[7]?.toString().trim() || '',      // H - Observação
-        contrato_enviado: linha[8]?.toString().trim() || '', // I - Contrato Enviado
-        contrato_assinado: linha[9]?.toString().trim() || '', // J - Contrato Assinado
-        ativacao: ativacaoFormatada,                         // K - Ativação ⭐
-        link: linha[11]?.toString().trim() || '',            // L - Link
-        mensalidade: parseFloat(linha[12]) || 0,             // M - Mensalidade
-        tarifa: linha[13]?.toString().trim() || '',          // N - Tarifa
-        percentual_tarifa: linha[14]?.toString().trim() || '', // O - % Tarifa
-        adesao: processarAdesao(linha[15]),                  // P - Adesão
-        situacao: (linha[16]?.toString().trim() || 'Novo registro') // Q - Situação
+        razao_social: linha[0]?.toString().trim() || '',     // A - Razão Social (0)
+        nome_fantasia: linha[1]?.toString().trim() || '',    // B - Nome Fantasia (1)
+        cnpj: formatarCNPJNoSheets(linha[2]?.toString().trim() || ''), // C - CNPJ (2)
+        fornecedor: linha[3]?.toString().trim() || '',       // D - Fornecedor (3)
+        ultimo_evento: ultimoEventoFormatado,                // E - Último evento (4)
+        evento: linha[5]?.toString().trim() || '',           // F - Evento (5)
+        observacoes: linha[6]?.toString().trim() || '',      // G - Observação (6)
+        contrato_enviado: linha[7]?.toString().trim() || '', // H - Contrato Enviado (7)
+        contrato_assinado: linha[8]?.toString().trim() || '', // I - Contrato Assinado (8)
+        ativacao: ativacaoFormatada,                         // J - Ativação (9)
+        link: linha[10]?.toString().trim() || '',            // K - Link (10)
+        mensalidade: parseFloat(linha[11]) || 0,             // L - Mensalidade (11)
+        mensalidade_sim: parseFloat(linha[12]) || 0,         // 🔥 M - Mensalidade SIM (12) - VOCÊ ESQUECEU ESTA!
+        tarifa: linha[13]?.toString().trim() || '',          // N - Tarifa (13)
+        percentual_tarifa: linha[14]?.toString().trim() || '', // O - % Tarifa (14)
+        adesao: processarAdesao(linha[15]),                  // P - Adesão (15)
+        situacao: (linha[16]?.toString().trim() || 'Novo registro') // Q - Situação (16)
       };
       
       cadastros.push(cadastro);
@@ -1486,7 +1530,7 @@ function buscarCadastroPorCNPJ(cnpj) {
     const ultimaLinha = aba.getLastRow();
     if (ultimaLinha < 2) return { encontrado: false, mensagem: "Nenhum dado encontrado" };
     
-    const dados = aba.getRange(2, 1, ultimaLinha - 1, 18).getValues();
+    const dados = aba.getRange(2, 1, ultimaLinha - 1, 17).getValues();
     const cnpjBuscado = cnpj.toString().replace(/\D/g, '');
     
     console.log("🔎 Procurando CNPJ limpo:", cnpjBuscado);
@@ -1554,10 +1598,10 @@ if (linha[15] !== null && linha[15] !== undefined && linha[15] !== '') {
         
         // 🔥🔥🔥 CORREÇÃO CRÍTICA: Estrutura de fornecedores para o formulário
         const fornecedorParaFormulario = {
-          nome: linha[4]?.toString().trim() || '', // E - Fornecedor
-          tarifa: tarifa,                          // N - Tarifa
-          percentual_tarifa: percentualTarifa      // O - % Tarifa
-        };
+        nome: linha[3]?.toString().trim() || '', // ✅ CORRIGIDO: índice 3 (Fornecedor)
+        tarifa: tarifa,
+        percentual_tarifa: percentualTarifa
+      };
         
         console.log("👥 Fornecedor para formulário:", fornecedorParaFormulario);
 
@@ -1570,24 +1614,24 @@ if (linha[15] !== null && linha[15] !== undefined && linha[15] !== '') {
         return {
           encontrado: true,
           id: i + 2,
-          razao_social: linha[0]?.toString().trim() || '',     // A
-          nome_fantasia: linha[1]?.toString().trim() || '',    // B
-          cnpj: formatarCNPJNoSheets(linha[2]?.toString().trim() || ''), // C
-          tipo: linha[3]?.toString().trim() || '',             // D
-          fornecedor: linha[4]?.toString().trim() || '',       // E
+          razao_social: linha[0]?.toString().trim() || '',     // A - Razão Social (0)
+          nome_fantasia: linha[1]?.toString().trim() || '',    // B - Nome Fantasia (1)
+          cnpj: formatarCNPJNoSheets(linha[2]?.toString().trim() || ''), // C - CNPJ (2)
+          fornecedor: linha[3]?.toString().trim() || '',       // D - Fornecedor (3)
           fornecedores: [fornecedorParaFormulario],            // 🔥 ESTRUTURA QUE O FORMULÁRIO ESPERA
-          ultimo_evento: ultimoEventoFormatado,                // F
-          evento: linha[6]?.toString().trim() || '',           // G
-          observacoes: linha[7]?.toString().trim() || '',      // H
-          contrato_enviado: linha[8]?.toString().trim() || '', // I
-          contrato_assinado: linha[9]?.toString().trim() || '', // J
-          ativacao: ativacaoFormatada,                         // K ⭐
-          link: linha[11]?.toString().trim() || '',            // L
-          mensalidade: parseFloat(linha[12]) || 0,             // M
-          tarifa: tarifa,                                      // N ⭐ (para compatibilidade)
-          percentual_tarifa: percentualTarifa,                 // O ⭐ (para compatibilidade)
-          adesao: processarAdesao(linha[15]),                  // P
-          situacao: (linha[16]?.toString().trim() || 'Novo registro') // Q
+          ultimo_evento: ultimoEventoFormatado,                // E - Último evento (4)
+          evento: linha[5]?.toString().trim() || '',           // F - Evento (5)
+          observacoes: linha[6]?.toString().trim() || '',      // G - Observação (6)
+          contrato_enviado: linha[7]?.toString().trim() || '', // H - Contrato Enviado (7)
+          contrato_assinado: linha[8]?.toString().trim() || '', // I - Contrato Assinado (8)
+          ativacao: ativacaoFormatada,                         // J - Ativação (9)
+          link: linha[10]?.toString().trim() || '',            // K - Link (10)
+          mensalidade: parseFloat(linha[11]) || 0,             // L - Mensalidade (11)
+          mensalidade_sim: parseFloat(linha[12]) || 0,         // M - Mensalidade SIM (12)
+          tarifa: tarifa,                                      // N - Tarifa (13)
+          percentual_tarifa: percentualTarifa,                 // O - % Tarifa (14)
+          adesao: processarAdesao(linha[15]),                  // P - Adesão (15)
+          situacao: (linha[16]?.toString().trim() || 'Novo registro') // Q - Situação (16)
         };
       }
     }
@@ -1612,7 +1656,7 @@ function buscarCadastroPorID(id) {
     const ultimaLinha = aba.getLastRow();
     if (ultimaLinha < id) return { encontrado: false, mensagem: "Registro não encontrado" };
     
-    const linha = aba.getRange(id, 1, 1, 18).getValues()[0];
+    const linha = aba.getRange(id, 1, 1, 17).getValues()[0];
     
     // Verificar se a linha não está vazia
     if (!linha[0] || linha[0].toString().trim() === '') {
@@ -1665,9 +1709,9 @@ if (linha[15] !== null && linha[15] !== undefined && linha[15] !== '') {
     
     // 🔥🔥🔥 CORREÇÃO CRÍTICA: Estrutura de fornecedores para o formulário
     const fornecedorParaFormulario = {
-      nome: linha[4]?.toString().trim() || '', // E - Fornecedor
-      tarifa: tarifa,                          // N - Tarifa
-      percentual_tarifa: percentualTarifa      // O - % Tarifa
+      nome: linha[3]?.toString().trim() || '', // ✅ índice 3 (Fornecedor)
+      tarifa: tarifa,
+      percentual_tarifa: percentualTarifa
     };
     
     console.log("👥 Fornecedor para formulário:", fornecedorParaFormulario);
@@ -1680,24 +1724,24 @@ if (linha[15] !== null && linha[15] !== undefined && linha[15] !== '') {
     const resultado = {
       encontrado: true,
       id: id,
-      razao_social: linha[0]?.toString().trim() || '',     // A - Razão Social
-      nome_fantasia: linha[1]?.toString().trim() || '',    // B - Nome Fantasia
-      cnpj: formatarCNPJNoSheets(linha[2]?.toString().trim() || ''), // C - CNPJ
-      tipo: linha[3]?.toString().trim() || '',             // D - Tipo
-      fornecedor: linha[4]?.toString().trim() || '',       // E - Fornecedor (para compatibilidade)
-      fornecedores: [fornecedorParaFormulario],            // 🔥 ESTRUTURA QUE O FORMULÁRIO ESPERA
-      ultimo_evento: ultimoEventoFormatado,                // F - Último evento
-      evento: linha[6]?.toString().trim() || '',           // G - Evento
-      observacoes: linha[7]?.toString().trim() || '',      // H - Observação
-      contrato_enviado: linha[8]?.toString().trim() || '', // I - Contrato Enviado
-      contrato_assinado: linha[9]?.toString().trim() || '', // J - Contrato Assinado
-      ativacao: ativacaoFormatada,                         // K - Ativação ⭐
-      link: linha[11]?.toString().trim() || '',            // L - Link
-      mensalidade: parseFloat(linha[12]) || 0,             // M - Mensalidade
-      tarifa: tarifa,                                      // N - Tarifa ⭐ (para compatibilidade)
-      percentual_tarifa: percentualTarifa,                 // O - % Tarifa ⭐ (para compatibilidade)
-      adesao: processarAdesao(linha[15]),                  // P - Adesão
-      situacao: (linha[16]?.toString().trim() || 'Novo registro') // Q - Situação
+      razao_social: linha[0]?.toString().trim() || '',     // A - Razão Social (0)
+      nome_fantasia: linha[1]?.toString().trim() || '',    // B - Nome Fantasia (1)
+      cnpj: formatarCNPJNoSheets(linha[2]?.toString().trim() || ''), // C - CNPJ (2)
+      fornecedor: linha[3]?.toString().trim() || '',       // D - Fornecedor (3)
+      fornecedores: [fornecedorParaFormulario],
+      ultimo_evento: ultimoEventoFormatado,
+      evento: linha[5]?.toString().trim() || '',           // F - Evento (5)
+      observacoes: linha[6]?.toString().trim() || '',      // G - Observação (6)
+      contrato_enviado: linha[7]?.toString().trim() || '', // H - Contrato Enviado (7)
+      contrato_assinado: linha[8]?.toString().trim() || '', // I - Contrato Assinado (8)
+      ativacao: ativacaoFormatada,
+      link: linha[10]?.toString().trim() || '',            // K - Link (10)
+      mensalidade: parseFloat(linha[11]) || 0,             // L - Mensalidade (11)
+      mensalidade_sim: parseFloat(linha[12]) || 0,         // M - Mensalidade SIM (12)
+      tarifa: tarifa,                                      // N - Tarifa (13)
+      percentual_tarifa: percentualTarifa,                 // O - % Tarifa (14)
+      adesao: processarAdesao(linha[15]),                  // P - Adesão (15)
+      situacao: (linha[16]?.toString().trim() || 'Novo registro') // Q - Situação (16)
     };
     
     console.log("✅ Resultado final para formulário:", resultado);
@@ -1720,7 +1764,7 @@ function buscarTodosCadastrosPorCNPJ(cnpj) {
     const ultimaLinha = aba.getLastRow();
     if (ultimaLinha < 2) return [];
     
-    const dados = aba.getRange(2, 1, ultimaLinha - 1, 18).getValues();
+    const dados = aba.getRange(2, 1, ultimaLinha - 1, 17).getValues();
     const cnpjBuscado = cnpj.toString().replace(/\D/g, '');
     
     const cadastrosEncontrados = [];
@@ -1735,7 +1779,7 @@ function buscarTodosCadastrosPorCNPJ(cnpj) {
       if (cnpjCadastro === cnpjBuscado) {
         cadastrosEncontrados.push({
           id: i + 2,
-          fornecedor: linha[4]?.toString().trim() || '',
+          fornecedor: linha[3]?.toString().trim() || '',
           situacao: linha[16]?.toString().trim() || ''
         });
       }
@@ -1814,7 +1858,7 @@ function debugTwoSisters() {
     }
     
     // Buscar especificamente a linha 2 (que é o TWO SISTERS)
-    const linha = aba.getRange(2, 1, 1, 18).getValues()[0];
+    const linha = aba.getRange(2, 1, 1, 17).getValues()[0];
     
     console.log("📊 LINHA COMPLETA DO TWO SISTERS:");
     for (let i = 0; i < linha.length; i++) {
@@ -1859,7 +1903,7 @@ function testarContratoAssinado() {
     }
     
     // Buscar linha 2 (TWO SISTERS)
-    const linha = aba.getRange(2, 1, 1, 18).getValues()[0];
+    const linha = aba.getRange(2, 1, 1, 17).getValues()[0];
     
     console.log("📊 LINHA COMPLETA:");
     for (let i = 0; i < linha.length; i++) {
