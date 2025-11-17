@@ -1,8 +1,53 @@
 // CONFIGURAÇÕES
 const CONFIG = {
   ID_PLANILHA: "1V4iGN14UpIQcwf3qKU0_Wbiy2exdW2WUmrYTniy0upA",
-  ABA_PRINCIPAL: "Result"
+  ABA_PRINCIPAL: "Result",
+  TIMEZONE: "America/Sao_Paulo" // 🔥 CORREÇÃO: Fuso horário padronizado
 };
+
+// 🔥🔥🔥 FUNÇÃO CORRIGIDA PARA HORÁRIO BRASIL
+// 🔥🔥🔥 FUNÇÃO CORRIGIDA PARA HORÁRIO BRASIL - VERSÃO DEFINITIVA
+function formatarDataBrasil(data) {
+  if (!data) return '';
+  
+  try {
+    console.log("🔥 formatarDataBrasil - Entrada:", data, "Tipo:", typeof data);
+    
+    // Se já é string no formato brasileiro, retornar COMO ESTÁ
+    if (typeof data === 'string' && data.includes('/') && data.includes(':')) {
+      console.log("✅ Já está no formato brasileiro - retornando como está:", data);
+      return data;
+    }
+    
+    // Se é objeto Date, formatar CORRETAMENTE com fuso do Brasil
+    if (data instanceof Date) {
+      const dataBrasil = Utilities.formatDate(data, CONFIG.TIMEZONE, "dd/MM/yyyy HH:mm:ss");
+      console.log("✅ Date convertido:", data.toString(), "→", dataBrasil);
+      return dataBrasil;
+    }
+    
+    // Para outros casos, tentar converter mantendo o horário ORIGINAL
+    try {
+      const dataObj = new Date(data);
+      if (!isNaN(dataObj.getTime())) {
+        const dataBrasil = Utilities.formatDate(dataObj, CONFIG.TIMEZONE, "dd/MM/yyyy HH:mm:ss");
+        console.log("✅ Outro tipo convertido:", data, "→", dataBrasil);
+        return dataBrasil;
+      }
+    } catch (e) {
+      console.log("⚠️ Não conseguiu converter, retornando original:", data);
+      return data.toString();
+    }
+    
+    // Fallback
+    console.log("⚠️ Fallback - retornando como string:", data);
+    return data.toString();
+    
+  } catch (error) {
+    console.error("❌ Erro em formatarDataBrasil:", error);
+    return data ? data.toString() : '';
+  }
+}
 
 // 🔥🔥🔥 CONFIGURAÇÕES DOS WAITLABELS
 const WAITLABELS_CONFIG = {
@@ -170,21 +215,20 @@ function cadastrarNovoComWaitlabel(aba, dados, waitlabel) {
 
       // 🔥🔥🔥 CORREÇÃO: Datas - USAR DATA DO USUÁRIO SE INFORMADA, SENÃO VAZIO
       const dataAtual = new Date();
-      const dataUltimoEvento = Utilities.formatDate(dataAtual, Session.getScriptTimeZone(), "dd/MM/yyyy HH:mm:ss");
+      const dataUltimoEvento = formatarDataBrasil(dataAtual);
 
-      // ✅ CORREÇÃO: Usar data informada pelo usuário OU ficar vazio (CORRIGIDO FUSO HORÁRIO)
+      // ✅✅✅ CORREÇÃO: Usar data informada pelo usuário COM +1 DIA
       let dataAtivacaoParaSalvar = '';
       if (dados.ativacao && dados.ativacao.trim() !== '') {
-        // Se usuário informou data, formatar corretamente (CORREÇÃO FUSO HORÁRIO)
         try {
-          // 🔥 CORREÇÃO: Adicionar 1 dia para compensar o fuso horário
           const dataUsuario = new Date(dados.ativacao);
-          dataUsuario.setDate(dataUsuario.getDate() + 1); // 🔥 ADICIONA 1 DIA
-          dataAtivacaoParaSalvar = Utilities.formatDate(dataUsuario, Session.getScriptTimeZone(), "dd/MM/yyyy");
-          console.log("📅 Data ativação informada pelo usuário (CORRIGIDA):", dataAtivacaoParaSalvar);
+          // 🔥🔥🔥 CORREÇÃO: ADICIONAR +1 DIA PARA COMPENSAR FUSO HORÁRIO
+          dataUsuario.setDate(dataUsuario.getDate() + 1);
+          dataAtivacaoParaSalvar = Utilities.formatDate(dataUsuario, CONFIG.TIMEZONE, "dd/MM/yyyy");
+          console.log("📅 Data ativação informada pelo usuário (CORRIGIDA +1):", dataAtivacaoParaSalvar);
         } catch (e) {
           console.error("❌ Erro ao processar data do usuário:", e);
-          dataAtivacaoParaSalvar = ''; // Manter vazio se houver erro
+          dataAtivacaoParaSalvar = '';
         }
       } else {
         console.log("📅 Nenhuma data de ativação informada - campo ficará vazio");
@@ -196,24 +240,24 @@ function cadastrarNovoComWaitlabel(aba, dados, waitlabel) {
 
       // Array com 17 colunas na ORDEM CORRETA
       const linhaDados = [
-      normalizarTexto(dados.razao_social) || '',
-      normalizarTexto(dados.nome_fantasia) || '',
-      dados.cnpj ? dados.cnpj.toString() : '',
-      normalizarTexto(nomeFornecedor),
-      dataUltimoEvento,
-      normalizarTexto(dados.evento) || '',
-      normalizarTexto(dados.observacoes) || '',
-      normalizarTexto(dados.contrato_enviado) || '',
-      normalizarTexto(dados.contrato_assinado) || '',
-      dataAtivacaoParaSalvar,
-      dados.link || '',
-      mensalidadeNumero,                    // Mensalidade (coluna M)
-      converterMoedaParaNumero(dados.mensalidade_sim) || 0, // 🔥 NOVA COLUNA Mensalidade SIM (coluna N)
-      tarifaFornecedor || '',               // Tarifa (coluna O)
-      percentualTarifaFornecedor,           // % Tarifa (coluna P)
-      adesaoNumero,                         // Adesão (coluna Q)
-      normalizarTexto(situacaoParaSalvar)   // Situação (coluna R)
-    ];
+        normalizarTexto(dados.razao_social) || '',
+        normalizarTexto(dados.nome_fantasia) || '',
+        dados.cnpj ? dados.cnpj.toString() : '',
+        normalizarTexto(nomeFornecedor),
+        dataUltimoEvento,
+        normalizarTexto(dados.evento) || '',
+        normalizarTexto(dados.observacoes) || '',
+        normalizarTexto(dados.contrato_enviado) || '',
+        normalizarTexto(dados.contrato_assinado) || '',
+        dataAtivacaoParaSalvar,
+        dados.link || '',
+        mensalidadeNumero,                    
+        converterMoedaParaNumero(dados.mensalidade_sim) || 0,
+        tarifaFornecedor || '',               
+        percentualTarifaFornecedor,           
+        adesaoNumero,                         
+        normalizarTexto(situacaoParaSalvar)   
+      ];
 
       console.log(`📝 Linha de dados ${i + 1}:`, linhaDados);
       
@@ -224,11 +268,11 @@ function cadastrarNovoComWaitlabel(aba, dados, waitlabel) {
         
         // 🔥 FORMATAR COLUNAS IMEDIATAMENTE
         aba.getRange(linhaInserir, 12).setNumberFormat('"R$"#,##0.00'); // L - Mensalidade
-      aba.getRange(linhaInserir, 13).setNumberFormat('"R$"#,##0.00'); // M - Mensalidade SIM
-      aba.getRange(linhaInserir, 15).setNumberFormat('0.00%');        // O - % Tarifa ✅ AGORA É PORCENTAGEM
-      aba.getRange(linhaInserir, 16).setNumberFormat('"R$"#,##0.00'); // P - Adesão ✅ AGORA É MOEDA
-      aba.getRange(linhaInserir, 14).setNumberFormat('@');            // N - Tarifa (texto)
-      aba.getRange(linhaInserir, 10).setNumberFormat('dd/MM/yyyy');   // J - Ativação
+        aba.getRange(linhaInserir, 13).setNumberFormat('"R$"#,##0.00'); // M - Mensalidade SIM
+        aba.getRange(linhaInserir, 15).setNumberFormat('0.00%');        // O - % Tarifa
+        aba.getRange(linhaInserir, 16).setNumberFormat('"R$"#,##0.00'); // P - Adesão
+        aba.getRange(linhaInserir, 14).setNumberFormat('@');            // N - Tarifa (texto)
+        aba.getRange(linhaInserir, 10).setNumberFormat('dd/MM/yyyy');   // J - Ativação
         
         SpreadsheetApp.flush();
         
@@ -290,7 +334,7 @@ function atualizarCadastroComWaitlabel(aba, dados, waitlabel) {
       return { success: false, message: "Registro não encontrado" };
     }
 
-    // 🔥🔥🔥 BUSCAR OS DADOS ATUAIS
+    // 🔥 BUSCAR OS DADOS ATUAIS
     const dadosAtuais = aba.getRange(linhaAtualizar, 1, 1, 17).getValues()[0];
     const dataAtivacaoOriginal = dadosAtuais[9]; // Coluna J - Ativação
     
@@ -319,15 +363,16 @@ function atualizarCadastroComWaitlabel(aba, dados, waitlabel) {
     // Garantir situação válida
     const situacaoValida = (dados.situacao && dados.situacao.trim() !== '') ? dados.situacao : 'Novo registro';
 
-    // 🔥🔥🔥 CORREÇÃO: MANTER DATA ATIVAÇÃO ORIGINAL OU USAR NOVA
+    // 🔥🔥🔥 CORREÇÃO DEFINITIVA: MANTER DATA ATIVAÇÃO ORIGINAL OU USAR NOVA COM +1
     let dataAtivacaoParaSalvar = dataAtivacaoOriginal;
     
     if (dados.ativacao && dados.ativacao.trim() !== '') {
       try {
         const dataUsuario = new Date(dados.ativacao);
-        dataUsuario.setDate(dataUsuario.getDate() + 1); // Correção fuso horário
-        dataAtivacaoParaSalvar = Utilities.formatDate(dataUsuario, Session.getScriptTimeZone(), "dd/MM/yyyy");
-        console.log("📅 NOVA data ativação:", dataAtivacaoParaSalvar);
+        // ✅✅✅ CORREÇÃO: ADICIONAR +1 DIA PARA COMPENSAR FUSO HORÁRIO
+        dataUsuario.setDate(dataUsuario.getDate() + 1);
+        dataAtivacaoParaSalvar = Utilities.formatDate(dataUsuario, CONFIG.TIMEZONE, "dd/MM/yyyy");
+        console.log("📅 NOVA data ativação (COM +1 DIA):", dataAtivacaoParaSalvar);
       } catch (e) {
         console.error("❌ Erro ao processar data:", e);
         dataAtivacaoParaSalvar = dataAtivacaoOriginal;
@@ -335,41 +380,42 @@ function atualizarCadastroComWaitlabel(aba, dados, waitlabel) {
     } else {
       console.log("📅 Mantendo data ativação original:", dataAtivacaoOriginal);
       if (dataAtivacaoOriginal instanceof Date) {
-        dataAtivacaoParaSalvar = Utilities.formatDate(dataAtivacaoOriginal, Session.getScriptTimeZone(), "dd/MM/yyyy");
+        dataAtivacaoParaSalvar = Utilities.formatDate(dataAtivacaoOriginal, CONFIG.TIMEZONE, "dd/MM/yyyy");
       }
     }
 
     // 🔥🔥🔥 CORREÇÃO CRÍTICA: ATUALIZAR AMBAS AS COLUNAS E e F
     const dataAtual = new Date();
-    const dataHoraAtual = Utilities.formatDate(dataAtual, Session.getScriptTimeZone(), "dd/MM/yyyy HH:mm:ss");
+    const dataHoraAtual = formatarDataBrasil(dataAtual);
     
     console.log("🕐 Data/hora atual para Último evento:", dataHoraAtual);
     console.log("📝 Evento digitado pelo usuário:", dados.evento);
 
     // Array com 17 colunas na ORDEM CORRETA
     const novosDados = [
-  normalizarTexto(dados.razao_social) || '',
-  normalizarTexto(dados.nome_fantasia) || '',
-  dados.cnpj ? dados.cnpj.toString() : '',
-  normalizarTexto(fornecedorParaAtualizar),
-  dataHoraAtual,                                        // COLUNA E
-  normalizarTexto(dados.evento) || '',                  // COLUNA F
-  normalizarTexto(dados.observacoes) || '',
-  normalizarTexto(dados.contrato_enviado) || '',
-  normalizarTexto(dados.contrato_assinado) || '',
-  dataAtivacaoParaSalvar,
-  dados.link || '',
-  mensalidadeNumero,                                    
-  converterMoedaParaNumero(dados.mensalidade_sim) || 0, 
-  tarifaParaAtualizar || '',                            
-  percentualParaAtualizar,                              
-  adesaoNumero,                                         
-  normalizarTexto(situacaoValida)                       
-];
+      normalizarTexto(dados.razao_social) || '',
+      normalizarTexto(dados.nome_fantasia) || '',
+      dados.cnpj ? dados.cnpj.toString() : '',
+      normalizarTexto(fornecedorParaAtualizar),
+      dataHoraAtual,                                        
+      normalizarTexto(dados.evento) || '',                  
+      normalizarTexto(dados.observacoes) || '',
+      normalizarTexto(dados.contrato_enviado) || '',
+      normalizarTexto(dados.contrato_assinado) || '',
+      dataAtivacaoParaSalvar, // ✅ DATA COM +1 DIA
+      dados.link || '',
+      mensalidadeNumero,                                    
+      converterMoedaParaNumero(dados.mensalidade_sim) || 0, 
+      tarifaParaAtualizar || '',                            
+      percentualParaAtualizar,                              
+      adesaoNumero,                                         
+      normalizarTexto(situacaoValida)                       
+    ];
 
     console.log("📝 Atualizando linha:", linhaAtualizar);
     console.log("🎯 COLUNA E (Último evento):", novosDados[4]);
     console.log("🎯 COLUNA F (Evento):", novosDados[5]);
+    console.log("🎯 COLUNA J (Ativação - COM +1 DIA):", novosDados[9]);
     
     // Salvar os dados
     aba.getRange(linhaAtualizar, 1, 1, novosDados.length).setValues([novosDados]);
@@ -384,7 +430,7 @@ function atualizarCadastroComWaitlabel(aba, dados, waitlabel) {
 
     SpreadsheetApp.flush();
 
-    console.log("✅ Atualização concluída - ambas as colunas E e F foram atualizadas");
+    console.log("✅ Atualização concluída - Data de ativação salva COM +1 DIA");
 
     return { 
       success: true, 
@@ -397,7 +443,6 @@ function atualizarCadastroComWaitlabel(aba, dados, waitlabel) {
   }
 }
 
-// 🔥🔥🔥 FUNÇÕES DE BUSCA COM WAITLABEL
 function buscarTodosCadastrosComWaitlabel(waitlabel) {
   try {
     console.log("🔍 Iniciando busca de todos os cadastros no waitlabel:", waitlabel);
@@ -436,22 +481,22 @@ function buscarTodosCadastrosComWaitlabel(waitlabel) {
         console.log(`   Coluna F [5] - Evento:`, linha[5], "Tipo:", typeof linha[5]);
       }
       
-      // 🔥🔥🔥 CORREÇÃO: Último evento deve ser da COLUNA E (índice 4)
+      // 🔥🔥🔥 CORREÇÃO: Último evento deve ser da COLUNA E (índice 4) - DATA
       let ultimoEventoFormatado = '';
-      if (linha[4] && linha[4] instanceof Date) { // ✅ Último evento (COLUNA E - índice 4)
-        ultimoEventoFormatado = Utilities.formatDate(linha[4], Session.getScriptTimeZone(), "dd/MM/yyyy HH:mm:ss"); // 🔥 ADICIONAR HORA
+      if (linha[4] && linha[4] instanceof Date) { // ✅ COLUNA E - DATA
+        ultimoEventoFormatado = formatarDataBrasil(linha[4]);
       } else if (linha[4]) {
         ultimoEventoFormatado = linha[4].toString();
       }
       
-      // 🔥🔥🔥 CORREÇÃO: Evento deve ser da COLUNA F (índice 5)
-      let evento = linha[5]?.toString().trim() || '';
+      // 🔥🔥🔥 CORREÇÃO: Evento deve ser da COLUNA F (índice 5) - TEXTO
+      let evento = linha[5]?.toString().trim() || ''; // ✅ COLUNA F - TEXTO
       
       let ativacaoFormatada = '';
-      if (linha[10] && linha[10] instanceof Date) { // ✅ Ativação
-        ativacaoFormatada = Utilities.formatDate(linha[10], Session.getScriptTimeZone(), "dd/MM/yyyy");
-      } else if (linha[10]) {
-        ativacaoFormatada = linha[10].toString();
+      if (linha[9] && linha[9] instanceof Date) { // ✅ Ativação
+        ativacaoFormatada = Utilities.formatDate(linha[9], CONFIG.TIMEZONE, "dd/MM/yyyy");
+      } else if (linha[9]) {
+        ativacaoFormatada = linha[9].toString();
       }
       
       // 🔥 CORREÇÃO: ESTRUTURA COM 17 COLUNAS - CORRIGIDO
@@ -461,8 +506,8 @@ function buscarTodosCadastrosComWaitlabel(waitlabel) {
         nome_fantasia: linha[1]?.toString().trim() || '',    // B - Nome Fantasia (1)
         cnpj: formatarCNPJNoSheets(linha[2]?.toString().trim() || ''), // C - CNPJ (2)
         fornecedor: linha[3]?.toString().trim() || '',       // D - Fornecedor (3)
-        ultimo_evento: ultimoEventoFormatado,                // E - Último evento (4) ✅ CORRIGIDO
-        evento: evento,                                      // F - Evento (5) ✅ CORRIGIDO
+        ultimo_evento: ultimoEventoFormatado,                // ✅ E - DATA
+        evento: evento,                                      // ✅ F - TEXTO
         observacoes: linha[6]?.toString().trim() || '',      // G - Observação (6)
         contrato_enviado: linha[7]?.toString().trim() || '', // H - Contrato Enviado (7)
         contrato_assinado: linha[8]?.toString().trim() || '', // I - Contrato Assinado (8)
@@ -489,21 +534,113 @@ function buscarTodosCadastrosComWaitlabel(waitlabel) {
   }
 }
 
+function buscarTodosCadastrosPorCNPJComWaitlabel(cnpj, waitlabel) {
+  try {
+    console.log("🔍 BUSCAR TODOS CADASTROS POR CNPJ COM WAITLABEL - INICIANDO");
+    console.log("📋 CNPJ:", cnpj, "Waitlabel:", waitlabel);
+    
+    const ss = SpreadsheetApp.openById(CONFIG.ID_PLANILHA);
+    const aba = ss.getSheetByName(waitlabel);
+    
+    if (!aba) {
+      console.log("❌ Waitlabel não encontrado:", waitlabel);
+      return [];
+    }
+    
+    const ultimaLinha = aba.getLastRow();
+    console.log("📊 Última linha:", ultimaLinha);
+    
+    if (ultimaLinha < 2) {
+      console.log("ℹ️ Nenhum dato além do cabeçalho");
+      return [];
+    }
+    
+    // Buscar dados na ORDEM CORRETA (17 colunas)
+    const dados = aba.getRange(2, 1, ultimaLinha - 1, 17).getValues();
+    const cnpjBuscado = cnpj.toString().replace(/\D/g, '');
+    
+    console.log("🔎 Procurando CNPJ limpo:", cnpjBuscado);
+    console.log("📈 Total de registros para filtrar:", dados.length);
+    
+    const cadastrosEncontrados = [];
+    
+    for (let i = 0; i < dados.length; i++) {
+      const linha = dados[i];
+      
+      // Pular linhas vazias
+      if (!linha[0] || linha[0].toString().trim() === '') continue;
+      
+      const cnpjCadastro = linha[2]?.toString().replace(/\D/g, '') || '';
+      
+      if (cnpjCadastro === cnpjBuscado) {
+        console.log("✅ Cadastro encontrado na linha:", i + 2);
+        
+        // 🔥🔥🔥 CORREÇÃO: Formatar último evento - COLUNA E (índice 4) - DATA
+        let ultimoEventoFormatado = '';
+        if (linha[4] && linha[4] instanceof Date) { // ✅ COLUNA E - DATA
+          ultimoEventoFormatado = formatarDataBrasil(linha[4]);
+        } else if (linha[4]) {
+          ultimoEventoFormatado = linha[4].toString();
+        }
+        
+        let ativacaoFormatada = '';
+        if (linha[9] && linha[9] instanceof Date) { // ✅ COLUNA J - Ativação
+          ativacaoFormatada = Utilities.formatDate(linha[9], CONFIG.TIMEZONE, "dd/MM/yyyy");
+        } else if (linha[9]) {
+          ativacaoFormatada = linha[9].toString();
+        }
+        
+        // 🔥 CORREÇÃO: ESTRUTURA COM 17 COLUNAS
+        const cadastro = {
+          id: i + 2,
+          razao_social: linha[0]?.toString().trim() || '',     // A - Razão Social (0)
+          nome_fantasia: linha[1]?.toString().trim() || '',    // B - Nome Fantasia (1)
+          cnpj: formatarCNPJNoSheets(linha[2]?.toString().trim() || ''), // C - CNPJ (2)
+          fornecedor: linha[3]?.toString().trim() || '',       // D - Fornecedor (3)
+          ultimo_evento: ultimoEventoFormatado,                // ✅ E - DATA
+          evento: linha[5]?.toString().trim() || '',           // ✅ F - TEXTO
+          observacoes: linha[6]?.toString().trim() || '',      // G - Observação (6)
+          contrato_enviado: linha[7]?.toString().trim() || '', // H - Contrato Enviado (7)
+          contrato_assinado: linha[8]?.toString().trim() || '', // I - Contrato Assinado (8)
+          ativacao: ativacaoFormatada,                         // J - Ativação (9)
+          link: linha[10]?.toString().trim() || '',            // K - Link (10)
+          mensalidade: parseFloat(linha[11]) || 0,             // L - Mensalidade (11)
+          mensalidade_sim: parseFloat(linha[12]) || 0,         // M - Mensalidade SIM (12)
+          tarifa: linha[13]?.toString().trim() || '',          // N - Tarifa (13)
+          percentual_tarifa: linha[14]?.toString().trim() || '', // O - % Tarifa (14)
+          adesao: processarAdesao(linha[15]),                  // P - Adesão (15)
+          situacao: (linha[16]?.toString().trim() || 'Novo registro'), // Q - Situação (16)
+          waitlabel: waitlabel
+        };
+        
+        cadastrosEncontrados.push(cadastro);
+      }
+    }
+    
+    console.log(`✅ Encontrados ${cadastrosEncontrados.length} cadastro(s) para o CNPJ ${cnpj}`);
+    return cadastrosEncontrados;
+    
+  } catch (error) {
+    console.error("❌ Erro em buscarTodosCadastrosPorCNPJComWaitlabel:", error);
+    return [];
+  }
+}
+
 function processarLinhaParaRetorno(linha, id) {
   console.log("=== 🔍 DEBUG processarLinhaParaRetorno - INÍCIO ===");
   
-  // 🔥🔥🔥 CORREÇÃO CRÍTICA: COLUNAS E e F TROCADAS
-  // Coluna E (índice 4) = ÚLTIMO EVENTO (data)
-  // Coluna F (índice 5) = EVENTO (texto)
+  // 🔥🔥🔥 CORREÇÃO DEFINITIVA: COLUNAS E e F CORRETAS
+  // Coluna E (índice 4) = DATA DO ÚLTIMO EVENTO (14/11/2025 15:46:23)
+  // Coluna F (índice 5) = TEXTO DO EVENTO ("NOVO CADASTRO")
   
   let ultimoEventoFormatado = '';
-  if (linha[4] && linha[4] instanceof Date) { // ✅ COLUNA E - ÚLTIMO EVENTO
-    ultimoEventoFormatado = Utilities.formatDate(linha[4], Session.getScriptTimeZone(), "dd/MM/yyyy HH:mm:ss");
+  if (linha[4] && linha[4] instanceof Date) { // ✅ COLUNA E - DATA
+    ultimoEventoFormatado = formatarDataBrasil(linha[4]);
   } else if (linha[4]) {
-    ultimoEventoFormatado = linha[4].toString();
+    ultimoEventoFormatado = linha[4].toString(); // JÁ ESTÁ NO FORMATO CERTO
   }
   
-  let evento = linha[5]?.toString().trim() || ''; // ✅ COLUNA F - EVENTO
+  let evento = linha[5]?.toString().trim() || ''; // ✅ COLUNA F - TEXTO
   
   console.log("🎯🎯🎯 DEBUG CRÍTICO DAS COLUNAS E e F:");
   console.log("Coluna E [4] - Último evento BRUTO:", linha[4], "Tipo:", typeof linha[4]);
@@ -514,7 +651,7 @@ function processarLinhaParaRetorno(linha, id) {
   // Formatar data ativação
   let ativacaoFormatada = '';
   if (linha[9] && linha[9] instanceof Date) { // ✅ COLUNA J - Ativação
-    ativacaoFormatada = Utilities.formatDate(linha[9], Session.getScriptTimeZone(), "yyyy-MM-dd");
+    ativacaoFormatada = Utilities.formatDate(linha[9], CONFIG.TIMEZONE, "yyyy-MM-dd");
   } else if (linha[9]) {
     if (linha[9].includes('/')) {
       const partes = linha[9].split('/');
@@ -565,8 +702,8 @@ function processarLinhaParaRetorno(linha, id) {
     cnpj: formatarCNPJNoSheets(linha[2]?.toString().trim() || ''), // C - CNPJ
     fornecedor: linha[3]?.toString().trim() || '',       // D - Fornecedor
     fornecedores: [fornecedorParaFormulario],
-    ultimo_evento: ultimoEventoFormatado,                // ✅ E - ÚLTIMO EVENTO (data)
-    evento: evento,                                      // ✅ F - EVENTO (texto)
+    ultimo_evento: ultimoEventoFormatado,                // ✅ E - DATA (14/11/2025 15:46:23)
+    evento: evento,                                      // ✅ F - TEXTO ("NOVO CADASTRO")
     observacoes: linha[6]?.toString().trim() || '',      // G - Observação
     contrato_enviado: linha[7]?.toString().trim() || '', // H - Contrato Enviado
     contrato_assinado: linha[8]?.toString().trim() || '', // I - Contrato Assinado
@@ -582,8 +719,8 @@ function processarLinhaParaRetorno(linha, id) {
 
   console.log("=== ✅ DEBUG processarLinhaParaRetorno - FIM ===");
   console.log("🎯 RESULTADO FINAL:");
-  console.log("   Último evento:", resultado.ultimo_evento);
-  console.log("   Evento:", resultado.evento);
+  console.log("   Último evento (DATA):", resultado.ultimo_evento);
+  console.log("   Evento (TEXTO):", resultado.evento);
   return resultado;
 }
 
@@ -651,7 +788,6 @@ function debugOrdemColunasSimFacilita() {
     return { error: error.message };
   }
 }
-
 
 function buscarCadastroPorIDComWaitlabel(id, waitlabel) {
   try {
@@ -777,13 +913,13 @@ function aplicarAlteracoesATodos(cnpj, dadosParaAplicar, camposSelecionados) {
         // 🔥🔥🔥 CORREÇÃO CRÍTICA: SALVAR CORRETAMENTE NAS COLUNAS E e F
         if (camposSelecionados.includes('evento')) {
           // COLUNA E = DATA atual (Último evento)
-          novosDados[4] = Utilities.formatDate(new Date(), Session.getScriptTimeZone(), "dd/MM/yyyy HH:mm:ss");
+          novosDados[4] = formatarDataBrasil(new Date());
           // COLUNA F = TEXTO do evento (já foi salvo acima pelo forEach)
           console.log("🎯 COLUNA E (Data - Último evento):", novosDados[4]);
           console.log("🎯 COLUNA F (Evento - texto):", novosDados[5]);
         } else {
           // Se não está aplicando evento, atualizar apenas a data do último evento
-          novosDados[4] = Utilities.formatDate(new Date(), Session.getScriptTimeZone(), "dd/MM/yyyy HH:mm:ss");
+          novosDados[4] = formatarDataBrasil(new Date());
         }
         
         try {
@@ -842,7 +978,6 @@ function obterIndiceColuna(campo) {
   return mapeamentoCampos[campo] !== undefined ? mapeamentoCampos[campo] : -1;
 }
 
-// 🔥🔥🔥 CORREÇÃO 3: Função auxiliar atualizada
 function obterValorParaCampo(campo, dadosParaAplicar, linhaAtual) {
   switch(campo) {
     case 'razao_social':
@@ -863,8 +998,9 @@ function obterValorParaCampo(campo, dadosParaAplicar, linhaAtual) {
       if (dadosParaAplicar.ativacao && dadosParaAplicar.ativacao.trim() !== '') {
         try {
           const dataUsuario = new Date(dadosParaAplicar.ativacao);
+          // ✅✅✅ CORREÇÃO: ADICIONAR +1 DIA PARA COMPENSAR FUSO HORÁRIO
           dataUsuario.setDate(dataUsuario.getDate() + 1);
-          return Utilities.formatDate(dataUsuario, Session.getScriptTimeZone(), "dd/MM/yyyy");
+          return Utilities.formatDate(dataUsuario, CONFIG.TIMEZONE, "dd/MM/yyyy");
         } catch (e) {
           console.error("❌ Erro ao processar data:", e);
           return '';
@@ -875,7 +1011,7 @@ function obterValorParaCampo(campo, dadosParaAplicar, linhaAtual) {
       return dadosParaAplicar.link || '';
     case 'mensalidade':
       return converterMoedaParaNumero(dadosParaAplicar.mensalidade) || 0;
-    case 'mensalidade_sim': // 🔥 NOVO CASO
+    case 'mensalidade_sim':
       return converterMoedaParaNumero(dadosParaAplicar.mensalidade_sim) || 0;
     case 'adesao':
       return processarAdesaoParaSalvar(dadosParaAplicar.adesao);
@@ -1224,21 +1360,18 @@ function cadastrarNovo(aba, dados) {
 
       // 🔥🔥🔥 CORREÇÃO: Datas - USAR DATA DO USUÁRIO SE INFORMADA, SENÃO VAZIO
       const dataAtual = new Date();
-      const dataUltimoEvento = Utilities.formatDate(dataAtual, Session.getScriptTimeZone(), "dd/MM/yyyy HH:mm:ss");
+      const dataUltimoEvento = formatarDataBrasil(dataAtual);
 
-      // ✅ CORREÇÃO: Usar data informada pelo usuário OU ficar vazio (CORRIGIDO FUSO HORÁRIO)
+      // ✅ CORREÇÃO: Usar data informada pelo usuário SEM adicionar dias
       let dataAtivacaoParaSalvar = '';
       if (dados.ativacao && dados.ativacao.trim() !== '') {
-        // Se usuário informou data, formatar corretamente (CORREÇÃO FUSO HORÁRIO)
         try {
-          // 🔥 CORREÇÃO: Adicionar 1 dia para compensar o fuso horário
           const dataUsuario = new Date(dados.ativacao);
-          dataUsuario.setDate(dataUsuario.getDate() + 1); // 🔥 ADICIONA 1 DIA
-          dataAtivacaoParaSalvar = Utilities.formatDate(dataUsuario, Session.getScriptTimeZone(), "dd/MM/yyyy");
+          dataAtivacaoParaSalvar = Utilities.formatDate(dataUsuario, CONFIG.TIMEZONE, "dd/MM/yyyy");
           console.log("📅 Data ativação informada pelo usuário (CORRIGIDA):", dataAtivacaoParaSalvar);
         } catch (e) {
           console.error("❌ Erro ao processar data do usuário:", e);
-          dataAtivacaoParaSalvar = ''; // Manter vazio se houver erro
+          dataAtivacaoParaSalvar = '';
         }
       } else {
         console.log("📅 Nenhuma data de ativação informada - campo ficará vazio");
@@ -1250,24 +1383,24 @@ function cadastrarNovo(aba, dados) {
 
       // Array com 17 colunas na ORDEM CORRETA
       const linhaDados = [
-      normalizarTexto(dados.razao_social) || '',           // A (0)
-      normalizarTexto(dados.nome_fantasia) || '',          // B (1)
-      dados.cnpj ? dados.cnpj.toString() : '',             // C (2)
-      normalizarTexto(nomeFornecedor),                     // D (3) - Fornecedor
-      dataUltimoEvento,                                    // E (4) - Último evento
-      normalizarTexto(dados.evento) || '',                 // F (5) - Evento
-      normalizarTexto(dados.observacoes) || '',            // G (6) - Observação
-      normalizarTexto(dados.contrato_enviado) || '',       // H (7) - Contrato Enviado
-      normalizarTexto(dados.contrato_assinado) || '',      // I (8) - Contrato Assinado
-      dataAtivacaoParaSalvar,                              // J (9) - Ativação
-      dados.link || '',                                    // K (10) - Link
-      mensalidadeNumero,                                   // L (11) - Mensalidade
-      converterMoedaParaNumero(dados.mensalidade_sim) || 0,// M (12) - Mensalidade SIM
-      tarifaFornecedor || '',                              // N (13) - Tarifa
-      percentualTarifaFornecedor,                          // O (14) - % Tarifa
-      adesaoNumero,                                        // P (15) - Adesão
-      normalizarTexto(situacaoParaSalvar)                  // Q (16) - Situação
-    ];
+        normalizarTexto(dados.razao_social) || '',           // A (0)
+        normalizarTexto(dados.nome_fantasia) || '',          // B (1)
+        dados.cnpj ? dados.cnpj.toString() : '',             // C (2)
+        normalizarTexto(nomeFornecedor),                     // D (3) - Fornecedor
+        dataUltimoEvento,                                    // E (4) - Último evento
+        normalizarTexto(dados.evento) || '',                 // F (5) - Evento
+        normalizarTexto(dados.observacoes) || '',            // G (6) - Observação
+        normalizarTexto(dados.contrato_enviado) || '',       // H (7) - Contrato Enviado
+        normalizarTexto(dados.contrato_assinado) || '',      // I (8) - Contrato Assinado
+        dataAtivacaoParaSalvar,                              // J (9) - Ativação
+        dados.link || '',                                    // K (10) - Link
+        mensalidadeNumero,                                   // L (11) - Mensalidade
+        converterMoedaParaNumero(dados.mensalidade_sim) || 0,// M (12) - Mensalidade SIM
+        tarifaFornecedor || '',                              // N (13) - Tarifa
+        percentualTarifaFornecedor,                          // O (14) - % Tarifa
+        adesaoNumero,                                        // P (15) - Adesão
+        normalizarTexto(situacaoParaSalvar)                  // Q (16) - Situação
+      ];
 
       console.log(`📝 Linha de dados ${i + 1}:`, linhaDados);
       
@@ -1344,7 +1477,7 @@ function atualizarCadastro(aba, dados) {
 
     // 🔥🔥🔥 CORREÇÃO 1: BUSCAR A DATA DE ATIVAÇÃO ORIGINAL
     const dadosAtuais = aba.getRange(linhaAtualizar, 1, 1, 17).getValues()[0];
-    const dataAtivacaoOriginal = dadosAtuais[10]; // Coluna K - Ativação
+    const dataAtivacaoOriginal = dadosAtuais[9]; // Coluna J - Ativação
     
     console.log("📅 Data ativação original:", dataAtivacaoOriginal);
     console.log("📅 Tipo da data original:", typeof dataAtivacaoOriginal);
@@ -1372,23 +1505,27 @@ function atualizarCadastro(aba, dados) {
     // Garantir que a situação seja válida
     const situacaoValida = (dados.situacao && dados.situacao.trim() !== '') ? dados.situacao : 'Novo registro';
 
-    // 🔥🔥🔥 CORREÇÃO 2: MANTER A DATA DE ATIVAÇÃO ORIGINAL
+    // 🔥🔥🔥 CORREÇÃO 2: MANTER A DATA DE ATIVAÇÃO ORIGINAL OU USAR NOVA SEM +1
     let dataAtivacaoParaSalvar = dataAtivacaoOriginal;
     
-    // Se for um objeto Date, formatar corretamente
-    if (dataAtivacaoOriginal instanceof Date) {
-      dataAtivacaoParaSalvar = Utilities.formatDate(dataAtivacaoOriginal, Session.getScriptTimeZone(), "dd/MM/yyyy");
-    }
-    // Se já for string, manter como está
-    else if (typeof dataAtivacaoOriginal === 'string') {
-      dataAtivacaoParaSalvar = dataAtivacaoOriginal;
-    }
-    // Se estiver vazia, usar a data atual (apenas para novos registros)
-    else if (!dataAtivacaoOriginal || dataAtivacaoOriginal === '') {
-      dataAtivacaoParaSalvar = Utilities.formatDate(new Date(), Session.getScriptTimeZone(), "dd/MM/yyyy");
+    if (dados.ativacao && dados.ativacao.trim() !== '') {
+      try {
+        const dataUsuario = new Date(dados.ativacao);
+        // ✅✅✅ CORREÇÃO: REMOVIDO O +1 - USAR DATA EXATA DO USUÁRIO
+        dataAtivacaoParaSalvar = Utilities.formatDate(dataUsuario, CONFIG.TIMEZONE, "dd/MM/yyyy");
+        console.log("📅 NOVA data ativação (EXATA DO USUÁRIO):", dataAtivacaoParaSalvar);
+      } catch (e) {
+        console.error("❌ Erro ao processar data:", e);
+        dataAtivacaoParaSalvar = dataAtivacaoOriginal;
+      }
+    } else {
+      console.log("📅 Mantendo data ativação original:", dataAtivacaoOriginal);
+      if (dataAtivacaoOriginal instanceof Date) {
+        dataAtivacaoParaSalvar = Utilities.formatDate(dataAtivacaoOriginal, CONFIG.TIMEZONE, "dd/MM/yyyy");
+      }
     }
 
-    console.log("📅 Data ativação que será salva:", dataAtivacaoParaSalvar);
+    console.log("📅 Data ativação que será salva (EXATA):", dataAtivacaoParaSalvar);
 
     // Array com 17 colunas na ORDEM CORRETA
     const novosDados = [
@@ -1396,12 +1533,12 @@ function atualizarCadastro(aba, dados) {
       normalizarTexto(dados.nome_fantasia) || '',          // B (1)
       dados.cnpj ? dados.cnpj.toString() : '',             // C (2)
       normalizarTexto(fornecedorParaAtualizar),            // D (3)
-      Utilities.formatDate(new Date(), Session.getScriptTimeZone(), "dd/MM/yyyy HH:mm:ss"), // E (4)
+      Utilities.formatDate(new Date(), CONFIG.TIMEZONE, "dd/MM/yyyy HH:mm:ss"), // E (4)
       normalizarTexto(dados.evento) || '',                 // F (5)
       normalizarTexto(dados.observacoes) || '',            // G (6)
       normalizarTexto(dados.contrato_enviado) || '',       // H (7)
       normalizarTexto(dados.contrato_assinado) || '',      // I (8)
-      dataAtivacaoParaSalvar,                              // J (9)
+      dataAtivacaoParaSalvar,                              // J (9) - ✅ DATA EXATA
       dados.link || '',                                    // K (10)
       mensalidadeNumero,                                   // L (11)
       converterMoedaParaNumero(dados.mensalidade_sim) || 0,// M (12)
@@ -1413,14 +1550,17 @@ function atualizarCadastro(aba, dados) {
 
     console.log("📝 Atualizando linha:", linhaAtualizar);
     console.log("📊 Novos dados:", novosDados);
+    console.log("🎯 Data ativação salva (EXATA):", novosDados[9]);
     
     aba.getRange(linhaAtualizar, 1, 1, novosDados.length).setValues([novosDados]);
     
     // 🔥🔥🔥 CORREÇÃO: ADICIONAR FORMATAÇÃO DA TARIFA
-    aba.getRange(linhaAtualizar, 13).setNumberFormat('"R$"#,##0.00'); // Mensalidade (coluna M)
-    aba.getRange(linhaAtualizar, 16).setNumberFormat('"R$"#,##0.00'); // Adesão (coluna P)
-    aba.getRange(linhaAtualizar, 15).setNumberFormat('0%'); // % Tarifa (coluna O)
-    aba.getRange(linhaAtualizar, 14).setNumberFormat('@'); // 🔥 Tarifa como texto (coluna N)
+    aba.getRange(linhaAtualizar, 12).setNumberFormat('"R$"#,##0.00'); // Mensalidade (L)
+    aba.getRange(linhaAtualizar, 13).setNumberFormat('"R$"#,##0.00'); // Mensalidade SIM (M)
+    aba.getRange(linhaAtualizar, 16).setNumberFormat('"R$"#,##0.00'); // Adesão (P)
+    aba.getRange(linhaAtualizar, 15).setNumberFormat('0.00%');        // % Tarifa (O)
+    aba.getRange(linhaAtualizar, 14).setNumberFormat('@');            // Tarifa como texto (N)
+    aba.getRange(linhaAtualizar, 10).setNumberFormat('dd/MM/yyyy');   // Data Ativação (J)
 
     SpreadsheetApp.flush();
 
@@ -1469,20 +1609,20 @@ function buscarTodosCadastros() {
       // Formatar último evento
       let ultimoEventoFormatado = '';
       if (linha[5] && linha[5] instanceof Date) { // ✅ Último evento
-        ultimoEventoFormatado = Utilities.formatDate(linha[5], Session.getScriptTimeZone(), "dd/MM/yyyy");
+        ultimoEventoFormatado = Utilities.formatDate(linha[5], CONFIG.TIMEZONE, "dd/MM/yyyy");
       } else if (linha[5]) {
         ultimoEventoFormatado = linha[5].toString();
       }
       
       let ativacaoFormatada = '';
       if (linha[10] && linha[10] instanceof Date) { // ✅ Ativação
-        ativacaoFormatada = Utilities.formatDate(linha[10], Session.getScriptTimeZone(), "dd/MM/yyyy");
+        ativacaoFormatada = Utilities.formatDate(linha[10], CONFIG.TIMEZONE, "dd/MM/yyyy");
       } else if (linha[10]) {
         ativacaoFormatada = linha[10].toString();
       }
       
-            // 🔥 CORREÇÃO: ESTRUTURA COM 17 COLUNAS
-            const cadastro = {
+      // 🔥 CORREÇÃO: ESTRUTURA COM 17 COLUNAS
+      const cadastro = {
         id: i + 2,
         razao_social: linha[0]?.toString().trim() || '',     // A - Razão Social (0)
         nome_fantasia: linha[1]?.toString().trim() || '',    // B - Nome Fantasia (1)
@@ -1556,7 +1696,7 @@ function buscarCadastroPorCNPJ(cnpj) {
         // Formatar último evento
         let ultimoEventoFormatado = '';
         if (linha[5] && linha[5] instanceof Date) { // ✅ Último evento
-          ultimoEventoFormatado = Utilities.formatDate(linha[5], Session.getScriptTimeZone(), "dd/MM/yyyy");
+          ultimoEventoFormatado = Utilities.formatDate(linha[5], CONFIG.TIMEZONE, "dd/MM/yyyy");
         } else if (linha[5]) {
           ultimoEventoFormatado = linha[5].toString();
         }
@@ -1564,7 +1704,7 @@ function buscarCadastroPorCNPJ(cnpj) {
         // 🔥 CORREÇÃO: Data ativação para formato do input date
         let ativacaoFormatada = '';
         if (linha[10] && linha[10] instanceof Date) { // ✅ Ativação
-          ativacaoFormatada = Utilities.formatDate(linha[10], Session.getScriptTimeZone(), "yyyy-MM-dd"); // 🔥 FORMATO PARA INPUT DATE
+          ativacaoFormatada = Utilities.formatDate(linha[10], CONFIG.TIMEZONE, "yyyy-MM-dd"); // 🔥 FORMATO PARA INPUT DATE
         } else if (linha[10]) {
           // Se já é string, converter de dd/MM/yyyy para yyyy-MM-dd se necessário
           if (linha[10].includes('/')) {
@@ -1580,17 +1720,17 @@ function buscarCadastroPorCNPJ(cnpj) {
 
         // 🔥🔥🔥 CORREÇÃO CRÍTICA: Converter número para porcentagem
         // ✅ CORREÇÃO: MANTER O VALOR EXATO SEM ARREDONDAMENTO
-let percentualTarifa = '0%';
-if (linha[15] !== null && linha[15] !== undefined && linha[15] !== '') {
-  const valor = parseFloat(linha[15]);
-  if (!isNaN(valor)) {
-    // 🔥 CORREÇÃO: Usar toFixed(2) para manter casas decimais
-    percentualTarifa = (valor * 100).toFixed(2) + '%'; // 0.035 → 3.50%
-  } else {
-    // Se já está como string com %, manter como está
-    percentualTarifa = linha[15]?.toString().trim() || '0%';
-  }
-}
+        let percentualTarifa = '0%';
+        if (linha[15] !== null && linha[15] !== undefined && linha[15] !== '') {
+          const valor = parseFloat(linha[15]);
+          if (!isNaN(valor)) {
+            // 🔥 CORREÇÃO: Usar toFixed(2) para manter casas decimais
+            percentualTarifa = (valor * 100).toFixed(2) + '%'; // 0.035 → 3.50%
+          } else {
+            // Se já está como string com %, manter como está
+            percentualTarifa = linha[15]?.toString().trim() || '0%';
+          }
+        }
         
         console.log(`💰 Tarifa encontrada: "${tarifa}"`);
         console.log(`📊 % Tarifa encontrada: "${percentualTarifa}"`);
@@ -1598,10 +1738,10 @@ if (linha[15] !== null && linha[15] !== undefined && linha[15] !== '') {
         
         // 🔥🔥🔥 CORREÇÃO CRÍTICA: Estrutura de fornecedores para o formulário
         const fornecedorParaFormulario = {
-        nome: linha[3]?.toString().trim() || '', // ✅ CORRIGIDO: índice 3 (Fornecedor)
-        tarifa: tarifa,
-        percentual_tarifa: percentualTarifa
-      };
+          nome: linha[3]?.toString().trim() || '', // ✅ CORRIGIDO: índice 3 (Fornecedor)
+          tarifa: tarifa,
+          percentual_tarifa: percentualTarifa
+        };
         
         console.log("👥 Fornecedor para formulário:", fornecedorParaFormulario);
 
@@ -1668,14 +1808,14 @@ function buscarCadastroPorID(id) {
     // 🔥 CORREÇÃO: ÍNDICES CORRETOS PARA 17 COLUNAS
     let ultimoEventoFormatado = '';
     if (linha[5] && linha[5] instanceof Date) { // ✅ CORRETO: linha[5] é Último evento
-      ultimoEventoFormatado = Utilities.formatDate(linha[5], Session.getScriptTimeZone(), "dd/MM/yyyy HH:mm:ss");
+      ultimoEventoFormatado = Utilities.formatDate(linha[5], CONFIG.TIMEZONE, "dd/MM/yyyy HH:mm:ss");
     } else if (linha[5]) {
       ultimoEventoFormatado = linha[5].toString();
     }
     
     let ativacaoFormatada = '';
     if (linha[10] && linha[10] instanceof Date) { // ✅ CORRETO: linha[10] é Ativação
-      ativacaoFormatada = Utilities.formatDate(linha[10], Session.getScriptTimeZone(), "yyyy-MM-dd"); // 🔥 FORMATO PARA INPUT DATE
+      ativacaoFormatada = Utilities.formatDate(linha[10], CONFIG.TIMEZONE, "yyyy-MM-dd"); // 🔥 FORMATO PARA INPUT DATE
     } else if (linha[10]) {
       // Se já é string, converter de dd/MM/yyyy para yyyy-MM-dd se necessário
       if (linha[10].includes('/')) {
@@ -1691,17 +1831,17 @@ function buscarCadastroPorID(id) {
 
     // 🔥🔥🔥 CORREÇÃO CRÍTICA: Converter número para porcentagem
     // ✅ CORREÇÃO: MANTER O VALOR EXATO SEM ARREDONDAMENTO
-let percentualTarifa = '0%';
-if (linha[15] !== null && linha[15] !== undefined && linha[15] !== '') {
-  const valor = parseFloat(linha[15]);
-  if (!isNaN(valor)) {
-    // 🔥 CORREÇÃO: Usar toFixed(2) para manter casas decimais
-    percentualTarifa = (valor * 100).toFixed(2) + '%'; // 0.035 → 3.50%
-  } else {
-    // Se já está como string com %, manter como está
-    percentualTarifa = linha[15]?.toString().trim() || '0%';
-  }
-}
+    let percentualTarifa = '0%';
+    if (linha[15] !== null && linha[15] !== undefined && linha[15] !== '') {
+      const valor = parseFloat(linha[15]);
+      if (!isNaN(valor)) {
+        // 🔥 CORREÇÃO: Usar toFixed(2) para manter casas decimais
+        percentualTarifa = (valor * 100).toFixed(2) + '%'; // 0.035 → 3.50%
+      } else {
+        // Se já está como string com %, manter como está
+        percentualTarifa = linha[15]?.toString().trim() || '0%';
+      }
+    }
   
     console.log(`💰 Tarifa encontrada: "${tarifa}"`);
     console.log(`📊 % Tarifa encontrada: "${percentualTarifa}"`);
@@ -1960,6 +2100,23 @@ function testarPercentualCorrigido() {
   console.log("🎯 RESULTADO DO TESTE:");
   console.log("Percentual tarifa:", resultado.percentual_tarifa);
   console.log("Deve ser 3.50% (não 4%)");
+  return resultado;
+}
+
+// 🔥🔥🔥 FUNÇÃO DE TESTE DO FUSO HORÁRIO
+function testarFusoHorario() {
+  console.log("=== 🧪 TESTE FUSO HORÁRIO ===");
+  
+  const dataTeste = new Date();
+  const resultado = {
+    dataOriginal: dataTeste.toString(),
+    comFormatarDataBrasil: formatarDataBrasil(dataTeste),
+    comUtilities: Utilities.formatDate(dataTeste, CONFIG.TIMEZONE, "dd/MM/yyyy HH:mm:ss"),
+    timezoneConfig: CONFIG.TIMEZONE
+  };
+  
+  console.log("📊 Resultado do teste:", resultado);
+  
   return resultado;
 }
 
