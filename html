@@ -742,6 +742,26 @@
       color: #0f5132;
     }
 
+    /* 🔥 ESTILO PARA SEM DEFASAGEM */
+.sem-defasagem {
+  background: #e9ecef !important;
+  color: #6c757d !important;
+  border: 1px solid #dee2e6 !important;
+}
+
+.sem-defasagem-badge {
+  padding: 6px 10px !important;
+  border-radius: 8px !important;
+  font-size: 0.75rem !important;
+  font-weight: 600 !important;
+  background: #e9ecef !important;
+  color: #6c757d !important;
+  border: 1px solid #dee2e6 !important;
+  min-width: 70px;
+  display: inline-block;
+  text-align: center;
+}
+
     .filtros-eventos {
       display: none;
       margin-top: 8px;
@@ -1804,8 +1824,7 @@
   height: 100% !important;
 }
 
-      
-    }
+  }
   </style>
 </head>
 <body>
@@ -2978,12 +2997,21 @@ function exibirModalFornecedores(cnpj, lojas) {
           </span>
         </div>
         
+        ${loja.situacao && loja.situacao.toUpperCase() === 'EM ANDAMENTO' ? `
         <div style="background: #fff3cd; padding: 6px 10px; border-radius: 5px; margin-bottom: 8px; border-left: 2px solid var(--warning);">
           <strong>⏰ Defasagem:</strong> 
           <span style="color: ${calcularDefasagem(loja.ultimo_evento).includes('30') || calcularDefasagem(loja.ultimo_evento).includes('31') ? 'var(--danger)' : 'var(--dark)'}; font-weight: 600;">
             ${calcularDefasagem(loja.ultimo_evento)}
           </span>
         </div>
+        ` : `
+        <div style="background: #e9ecef; padding: 6px 10px; border-radius: 5px; margin-bottom: 8px; border-left: 2px solid #6c757d;">
+          <strong>⏰ Defasagem:</strong> 
+          <span style="color: #6c757d; font-weight: 600;">
+            Sem defasagem
+          </span>
+        </div>
+        `}
         
         <div style="margin-top: 8px; display: flex; gap: 8px; flex-wrap: wrap;">
           <!-- 🔥🔥🔥 BOTÃO EDITAR ADICIONADO AQUI -->
@@ -3215,9 +3243,6 @@ function corrigirHoraFrontend(dataHoraString) {
 console.log("🔥 Correção aplicada: UTC → GMT-3 (5 horas)");
 
 
-// 🔥🔥🔥 FUNÇÃO COMPLETA CORRIGIDA - MOSTRA HORA CERTA
-// 🔥🔥🔥 FUNÇÃO COMPLETA CORRIGIDA - MOSTRA HORA CERTA
-// 🔥🔥🔥 FUNÇÃO COMPLETA CORRIGIDA - MOSTRA HORA CERTA
 function criarLinhaTabelaAgrupada(grupo) {
   const row = document.createElement('tr');
   
@@ -3285,13 +3310,39 @@ function criarLinhaTabelaAgrupada(grupo) {
     `;
   }
 
-  // 🔥 CALCULAR DEFASAGEM (USA O MESMO FORNECEDOR MAIS ATRASADO)
-  const defasagemInfo = calcularDefasagemPorCNPJ(grupo.lojas);
-  
-  const defasagemTexto = defasagemInfo.dias === 0 ? 'Hoje' : 
-                        defasagemInfo.dias === 1 ? '1 dia' : 
-                        defasagemInfo.dias > 1 && defasagemInfo.dias < 9999 ? `${defasagemInfo.dias} dias` : 'N/A';
-  const defasagemClass = getDefasagemClass(defasagemTexto);
+  // 🔥 CORREÇÃO: SÓ MOSTRAR DEFASAGEM SE HOUVER LOJA EM ANDAMENTO
+  const temLojaEmAndamento = grupo.lojas.some(loja => 
+    loja.situacao && loja.situacao.toUpperCase() === 'EM ANDAMENTO'
+  );
+
+  let defasagemHTML = '';
+  if (temLojaEmAndamento) {
+    const defasagemInfo = calcularDefasagemPorCNPJ(grupo.lojas);
+    const defasagemTexto = defasagemInfo.dias === 0 ? 'Hoje' : 
+                          defasagemInfo.dias === 1 ? '1 dia' : 
+                          defasagemInfo.dias > 1 && defasagemInfo.dias < 9999 ? `${defasagemInfo.dias} dias` : 'N/A';
+    const defasagemClass = getDefasagemClass(defasagemTexto);
+    
+    defasagemHTML = `
+      <td style="text-align: center;">
+        <div class="defasagem-container">
+          <span class="defasagem-badge ${defasagemClass}" title="Fornecedor mais antigo: ${defasagemInfo.fornecedor}">
+            ${defasagemTexto}
+          </span>
+        </div>
+      </td>
+    `;
+  } else {
+    defasagemHTML = `
+      <td style="text-align: center;">
+        <div class="defasagem-container">
+          <span class="sem-defasagem-badge" title="Nenhuma loja em andamento">
+            Sem defasagem
+          </span>
+        </div>
+      </td>
+    `;
+  }
 
   row.innerHTML = `
     <td>
@@ -3317,13 +3368,7 @@ function criarLinhaTabelaAgrupada(grupo) {
     <td>
       ${ultimoEventoInfo}
     </td>
-    <td style="text-align: center;">
-      <div class="defasagem-container">
-        <span class="defasagem-badge ${defasagemClass}" title="Fornecedor mais antigo: ${defasagemInfo.fornecedor}">
-          ${defasagemTexto}
-        </span>
-      </div>
-    </td>
+    ${defasagemHTML}
     <td style="font-weight: 600; color: var(--success); text-align: center;">
       ${formatarMoedaParaInput(grupo.lojas[0]?.mensalidade)}
     </td>
@@ -3339,6 +3384,8 @@ function criarLinhaTabelaAgrupada(grupo) {
 
   return row;
 }
+
+
 // 🔥🔥🔥 FUNÇÃO AUXILIAR PARA ENCONTRAR FORNECEDOR MAIS ATRASADO
 function encontrarFornecedorMaisAntigo(lojasDoCNPJ) {
   if (!lojasDoCNPJ || lojasDoCNPJ.length === 0) {
@@ -3466,8 +3513,6 @@ function filtrarPesquisa() {
 
 
 // 🔥🔥🔥 FUNÇÃO PARA ORDENAR CADASTROS - CORRIGIDA
-// 🔥🔥🔥 FUNÇÃO CORRIGIDA PARA ORDENAR CADASTROS
-// 🔥🔥🔥 FUNÇÃO CORRIGIDA PARA ORDENAR CADASTROS
 function ordenarCadastros() {
   const criterio = document.getElementById('ordenacaoCadastros').value;
   
@@ -3495,12 +3540,12 @@ function ordenarCadastros() {
         const fornecedorB = b.lojas[0]?.fornecedor || '';
         return fornecedorA.localeCompare(fornecedorB);
       case 'defasagem':
-        const defasagemA = calcularDefasagemPorCNPJ(a.lojas).dias;
-        const defasagemB = calcularDefasagemPorCNPJ(b.lojas).dias;
+        const defasagemA = calcularDefasagemParaOrdenacao(a.lojas);
+        const defasagemB = calcularDefasagemParaOrdenacao(b.lojas);
         return defasagemB - defasagemA;
       case 'defasagem_asc':
-        const defasagemAAsc = calcularDefasagemPorCNPJ(a.lojas).dias;
-        const defasagemBAsc = calcularDefasagemPorCNPJ(b.lojas).dias;
+        const defasagemAAsc = calcularDefasagemParaOrdenacao(a.lojas);
+        const defasagemBAsc = calcularDefasagemParaOrdenacao(b.lojas);
         return defasagemAAsc - defasagemBAsc;
       case 'mensalidade':
         const mensalidadeA = parseFloat(a.lojas[0]?.mensalidade || 0);
@@ -3524,6 +3569,34 @@ function ordenarCadastros() {
   });
   
   exibirTabelaCadastrosAgrupada(cadastrosAgrupados, 'Cadastros Ordenados');
+}
+
+// 🔥 NOVA FUNÇÃO: Calcular defasagem para ordenação (considera status)
+function calcularDefasagemParaOrdenacao(lojasDoCNPJ) {
+  if (!lojasDoCNPJ || lojasDoCNPJ.length === 0) {
+    return 0; // Se não tem lojas, defasagem = 0
+  }
+  
+  // 🔥 VERIFICAR SE TEM ALGUMA LOJA EM ANDAMENTO
+  const temLojaEmAndamento = lojasDoCNPJ.some(loja => 
+    loja.situacao && loja.situacao.toUpperCase() === 'EM ANDAMENTO'
+  );
+  
+  // 🔥 SE NÃO TEM LOJA EM ANDAMENTO, DEFASAGEM = 0
+  if (!temLojaEmAndamento) {
+    return 0;
+  }
+  
+  // 🔥 SE TEM LOJA EM ANDAMENTO, CALCULAR A DEFASAGEM REAL
+  const defasagemInfo = calcularDefasagemPorCNPJ(lojasDoCNPJ);
+  
+  console.log("🎯 Defasagem para ordenação:", {
+    cnpj: lojasDoCNPJ[0]?.cnpj,
+    temLojaEmAndamento: temLojaEmAndamento,
+    defasagemDias: defasagemInfo.dias
+  });
+  
+  return defasagemInfo.dias < 9999 ? defasagemInfo.dias : 0;
 }
 
 // 🔥🔥🔥 FUNÇÃO PARA RECARREGAR CADASTROS - ATUALIZADA SEGUINDO O MODELO
@@ -3594,7 +3667,7 @@ function editarCadastroDoModal() {
   // Chamar a função existente de edição
   editarCadastroModal(cadastroAtualModalId);
 }
-// 🔥🔥🔥 FUNÇÃO COMPLETA CORRIGIDA PARA MODAL (SEM ERROS)
+
 function exibirModalDetalhesCompleto(dados) {
   const modal = document.getElementById('modalDetalhes');
   const content = document.getElementById('modalDetalhesContent');
@@ -3621,8 +3694,11 @@ function exibirModalDetalhesCompleto(dados) {
   console.log("Último evento corrigido:", ultimoEventoCorrigido);
   console.log("Defasagem calculada:", defasagem);
 
-  // 🔥 SEÇÃO DE DEFASAGEM
-  const secaoDefasagem = defasagem !== 'N/A' && defasagem !== '0 dias' && defasagem !== 'Data inválida' && defasagem !== 'Erro no cálculo' ? `
+  // 🔥 CORREÇÃO: SÓ MOSTRAR DEFASAGEM SE FOR EM ANDAMENTO
+  const mostrarDefasagem = dados.situacao && dados.situacao.toUpperCase() === 'EM ANDAMENTO';
+
+  // 🔥 SEÇÃO DE DEFASAGEM (SÓ SE FOR EM ANDAMENTO)
+  const secaoDefasagem = mostrarDefasagem && defasagem !== 'N/A' && defasagem !== '0 dias' && defasagem !== 'Data inválida' && defasagem !== 'Erro no cálculo' ? `
     <div class="detalhe-item" style="grid-column: 1 / -1; background: #fff5f5; border-left: 4px solid #dc3545; margin-top: 10px;">
         <span class="detalhe-label" style="font-size: 1.1em; color: #dc3545;">
             <i class="fas fa-clock"></i> ⚠️ INFORMAÇÕES DE DEFASAGEM
@@ -3638,7 +3714,23 @@ function exibirModalDetalhesCompleto(dados) {
             </span>
         </div>
     </div>
-  ` : '';
+  ` : mostrarDefasagem ? '' : `
+    <div class="detalhe-item" style="grid-column: 1 / -1; background: #e9ecef; border-left: 4px solid #6c757d; margin-top: 10px;">
+        <span class="detalhe-label" style="font-size: 1.1em; color: #6c757d;">
+            <i class="fas fa-clock"></i> INFORMAÇÕES DE DEFASAGEM
+        </span>
+    </div>
+    
+    <div class="detalhe-item">
+        <span class="detalhe-label">⏰ Defasagem</span>
+        <div class="detalhe-valor">
+            <span style="display: inline-flex; align-items: center; gap: 5px; background: #e9ecef; color: #6c757d; padding: 4px 10px; border-radius: 15px; font-size: 0.9rem; font-weight: 600;">
+                <i class="fas fa-clock"></i>
+                Sem defasagem
+            </span>
+        </div>
+    </div>
+  `;
 
   content.innerHTML = `
     ${waitlabelInfo}
