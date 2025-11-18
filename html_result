@@ -728,6 +728,54 @@
       box-shadow: 0 2px 8px rgba(0,0,0,0.1);
     }
 
+    /* 🔥 POPUP DE CARREGAMENTO */
+    .loading-popup {
+      position: fixed;
+      top: 0;
+      left: 0;
+      width: 100%;
+      height: 100%;
+      background: rgba(0, 0, 0, 0.8);
+      display: none;
+      justify-content: center;
+      align-items: center;
+      z-index: 20000;
+      flex-direction: column;
+    }
+
+    .loading-popup-content {
+      background: white;
+      border-radius: 15px;
+      padding: 30px;
+      max-width: 400px;
+      width: 90%;
+      text-align: center;
+      box-shadow: 0 10px 30px rgba(0, 0, 0, 0.3);
+      border: 3px solid var(--primary);
+    }
+
+    .loading-popup-spinner {
+      width: 60px;
+      height: 60px;
+      border: 5px solid #f3f3f3;
+      border-top: 5px solid var(--primary);
+      border-radius: 50%;
+      animation: spin 1s linear infinite;
+      margin: 0 auto 20px;
+    }
+
+    .loading-popup-text {
+      font-size: 1.2rem;
+      font-weight: 600;
+      color: var(--dark);
+      margin-bottom: 10px;
+    }
+
+    .loading-popup-subtext {
+      font-size: 0.9rem;
+      color: var(--gray);
+    }
+
     @media (max-width: 1200px) {
       .data-table {
         font-size: 0.8rem;
@@ -758,7 +806,7 @@
       }
       
       h1 {
-        font-size: 1.8rem;
+        fontSize: 1.8rem;
       }
       
       .card-header {
@@ -800,6 +848,15 @@
   </style>
 </head>
 <body>
+  <!-- 🔥 POPUP DE CARREGAMENTO -->
+  <div id="loadingPopup" class="loading-popup">
+    <div class="loading-popup-content">
+      <div class="loading-popup-spinner"></div>
+      <div class="loading-popup-text" id="loadingPopupText">Carregando...</div>
+      <div class="loading-popup-subtext" id="loadingPopupSubtext">Aguarde um momento</div>
+    </div>
+  </div>
+
   <div class="container">
   <div class="header">
     <div class="logo-container">
@@ -1044,9 +1101,28 @@ const fornecedoresDisponiveis = [
 // 🔥 INICIALIZAÇÃO
 document.addEventListener('DOMContentLoaded', function() {
   console.log('Sistema de Visualização - Carregando dados...');
+  // 🔥 NOVO: Mostrar popup de carregamento inicial
+  showLoadingPopup('Carregando Lojas', 'Aguarde enquanto buscamos os dados...');
   carregarCadastros();
   configurarEventosFiltro();
 });
+
+// 🔥 FUNÇÕES DO POPUP DE CARREGAMENTO
+function showLoadingPopup(texto, subtexto) {
+  const popup = document.getElementById('loadingPopup');
+  const textoEl = document.getElementById('loadingPopupText');
+  const subtextoEl = document.getElementById('loadingPopupSubtext');
+  
+  textoEl.textContent = texto || 'Carregando...';
+  subtextoEl.textContent = subtexto || 'Aguarde um momento';
+  
+  popup.style.display = 'flex';
+}
+
+function hideLoadingPopup() {
+  const popup = document.getElementById('loadingPopup');
+  popup.style.display = 'none';
+}
 
 // 🔥 CONFIGURAR EVENTOS DOS FILTROS
 function configurarEventosFiltro() {
@@ -1287,6 +1363,7 @@ function carregarCadastros() {
   google.script.run
     .withSuccessHandler(function(cadastros) {
       hideLoading();
+      hideLoadingPopup(); // 🔥 NOVO: Esconder popup de carregamento
       
       console.log("✅ Cadastros recebidos:", cadastros);
       
@@ -1321,6 +1398,7 @@ function carregarCadastros() {
     })
     .withFailureHandler(function(error) {
       hideLoading();
+      hideLoadingPopup(); // 🔥 NOVO: Esconder popup de carregamento mesmo em caso de erro
       console.error("❌ Erro ao carregar cadastros:", error);
       showMessage('error', '❌ Erro ao carregar cadastros: ' + error.message);
     })
@@ -1836,6 +1914,9 @@ function limparTodosFiltros() {
 
 // 🔥 FUNÇÕES DOS MODAIS
 function verTodosFornecedores(cnpj) {
+  // 🔥 NOVO: Mostrar popup de carregamento para modal
+  showLoadingPopup('Carregando Fornecedores', 'Buscando informações dos fornecedores...');
+  
   const lojasDoCNPJ = todosCadastros.filter(cadastro => cadastro.cnpj === cnpj);
   exibirModalFornecedores(cnpj, lojasDoCNPJ);
 }
@@ -1926,6 +2007,8 @@ function exibirModalFornecedores(cnpj, lojas) {
     `;
     
     modal.style.display = 'flex';
+    // 🔥 NOVO: Esconder popup de carregamento após carregar o modal
+    hideLoadingPopup();
 }
 
 function fecharModalFornecedores() {
@@ -1936,12 +2019,19 @@ function fecharModalFornecedores() {
 function verDetalhesCadastroModal(id) {
   console.log("👀 Visualizando detalhes ID:", id);
   
+  // 🔥 NOVO: Mostrar popup de carregamento para detalhes
+  showLoadingPopup('Carregando Detalhes', 'Buscando informações completas...');
+  
   google.script.run
     .withSuccessHandler(function(dados) {
       console.log("✅ Dados recebidos para detalhes:", dados);
       exibirModalDetalhesCompleto(dados);
+      // 🔥 NOVO: Esconder popup de carregamento após carregar os detalhes
+      hideLoadingPopup();
     })
     .withFailureHandler(function(error) {
+      // 🔥 NOVO: Esconder popup de carregamento mesmo em caso de erro
+      hideLoadingPopup();
       showMessage('error', '❌ Erro ao carregar detalhes: ' + error.message);
     })
     .buscarCadastroPorIDComWaitlabel(id, waitlabelAtual);
