@@ -1,0 +1,400 @@
+// CONFIGURAÇÃO DA PLANILHA FILHA (SOMENTE LEITURA) - CORRIGIDA
+const CONFIG_FILHA = {
+  ID_PLANILHA_MAE: "1V4iGN14UpIQcwf3qKU0_Wbiy2exdW2WUmrYTniy0upA",
+  WAITLABEL_FILHA: "Doktorbank", // Altere para o nome da sua aba filha
+  TIMEZONE: "America/Sao_Paulo"
+};
+
+// 🔥🔥🔥 FUNÇÃO CORRIGIDA - SIMPLIFICADA PARA VISUALIZAÇÃO
+function formatarDataBrasilVisualizacao(data) {
+  if (!data) return '';
+  
+  try {
+    console.log("📅 formatarDataBrasilVisualizacao - Entrada:", data, "Tipo:", typeof data);
+    
+    // 🔥 CORREÇÃO: Se já é string no formato correto, retornar COMO ESTÁ
+    if (typeof data === 'string') {
+      // Verificar se já está no formato dd/MM/yyyy HH:mm:ss
+      if (data.match(/^\d{2}\/\d{2}\/\d{4} \d{2}:\d{2}:\d{2}$/)) {
+        console.log("✅ Já está no formato correto - retornando como está:", data);
+        return data;
+      }
+      // Verificar se está no formato dd/MM/yyyy
+      if (data.match(/^\d{2}\/\d{2}\/\d{4}$/)) {
+        console.log("✅ Já está no formato data simples - retornando como está:", data);
+        return data;
+      }
+    }
+    
+    // Se é objeto Date, formatar CORRETAMENTE
+    if (data instanceof Date) {
+      const dataBrasil = Utilities.formatDate(data, CONFIG_FILHA.TIMEZONE, "dd/MM/yyyy HH:mm:ss");
+      console.log("✅ Date convertido:", data.toString(), "→", dataBrasil);
+      return dataBrasil;
+    }
+    
+    // Para outros casos, tentar converter
+    try {
+      const dataObj = new Date(data);
+      if (!isNaN(dataObj.getTime())) {
+        const dataBrasil = Utilities.formatDate(dataObj, CONFIG_FILHA.TIMEZONE, "dd/MM/yyyy HH:mm:ss");
+        console.log("✅ Outro tipo convertido:", data, "→", dataBrasil);
+        return dataBrasil;
+      }
+    } catch (e) {
+      console.log("⚠️ Não conseguiu converter, retornando original:", data);
+      return data.toString();
+    }
+    
+    return data ? data.toString() : '';
+    
+  } catch (error) {
+    console.error("❌ Erro em formatarDataBrasilVisualizacao:", error);
+    return data ? data.toString() : '';
+  }
+}
+
+// 🔥🔥🔥 FUNÇÃO PRINCIPAL CORRIGIDA
+function doGet() {
+  const htmlOutput = HtmlService.createHtmlOutputFromFile('IndexFilha')
+    .setTitle('Sistema - Visualização de Dados')
+    .setXFrameOptionsMode(HtmlService.XFrameOptionsMode.ALLOWALL);
+  
+  return htmlOutput;
+}
+
+// 🔥🔥🔥 BUSCAR TODOS OS CADASTROS - VERSÃO DEFINITIVAMENTE CORRIGIDA
+function buscarTodosCadastrosComWaitlabel(waitlabel) {
+  try {
+    console.log("🔍 [VISUALIZAÇÃO] Buscando dados no waitlabel:", waitlabel);
+    
+    const ss = SpreadsheetApp.openById(CONFIG_FILHA.ID_PLANILHA_MAE);
+    const aba = ss.getSheetByName(waitlabel);
+    
+    if (!aba) {
+      console.log("❌ Aba não encontrada:", waitlabel);
+      return [];
+    }
+    
+    const ultimaLinha = aba.getLastRow();
+    console.log("📊 Última linha encontrada:", ultimaLinha);
+    
+    if (ultimaLinha < 2) return [];
+    
+    // Buscar dados - usar número fixo de colunas para consistência
+    const dados = aba.getRange(2, 1, ultimaLinha - 1, 17).getValues();
+    console.log("📈 Dados brutos encontrados:", dados.length);
+    
+    const cadastros = [];
+    
+    for (let i = 0; i < dados.length; i++) {
+      const linha = dados[i];
+      
+      if (!linha || !linha[0] || linha[0].toString().trim() === '') continue;
+
+      // 🔥🔥🔥 CORREÇÃO CRÍTICA: Processamento SIMPLIFICADO de datas
+      let ultimoEventoFormatado = linha[4] ? linha[4].toString() : '';
+      
+      // Se é Date, formatar corretamente
+      if (linha[4] instanceof Date) {
+        ultimoEventoFormatado = Utilities.formatDate(linha[4], CONFIG_FILHA.TIMEZONE, "dd/MM/yyyy HH:mm:ss");
+      }
+      
+      let ativacaoFormatada = linha[9] ? linha[9].toString() : '';
+      
+      // Se é Date, formatar para exibição simples
+      if (linha[9] instanceof Date) {
+        ativacaoFormatada = Utilities.formatDate(linha[9], CONFIG_FILHA.TIMEZONE, "dd/MM/yyyy");
+      }
+
+      // 🔥 CORREÇÃO: Processamento do percentual - MAIS SIMPLES
+      let percentualTarifa = '0%';
+      if (linha[14] !== null && linha[14] !== undefined && linha[14] !== '') {
+        const valor = linha[14];
+        
+        if (typeof valor === 'number') {
+          // Número direto: 0.035 → 3.50%
+          percentualTarifa = (valor * 100).toFixed(2) + '%';
+        } else if (typeof valor === 'string') {
+          const valorStr = valor.toString().trim();
+          if (valorStr.includes('%')) {
+            percentualTarifa = valorStr;
+          } else {
+            // Tentar converter string para número
+            const valorNum = parseFloat(valorStr.replace(',', '.'));
+            if (!isNaN(valorNum)) {
+              percentualTarifa = valorNum.toFixed(2) + '%';
+            }
+          }
+        }
+      }
+
+      // 🔥 CORREÇÃO: Processamento da adesão - MAIS SIMPLES
+      let adesaoFormatada = 'Isento';
+      if (linha[15] !== null && linha[15] !== undefined && linha[15] !== '') {
+        const valorAdesao = linha[15];
+        if (typeof valorAdesao === 'number' && valorAdesao > 0) {
+          adesaoFormatada = valorAdesao;
+        } else if (typeof valorAdesao === 'string') {
+          const valorStr = valorAdesao.toString().trim();
+          if (valorStr !== 'Isento' && valorStr !== '0' && valorStr !== '0.00') {
+            const valorNum = parseFloat(valorStr.replace('R$', '').replace(/\./g, '').replace(',', '.').trim());
+            if (!isNaN(valorNum) && valorNum > 0) {
+              adesaoFormatada = valorNum;
+            }
+          }
+        }
+      }
+
+      // Estrutura somente leitura - CORRIGIDA E SIMPLIFICADA
+      const cadastro = {
+        id: i + 2,
+        razao_social: linha[0]?.toString().trim() || '',
+        nome_fantasia: linha[1]?.toString().trim() || '',
+        cnpj: formatarCNPJNoSheets(linha[2]?.toString().trim() || ''),
+        fornecedor: linha[3]?.toString().trim() || '',
+        ultimo_evento: ultimoEventoFormatado, // 🔥 JÁ VEM CORRETO DA PLANILHA
+        evento: linha[5]?.toString().trim() || '',
+        observacoes: linha[6]?.toString().trim() || '',
+        contrato_enviado: linha[7]?.toString().trim() || '',
+        contrato_assinado: linha[8]?.toString().trim() || '',
+        ativacao: ativacaoFormatada, // 🔥 JÁ VEM CORRETO DA PLANILHA
+        link: linha[10]?.toString().trim() || '',
+        mensalidade: typeof linha[11] === 'number' ? linha[11] : 0,
+        mensalidade_sim: typeof linha[12] === 'number' ? linha[12] : 0,
+        tarifa: linha[13]?.toString().trim() || '',
+        percentual_tarifa: percentualTarifa,
+        adesao: adesaoFormatada,
+        situacao: (linha[16]?.toString().trim() || 'Novo registro'),
+        waitlabel: waitlabel
+      };
+      
+      cadastros.push(cadastro);
+    }
+    
+    console.log("✅ Dados carregados para visualização:", cadastros.length);
+    return cadastros;
+    
+  } catch (error) {
+    console.error("❌ Erro na busca:", error);
+    return [];
+  }
+}
+
+// 🔥🔥🔥 BUSCAR CADASTRO POR ID - VERSÃO DEFINITIVAMENTE CORRIGIDA
+function buscarCadastroPorIDComWaitlabel(id, waitlabel) {
+  try {
+    console.log("🔍 [VISUALIZAÇÃO] Buscando cadastro por ID:", id, "no waitlabel:", waitlabel);
+    
+    const ss = SpreadsheetApp.openById(CONFIG_FILHA.ID_PLANILHA_MAE);
+    const aba = ss.getSheetByName(waitlabel);
+    if (!aba) return { encontrado: false, mensagem: "Waitlabel não encontrado" };
+    
+    const ultimaLinha = aba.getLastRow();
+    if (ultimaLinha < id) return { encontrado: false, mensagem: "Registro não encontrado" };
+    
+    const linha = aba.getRange(id, 1, 1, 17).getValues()[0];
+    
+    if (!linha[0] || linha[0].toString().trim() === '') {
+      return { encontrado: false, mensagem: "Registro vazio ou não encontrado" };
+    }
+
+    console.log("📊 DEBUG - Linha encontrada na linha", id);
+    console.log("🔍 Coluna E [4] - Último evento:", linha[4], "Tipo:", typeof linha[4]);
+    console.log("🔍 Coluna J [9] - Ativação:", linha[9], "Tipo:", typeof linha[9]);
+
+    // 🔥🔥🔥 CORREÇÃO CRÍTICA: Processamento DIRETO das datas
+    let ultimoEventoFormatado = linha[4] ? linha[4].toString() : '';
+    
+    // Se é Date, formatar mantendo o formato brasileiro
+    if (linha[4] instanceof Date) {
+      ultimoEventoFormatado = Utilities.formatDate(linha[4], CONFIG_FILHA.TIMEZONE, "dd/MM/yyyy HH:mm:ss");
+    }
+    
+    let ativacaoFormatada = '';
+    if (linha[9]) {
+      if (linha[9] instanceof Date) {
+        // 🔥 CORREÇÃO: Para input date, usar formato yyyy-MM-dd
+        ativacaoFormatada = Utilities.formatDate(linha[9], CONFIG_FILHA.TIMEZONE, "yyyy-MM-dd");
+      } else {
+        // Se já é string, verificar formato e converter se necessário
+        const dataStr = linha[9].toString();
+        if (dataStr.includes('/')) {
+          // Converter de dd/MM/yyyy para yyyy-MM-dd
+          const partes = dataStr.split('/');
+          if (partes.length === 3) {
+            ativacaoFormatada = `${partes[2]}-${partes[1]}-${partes[0]}`;
+          } else {
+            ativacaoFormatada = dataStr;
+          }
+        } else {
+          ativacaoFormatada = dataStr;
+        }
+      }
+    }
+
+    // 🔥 CORREÇÃO: Processamento SIMPLIFICADO do percentual
+    let percentualTarifa = '0%';
+    if (linha[14] !== null && linha[14] !== undefined && linha[14] !== '') {
+      const valor = linha[14];
+      
+      if (typeof valor === 'number') {
+        percentualTarifa = (valor * 100).toFixed(2) + '%';
+      } else if (typeof valor === 'string') {
+        const valorStr = valor.toString().trim();
+        if (valorStr.includes('%')) {
+          percentualTarifa = valorStr;
+        } else {
+          const valorNum = parseFloat(valorStr.replace(',', '.'));
+          if (!isNaN(valorNum)) {
+            percentualTarifa = valorNum.toFixed(2) + '%';
+          }
+        }
+      }
+    }
+
+    // 🔥 CORREÇÃO: Processamento SIMPLIFICADO da adesão
+    let adesaoFormatada = 'Isento';
+    if (linha[15] !== null && linha[15] !== undefined && linha[15] !== '') {
+      const valorAdesao = linha[15];
+      if (typeof valorAdesao === 'number' && valorAdesao > 0) {
+        adesaoFormatada = valorAdesao;
+      } else if (typeof valorAdesao === 'string') {
+        const valorStr = valorAdesao.toString().trim();
+        if (valorStr !== 'Isento' && valorStr !== '0' && valorStr !== '0.00') {
+          const valorNum = parseFloat(valorStr.replace('R$', '').replace(/\./g, '').replace(',', '.').trim());
+          if (!isNaN(valorNum) && valorNum > 0) {
+            adesaoFormatada = valorNum;
+          }
+        }
+      }
+    }
+
+    const resultado = {
+      encontrado: true,
+      id: id,
+      razao_social: linha[0]?.toString().trim() || '',
+      nome_fantasia: linha[1]?.toString().trim() || '',
+      cnpj: formatarCNPJNoSheets(linha[2]?.toString().trim() || ''),
+      fornecedor: linha[3]?.toString().trim() || '',
+      ultimo_evento: ultimoEventoFormatado, // 🔥 AGORA CORRETO
+      evento: linha[5]?.toString().trim() || '',
+      observacoes: linha[6]?.toString().trim() || '',
+      contrato_enviado: linha[7]?.toString().trim() || '',
+      contrato_assinado: linha[8]?.toString().trim() || '',
+      ativacao: ativacaoFormatada, // 🔥 AGORA CORRETO
+      link: linha[10]?.toString().trim() || '',
+      mensalidade: typeof linha[11] === 'number' ? linha[11] : 0,
+      mensalidade_sim: typeof linha[12] === 'number' ? linha[12] : 0,
+      tarifa: linha[13]?.toString().trim() || '',
+      percentual_tarifa: percentualTarifa,
+      adesao: adesaoFormatada,
+      situacao: (linha[16]?.toString().trim() || 'Novo registro'),
+      waitlabel: waitlabel
+    };
+
+    console.log("✅ [VISUALIZAÇÃO] Cadastro processado:", {
+      id: resultado.id,
+      razao_social: resultado.razao_social,
+      ultimo_evento: resultado.ultimo_evento,
+      ativacao: resultado.ativacao
+    });
+    
+    return resultado;
+    
+  } catch (error) {
+    console.error("❌ Erro em buscarCadastroPorIDComWaitlabel:", error);
+    return { encontrado: false, mensagem: "Erro: " + error.message };
+  }
+}
+
+// 🔥🔥🔥 FUNÇÃO DE TESTE ESPECÍFICA PARA DATAS
+function testarDatasVisualizacao() {
+  try {
+    console.log("=== 🧪 TESTE ESPECÍFICO PARA VISUALIZAÇÃO ===");
+    
+    const ss = SpreadsheetApp.openById(CONFIG_FILHA.ID_PLANILHA_MAE);
+    const aba = ss.getSheetByName(CONFIG_FILHA.WAITLABEL_FILHA);
+    
+    if (!aba) {
+      return { error: "Aba não encontrada" };
+    }
+    
+    // Buscar algumas linhas para testar
+    const dadosTeste = aba.getRange(2, 1, 5, 17).getValues();
+    const resultadosTeste = [];
+    
+    for (let i = 0; i < dadosTeste.length; i++) {
+      const linha = dadosTeste[i];
+      if (!linha[0] || linha[0].toString().trim() === '') continue;
+      
+      const ultimoEventoOriginal = linha[4];
+      const ativacaoOriginal = linha[9];
+      
+      // Processar como na função corrigida
+      let ultimoEventoFormatado = ultimoEventoOriginal ? ultimoEventoOriginal.toString() : '';
+      if (ultimoEventoOriginal instanceof Date) {
+        ultimoEventoFormatado = Utilities.formatDate(ultimoEventoOriginal, CONFIG_FILHA.TIMEZONE, "dd/MM/yyyy HH:mm:ss");
+      }
+      
+      let ativacaoFormatada = '';
+      if (ativacaoOriginal) {
+        if (ativacaoOriginal instanceof Date) {
+          ativacaoFormatada = Utilities.formatDate(ativacaoOriginal, CONFIG_FILHA.TIMEZONE, "yyyy-MM-dd");
+        } else {
+          ativacaoFormatada = ativacaoOriginal.toString();
+        }
+      }
+      
+      resultadosTeste.push({
+        linha: i + 2,
+        razao_social: linha[0]?.toString().trim() || '',
+        ultimo_evento_original: ultimoEventoOriginal,
+        ultimo_evento_formatado: ultimoEventoFormatado,
+        ativacao_original: ativacaoOriginal,
+        ativacao_formatada: ativacaoFormatada
+      });
+    }
+    
+    console.log("📅 Resultados do teste de visualização:", resultadosTeste);
+    
+    return {
+      success: true,
+      teste_visualizacao: resultadosTeste,
+      message: "Teste de visualização concluído"
+    };
+    
+  } catch (error) {
+    console.error("❌ Erro no teste de visualização:", error);
+    return { error: error.message };
+  }
+}
+
+// 🔥 FUNÇÕES AUXILIARES (MANTIDAS)
+function formatarCNPJNoSheets(cnpj) {
+  if (!cnpj) return '';
+  if (cnpj.toString().includes('.') || cnpj.toString().includes('/') || cnpj.toString().includes('-')) {
+    return cnpj.toString();
+  }
+  const cnpjStr = cnpj.toString().replace(/\D/g, '');
+  if (cnpjStr.length === 14) {
+    return cnpjStr.replace(/^(\d{2})(\d{3})(\d{3})(\d{4})(\d{2})/, '$1.$2.$3/$4-$5');
+  }
+  return cnpj;
+}
+
+// 🔥 FUNÇÃO DE TESTE ATUALIZADA
+function testar() {
+  const totalCadastros = buscarTodosCadastrosComWaitlabel(CONFIG_FILHA.WAITLABEL_FILHA).length;
+  const testeDatas = testarDatasVisualizacao();
+  
+  return { 
+    success: true, 
+    message: "✅ Sistema de VISUALIZAÇÃO funcionando!",
+    modo: "Somente leitura - CORRIGIDO",
+    waitlabel: CONFIG_FILHA.WAITLABEL_FILHA,
+    totalCadastros: totalCadastros,
+    teste_datas: testeDatas,
+    timestamp: new Date().toISOString()
+  };
+}
