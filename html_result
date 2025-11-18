@@ -2389,48 +2389,46 @@ function getCorBordaSituacao(situacao) {
   else return 'var(--border)';
 }
 
+// 🔥 FUNÇÃO 1: Para o modal de fornecedores (agrupado)
 function formatarPercentualCorrigido(percentual) {
     if (!percentual && percentual !== 0) return 'N/A';
     
     try {
-        const numero = typeof percentual === 'string' ? parseFloat(percentual) : percentual;
+        const numero = typeof percentual === 'string' ? 
+            parseFloat(percentual.replace(',', '.')) : percentual;
         
         if (isNaN(numero)) return String(percentual);
         
-        const porcentagem = numero * 100;
-        return porcentagem.toFixed(2).replace('.', ',') + '%';
+        let valorFormatado = numero;
+        if (numero <= 1) {
+            valorFormatado = numero * 100;
+        }
+        
+        const valorString = valorFormatado.toFixed(2);
+        return valorString.replace('.', ',') + '%';
         
     } catch (error) {
         return String(percentual);
     }
 }
 
+// 🔥 FUNÇÃO 2: Para o modal de detalhes
 function formatarPercentualParaExibicao(percentual) {
     if (!percentual && percentual !== 0) return '';
     
     try {
-        if (typeof percentual === 'string') {
-            if (percentual.match(/^\d*\.?\d+$/)) {
-                const numero = parseFloat(percentual);
-                if (!isNaN(numero)) {
-                    const valorFormatado = numero * 100;
-                    const valorString = valorFormatado.toFixed(2);
-                    return valorString.replace('.', ',') + '%';
-                }
-            }
-            if (percentual.includes('%')) {
-                return percentual;
-            }
-            return percentual + '%';
+        const numero = typeof percentual === 'string' ? 
+            parseFloat(percentual.replace(',', '.')) : percentual;
+        
+        if (isNaN(numero)) return String(percentual || '');
+        
+        let valorFormatado = numero;
+        if (numero <= 1) {
+            valorFormatado = numero * 100;
         }
         
-        if (typeof percentual === 'number') {
-            let valorFormatado = percentual * 100;
-            const valorString = valorFormatado.toFixed(2);
-            return valorString.replace('.', ',') + '%';
-        }
-        
-        return String(percentual);
+        const valorString = valorFormatado.toFixed(2);
+        return valorString.replace('.', ',') + '%';
         
     } catch (error) {
         return String(percentual || '');
