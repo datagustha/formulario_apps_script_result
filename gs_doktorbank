@@ -1,400 +1,2535 @@
-// CONFIGURAÇÃO DA PLANILHA FILHA (SOMENTE LEITURA) - CORRIGIDA
-const CONFIG_FILHA = {
-  ID_PLANILHA_MAE: "1V4iGN14UpIQcwf3qKU0_Wbiy2exdW2WUmrYTniy0upA",
-  WAITLABEL_FILHA: "Doktorbank", // Altere para o nome da sua aba filha
-  TIMEZONE: "America/Sao_Paulo"
-};
+<!DOCTYPE html>
+<html lang="pt-BR">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>Sistema de Cadastros - VISUALIZAÇÃO</title>
+  <link href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.0.0/css/all.min.css" rel="stylesheet">
+  <style>
+    * {
+      box-sizing: border-box;
+      margin: 0;
+      padding: 0;
+      font-family: 'Segoe UI', system-ui, -apple-system, sans-serif;
+    }
+    
+    :root {
+      --primary: #E61B72;
+      --secondary: #A1CC4C;
+      --accent: #FF6B35;
+      --dark: #2D3047;
+      --light: #FFFFFF;
+      --success: #28A745;
+      --warning: #FFC107;
+      --danger: #DC3545;
+      --info: #17A2B8;
+      --gray: #6C757D;
+      --border: #E0E0E0;
+      --background: #F8F9FA;
+    }
+    
+    body {
+      background: var(--background);
+      min-height: 100vh;
+      padding: 20px;
+      color: var(--dark);
+    }
+    
+    .container {
+      max-width: 1800px;
+      margin: 0 auto;
+      background: var(--light);
+      border-radius: 15px;
+      box-shadow: 0 10px 30px rgba(0, 0, 0, 0.1);
+      overflow: hidden;
+    }
+    
+    .header {
+      background: var(--primary);
+      padding: 25px 40px;
+      color: white;
+      text-align: center;
+    }
 
-// 🔥🔥🔥 FUNÇÃO CORRIGIDA - SIMPLIFICADA PARA VISUALIZAÇÃO
-function formatarDataBrasilVisualizacao(data) {
-  if (!data) return '';
-  
-  try {
-    console.log("📅 formatarDataBrasilVisualizacao - Entrada:", data, "Tipo:", typeof data);
-    
-    // 🔥 CORREÇÃO: Se já é string no formato correto, retornar COMO ESTÁ
-    if (typeof data === 'string') {
-      // Verificar se já está no formato dd/MM/yyyy HH:mm:ss
-      if (data.match(/^\d{2}\/\d{2}\/\d{4} \d{2}:\d{2}:\d{2}$/)) {
-        console.log("✅ Já está no formato correto - retornando como está:", data);
-        return data;
-      }
-      // Verificar se está no formato dd/MM/yyyy
-      if (data.match(/^\d{2}\/\d{2}\/\d{4}$/)) {
-        console.log("✅ Já está no formato data simples - retornando como está:", data);
-        return data;
-      }
-    }
-    
-    // Se é objeto Date, formatar CORRETAMENTE
-    if (data instanceof Date) {
-      const dataBrasil = Utilities.formatDate(data, CONFIG_FILHA.TIMEZONE, "dd/MM/yyyy HH:mm:ss");
-      console.log("✅ Date convertido:", data.toString(), "→", dataBrasil);
-      return dataBrasil;
-    }
-    
-    // Para outros casos, tentar converter
-    try {
-      const dataObj = new Date(data);
-      if (!isNaN(dataObj.getTime())) {
-        const dataBrasil = Utilities.formatDate(dataObj, CONFIG_FILHA.TIMEZONE, "dd/MM/yyyy HH:mm:ss");
-        console.log("✅ Outro tipo convertido:", data, "→", dataBrasil);
-        return dataBrasil;
-      }
-    } catch (e) {
-      console.log("⚠️ Não conseguiu converter, retornando original:", data);
-      return data.toString();
-    }
-    
-    return data ? data.toString() : '';
-    
-  } catch (error) {
-    console.error("❌ Erro em formatarDataBrasilVisualizacao:", error);
-    return data ? data.toString() : '';
-  }
+    .logo-container {
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  gap: 15px;
+  margin-bottom: 10px;
 }
 
-// 🔥🔥🔥 FUNÇÃO PRINCIPAL CORRIGIDA
-function doGet() {
-  const htmlOutput = HtmlService.createHtmlOutputFromFile('IndexFilha')
-    .setTitle('Sistema - Visualização de Dados')
-    .setXFrameOptionsMode(HtmlService.XFrameOptionsMode.ALLOWALL);
-  
-  return htmlOutput;
+/* 🔥 ADICIONE ESTE CSS PARA DEIXAR AS LOGOS LADO A LADO */
+.logo-wrapper {
+  display: flex;
+  align-items: center;
+  gap: 15px;
 }
 
-// 🔥🔥🔥 BUSCAR TODOS OS CADASTROS - VERSÃO DEFINITIVAMENTE CORRIGIDA
-function buscarTodosCadastrosComWaitlabel(waitlabel) {
-  try {
-    console.log("🔍 [VISUALIZAÇÃO] Buscando dados no waitlabel:", waitlabel);
+.logo-doktorbank-wrapper {
+  background: white;
+  padding: 10px;
+  border-radius: 15px;
+  box-shadow: 0 5px 15px rgba(0, 0, 0, 0.2);
+  width: 80px;
+  height: 80px;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+}
+
+.logo-doktorbank {
+  width: 70px;
+  height: 70px;
+  object-fit: contain;
+}
     
-    const ss = SpreadsheetApp.openById(CONFIG_FILHA.ID_PLANILHA_MAE);
-    const aba = ss.getSheetByName(waitlabel);
-    
-    if (!aba) {
-      console.log("❌ Aba não encontrada:", waitlabel);
-      return [];
+    .logo {
+      width: 80px;
+      height: 80px;
+      background: white;
+      padding: 10px;
+      border-radius: 15px;
+      box-shadow: 0 5px 15px rgba(0, 0, 0, 0.2);
+      object-fit: contain;
     }
     
-    const ultimaLinha = aba.getLastRow();
-    console.log("📊 Última linha encontrada:", ultimaLinha);
+    h1 {
+      font-size: 2.2rem;
+      font-weight: 700;
+      margin-bottom: 10px;
+    }
     
-    if (ultimaLinha < 2) return [];
+    .subtitle {
+      font-size: 1.1rem;
+      opacity: 0.9;
+    }
     
-    // Buscar dados - usar número fixo de colunas para consistência
-    const dados = aba.getRange(2, 1, ultimaLinha - 1, 17).getValues();
-    console.log("📈 Dados brutos encontrados:", dados.length);
-    
-    const cadastros = [];
-    
-    for (let i = 0; i < dados.length; i++) {
-      const linha = dados[i];
-      
-      if (!linha || !linha[0] || linha[0].toString().trim() === '') continue;
+    .content {
+      padding: 30px;
+    }
 
-      // 🔥🔥🔥 CORREÇÃO CRÍTICA: Processamento SIMPLIFICADO de datas
-      let ultimoEventoFormatado = linha[4] ? linha[4].toString() : '';
-      
-      // Se é Date, formatar corretamente
-      if (linha[4] instanceof Date) {
-        ultimoEventoFormatado = Utilities.formatDate(linha[4], CONFIG_FILHA.TIMEZONE, "dd/MM/yyyy HH:mm:ss");
+    .card {
+      background: var(--light);
+      border-radius: 12px;
+      padding: 25px;
+      margin-bottom: 25px;
+      box-shadow: 0 4px 15px rgba(0, 0, 0, 0.05);
+      border: 1px solid var(--border);
+    }
+    
+    .card-header {
+      display: flex;
+      align-items: center;
+      justify-content: space-between;
+      gap: 15px;
+      margin-bottom: 20px;
+      padding-bottom: 15px;
+      border-bottom: 3px solid var(--primary);
+    }
+    
+    .card-header i {
+      color: var(--primary);
+      font-size: 1.8rem;
+    }
+    
+    .card-title {
+      font-size: 1.6rem;
+      font-weight: 600;
+      color: var(--primary);
+    }
+
+    /* 🔥 FILTROS COM ESTILO WHITELABEL */
+    .filtros-container {
+      display: flex;
+      gap: 10px;
+      align-items: center;
+      flex-wrap: wrap;
+      margin: 20px 0;
+      padding: 15px;
+      background: #f8f9fa;
+      border-radius: 10px;
+      border: 1px solid var(--border);
+    }
+
+    .filtro-btn {
+      display: inline-flex;
+      align-items: center;
+      gap: 8px;
+      padding: 10px 20px;
+      border: 2px solid var(--border);
+      border-radius: 25px;
+      font-size: 0.9rem;
+      font-weight: 600;
+      cursor: pointer;
+      transition: all 0.3s ease;
+      background: white;
+      color: var(--dark);
+      position: relative;
+    }
+
+    .filtro-btn.active {
+      transform: translateY(-2px);
+      box-shadow: 0 4px 15px rgba(0,0,0,0.2);
+      border-width: 3px;
+    }
+
+    .filtro-btn::before {
+      content: '';
+      width: 12px;
+      height: 12px;
+      border-radius: 50%;
+      margin-right: 5px;
+    }
+
+    .filtro-btn[data-situacao="all"]::before { background: var(--primary); }
+    .filtro-btn[data-situacao="NOVO REGISTRO"]::before { background: #bfe1f6; }
+    .filtro-btn[data-situacao="CADASTRADO"]::before { background: var(--success); }
+    .filtro-btn[data-situacao="EM ANDAMENTO"]::before { background: var(--warning); }
+    .filtro-btn[data-situacao="REJEITADO"]::before { background: var(--gray); }
+    .filtro-btn[data-situacao="DESCREDENCIADO"]::before { background: var(--danger); }
+    .filtro-btn[data-situacao="DESISTIU"]::before { background: #e6cff2; }
+
+    .filtro-btn.active[data-situacao="all"] { 
+      background: var(--primary); 
+      color: white; 
+      border-color: var(--primary); 
+    }
+    .filtro-btn.active[data-situacao="NOVO REGISTRO"] { 
+      background: #bfe1f6; 
+      color: #0c5aa3; 
+      border-color: #bfe1f6; 
+    }
+    .filtro-btn.active[data-situacao="CADASTRADO"] { 
+      background: var(--success); 
+      color: white; 
+      border-color: var(--success); 
+    }
+    .filtro-btn.active[data-situacao="EM ANDAMENTO"] { 
+      background: var(--warning); 
+      color: var(--dark); 
+      border-color: var(--warning); 
+    }
+    .filtro-btn.active[data-situacao="REJEITADO"] { 
+      background: var(--gray); 
+      color: white; 
+      border-color: var(--gray); 
+    }
+    .filtro-btn.active[data-situacao="DESCREDENCIADO"] { 
+      background: var(--danger); 
+      color: white; 
+      border-color: var(--danger); 
+    }
+    .filtro-btn.active[data-situacao="DESISTIU"] { 
+      background: #e6cff2; 
+      color: #4a1e6b; 
+      border-color: #e6cff2; 
+    }
+
+    .btn {
+      display: inline-flex;
+      align-items: center;
+      gap: 8px;
+      padding: 10px 20px;
+      border: none;
+      border-radius: 8px;
+      font-size: 0.9rem;
+      font-weight: 600;
+      cursor: pointer;
+      transition: all 0.3s ease;
+    }
+    
+    .btn-primary {
+      background: var(--primary);
+      color: white;
+    }
+    
+    .btn-success {
+      background: var(--success);
+      color: white;
+    }
+    
+    .btn-warning {
+      background: var(--warning);
+      color: var(--dark);
+    }
+    
+    .btn-danger {
+      background: var(--danger);
+      color: white;
+    }
+    
+    .btn-info {
+      background: var(--info);
+      color: white;
+    }
+    
+    .btn-outline {
+      background: transparent;
+      border: 2px solid var(--primary);
+      color: var(--primary);
+    }
+    
+    .btn-sm {
+      padding: 8px 16px;
+      font-size: 0.85rem;
+    }
+
+    .btn:hover {
+      transform: translateY(-2px);
+      box-shadow: 0 4px 12px rgba(0,0,0,0.15);
+    }
+
+    /* 🔥 PESQUISA E FILTROS AVANÇADOS */
+    .search-container {
+      margin: 20px 0;
+    }
+
+    .filtros-avancados {
+      display: grid;
+      grid-template-columns: repeat(auto-fit, minmax(200px, 1fr));
+      gap: 15px;
+      margin: 20px 0;
+      padding: 20px;
+      background: #f8f9fa;
+      border-radius: 10px;
+      border: 1px solid var(--border);
+    }
+
+    .filtro-group {
+      display: flex;
+      flex-direction: column;
+      gap: 8px;
+    }
+
+    .filtro-label {
+      font-weight: 600;
+      color: var(--primary);
+      font-size: 0.9rem;
+    }
+
+    .form-control {
+      width: 100%;
+      padding: 10px 12px;
+      border: 2px solid var(--border);
+      border-radius: 8px;
+      font-size: 0.9rem;
+      transition: all 0.3s ease;
+    }
+    
+    .form-control:focus {
+      outline: none;
+      border-color: var(--primary);
+    }
+
+    .form-select {
+      width: 100%;
+      padding: 10px 12px;
+      border: 2px solid var(--border);
+      border-radius: 8px;
+      font-size: 0.9rem;
+      background: white;
+      cursor: pointer;
+    }
+
+    .contador-lojas {
+      background: var(--primary);
+      color: white;
+      padding: 6px 12px;
+      border-radius: 20px;
+      font-size: 0.9rem;
+      font-weight: 600;
+    }
+
+    /* 🔥 TAGS DE FILTROS ATIVOS */
+    .filtros-ativos {
+      display: flex;
+      gap: 8px;
+      flex-wrap: wrap;
+      margin: 10px 0;
+    }
+
+    .filtro-chip {
+      background: var(--primary);
+      color: white;
+      padding: 6px 12px;
+      border-radius: 20px;
+      font-size: 0.8rem;
+      display: flex;
+      align-items: center;
+      gap: 6px;
+    }
+
+    .filtro-chip .remover {
+      background: none;
+      border: none;
+      color: white;
+      cursor: pointer;
+      padding: 0;
+      width: 16px;
+      height: 16px;
+      border-radius: 50%;
+      display: flex;
+      align-items: center;
+      justify-content: center;
+      font-size: 10px;
+    }
+
+    /* 🔥 FILTRO DE EVENTOS E FORNECEDORES COM TAGS */
+    .filtro-multiselect-container {
+      position: relative;
+    }
+
+    .suggestions {
+      position: absolute;
+      top: 100%;
+      left: 0;
+      right: 0;
+      background: white;
+      border: 2px solid var(--primary);
+      border-top: none;
+      border-radius: 0 0 8px 8px;
+      z-index: 1000;
+      max-height: 200px;
+      overflow-y: auto;
+      box-shadow: 0 4px 15px rgba(0,0,0,0.1);
+      display: none;
+    }
+
+    .suggestion-item {
+      padding: 10px 15px;
+      cursor: pointer;
+      border-bottom: 1px solid var(--border);
+      transition: all 0.2s ease;
+      font-size: 0.9rem;
+    }
+
+    .suggestion-item:hover {
+      background: var(--primary);
+      color: white;
+    }
+
+    .suggestion-item:last-child {
+      border-bottom: none;
+    }
+
+    .tags-selecionadas {
+      display: flex;
+      gap: 8px;
+      flex-wrap: wrap;
+      margin-top: 8px;
+    }
+
+    .tag {
+      background: var(--info);
+      color: white;
+      padding: 4px 10px;
+      border-radius: 15px;
+      font-size: 0.8rem;
+      display: flex;
+      align-items: center;
+      gap: 6px;
+    }
+
+    .tag.fornecedor {
+      background: var(--secondary);
+    }
+
+    .tag .remover {
+      background: none;
+      border: none;
+      color: white;
+      cursor: pointer;
+      padding: 0;
+      width: 14px;
+      height: 14px;
+      border-radius: 50%;
+      display: flex;
+      align-items: center;
+      justify-content: center;
+      font-size: 9px;
+    }
+
+    .tag .remover:hover {
+      background: rgba(255,255,255,0.3);
+    }
+
+    /* 🔥 TABELA MAIOR */
+    .table-container {
+      margin-top: 20px;
+      overflow: hidden;
+      border-radius: 10px;
+      box-shadow: 0 2px 10px rgba(0, 0, 0, 0.1);
+    }
+    
+    .table-responsive {
+      overflow-x: auto;
+    }
+    
+    .data-table {
+      width: 100%;
+      border-collapse: collapse;
+      background: white;
+      font-size: 0.85rem;
+    }
+    
+    .data-table th {
+      background: var(--primary);
+      color: white;
+      padding: 12px 8px;
+      text-align: left;
+      font-weight: 600;
+      position: sticky;
+      top: 0;
+      white-space: nowrap;
+    }
+    
+    .data-table td {
+      padding: 10px 8px;
+      border-bottom: 1px solid var(--border);
+      word-wrap: break-word;
+      vertical-align: top;
+    }
+    
+    .data-table tbody tr {
+      transition: all 0.3s ease;
+    }
+    
+    .data-table tbody tr:hover {
+      background: #f8f9fa;
+      transform: translateY(-1px);
+      box-shadow: 0 2px 8px rgba(0, 0, 0, 0.1);
+    }
+
+    .btn-visualizar-compact {
+      padding: 6px 10px !important;
+      font-size: 0.75rem !important;
+      white-space: nowrap;
+      display: inline-flex;
+      align-items: center;
+      justify-content: center;
+      gap: 4px;
+    }
+
+    /* 🔥 STATUS BADGES */
+    .status-badge {
+      padding: 4px 8px;
+      border-radius: 12px;
+      font-size: 0.7rem;
+      font-weight: 600;
+      text-align: center;
+      display: inline-block;
+      min-width: 70px;
+    }
+    
+    .situacao-novo-registro {
+      background-color: #bfe1f6 !important;
+      color: #0c5aa3 !important;
+      border: 1px solid #8bc9f0 !important;
+    }
+    
+    .situacao-cadastrado {
+      background: #D1E7DD;
+      color: #0F5132;
+    }
+
+    .situacao-andamento {
+      background: #FFF3CD;
+      color: #856404;
+    }
+    
+    .situacao-rejeitado {
+      background: #E2E3E5;
+      color: #383D41;
+    }
+    
+    .situacao-descredenciado {
+      background: #F8D7DA;
+      color: #721C24;
+    }
+
+    .situacao-desistiu {
+      background: #e6cff2 !important;
+      color: #4a1e6b !important;
+      border: 1px solid #d4b5e6 !important;
+    }
+
+    .defasagem-badge {
+      padding: 6px 10px;
+      border-radius: 8px;
+      font-size: 0.7rem;
+      font-weight: 600;
+      min-width: 70px;
+      display: inline-block;
+      text-align: center;
+    }
+
+    .defasagem-alta {
+      background: #f8d7da;
+      color: #721c24;
+    }
+
+    .defasagem-media {
+      background: #fff3cd;
+      color: #856404;
+    }
+
+    .defasagem-baixa {
+      background: #d1e7dd;
+      color: #0f5132;
+    }
+
+    /* 🔥 ESTILO PARA SEM DEFASAGEM */
+    .sem-defasagem {
+      background: #e9ecef !important;
+      color: #6c757d !important;
+      border: 1px solid #dee2e6 !important;
+    }
+
+    .sem-defasagem-badge {
+      padding: 6px 10px !important;
+      border-radius: 8px !important;
+      font-size: 0.75rem !important;
+      font-weight: 600 !important;
+      background: #e9ecef !important;
+      color: #6c757d !important;
+      border: 1px solid #dee2e6 !important;
+      min-width: 70px;
+      display: inline-block;
+      text-align: center;
+    }
+
+    /* 🔥 LOADING */
+    .loading-container {
+      display: flex;
+      flex-direction: column;
+      align-items: center;
+      justify-content: center;
+      padding: 40px;
+      text-align: center;
+    }
+    
+    .loading-spinner {
+      width: 50px;
+      height: 50px;
+      border: 5px solid #f3f3f3;
+      border-top: 5px solid var(--primary);
+      border-radius: 50%;
+      animation: spin 1s linear infinite;
+      margin-bottom: 15px;
+    }
+    
+    @keyframes spin {
+      0% { transform: rotate(0deg); }
+      100% { transform: rotate(360deg); }
+    }
+
+    /* 🔥 MENSAGENS */
+    .message {
+      padding: 15px 20px;
+      border-radius: 8px;
+      margin: 15px 0;
+      display: none;
+      align-items: center;
+      gap: 10px;
+    }
+    
+    .success {
+      background: #d4edda;
+      color: var(--success);
+      border: 1px solid #c3e6cb;
+    }
+    
+    .error {
+      background: #f8d7da;
+      color: var(--danger);
+      border: 1px solid #f5c6cb;
+    }
+    
+    .info {
+      background: #d1ecf1;
+      color: #0c5460;
+      border: 1px solid #bee5eb;
+    }
+
+    /* 🔥 MODAL */
+    .modal-overlay {
+      display: none;
+      position: fixed;
+      top: 0;
+      left: 0;
+      width: 100%;
+      height: 100%;
+      background: rgba(0,0,0,0.7);
+      z-index: 10000;
+      justify-content: center;
+      align-items: center;
+      padding: 20px;
+    }
+
+    .modal-content {
+      background: white;
+      border-radius: 15px;
+      padding: 30px;
+      max-width: 900px;
+      width: 100%;
+      max-height: 80vh;
+      overflow-y: auto;
+      box-shadow: 0 20px 60px rgba(0,0,0,0.3);
+      border: 3px solid var(--primary);
+      position: relative;
+    }
+
+    .modal-header {
+      display: flex;
+      justify-content: space-between;
+      align-items: center;
+      margin-bottom: 25px;
+      padding-bottom: 15px;
+      border-bottom: 2px solid var(--primary);
+    }
+
+    .modal-title {
+      font-size: 1.5rem;
+      font-weight: 700;
+      color: var(--primary);
+      margin: 0;
+    }
+
+    .btn-close {
+      background: none;
+      border: none;
+      font-size: 1.5rem;
+      cursor: pointer;
+      color: var(--gray);
+      padding: 5px;
+      border-radius: 50%;
+      width: 40px;
+      height: 40px;
+      display: flex;
+      align-items: center;
+      justify-content: center;
+      transition: all 0.3s ease;
+    }
+
+    .btn-close:hover {
+      background: var(--danger);
+      color: white;
+    }
+
+    .detalhes-grid {
+      display: grid;
+      grid-template-columns: repeat(auto-fit, minmax(250px, 1fr));
+      gap: 15px;
+      margin-bottom: 20px;
+    }
+
+    .detalhe-item {
+      margin-bottom: 12px;
+    }
+
+    .detalhe-label {
+      font-weight: 600;
+      color: var(--primary);
+      margin-bottom: 5px;
+      display: block;
+    }
+
+    .detalhe-valor {
+      color: var(--dark);
+      background: #f8f9fa;
+      padding: 8px 12px;
+      border-radius: 8px;
+      border-left: 3px solid var(--primary);
+    }
+
+    /* 🔥 ESTILOS PARA LOJAS AGRUPADAS */
+    .loja-item {
+      border: 3px solid;
+      border-radius: 8px;
+      padding: 15px;
+      margin-bottom: 10px;
+      background: white;
+      box-shadow: 0 2px 8px rgba(0,0,0,0.1);
+    }
+
+    /* 🔥 POPUP DE CARREGAMENTO */
+    .loading-popup {
+      position: fixed;
+      top: 0;
+      left: 0;
+      width: 100%;
+      height: 100%;
+      background: rgba(0, 0, 0, 0.8);
+      display: none;
+      justify-content: center;
+      align-items: center;
+      z-index: 20000;
+      flex-direction: column;
+    }
+
+    .loading-popup-content {
+      background: white;
+      border-radius: 15px;
+      padding: 30px;
+      max-width: 400px;
+      width: 90%;
+      text-align: center;
+      box-shadow: 0 10px 30px rgba(0, 0, 0, 0.3);
+      border: 3px solid var(--primary);
+    }
+
+    .loading-popup-spinner {
+      width: 60px;
+      height: 60px;
+      border: 5px solid #f3f3f3;
+      border-top: 5px solid var(--primary);
+      border-radius: 50%;
+      animation: spin 1s linear infinite;
+      margin: 0 auto 20px;
+    }
+
+    .loading-popup-text {
+      font-size: 1.2rem;
+      font-weight: 600;
+      color: var(--dark);
+      margin-bottom: 10px;
+    }
+
+    .loading-popup-subtext {
+      font-size: 0.9rem;
+      color: var(--gray);
+    }
+
+    @media (max-width: 1200px) {
+      .data-table {
+        font-size: 0.8rem;
       }
       
-      let ativacaoFormatada = linha[9] ? linha[9].toString() : '';
-      
-      // Se é Date, formatar para exibição simples
-      if (linha[9] instanceof Date) {
-        ativacaoFormatada = Utilities.formatDate(linha[9], CONFIG_FILHA.TIMEZONE, "dd/MM/yyyy");
+      .data-table th,
+      .data-table td {
+        padding: 8px 6px;
       }
+    }
 
-      // 🔥 CORREÇÃO: Processamento do percentual - MAIS SIMPLES
-      let percentualTarifa = '0%';
-      if (linha[14] !== null && linha[14] !== undefined && linha[14] !== '') {
-        const valor = linha[14];
+    @media (max-width: 768px) {
+      .content {
+        padding: 20px;
+      }
+      
+      .filtros-container {
+        flex-direction: column;
+        align-items: stretch;
+      }
+      
+      .filtros-avancados {
+        grid-template-columns: 1fr;
+      }
+      
+      .btn {
+        justify-content: center;
+      }
+      
+      h1 {
+        font-size: 1.8rem;
+      }
+      
+      .card-header {
+        flex-direction: column;
+        align-items: flex-start;
+        gap: 10px;
+      }
+      
+      .contador-lojas {
+        align-self: flex-start;
+      }
+    }
+
+    .logo-doktorbank-wrapper {
+  background: white;
+  padding: 10px;
+  border-radius: 15px;
+  box-shadow: 0 5px 15px rgba(0, 0, 0, 0.2);
+  width: 80px;
+  height: 80px;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+}
+
+.logo-doktorbank {
+  width: 70px;
+  height: 70px;
+  object-fit: contain;
+}
+  </style>
+</head>
+<body>
+  <!-- 🔥 POPUP DE CARREGAMENTO -->
+  <div id="loadingPopup" class="loading-popup">
+    <div class="loading-popup-content">
+      <div class="loading-popup-spinner"></div>
+      <div class="loading-popup-text" id="loadingPopupText">Carregando...</div>
+      <div class="loading-popup-subtext" id="loadingPopupSubtext">Aguarde um momento</div>
+    </div>
+  </div>
+
+  <div class="container">
+  <div class="header">
+    <div class="logo-container">
+      <div class="logo-wrapper">
+        <img src="https://i.ibb.co/B2r5xtbS/sim-cred-5.png" class="logo" alt="SIM CRED">
+        <div class="logo-doktorbank-wrapper">
+          <img src="https://i.ibb.co/bgFkW7gG/download-removebg-preview.png" class="logo-doktorbank" alt="doktorbank">
+        </div>
+      </div>
+      <div class="header-content">
+        <h1>Cadastros de Lojas</h1>
+        <div class="subtitle">Visualização de Dados - Somente Leitura</div>
+      </div>
+    </div>
+  </div>
+  
+  <div class="content">
+    <!-- ... resto do conteúdo ... -->
+  </div>
+</div>
+    
+    <div class="content">
+      <!-- CARD PRINCIPAL COM TABELA -->
+      <div class="card">
+        <div class="card-header">
+          <i class="fas fa-store"></i>
+          <h2 class="card-title" id="tituloCadastros">Todos os Cadastros</h2>
+          <span class="contador-lojas" id="contadorCadastros">0 cadastros</span>
+        </div>
+
+        <!-- BARRA DE PESQUISA PRINCIPAL -->
+        <div class="search-container">
+          <input type="text" id="pesquisaCadastros" class="form-control" 
+                 placeholder="🔍 Pesquisar por nome, CNPJ, fornecedor, evento..."
+                 oninput="filtrarPesquisa()">
+        </div>
+
+        <!-- FILTROS RÁPIDOS POR SITUAÇÃO - NOVO ESTILO -->
+        <div class="filtros-container" id="filtrosContainer">
+          <button type="button" class="filtro-btn active" data-situacao="all" onclick="aplicarFiltroSituacao('all')">
+            Todos
+          </button>
+          <button type="button" class="filtro-btn" data-situacao="NOVO REGISTRO" onclick="aplicarFiltroSituacao('NOVO REGISTRO')">
+            Novos
+          </button>
+          <button type="button" class="filtro-btn" data-situacao="CADASTRADO" onclick="aplicarFiltroSituacao('CADASTRADO')">
+            Cadastrados
+          </button>
+          <button type="button" class="filtro-btn" data-situacao="EM ANDAMENTO" onclick="aplicarFiltroSituacao('EM ANDAMENTO')">
+            Em Andamento
+          </button>
+          <button type="button" class="filtro-btn" data-situacao="REJEITADO" onclick="aplicarFiltroSituacao('REJEITADO')">
+            Rejeitado
+          </button>
+          <button type="button" class="filtro-btn" data-situacao="DESCREDENCIADO" onclick="aplicarFiltroSituacao('DESCREDENCIADO')">
+            Descredenciados
+          </button>
+          <button type="button" class="filtro-btn" data-situacao="DESISTIU" onclick="aplicarFiltroSituacao('DESISTIU')">
+            Desistiu
+          </button>
+          
+          <!-- BOTÃO ATUALIZAR -->
+          <button type="button" class="btn btn-info btn-sm" onclick="carregarCadastros()" style="margin-left: auto;">
+            <i class="fas fa-sync-alt"></i> Atualizar
+          </button>
+        </div>
+
+        <!-- FILTROS AVANÇADOS -->
+        <div class="filtros-avancados">
+          <!-- 🔥 NOVO: FILTRO DE EVENTOS COM TAGS -->
+          <div class="filtro-group">
+            <label class="filtro-label">📅 Filtrar por Evento:</label>
+            <div class="filtro-multiselect-container">
+              <input type="text" id="filtroEvento" class="form-control" 
+                     placeholder="Digite para buscar eventos..." 
+                     oninput="filtrarSugestoesEvento()"
+                     onfocus="mostrarSugestoesEvento()">
+              <div class="suggestions" id="suggestionsEvento"></div>
+              <div class="tags-selecionadas" id="eventosSelecionados"></div>
+            </div>
+          </div>
+          
+          <!-- 🔥 NOVO: FILTRO DE FORNECEDORES COM TAGS -->
+          <div class="filtro-group">
+            <label class="filtro-label">🚚 Filtrar por Fornecedor:</label>
+            <div class="filtro-multiselect-container">
+              <input type="text" id="filtroFornecedor" class="form-control" 
+                     placeholder="Digite para buscar fornecedores..." 
+                     oninput="filtrarSugestoesFornecedor()"
+                     onfocus="mostrarSugestoesFornecedor()">
+              <div class="suggestions" id="suggestionsFornecedor"></div>
+              <div class="tags-selecionadas" id="fornecedoresSelecionados"></div>
+            </div>
+          </div>
+          
+          <div class="filtro-group">
+            <label class="filtro-label">📊 Ordenar por:</label>
+            <select id="ordenacao" class="form-select" onchange="ordenarCadastros()">
+              <option value="razao_social">Razão Social (A-Z)</option>
+              <option value="razao_social_desc">Razão Social (Z-A)</option>
+              <option value="nome_fantasia">Nome Fantasia (A-Z)</option>
+              <option value="nome_fantasia_desc">Nome Fantasia (Z-A)</option>
+              <option value="situacao">Situação</option>
+              <option value="fornecedor">Fornecedor</option>
+              <option value="mensalidade">Mensalidade (Maior)</option>
+              <option value="mensalidade_asc">Mensalidade (Menor)</option>
+              <option value="adesao">Adesão (Maior)</option>
+              <option value="adesao_asc">Adesão (Menor)</option>
+              <option value="defasagem">Defasagem (Maior)</option>
+              <option value="defasagem_asc">Defasagem (Menor)</option>
+            </select>
+          </div>
+
+          <div class="filtro-group">
+            <label class="filtro-label">🧹 Limpar Filtros:</label>
+            <button type="button" class="btn btn-outline btn-sm" onclick="limparTodosFiltros()" style="margin-top: 8px;">
+              <i class="fas fa-broom"></i> Limpar Tudo
+            </button>
+          </div>
+        </div>
+
+        <!-- TAGS DE FILTROS ATIVOS (ESCONDIDO) -->
+        <div class="filtros-ativos" id="filtrosAtivosContainer" style="display: none;"></div>
+
+        <!-- LOADING -->
+        <div class="loading-container" id="loadingCadastros">
+          <div class="loading-spinner"></div>
+          <p>Carregando cadastros...</p>
+        </div>
         
-        if (typeof valor === 'number') {
-          // Número direto: 0.035 → 3.50%
-          percentualTarifa = (valor * 100).toFixed(2) + '%';
-        } else if (typeof valor === 'string') {
-          const valorStr = valor.toString().trim();
-          if (valorStr.includes('%')) {
-            percentualTarifa = valorStr;
-          } else {
-            // Tentar converter string para número
-            const valorNum = parseFloat(valorStr.replace(',', '.'));
-            if (!isNaN(valorNum)) {
-              percentualTarifa = valorNum.toFixed(2) + '%';
-            }
-          }
-        }
-      }
-
-      // 🔥 CORREÇÃO: Processamento da adesão - MAIS SIMPLES
-      let adesaoFormatada = 'Isento';
-      if (linha[15] !== null && linha[15] !== undefined && linha[15] !== '') {
-        const valorAdesao = linha[15];
-        if (typeof valorAdesao === 'number' && valorAdesao > 0) {
-          adesaoFormatada = valorAdesao;
-        } else if (typeof valorAdesao === 'string') {
-          const valorStr = valorAdesao.toString().trim();
-          if (valorStr !== 'Isento' && valorStr !== '0' && valorStr !== '0.00') {
-            const valorNum = parseFloat(valorStr.replace('R$', '').replace(/\./g, '').replace(',', '.').trim());
-            if (!isNaN(valorNum) && valorNum > 0) {
-              adesaoFormatada = valorNum;
-            }
-          }
-        }
-      }
-
-      // Estrutura somente leitura - CORRIGIDA E SIMPLIFICADA
-      const cadastro = {
-        id: i + 2,
-        razao_social: linha[0]?.toString().trim() || '',
-        nome_fantasia: linha[1]?.toString().trim() || '',
-        cnpj: formatarCNPJNoSheets(linha[2]?.toString().trim() || ''),
-        fornecedor: linha[3]?.toString().trim() || '',
-        ultimo_evento: ultimoEventoFormatado, // 🔥 JÁ VEM CORRETO DA PLANILHA
-        evento: linha[5]?.toString().trim() || '',
-        observacoes: linha[6]?.toString().trim() || '',
-        contrato_enviado: linha[7]?.toString().trim() || '',
-        contrato_assinado: linha[8]?.toString().trim() || '',
-        ativacao: ativacaoFormatada, // 🔥 JÁ VEM CORRETO DA PLANILHA
-        link: linha[10]?.toString().trim() || '',
-        mensalidade: typeof linha[11] === 'number' ? linha[11] : 0,
-        mensalidade_sim: typeof linha[12] === 'number' ? linha[12] : 0,
-        tarifa: linha[13]?.toString().trim() || '',
-        percentual_tarifa: percentualTarifa,
-        adesao: adesaoFormatada,
-        situacao: (linha[16]?.toString().trim() || 'Novo registro'),
-        waitlabel: waitlabel
-      };
+        <!-- TABELA MAIOR COM MAIS INFORMAÇÕES -->
+        <div class="table-container" id="tableContainer" style="display: none;">
+          <div class="table-responsive">
+            <table class="data-table" id="tabelaCadastros">
+              <thead>
+                <tr>
+                  <th width="18%">Razão Social</th>
+                  <th width="12%">CNPJ</th>
+                  <th width="12%">Fornecedor</th>
+                  <th width="10%">Situação</th>
+                  <th width="14%">Último Evento</th>
+                  <th width="8%">Defasagem</th>
+                  <th width="10%">Mensalidade</th>
+                  <th width="8%">Adesão</th>
+                  <th width="8%">Ações</th>
+                </tr>
+              </thead>
+              <tbody id="tabelaCadastrosBody">
+                <!-- Dados serão preenchidos via JavaScript -->
+              </tbody>
+            </table>
+          </div>
+        </div>
+      </div>
       
-      cadastros.push(cadastro);
-    }
-    
-    console.log("✅ Dados carregados para visualização:", cadastros.length);
-    return cadastros;
-    
-  } catch (error) {
-    console.error("❌ Erro na busca:", error);
-    return [];
-  }
-}
-
-// 🔥🔥🔥 BUSCAR CADASTRO POR ID - VERSÃO DEFINITIVAMENTE CORRIGIDA
-function buscarCadastroPorIDComWaitlabel(id, waitlabel) {
-  try {
-    console.log("🔍 [VISUALIZAÇÃO] Buscando cadastro por ID:", id, "no waitlabel:", waitlabel);
-    
-    const ss = SpreadsheetApp.openById(CONFIG_FILHA.ID_PLANILHA_MAE);
-    const aba = ss.getSheetByName(waitlabel);
-    if (!aba) return { encontrado: false, mensagem: "Waitlabel não encontrado" };
-    
-    const ultimaLinha = aba.getLastRow();
-    if (ultimaLinha < id) return { encontrado: false, mensagem: "Registro não encontrado" };
-    
-    const linha = aba.getRange(id, 1, 1, 17).getValues()[0];
-    
-    if (!linha[0] || linha[0].toString().trim() === '') {
-      return { encontrado: false, mensagem: "Registro vazio ou não encontrado" };
-    }
-
-    console.log("📊 DEBUG - Linha encontrada na linha", id);
-    console.log("🔍 Coluna E [4] - Último evento:", linha[4], "Tipo:", typeof linha[4]);
-    console.log("🔍 Coluna J [9] - Ativação:", linha[9], "Tipo:", typeof linha[9]);
-
-    // 🔥🔥🔥 CORREÇÃO CRÍTICA: Processamento DIRETO das datas
-    let ultimoEventoFormatado = linha[4] ? linha[4].toString() : '';
-    
-    // Se é Date, formatar mantendo o formato brasileiro
-    if (linha[4] instanceof Date) {
-      ultimoEventoFormatado = Utilities.formatDate(linha[4], CONFIG_FILHA.TIMEZONE, "dd/MM/yyyy HH:mm:ss");
-    }
-    
-    let ativacaoFormatada = '';
-    if (linha[9]) {
-      if (linha[9] instanceof Date) {
-        // 🔥 CORREÇÃO: Para input date, usar formato yyyy-MM-dd
-        ativacaoFormatada = Utilities.formatDate(linha[9], CONFIG_FILHA.TIMEZONE, "yyyy-MM-dd");
-      } else {
-        // Se já é string, verificar formato e converter se necessário
-        const dataStr = linha[9].toString();
-        if (dataStr.includes('/')) {
-          // Converter de dd/MM/yyyy para yyyy-MM-dd
-          const partes = dataStr.split('/');
-          if (partes.length === 3) {
-            ativacaoFormatada = `${partes[2]}-${partes[1]}-${partes[0]}`;
-          } else {
-            ativacaoFormatada = dataStr;
-          }
-        } else {
-          ativacaoFormatada = dataStr;
-        }
-      }
-    }
-
-    // 🔥 CORREÇÃO: Processamento SIMPLIFICADO do percentual
-    let percentualTarifa = '0%';
-    if (linha[14] !== null && linha[14] !== undefined && linha[14] !== '') {
-      const valor = linha[14];
+      <!-- MENSAGENS DO SISTEMA -->
+      <div id="messageSuccess" class="message success" style="display: none;">
+        <i class="fas fa-check-circle"></i>
+        <span></span>
+      </div>
       
-      if (typeof valor === 'number') {
-        percentualTarifa = (valor * 100).toFixed(2) + '%';
-      } else if (typeof valor === 'string') {
-        const valorStr = valor.toString().trim();
-        if (valorStr.includes('%')) {
-          percentualTarifa = valorStr;
-        } else {
-          const valorNum = parseFloat(valorStr.replace(',', '.'));
-          if (!isNaN(valorNum)) {
-            percentualTarifa = valorNum.toFixed(2) + '%';
-          }
-        }
-      }
-    }
+      <div id="messageError" class="message error" style="display: none;">
+        <i class="fas fa-exclamation-circle"></i>
+        <span></span>
+      </div>
 
-    // 🔥 CORREÇÃO: Processamento SIMPLIFICADO da adesão
-    let adesaoFormatada = 'Isento';
-    if (linha[15] !== null && linha[15] !== undefined && linha[15] !== '') {
-      const valorAdesao = linha[15];
-      if (typeof valorAdesao === 'number' && valorAdesao > 0) {
-        adesaoFormatada = valorAdesao;
-      } else if (typeof valorAdesao === 'string') {
-        const valorStr = valorAdesao.toString().trim();
-        if (valorStr !== 'Isento' && valorStr !== '0' && valorStr !== '0.00') {
-          const valorNum = parseFloat(valorStr.replace('R$', '').replace(/\./g, '').replace(',', '.').trim());
-          if (!isNaN(valorNum) && valorNum > 0) {
-            adesaoFormatada = valorNum;
-          }
-        }
-      }
-    }
+      <div id="messageInfo" class="message info" style="display: none;">
+        <i class="fas fa-info-circle"></i>
+        <span></span>
+      </div>
+    </div>
+  </div>
 
-    const resultado = {
-      encontrado: true,
-      id: id,
-      razao_social: linha[0]?.toString().trim() || '',
-      nome_fantasia: linha[1]?.toString().trim() || '',
-      cnpj: formatarCNPJNoSheets(linha[2]?.toString().trim() || ''),
-      fornecedor: linha[3]?.toString().trim() || '',
-      ultimo_evento: ultimoEventoFormatado, // 🔥 AGORA CORRETO
-      evento: linha[5]?.toString().trim() || '',
-      observacoes: linha[6]?.toString().trim() || '',
-      contrato_enviado: linha[7]?.toString().trim() || '',
-      contrato_assinado: linha[8]?.toString().trim() || '',
-      ativacao: ativacaoFormatada, // 🔥 AGORA CORRETO
-      link: linha[10]?.toString().trim() || '',
-      mensalidade: typeof linha[11] === 'number' ? linha[11] : 0,
-      mensalidade_sim: typeof linha[12] === 'number' ? linha[12] : 0,
-      tarifa: linha[13]?.toString().trim() || '',
-      percentual_tarifa: percentualTarifa,
-      adesao: adesaoFormatada,
-      situacao: (linha[16]?.toString().trim() || 'Novo registro'),
-      waitlabel: waitlabel
-    };
+  <!-- MODAL 1: VISUALIZAR TODOS OS FORNECEDORES -->
+  <div id="modalFornecedores" class="modal-overlay">
+    <div class="modal-content">
+      <div class="modal-header">
+        <h3 class="modal-title">🏪 Todos os Fornecedores</h3>
+        <button class="btn-close" onclick="fecharModalFornecedores()">
+          <i class="fas fa-times"></i>
+        </button>
+      </div>
 
-    console.log("✅ [VISUALIZAÇÃO] Cadastro processado:", {
-      id: resultado.id,
-      razao_social: resultado.razao_social,
-      ultimo_evento: resultado.ultimo_evento,
-      ativacao: resultado.ativacao
-    });
-    
-    return resultado;
-    
-  } catch (error) {
-    console.error("❌ Erro em buscarCadastroPorIDComWaitlabel:", error);
-    return { encontrado: false, mensagem: "Erro: " + error.message };
-  }
-}
+      <div id="modalFornecedoresContent">
+        <!-- Conteúdo será preenchido via JavaScript -->
+      </div>
 
-// 🔥🔥🔥 FUNÇÃO DE TESTE ESPECÍFICA PARA DATAS
-function testarDatasVisualizacao() {
-  try {
-    console.log("=== 🧪 TESTE ESPECÍFICO PARA VISUALIZAÇÃO ===");
-    
-    const ss = SpreadsheetApp.openById(CONFIG_FILHA.ID_PLANILHA_MAE);
-    const aba = ss.getSheetByName(CONFIG_FILHA.WAITLABEL_FILHA);
-    
-    if (!aba) {
-      return { error: "Aba não encontrada" };
-    }
-    
-    // Buscar algumas linhas para testar
-    const dadosTeste = aba.getRange(2, 1, 5, 17).getValues();
-    const resultadosTeste = [];
-    
-    for (let i = 0; i < dadosTeste.length; i++) {
-      const linha = dadosTeste[i];
-      if (!linha[0] || linha[0].toString().trim() === '') continue;
-      
-      const ultimoEventoOriginal = linha[4];
-      const ativacaoOriginal = linha[9];
-      
-      // Processar como na função corrigida
-      let ultimoEventoFormatado = ultimoEventoOriginal ? ultimoEventoOriginal.toString() : '';
-      if (ultimoEventoOriginal instanceof Date) {
-        ultimoEventoFormatado = Utilities.formatDate(ultimoEventoOriginal, CONFIG_FILHA.TIMEZONE, "dd/MM/yyyy HH:mm:ss");
-      }
-      
-      let ativacaoFormatada = '';
-      if (ativacaoOriginal) {
-        if (ativacaoOriginal instanceof Date) {
-          ativacaoFormatada = Utilities.formatDate(ativacaoOriginal, CONFIG_FILHA.TIMEZONE, "yyyy-MM-dd");
-        } else {
-          ativacaoFormatada = ativacaoOriginal.toString();
-        }
-      }
-      
-      resultadosTeste.push({
-        linha: i + 2,
-        razao_social: linha[0]?.toString().trim() || '',
-        ultimo_evento_original: ultimoEventoOriginal,
-        ultimo_evento_formatado: ultimoEventoFormatado,
-        ativacao_original: ativacaoOriginal,
-        ativacao_formatada: ativacaoFormatada
-      });
-    }
-    
-    console.log("📅 Resultados do teste de visualização:", resultadosTeste);
-    
-    return {
-      success: true,
-      teste_visualizacao: resultadosTeste,
-      message: "Teste de visualização concluído"
-    };
-    
-  } catch (error) {
-    console.error("❌ Erro no teste de visualização:", error);
-    return { error: error.message };
-  }
-}
+      <div style="text-align: center; margin-top: 25px; padding-top: 20px; border-top: 1px solid var(--border);">
+        <button class="btn btn-primary" onclick="fecharModalFornecedores()">
+          <i class="fas fa-check"></i> Fechar
+        </button>
+      </div>
+    </div>
+  </div>
 
-// 🔥 FUNÇÕES AUXILIARES (MANTIDAS)
-function formatarCNPJNoSheets(cnpj) {
-  if (!cnpj) return '';
-  if (cnpj.toString().includes('.') || cnpj.toString().includes('/') || cnpj.toString().includes('-')) {
-    return cnpj.toString();
-  }
-  const cnpjStr = cnpj.toString().replace(/\D/g, '');
-  if (cnpjStr.length === 14) {
-    return cnpjStr.replace(/^(\d{2})(\d{3})(\d{3})(\d{4})(\d{2})/, '$1.$2.$3/$4-$5');
-  }
-  return cnpj;
-}
+  <!-- MODAL 2: DETALHES COMPLETOS -->
+  <div id="modalDetalhes" class="modal-overlay">
+    <div class="modal-content">
+      <div class="modal-header">
+        <h3 class="modal-title">📋 Detalhes do Cadastro</h3>
+        <button class="btn-close" onclick="fecharModalDetalhes()">
+          <i class="fas fa-times"></i>
+        </button>
+      </div>
 
-// 🔥 FUNÇÃO DE TESTE ATUALIZADA
-function testar() {
-  const totalCadastros = buscarTodosCadastrosComWaitlabel(CONFIG_FILHA.WAITLABEL_FILHA).length;
-  const testeDatas = testarDatasVisualizacao();
+      <div id="modalDetalhesContent">
+        <!-- Conteúdo será preenchido via JavaScript -->
+      </div>
+
+      <div style="text-align: center; margin-top: 25px; padding-top: 20px; border-top: 1px solid var(--border);">
+        <button class="btn btn-primary" onclick="fecharModalDetalhes()">
+          <i class="fas fa-check"></i> Fechar
+        </button>
+      </div>
+    </div>
+  </div>
+
+  <script>
+// 🔥 VARIÁVEIS GLOBAIS
+let todosCadastros = [];
+let cadastrosFiltrados = [];
+let filtrosAtivos = {};
+let situacaoAtiva = 'all';
+let eventosSelecionados = [];
+let fornecedoresSelecionados = [];
+const waitlabelAtual = 'Doktorbank';
+
+// 🔥 EVENTOS PARA FILTRO - CORRIGIDO (SEM DUPLICADOS)
+const eventosDisponiveis = [
+  "NOVO CADASTRO", "PRIMEIRO CONTATO", "CLIENTE INTERESSADO", "SOLICITOU MAIS INFORMACOES",
+  "AGENDAMENTO OF DEMONSTRACAO", "PROPOSTA ENVIADA", "AGUARDANDO RETORNO", "LOJA CADASTRADA",
+  "DOCUMENTACAO RECEBIDA", "CONTRATO ENVIADO", "AGUARDANDO ASSINATURA", "CADASTRO APROVADO",
+  "AGUARDANDO ATIVACAO", "AGUARDANDO ACEITE DA LOJA", "AGUARDANDO ACEITE DO FORNECEDOR",
+  "AGUARDANDO DOCUMENTOS", "CLIENTE NAO INTERESSADO", "CONDICAO ESPECIAL", "CONTRATO ASSINADO",
+  "DESISTIU", "DOCUMENTACAO INCOMPLETA", "EM IMPLANTACAO", "EM TREINAMENTO", "ENVIO DE BOLETO",
+  "ENVIO DE WHATSAPP", "FOLLOW-UP NECESSARIO", "FORNECEDOR ALTERADO", "LIGACAO REALIZADA",
+  "NEGOCIACAO EM ANDAMENTO", "PAGAMENTO EFETUADO", "PAGAMENTO PENDENTE", "QUANTIDADE DE LOJAS ALTERADA",
+  "RECADO REGISTRADO", "REUNIAO AGENDADA", "SEM RETORNO", "REJEITADO", "BLOQUEADO", "DESCREDENCIADO",
+  "CONTRATO CANCELADO", "LOJA DESATIVADA", "FORNECEDOR REMOVIDO", "PROCESSO ENCERRADO", "CADASTRO EXPIRADO"
+].sort();
+
+// 🔥 FORNECEDORES DISPONÍVEIS
+const fornecedoresDisponiveis = [
+  "AGIL", "BC", "PARCELEX", "AGORACRED", "AFINZ"
+].sort();
+
+// 🔥 INICIALIZAÇÃO
+document.addEventListener('DOMContentLoaded', function() {
+  console.log('Sistema de Visualização - Carregando dados...');
+  // 🔥 NOVO: Mostrar popup de carregamento inicial
+  showLoadingPopup('Carregando Lojas', 'Aguarde enquanto buscamos os dados...');
+  carregarCadastros();
+  configurarEventosFiltro();
+});
+
+// 🔥 FUNÇÕES DO POPUP DE CARREGAMENTO
+function showLoadingPopup(texto, subtexto) {
+  const popup = document.getElementById('loadingPopup');
+  const textoEl = document.getElementById('loadingPopupText');
+  const subtextoEl = document.getElementById('loadingPopupSubtext');
   
-  return { 
-    success: true, 
-    message: "✅ Sistema de VISUALIZAÇÃO funcionando!",
-    modo: "Somente leitura - CORRIGIDO",
-    waitlabel: CONFIG_FILHA.WAITLABEL_FILHA,
-    totalCadastros: totalCadastros,
-    teste_datas: testeDatas,
-    timestamp: new Date().toISOString()
+  textoEl.textContent = texto || 'Carregando...';
+  subtextoEl.textContent = subtexto || 'Aguarde um momento';
+  
+  popup.style.display = 'flex';
+}
+
+function hideLoadingPopup() {
+  const popup = document.getElementById('loadingPopup');
+  popup.style.display = 'none';
+}
+
+// 🔥 CONFIGURAR EVENTOS DOS FILTROS
+function configurarEventosFiltro() {
+  const inputEvento = document.getElementById('filtroEvento');
+  const inputFornecedor = document.getElementById('filtroFornecedor');
+  
+  // Fechar sugestões ao clicar fora
+  document.addEventListener('click', function(e) {
+    const suggestionsEvento = document.getElementById('suggestionsEvento');
+    const suggestionsFornecedor = document.getElementById('suggestionsFornecedor');
+    
+    if (suggestionsEvento && !inputEvento.contains(e.target) && !suggestionsEvento.contains(e.target)) {
+      suggestionsEvento.style.display = 'none';
+    }
+    
+    if (suggestionsFornecedor && !inputFornecedor.contains(e.target) && !suggestionsFornecedor.contains(e.target)) {
+      suggestionsFornecedor.style.display = 'none';
+    }
+  });
+  
+  // Fechar sugestões com ESC
+  inputEvento.addEventListener('keydown', function(e) {
+    if (e.key === 'Escape') {
+      document.getElementById('suggestionsEvento').style.display = 'none';
+    }
+    if (e.key === 'Enter') {
+      e.preventDefault();
+      const texto = inputEvento.value.trim();
+      if (texto && !eventosSelecionados.includes(texto.toUpperCase())) {
+        adicionarEvento(texto.toUpperCase());
+      }
+      inputEvento.value = '';
+      document.getElementById('suggestionsEvento').style.display = 'none';
+    }
+  });
+  
+  inputFornecedor.addEventListener('keydown', function(e) {
+    if (e.key === 'Escape') {
+      document.getElementById('suggestionsFornecedor').style.display = 'none';
+    }
+    if (e.key === 'Enter') {
+      e.preventDefault();
+      const texto = inputFornecedor.value.trim();
+      if (texto && !fornecedoresSelecionados.includes(texto.toUpperCase())) {
+        adicionarFornecedor(texto.toUpperCase());
+      }
+      inputFornecedor.value = '';
+      document.getElementById('suggestionsFornecedor').style.display = 'none';
+    }
+  });
+}
+
+// 🔥 FUNÇÕES DO FILTRO DE EVENTOS
+function mostrarSugestoesEvento() {
+  const input = document.getElementById('filtroEvento');
+  if (input.value.trim().length > 0) {
+    filtrarSugestoesEvento();
+  }
+}
+
+function filtrarSugestoesEvento() {
+  const input = document.getElementById('filtroEvento');
+  const suggestions = document.getElementById('suggestionsEvento');
+  const termo = input.value.toLowerCase().trim();
+  
+  if (termo.length < 1) {
+    suggestions.style.display = 'none';
+    return;
+  }
+  
+  // 🔥 CORREÇÃO: Remover duplicatas usando Set
+  const eventosUnicos = [...new Set(eventosDisponiveis)];
+  const eventosFiltrados = eventosUnicos.filter(evento => 
+    evento.toLowerCase().includes(termo) && !eventosSelecionados.includes(evento)
+  );
+  
+  if (eventosFiltrados.length === 0) {
+    suggestions.innerHTML = `
+      <div class="suggestion-item" style="color: var(--gray);">
+        <i class="fas fa-search"></i> Nenhum evento encontrado
+      </div>
+    `;
+  } else {
+    let html = eventosFiltrados.map(evento => `
+      <div class="suggestion-item" onclick="adicionarEvento('${evento}')">
+        <i class="fas fa-calendar-check"></i> ${evento}
+      </div>
+    `).join('');
+    
+    suggestions.innerHTML = html;
+  }
+  
+  suggestions.style.display = 'block';
+}
+
+function adicionarEvento(evento) {
+  if (!eventosSelecionados.includes(evento)) {
+    eventosSelecionados.push(evento);
+    atualizarEventosSelecionados();
+    aplicarFiltroEventos();
+  }
+  
+  document.getElementById('filtroEvento').value = '';
+  document.getElementById('suggestionsEvento').style.display = 'none';
+}
+
+function removerEvento(evento) {
+  eventosSelecionados = eventosSelecionados.filter(e => e !== evento);
+  atualizarEventosSelecionados();
+  aplicarFiltroEventos();
+}
+
+function atualizarEventosSelecionados() {
+  const container = document.getElementById('eventosSelecionados');
+  
+  if (eventosSelecionados.length === 0) {
+    container.innerHTML = '';
+    container.style.display = 'none';
+    return;
+  }
+  
+  container.style.display = 'flex';
+  container.innerHTML = eventosSelecionados.map(evento => `
+    <div class="tag">
+      <i class="fas fa-calendar"></i> ${evento}
+      <button class="remover" onclick="removerEvento('${evento}')">
+        <i class="fas fa-times"></i>
+      </button>
+    </div>
+  `).join('');
+}
+
+function aplicarFiltroEventos() {
+  if (eventosSelecionados.length > 0) {
+    filtrosAtivos.eventos = eventosSelecionados;
+  } else {
+    delete filtrosAtivos.eventos;
+  }
+  aplicarTodosFiltros();
+}
+
+// 🔥 FUNÇÕES DO FILTRO DE FORNECEDORES
+function mostrarSugestoesFornecedor() {
+  const input = document.getElementById('filtroFornecedor');
+  if (input.value.trim().length > 0) {
+    filtrarSugestoesFornecedor();
+  }
+}
+
+function filtrarSugestoesFornecedor() {
+  const input = document.getElementById('filtroFornecedor');
+  const suggestions = document.getElementById('suggestionsFornecedor');
+  const termo = input.value.toLowerCase().trim();
+  
+  if (termo.length < 1) {
+    suggestions.style.display = 'none';
+    return;
+  }
+  
+  const fornecedoresFiltrados = fornecedoresDisponiveis.filter(fornecedor => 
+    fornecedor.toLowerCase().includes(termo) && !fornecedoresSelecionados.includes(fornecedor)
+  );
+  
+  if (fornecedoresFiltrados.length === 0) {
+    suggestions.innerHTML = `
+      <div class="suggestion-item" style="color: var(--gray);">
+        <i class="fas fa-search"></i> Nenhum fornecedor encontrado
+      </div>
+    `;
+  } else {
+    let html = fornecedoresFiltrados.map(fornecedor => `
+      <div class="suggestion-item" onclick="adicionarFornecedor('${fornecedor}')">
+        <i class="fas fa-truck"></i> ${fornecedor}
+      </div>
+    `).join('');
+    
+    suggestions.innerHTML = html;
+  }
+  
+  suggestions.style.display = 'block';
+}
+
+function adicionarFornecedor(fornecedor) {
+  if (!fornecedoresSelecionados.includes(fornecedor)) {
+    fornecedoresSelecionados.push(fornecedor);
+    atualizarFornecedoresSelecionados();
+    aplicarFiltroFornecedores();
+  }
+  
+  document.getElementById('filtroFornecedor').value = '';
+  document.getElementById('suggestionsFornecedor').style.display = 'none';
+}
+
+function removerFornecedor(fornecedor) {
+  fornecedoresSelecionados = fornecedoresSelecionados.filter(f => f !== fornecedor);
+  atualizarFornecedoresSelecionados();
+  aplicarFiltroFornecedores();
+}
+
+function atualizarFornecedoresSelecionados() {
+  const container = document.getElementById('fornecedoresSelecionados');
+  
+  if (fornecedoresSelecionados.length === 0) {
+    container.innerHTML = '';
+    container.style.display = 'none';
+    return;
+  }
+  
+  container.style.display = 'flex';
+  container.innerHTML = fornecedoresSelecionados.map(fornecedor => `
+    <div class="tag fornecedor">
+      <i class="fas fa-truck"></i> ${fornecedor}
+      <button class="remover" onclick="removerFornecedor('${fornecedor}')">
+        <i class="fas fa-times"></i>
+      </button>
+    </div>
+  `).join('');
+}
+
+function aplicarFiltroFornecedores() {
+  if (fornecedoresSelecionados.length > 0) {
+    filtrosAtivos.fornecedores = fornecedoresSelecionados;
+  } else {
+    delete filtrosAtivos.fornecedores;
+  }
+  aplicarTodosFiltros();
+}
+
+// 🔥 CARREGAR CADASTROS
+function carregarCadastros() {
+  console.log("🎯 Carregando cadastros...");
+  
+  showLoading();
+  document.getElementById('filtrosContainer').style.display = 'none';
+  document.getElementById('tableContainer').style.display = 'none';
+  limparTodosFiltros();
+
+  google.script.run
+    .withSuccessHandler(function(cadastros) {
+      hideLoading();
+      hideLoadingPopup(); // 🔥 NOVO: Esconder popup de carregamento
+      
+      console.log("✅ Cadastros recebidos:", cadastros);
+      
+      if (cadastros && cadastros.length > 0) {
+        const cadastrosOrdenados = cadastros.sort((a, b) => {
+          const nomeA = (a.razao_social || '').toLowerCase();
+          const nomeB = (b.razao_social || '').toLowerCase();
+          return nomeA.localeCompare(nomeB);
+        });
+        
+        todosCadastros = cadastrosOrdenados;
+        cadastrosFiltrados = [...cadastrosOrdenados];
+        
+        exibirTabelaCadastros();
+        
+        document.getElementById('filtrosContainer').style.display = 'flex';
+        
+        showMessage('success', `✅ ${cadastros.length} cadastros carregados!`);
+      } else {
+        document.getElementById('tabelaCadastrosBody').innerHTML = `
+          <tr>
+            <td colspan="9" style="text-align: center; padding: 40px;">
+              <i class="fas fa-inbox" style="font-size: 3rem; color: var(--gray); margin-bottom: 15px;"></i>
+              <h3>Nenhum cadastro encontrado</h3>
+              <p>Não há cadastros no sistema.</p>
+            </td>
+          </tr>
+        `;
+        document.getElementById('tableContainer').style.display = 'block';
+        showMessage('info', '📝 Nenhum cadastro encontrado.');
+      }
+    })
+    .withFailureHandler(function(error) {
+      hideLoading();
+      hideLoadingPopup(); // 🔥 NOVO: Esconder popup de carregamento mesmo em caso de erro
+      console.error("❌ Erro ao carregar cadastros:", error);
+      showMessage('error', '❌ Erro ao carregar cadastros: ' + error.message);
+    })
+    .buscarTodosCadastrosComWaitlabel(waitlabelAtual);
+}
+
+// 🔥 EXIBIR TABELA AGRUPADA
+function exibirTabelaCadastros() {
+  const tabelaBody = document.getElementById('tabelaCadastrosBody');
+  const loading = document.getElementById('loadingCadastros');
+  const tableContainer = document.getElementById('tableContainer');
+
+  tabelaBody.innerHTML = '';
+
+  if (cadastrosFiltrados.length === 0) {
+    tabelaBody.innerHTML = `
+      <tr>
+        <td colspan="9" style="text-align: center; padding: 40px;">
+          <i class="fas fa-search" style="font-size: 3rem; color: var(--gray); margin-bottom: 15px;"></i>
+          <h3>Nenhum resultado encontrado</h3>
+          <p>Tente alterar os filtros de pesquisa.</p>
+        </td>
+      </tr>
+    `;
+  } else {
+    const cadastrosAgrupados = agruparCadastrosPorCNPJ(cadastrosFiltrados);
+    cadastrosAgrupados.forEach(grupo => {
+      const row = criarLinhaTabelaAgrupada(grupo);
+      tabelaBody.appendChild(row);
+    });
+  }
+
+  loading.style.display = 'none';
+  tableContainer.style.display = 'block';
+  atualizarContador();
+}
+
+// 🔥 AGRUPAR CADASTROS POR CNPJ
+function agruparCadastrosPorCNPJ(cadastros) {
+  const agrupados = {};
+  
+  cadastros.forEach(cadastro => {
+    if (!agrupados[cadastro.cnpj]) {
+      agrupados[cadastro.cnpj] = {
+        razao_social: cadastro.razao_social,
+        nome_fantasia: cadastro.nome_fantasia,
+        cnpj: cadastro.cnpj,
+        lojas: []
+      };
+    }
+    
+    agrupados[cadastro.cnpj].lojas.push(cadastro);
+  });
+  
+  return Object.values(agrupados);
+}
+
+// 🔥 FUNÇÃO criarLinhaTabelaAgrupada COMPLETA COM CORREÇÃO DE DEFASAGEM
+function criarLinhaTabelaAgrupada(grupo) {
+  const row = document.createElement('tr');
+  
+  const situacoes = grupo.lojas.map(l => l.situacao);
+  const situacaoPrincipal = situacoes.includes('DESCREDENCIADO') ? 'DESCREDENCIADO' :
+                           situacoes.includes('REJEITADO') ? 'REJEITADO' :
+                           situacoes.includes('EM ANDAMENTO') ? 'EM ANDAMENTO' :
+                           situacoes.includes('NOVO REGISTRO') ? 'NOVO REGISTRO' :
+                           situacoes.includes('DESISTIU') ? 'DESISTIU' :
+                           'CADASTRADO';
+
+  // 🔥 CORREÇÃO: ENCONTRAR O FORNECEDOR MAIS ATRASADO
+  const fornecedorMaisAntigo = encontrarFornecedorMaisAntigo(grupo.lojas);
+  
+  console.log("🔍 FORNECEDOR MAIS ANTIGO ENCONTRADO:", fornecedorMaisAntigo);
+
+  // 🔥 CORREÇÃO DEFINITIVA: APLICAR CORREÇÃO DE HORAS
+  const dataHoraMaisAntiga = fornecedorMaisAntigo.data || 'N/A';
+  const dataHoraCorrigida = dataHoraMaisAntiga !== 'N/A' ? 
+      corrigirHoraFrontend(dataHoraMaisAntiga) : 'N/A';
+
+  const eventoMaisAntigo = fornecedorMaisAntigo.evento || 'N/A';
+  const nomeFornecedorAntigo = fornecedorMaisAntigo.fornecedor || 'N/A';
+
+  // 🔥 CORREÇÃO: SÓ MOSTRAR DEFASAGEM SE HOUVER LOJA EM ANDAMENTO
+  const temLojaEmAndamento = grupo.lojas.some(loja => 
+    loja.situacao && loja.situacao.toUpperCase() === 'EM ANDAMENTO'
+  );
+
+  let defasagemHTML = '';
+  if (temLojaEmAndamento) {
+    const defasagemInfo = calcularDefasagemPorCNPJ(grupo.lojas);
+    const defasagemTexto = defasagemInfo.dias === 0 ? 'Hoje' : 
+                          defasagemInfo.dias === 1 ? '1 dia' : 
+                          defasagemInfo.dias > 1 && defasagemInfo.dias < 9999 ? `${defasagemInfo.dias} dias` : 'N/A';
+    const defasagemClass = getDefasagemClass(defasagemTexto);
+    
+    defasagemHTML = `
+      <td style="text-align: center;">
+        <div class="defasagem-container">
+          <span class="defasagem-badge ${defasagemClass}" title="Fornecedor mais antigo: ${defasagemInfo.fornecedor}">
+            ${defasagemTexto}
+          </span>
+        </div>
+      </td>
+    `;
+  } else {
+    defasagemHTML = `
+      <td style="text-align: center;">
+        <div class="defasagem-container">
+          <span class="sem-defasagem-badge" title="Nenhuma loja em andamento">
+            Sem defasagem
+          </span>
+        </div>
+      </td>
+    `;
+  }
+
+  // 🔥 AGORA MOSTRA DATA E HORA CORRIGIDA
+  let ultimoEventoInfo = '';
+  if (dataHoraCorrigida !== 'N/A') {
+    const [dataPart, horaPart] = dataHoraCorrigida.split(' ');
+    ultimoEventoInfo = `
+      <div style="font-size: 0.75rem;">
+        <div style="font-weight: 500; margin-bottom: 2px;">${eventoMaisAntigo}</div>
+        <div style="color: var(--gray); font-size: 0.65rem;">
+          ${dataPart} ${horaPart}
+        </div>
+        <div style="color: var(--danger); font-size: 0.6rem; margin-top: 2px;">
+          ⚠️ ${nomeFornecedorAntigo}
+        </div>
+      </div>
+    `;
+  } else {
+    ultimoEventoInfo = `
+      <div style="font-size: 0.75rem;">
+        <div style="font-weight: 500; margin-bottom: 2px;">${eventoMaisAntigo}</div>
+        <div style="color: var(--gray); font-size: 0.65rem;">N/A</div>
+        <div style="color: var(--danger); font-size: 0.6rem; margin-top: 2px;">
+          ⚠️ ${nomeFornecedorAntigo}
+        </div>
+      </div>
+    `;
+  }
+
+  row.innerHTML = `
+    <td>
+      <div style="font-weight: 600; color: var(--primary); margin-bottom: 2px;">${grupo.razao_social || 'N/A'}</div>
+      <div style="font-size: 0.7rem; color: var(--gray);">${grupo.nome_fantasia || 'Sem nome fantasia'}</div>
+      <div style="font-size: 0.65rem; color: var(--info); margin-top: 2px;">
+        <strong>${grupo.lojas.length}</strong> fornecedor(es)
+      </div>
+    </td>
+    <td>
+      <div style="font-family: monospace; font-size: 0.75rem; font-weight: 600; color: var(--dark);">
+        ${grupo.cnpj || 'N/A'}
+      </div>
+    </td>
+    <td>
+      <div style="font-weight: 500; color: var(--dark);">
+        ${grupo.lojas.map(l => l.fornecedor).join(', ')}
+      </div>
+    </td>
+    <td>
+      <span class="status-badge ${getSituacaoClass(situacaoPrincipal)}">${situacaoPrincipal}</span>
+    </td>
+    <td>
+      ${ultimoEventoInfo}
+    </td>
+    ${defasagemHTML}
+    <td style="font-weight: 600; color: var(--success); text-align: center;">
+      ${formatarMoedaParaInput(grupo.lojas[0]?.mensalidade)}
+    </td>
+    <td style="font-weight: 600; color: var(--info); text-align: center;">
+      ${grupo.lojas[0]?.adesao === 'Isento' || grupo.lojas[0]?.adesao === 0 ? 'Isento' : formatarMoedaParaInput(grupo.lojas[0]?.adesao)}
+    </td>
+    <td style="text-align: center;">
+      <button class="btn btn-info btn-sm btn-visualizar-compact" onclick="verTodosFornecedores('${grupo.cnpj}')" title="Visualizar Todos">
+        <i class="fas fa-eye"></i> Ver Todos
+      </button>
+    </td>
+  `;
+
+  return row;
+}
+
+// 🔥 FUNÇÃO AUXILIAR PARA ENCONTRAR FORNECEDOR MAIS ATRASADO
+function encontrarFornecedorMaisAntigo(lojasDoCNPJ) {
+  if (!lojasDoCNPJ || lojasDoCNPJ.length === 0) {
+    return { fornecedor: 'N/A', data: 'N/A', evento: 'N/A', dias: 9999 };
+  }
+  
+  console.log("🔍 Buscando fornecedor mais antigo entre", lojasDoCNPJ.length, "lojas");
+  
+  // Filtrar apenas lojas com data válida
+  const lojasComData = lojasDoCNPJ.filter(loja => {
+    if (!loja.ultimo_evento || loja.ultimo_evento === 'N/A') return false;
+    
+    try {
+      const data = new Date(loja.ultimo_evento.split('/').reverse().join('-'));
+      return !isNaN(data.getTime());
+    } catch (error) {
+      return false;
+    }
+  });
+  
+  if (lojasComData.length === 0) {
+    console.log("❌ Nenhuma loja com data válida encontrada");
+    return { fornecedor: 'N/A', data: 'N/A', evento: 'N/A', dias: 9999 };
+  }
+  
+  // Encontrar a loja com evento mais antigo
+  const lojaMaisAntiga = lojasComData.reduce((maisAntiga, atual) => {
+    try {
+      const dataMaisAntiga = new Date(maisAntiga.ultimo_evento.split('/').reverse().join('-'));
+      const dataAtual = new Date(atual.ultimo_evento.split('/').reverse().join('-'));
+      
+      console.log(`📊 Comparando: ${atual.fornecedor} (${dataAtual}) vs ${maisAntiga.fornecedor} (${dataMaisAntiga})`);
+      
+      return dataAtual < dataMaisAntiga ? atual : maisAntiga;
+    } catch (error) {
+      console.log("❌ Erro ao comparar datas:", error);
+      return maisAntiga;
+    }
+  });
+  
+  const diasDefasagem = calcularDiasDefasagem(lojaMaisAntiga.ultimo_evento);
+  
+  console.log("✅ Fornecedor mais antigo encontrado:", {
+    fornecedor: lojaMaisAntiga.fornecedor,
+    data: lojaMaisAntiga.ultimo_evento,
+    evento: lojaMaisAntiga.evento,
+    dias: diasDefasagem
+  });
+  
+  return {
+    fornecedor: lojaMaisAntiga.fornecedor,
+    data: lojaMaisAntiga.ultimo_evento,
+    evento: lojaMaisAntiga.evento,
+    dias: diasDefasagem
   };
 }
+
+// 🔥 NOVA FUNÇÃO: Calcular defasagem correta por CNPJ (usando o mais antigo)
+function calcularDefasagemPorCNPJ(lojasDoCNPJ) {
+  if (!lojasDoCNPJ || lojasDoCNPJ.length === 0) {
+    return { dias: 9999, fornecedor: 'N/A', data: 'N/A', evento: 'N/A' };
+  }
+  
+  console.log("🔍 Calculando defasagem para CNPJ com", lojasDoCNPJ.length, "lojas");
+  
+  // Filtrar apenas lojas com data válida
+  const lojasComData = lojasDoCNPJ.filter(loja => {
+    if (!loja.ultimo_evento || loja.ultimo_evento === 'N/A') return false;
+    
+    try {
+      const data = new Date(loja.ultimo_evento.split('/').reverse().join('-'));
+      return !isNaN(data.getTime());
+    } catch (error) {
+      return false;
+    }
+  });
+  
+  if (lojasComData.length === 0) {
+    console.log("❌ Nenhuma loja com data válida encontrada");
+    return { dias: 9999, fornecedor: 'N/A', data: 'N/A', evento: 'N/A' };
+  }
+  
+  // Encontrar a loja com evento mais antigo
+  const lojaMaisAntiga = lojasComData.reduce((maisAntiga, atual) => {
+    try {
+      const dataMaisAntiga = new Date(maisAntiga.ultimo_evento.split('/').reverse().join('-'));
+      const dataAtual = new Date(atual.ultimo_evento.split('/').reverse().join('-'));
+      
+      console.log(`📊 Comparando: ${atual.fornecedor} (${dataAtual}) vs ${maisAntiga.fornecedor} (${dataMaisAntiga})`);
+      
+      return dataAtual < dataMaisAntiga ? atual : maisAntiga;
+    } catch (error) {
+      console.log("❌ Erro ao comparar datas:", error);
+      return maisAntiga;
+    }
+  });
+  
+  const diasDefasagem = calcularDiasDefasagem(lojaMaisAntiga.ultimo_evento);
+  
+  console.log("✅ Fornecedor mais antigo encontrado:", {
+    fornecedor: lojaMaisAntiga.fornecedor,
+    data: lojaMaisAntiga.ultimo_evento,
+    dias: diasDefasagem
+  });
+  
+  return {
+    dias: diasDefasagem,
+    fornecedor: lojaMaisAntiga.fornecedor,
+    data: lojaMaisAntiga.ultimo_evento,
+    evento: lojaMaisAntiga.evento
+  };
+}
+
+// 🔥 NOVA FUNÇÃO: Calcular defasagem para ordenação (considera status)
+function calcularDefasagemParaOrdenacao(lojasDoCNPJ) {
+  if (!lojasDoCNPJ || lojasDoCNPJ.length === 0) {
+    return 0; // Se não tem lojas, defasagem = 0
+  }
+  
+  // 🔥 VERIFICAR SE TEM ALGUMA LOJA EM ANDAMENTO
+  const temLojaEmAndamento = lojasDoCNPJ.some(loja => 
+    loja.situacao && loja.situacao.toUpperCase() === 'EM ANDAMENTO'
+  );
+  
+  // 🔥 SE NÃO TEM LOJA EM ANDAMENTO, DEFASAGEM = 0
+  if (!temLojaEmAndamento) {
+    return 0;
+  }
+  
+  // 🔥 SE TEM LOJA EM ANDAMENTO, CALCULAR A DEFASAGEM REAL
+  const defasagemInfo = calcularDefasagemPorCNPJ(lojasDoCNPJ);
+  
+  console.log("🎯 Defasagem para ordenação:", {
+    cnpj: lojasDoCNPJ[0]?.cnpj,
+    temLojaEmAndamento: temLojaEmAndamento,
+    defasagemDias: defasagemInfo.dias
+  });
+  
+  return defasagemInfo.dias < 9999 ? defasagemInfo.dias : 0;
+}
+
+// 🔥 FUNÇÕES DE FILTRO
+function aplicarFiltroSituacao(situacao) {
+  document.querySelectorAll('.filtro-btn').forEach(btn => {
+    btn.classList.remove('active');
+  });
+  
+  if (situacao !== situacaoAtiva) {
+    const btnAtivo = document.querySelector(`.filtro-btn[data-situacao="${situacao}"]`);
+    if (btnAtivo) {
+      btnAtivo.classList.add('active');
+    }
+    situacaoAtiva = situacao;
+  } else {
+    situacaoAtiva = 'all';
+    const btnTodos = document.querySelector('.filtro-btn[data-situacao="all"]');
+    if (btnTodos) {
+      btnTodos.classList.add('active');
+    }
+  }
+
+  if (situacaoAtiva === 'all') {
+    delete filtrosAtivos.situacao;
+  } else {
+    filtrosAtivos.situacao = situacaoAtiva;
+  }
+  aplicarTodosFiltros();
+}
+
+function filtrarPesquisa() {
+  const termo = document.getElementById('pesquisaCadastros').value.toLowerCase().trim();
+  if (termo) {
+    filtrosAtivos.pesquisa = termo;
+  } else {
+    delete filtrosAtivos.pesquisa;
+  }
+  aplicarTodosFiltros();
+}
+
+// 🔥 APLICAR TODOS OS FILTROS
+function aplicarTodosFiltros() {
+  console.log("🎯 [FILTRO] Aplicando todos os filtros...");
+  
+  let resultado = [...todosCadastros];
+  
+  if (filtrosAtivos.situacao) {
+    resultado = resultado.filter(cadastro => 
+      cadastro.situacao === filtrosAtivos.situacao
+    );
+  }
+  
+  if (filtrosAtivos.eventos && filtrosAtivos.eventos.length > 0) {
+    resultado = resultado.filter(cadastro => 
+      filtrosAtivos.eventos.some(evento => 
+        cadastro.evento && cadastro.evento.toUpperCase().includes(evento)
+      )
+    );
+  }
+  
+  if (filtrosAtivos.fornecedores && filtrosAtivos.fornecedores.length > 0) {
+    resultado = resultado.filter(cadastro => 
+      filtrosAtivos.fornecedores.includes(cadastro.fornecedor)
+    );
+  }
+  
+  if (filtrosAtivos.pesquisa) {
+    resultado = resultado.filter(cadastro => 
+      (cadastro.razao_social && cadastro.razao_social.toLowerCase().includes(filtrosAtivos.pesquisa)) ||
+      (cadastro.nome_fantasia && cadastro.nome_fantasia.toLowerCase().includes(filtrosAtivos.pesquisa)) ||
+      (cadastro.cnpj && cadastro.cnpj.includes(filtrosAtivos.pesquisa)) ||
+      (cadastro.fornecedor && cadastro.fornecedor.toLowerCase().includes(filtrosAtivos.pesquisa)) ||
+      (cadastro.evento && cadastro.evento.toLowerCase().includes(filtrosAtivos.pesquisa))
+    );
+  }
+  
+  cadastrosFiltrados = resultado;
+  console.log(`✅ [FILTRO] Filtros aplicados: ${resultado.length} de ${todosCadastros.length} registros`);
+  
+  exibirTabelaCadastros();
+}
+
+// 🔥 ORDENAÇÃO - CORRIGIDA COM DEFASAGEM POR STATUS
+function ordenarCadastros() {
+  const criterio = document.getElementById('ordenacao').value;
+  
+  console.log("🎯 Ordenando por:", criterio);
+  
+  const cadastrosAgrupados = agruparCadastrosPorCNPJ(cadastrosFiltrados);
+  
+  cadastrosAgrupados.sort((a, b) => {
+    switch(criterio) {
+      case 'razao_social':
+        return (a.razao_social || '').localeCompare(b.razao_social || '');
+      case 'razao_social_desc':
+        return (b.razao_social || '').localeCompare(a.razao_social || '');
+      case 'nome_fantasia':
+        return (a.nome_fantasia || '').localeCompare(b.nome_fantasia || '');
+      case 'nome_fantasia_desc':
+        return (b.nome_fantasia || '').localeCompare(a.nome_fantasia || '');
+      case 'situacao':
+        const situacaoA = a.lojas[0]?.situacao || '';
+        const situacaoB = b.lojas[0]?.situacao || '';
+        return situacaoA.localeCompare(situacaoB);
+      case 'fornecedor':
+        const fornecedorA = a.lojas[0]?.fornecedor || '';
+        const fornecedorB = b.lojas[0]?.fornecedor || '';
+        return fornecedorA.localeCompare(fornecedorB);
+      case 'defasagem':
+        const defasagemA = calcularDefasagemParaOrdenacao(a.lojas);
+        const defasagemB = calcularDefasagemParaOrdenacao(b.lojas);
+        return defasagemB - defasagemA;
+      case 'defasagem_asc':
+        const defasagemAAsc = calcularDefasagemParaOrdenacao(a.lojas);
+        const defasagemBAsc = calcularDefasagemParaOrdenacao(b.lojas);
+        return defasagemAAsc - defasagemBAsc;
+      case 'mensalidade':
+        const mensalidadeA = parseFloat(a.lojas[0]?.mensalidade || 0);
+        const mensalidadeB = parseFloat(b.lojas[0]?.mensalidade || 0);
+        return mensalidadeB - mensalidadeA;
+      case 'mensalidade_asc':
+        const mensalidadeAAsc = parseFloat(a.lojas[0]?.mensalidade || 0);
+        const mensalidadeBAsc = parseFloat(b.lojas[0]?.mensalidade || 0);
+        return mensalidadeAAsc - mensalidadeBAsc;
+      case 'adesao':
+        const adesaoA = a.lojas[0]?.adesao === 'Isento' || a.lojas[0]?.adesao === 0 ? 0 : parseFloat(a.lojas[0]?.adesao || 0);
+        const adesaoB = b.lojas[0]?.adesao === 'Isento' || b.lojas[0]?.adesao === 0 ? 0 : parseFloat(b.lojas[0]?.adesao || 0);
+        return adesaoB - adesaoA;
+      case 'adesao_asc':
+        const adesaoAAsc = a.lojas[0]?.adesao === 'Isento' || a.lojas[0]?.adesao === 0 ? 0 : parseFloat(a.lojas[0]?.adesao || 0);
+        const adesaoBAsc = b.lojas[0]?.adesao === 'Isento' || b.lojas[0]?.adesao === 0 ? 0 : parseFloat(b.lojas[0]?.adesao || 0);
+        return adesaoAAsc - adesaoBAsc;
+      default:
+        return 0;
+    }
+  });
+  
+  exibirTabelaCadastrosAgrupada(cadastrosAgrupados, 'Cadastros Ordenados');
+}
+
+function exibirTabelaCadastrosAgrupada(cadastrosAgrupados, titulo) {
+  const tabelaBody = document.getElementById('tabelaCadastrosBody');
+  const loading = document.getElementById('loadingCadastros');
+  const tableContainer = document.getElementById('tableContainer');
+
+  tabelaBody.innerHTML = '';
+
+  if (cadastrosAgrupados.length === 0) {
+    tabelaBody.innerHTML = `
+      <tr>
+        <td colspan="9" style="text-align: center; padding: 40px;">
+          <i class="fas fa-search" style="font-size: 3rem; color: var(--gray); margin-bottom: 15px;"></i>
+          <h3>Nenhum resultado encontrado</h3>
+          <p>Tente alterar os filtros de pesquisa.</p>
+        </td>
+      </tr>
+    `;
+  } else {
+    cadastrosAgrupados.forEach(grupo => {
+      const row = criarLinhaTabelaAgrupada(grupo);
+      tabelaBody.appendChild(row);
+    });
+  }
+
+  loading.style.display = 'none';
+  tableContainer.style.display = 'block';
+  atualizarContador();
+}
+
+function limparTodosFiltros() {
+  filtrosAtivos = {};
+  situacaoAtiva = 'all';
+  eventosSelecionados = [];
+  fornecedoresSelecionados = [];
+  document.getElementById('pesquisaCadastros').value = '';
+  document.getElementById('ordenacao').value = 'razao_social';
+  document.getElementById('filtroEvento').value = '';
+  document.getElementById('filtroFornecedor').value = '';
+  
+  document.querySelectorAll('.filtro-btn').forEach(btn => {
+    btn.classList.remove('active');
+  });
+  document.querySelector('.filtro-btn[data-situacao="all"]').classList.add('active');
+  
+  atualizarEventosSelecionados();
+  atualizarFornecedoresSelecionados();
+  
+  aplicarTodosFiltros();
+}
+
+// 🔥 FUNÇÕES DOS MODAIS
+function verTodosFornecedores(cnpj) {
+  // 🔥 NOVO: Mostrar popup de carregamento para modal
+  showLoadingPopup('Carregando Fornecedores', 'Buscando informações dos fornecedores...');
+  
+  const lojasDoCNPJ = todosCadastros.filter(cadastro => cadastro.cnpj === cnpj);
+  exibirModalFornecedores(cnpj, lojasDoCNPJ);
+}
+
+function exibirModalFornecedores(cnpj, lojas) {
+    const modal = document.getElementById('modalFornecedores');
+    const content = document.getElementById('modalFornecedoresContent');
+    
+    let lojasHTML = '';
+    
+    if (lojas && lojas.length > 0) {
+        lojasHTML = lojas.map(loja => {
+            // 🔥 CORRIGIR DATA DO ÚLTIMO EVENTO
+            const ultimoEventoCorrigido = corrigirHoraFrontend(loja.ultimo_evento);
+            
+            // 🔥 CORREÇÃO: SÓ MOSTRAR DEFASAGEM SE FOR EM ANDAMENTO
+            const mostrarDefasagem = loja.situacao && loja.situacao.toUpperCase() === 'EM ANDAMENTO';
+            
+            const defasagemHTML = mostrarDefasagem ? `
+            <div style="background: #fff3cd; padding: 8px 12px; border-radius: 6px; margin-bottom: 10px; border-left: 3px solid var(--warning);">
+                <strong>⏰ Defasagem:</strong> 
+                <span style="color: ${calcularDefasagem(loja.ultimo_evento).includes('30') || calcularDefasagem(loja.ultimo_evento).includes('31') ? 'var(--danger)' : 'var(--dark)'}; font-weight: 600;">
+                    ${calcularDefasagem(loja.ultimo_evento)}
+                </span>
+                <div style="font-size: 0.8rem; color: var(--gray); margin-top: 4px;">
+                    Último evento: ${ultimoEventoCorrigido}
+                </div>
+            </div>
+            ` : `
+            <div style="background: #e9ecef; padding: 8px 12px; border-radius: 6px; margin-bottom: 10px; border-left: 3px solid #6c757d;">
+                <strong>⏰ Defasagem:</strong> 
+                <span style="color: #6c757d; font-weight: 600;">
+                    Sem defasagem
+                </span>
+                <div style="font-size: 0.8rem; color: var(--gray); margin-top: 4px;">
+                    Último evento: ${ultimoEventoCorrigido}
+                </div>
+            </div>
+            `;
+            
+            return `
+            <div class="loja-item" style="border-color: ${getCorBordaSituacao(loja.situacao)};">
+                <div style="display: flex; justify-content: space-between; align-items: flex-start; margin-bottom: 10px;">
+                    <h4 style="margin: 0; color: var(--primary);">🏪 ${loja.fornecedor || 'Fornecedor'}</h4>
+                    <span class="status-badge ${getSituacaoClass(loja.situacao)}">${loja.situacao || 'N/A'}</span>
+                </div>
+                
+                <div style="display: grid; grid-template-columns: 1fr 1fr; gap: 10px; margin-bottom: 10px;">
+                    <div><strong>📅 Evento:</strong> ${loja.evento || 'N/A'}</div>
+                    <div><strong>💰 Tarifa:</strong> ${loja.tarifa || 'N/A'} ${formatarPercentualCorrigido(loja.percentual_tarifa)}</div>
+                    <div><strong>💵 Mensalidade:</strong> ${formatarMoedaParaInput(loja.mensalidade)}</div>
+                    <div><strong>🤝 Adesão:</strong> ${loja.adesao === 'Isento' || loja.adesao === 0 ? 'Isento' : formatarMoedaParaInput(loja.adesao)}</div>
+                </div>
+                
+                ${defasagemHTML}
+                
+                <div style="margin-top: 10px; display: flex; gap: 10px; flex-wrap: wrap;">
+                    <button class="btn btn-warning btn-sm" onclick="verDetalhesCadastroModal('${loja.id}'); fecharModalFornecedores();">
+                        <i class="fas fa-eye"></i> Detalhes
+                    </button>
+                </div>
+            </div>
+            `;
+        }).join('');
+    } else {
+        lojasHTML = `
+        <div style="text-align: center; padding: 40px; color: var(--gray);">
+            <i class="fas fa-store-slash" style="font-size: 3rem; margin-bottom: 15px;"></i>
+            <h4>Nenhuma loja encontrada</h4>
+            <p>Não há lojas cadastradas para este CNPJ.</p>
+        </div>
+        `;
+    }
+
+    content.innerHTML = `
+    <div style="margin-bottom: 15px;">
+        <div style="font-family: monospace; background: #f8f9fa; padding: 10px; border-radius: 6px; text-align: center;">
+            <strong>CNPJ:</strong> ${cnpj}
+        </div>
+    </div>
+    
+    <div style="max-height: 60vh; overflow-y: auto;">
+        <h4 style="color: var(--primary); margin-bottom: 15px;">
+            📊 ${lojas ? lojas.length : 0} loja(s) encontrada(s)
+        </h4>
+        ${lojasHTML}
+    </div>
+    `;
+    
+    modal.style.display = 'flex';
+    // 🔥 NOVO: Esconder popup de carregamento após carregar o modal
+    hideLoadingPopup();
+}
+
+function fecharModalFornecedores() {
+  const modal = document.getElementById('modalFornecedores');
+  modal.style.display = 'none';
+}
+
+function verDetalhesCadastroModal(id) {
+  console.log("👀 Visualizando detalhes ID:", id);
+  
+  // 🔥 NOVO: Mostrar popup de carregamento para detalhes
+  showLoadingPopup('Carregando Detalhes', 'Buscando informações completas...');
+  
+  google.script.run
+    .withSuccessHandler(function(dados) {
+      console.log("✅ Dados recebidos para detalhes:", dados);
+      exibirModalDetalhesCompleto(dados);
+      // 🔥 NOVO: Esconder popup de carregamento após carregar os detalhes
+      hideLoadingPopup();
+    })
+    .withFailureHandler(function(error) {
+      // 🔥 NOVO: Esconder popup de carregamento mesmo em caso de erro
+      hideLoadingPopup();
+      showMessage('error', '❌ Erro ao carregar detalhes: ' + error.message);
+    })
+    .buscarCadastroPorIDComWaitlabel(id, waitlabelAtual);
+}
+
+function exibirModalDetalhesCompleto(dados) {
+    const modal = document.getElementById('modalDetalhes');
+    const content = document.getElementById('modalDetalhesContent');
+    
+    const mensalidadeFormatada = formatarMoedaParaInput(dados.mensalidade);
+    const mensalidadeSimFormatada = formatarMoedaParaInput(dados.mensalidade_sim || 0);
+    const adesaoFormatada = dados.adesao === 'Isento' || dados.adesao === 0 ? 'Isento' : formatarMoedaParaInput(dados.adesao);
+    
+    // 🔥 CORRIGIR DATAS PARA EXIBIÇÃO
+    const ultimoEventoCorrigido = corrigirHoraFrontend(dados.ultimo_evento);
+    const ativacaoCorrigida = dados.ativacao ? corrigirHoraFrontend(dados.ativacao) : 'N/A';
+    const contratoEnviadoCorrigido = dados.contrato_enviado ? corrigirHoraFrontend(dados.contrato_enviado) : 'N/A';
+    const contratoAssinadoCorrigido = dados.contrato_assinado ? corrigirHoraFrontend(dados.contrato_assinado) : 'N/A';
+
+    // 🔥 CORREÇÃO: SÓ MOSTRAR DEFASAGEM SE FOR EM ANDAMENTO
+    const mostrarDefasagem = dados.situacao && dados.situacao.toUpperCase() === 'EM ANDAMENTO';
+    const defasagem = calcularDefasagem(ultimoEventoCorrigido);
+
+    // 🔥 SEÇÃO DE DEFASAGEM (SÓ SE FOR EM ANDAMENTO)
+    const secaoDefasagem = mostrarDefasagem && defasagem !== 'N/A' && defasagem !== '0 dias' && defasagem !== 'Data inválida' && defasagem !== 'Erro no cálculo' ? `
+    <div class="detalhe-item" style="grid-column: 1 / -1; background: #fff5f5; border-left: 4px solid #dc3545; margin-top: 10px;">
+        <span class="detalhe-label" style="font-size: 1.1em; color: #dc3545;">
+            <i class="fas fa-clock"></i> ⚠️ INFORMAÇÕES DE DEFASAGEM
+        </span>
+    </div>
+    
+    <div class="detalhe-item">
+        <span class="detalhe-label">⏰ Defasagem</span>
+        <div class="detalhe-valor">
+            <span style="display: inline-flex; align-items: center; gap: 5px; background: #dc3545; color: white; padding: 4px 10px; border-radius: 15px; font-size: 0.9rem; font-weight: 600;">
+                <i class="fas fa-clock"></i>
+                ${defasagem}
+            </span>
+        </div>
+    </div>
+    ` : mostrarDefasagem ? '' : `
+    <div class="detalhe-item" style="grid-column: 1 / -1; background: #e9ecef; border-left: 4px solid #6c757d; margin-top: 10px;">
+        <span class="detalhe-label" style="font-size: 1.1em; color: #6c757d;">
+            <i class="fas fa-clock"></i> INFORMAÇÕES DE DEFASAGEM
+        </span>
+    </div>
+    
+    <div class="detalhe-item">
+        <span class="detalhe-label">⏰ Defasagem</span>
+        <div class="detalhe-valor">
+            <span style="display: inline-flex; align-items: center; gap: 5px; background: #e9ecef; color: #6c757d; padding: 4px 10px; border-radius: 15px; font-size: 0.9rem; font-weight: 600;">
+                <i class="fas fa-clock"></i>
+                Sem defasagem
+            </span>
+        </div>
+    </div>
+    `;
+
+    content.innerHTML = `
+    <div class="detalhes-grid">
+        <!-- 🔥 SEÇÃO: INFORMAÇÕES PRINCIPAIS -->
+        <div class="detalhe-item" style="grid-column: 1 / -1; background: #f0f8ff; border-left: 4px solid #7E3E9A;">
+            <span class="detalhe-label" style="font-size: 1.1em; color: #7E3E9A;">
+                <i class="fas fa-info-circle"></i> 📋 INFORMAÇÕES PRINCIPAIS
+            </span>
+        </div>
+        
+        <div class="detalhe-item">
+            <span class="detalhe-label">🏢 Razão Social</span>
+            <div class="detalhe-valor" style="font-weight: bold; color: #7E3E9A;">${dados.razao_social || 'N/A'}</div>
+        </div>
+        
+        <div class="detalhe-item">
+            <span class="detalhe-label">🏷️ Nome Fantasia</span>
+            <div class="detalhe-valor">${dados.nome_fantasia || 'N/A'}</div>
+        </div>
+        
+        <div class="detalhe-item">
+            <span class="detalhe-label">🔢 CNPJ</span>
+            <div class="detalhe-valor" style="font-family: monospace;">${dados.cnpj || 'N/A'}</div>
+        </div>
+        
+        <div class="detalhe-item">
+            <span class="detalhe-label">🚚 Fornecedor</span>
+            <div class="detalhe-valor">${dados.fornecedor || 'N/A'}</div>
+        </div>
+
+        <!-- 🔥 SEÇÃO: FINANCEIRO -->
+        <div class="detalhe-item" style="grid-column: 1 / -1; background: #f0fff0; border-left: 4px solid #28a745; margin-top: 10px;">
+            <span class="detalhe-label" style="font-size: 1.1em; color: #28a745;">
+                <i class="fas fa-chart-line"></i> 💰 INFORMAÇÕES FINANCEIRAS
+            </span>
+        </div>
+        
+        <div class="detalhe-item">
+            <span class="detalhe-label">💵 Mensalidade</span>
+            <div class="detalhe-valor" style="color: var(--success); font-weight: 600;">${mensalidadeFormatada}</div>
+        </div>
+
+        <div class="detalhe-item">
+            <span class="detalhe-label" style="color: var(--primary); font-weight: 700;">💜 Mensalidade SIM</span>
+            <div class="detalhe-valor" style="color: var(--primary); font-weight: 600;">${mensalidadeSimFormatada}</div>
+        </div>
+        
+        <div class="detalhe-item">
+            <span class="detalhe-label">🤝 Adesão</span>
+            <div class="detalhe-valor" style="color: var(--info); font-weight: 600;">${adesaoFormatada}</div>
+        </div>
+        
+        <div class="detalhe-item">
+            <span class="detalhe-label">💰 Tarifa</span>
+            <div class="detalhe-valor">${dados.tarifa || 'N/A'} ${formatarPercentualParaExibicao(dados.percentual_tarifa)}</div>
+        </div>
+
+        <!-- 🔥 SEÇÃO: CONTRATOS E DATAS -->
+        <div class="detalhe-item" style="grid-column: 1 / -1; background: #fff8f0; border-left: 4px solid #ff6b35; margin-top: 10px;">
+            <span class="detalhe-label" style="font-size: 1.1em; color: #ff6b35;">
+                <i class="fas fa-file-contract"></i> 📄 CONTRATOS E DATAS
+            </span>
+        </div>
+        
+        <div class="detalhe-item">
+            <span class="detalhe-label">📄 Contrato Enviado</span>
+            <div class="detalhe-valor">${contratoEnviadoCorrigido}</div>
+        </div>
+        
+        <div class="detalhe-item">
+            <span class="detalhe-label">✍️ Contrato Assinado</span>
+            <div class="detalhe-valor">${contratoAssinadoCorrigido}</div>
+        </div>
+        
+        <div class="detalhe-item">
+            <span class="detalhe-label">🚀 Data Ativação</span>
+            <div class="detalhe-valor">${ativacaoCorrigida}</div>
+        </div>
+        
+        <div class="detalhe-item">
+            <span class="detalhe-label">📅 Último Evento</span>
+            <div class="detalhe-valor">${ultimoEventoCorrigido}</div>
+        </div>
+
+        <!-- 🔥 SEÇÃO: STATUS E ACOMPANHAMENTO -->
+        <div class="detalhe-item" style="grid-column: 1 / -1; background: #f0f0f8; border-left: 4px solid #6f42c1; margin-top: 10px;">
+            <span class="detalhe-label" style="font-size: 1.1em; color: #6f42c1;">
+                <i class="fas fa-tasks"></i> 📊 STATUS E ACOMPANHAMENTO
+            </span>
+        </div>
+        
+        <div class="detalhe-item">
+            <span class="detalhe-label">🎯 Situação</span>
+            <div class="detalhe-valor">
+                <span class="status-badge ${getSituacaoClass(dados.situacao)}">${dados.situacao || 'N/A'}</span>
+            </div>
+        </div>
+        
+        <div class="detalhe-item">
+            <span class="detalhe-label">📅 Evento</span>
+            <div class="detalhe-valor">${dados.evento || 'N/A'}</div>
+        </div>
+
+        <!-- 🔥 SEÇÃO: LINKS E OBSERVAÇÕES -->
+        <div class="detalhe-item" style="grid-column: 1 / -1; background: #f0f0f0; border-left: 4px solid #6c757d; margin-top: 10px;">
+            <span class="detalhe-label" style="font-size: 1.1em; color: #6c757d;">
+                <i class="fas fa-sticky-note"></i> 🔗 LINKS E OBSERVAÇÕES
+            </span>
+        </div>
+        
+        <div class="detalhe-item">
+            <span class="detalhe-label">🔗 Link</span>
+            <div class="detalhe-valor">
+                ${dados.link ? 
+                    `<a href="${dados.link}" target="_blank" style="color: #007bff; text-decoration: none;">
+                        <i class="fas fa-external-link-alt"></i> ${dados.link}
+                    </a>` 
+                    : 'N/A'
+                }
+            </div>
+        </div>
+        
+        <div class="detalhe-item" style="grid-column: 1 / -1;">
+            <span class="detalhe-label">📝 Observações</span>
+            <div class="detalhe-valor" style="max-height: 100px; overflow-y: auto; background: #f8f9fa; padding: 10px; border-radius: 5px;">
+                ${dados.observacoes || 'Nenhuma observação registrada'}
+            </div>
+        </div>
+
+        <!-- 🔥 SEÇÃO: DEFASAGEM - AGORA CORRETA -->
+        ${secaoDefasagem}
+    </div>
+    `;
+    
+    modal.style.display = 'flex';
+}
+
+function fecharModalDetalhes() {
+  const modal = document.getElementById('modalDetalhes');
+  modal.style.display = 'none';
+}
+
+// 🔥 CORREÇÃO DEFINITIVA - UTC para GMT-3 (5 horas de diferença)
+function corrigirHoraFrontend(dataHoraString) {
+    if (!dataHoraString || !dataHoraString.includes('/') || !dataHoraString.includes(':')) {
+        return dataHoraString;
+    }
+    
+    try {
+        const [dataPart, horaPart] = dataHoraString.split(' ');
+        const [dia, mes, ano] = dataPart.split('/');
+        const [hora, minuto, segundo] = horaPart.split(':');
+        
+        // 🔥 CORREÇÃO: UTC para GMT-3 = SUBTRAIR 5 HORAS
+        const dataUTC = new Date(Date.UTC(
+            parseInt(ano),
+            parseInt(mes) - 1,
+            parseInt(dia),
+            parseInt(hora),
+            parseInt(minuto), 
+            parseInt(segundo)
+        ));
+        
+        const dataGMT3 = new Date(dataUTC.getTime() - (5 * 60 * 60 * 1000));
+        
+        // Formatar de volta para string
+        const diaCorrigido = String(dataGMT3.getUTCDate()).padStart(2, '0');
+        const mesCorrigido = String(dataGMT3.getUTCMonth() + 1).padStart(2, '0');
+        const anoCorrigido = dataGMT3.getUTCFullYear();
+        const horaCorrigida = String(dataGMT3.getUTCHours()).padStart(2, '0');
+        const minutoCorrigido = String(dataGMT3.getUTCMinutes()).padStart(2, '0');
+        const segundoCorrigido = String(dataGMT3.getUTCSeconds()).padStart(2, '0');
+        
+        const resultado = `${diaCorrigido}/${mesCorrigido}/${anoCorrigido} ${horaCorrigida}:${minutoCorrigido}:${segundoCorrigido}`;
+        
+        return resultado;
+        
+    } catch (error) {
+        console.error("❌ Erro ao corrigir data:", error);
+        return dataHoraString;
+    }
+}
+
+// 🔥 CORREÇÃO DEFINITIVA DA DEFASAGEM
+function calcularDefasagem(dataUltimoEvento) {
+    // 🔥 PRIMEIRO aplicar a correção de UTC para GMT-3
+    const dataCorrigida = corrigirHoraFrontend(dataUltimoEvento);
+    
+    // 🔥 AGORA calcular com a data corrigida
+    if (!dataCorrigida || dataCorrigida === 'N/A' || dataCorrigida === '' || dataCorrigida === 'Data inválida') {
+        return 'N/A';
+    }
+    
+    try {
+        let dataEvento;
+        
+        if (dataCorrigida.includes('/') && dataCorrigida.includes(':')) {
+            const [dataPart, horaPart] = dataCorrigida.split(' ');
+            const [dia, mes, ano] = dataPart.split('/');
+            const [hora, minuto, segundo] = horaPart.split(':');
+            
+            dataEvento = new Date(
+                parseInt(ano), 
+                parseInt(mes) - 1,
+                parseInt(dia),
+                parseInt(hora), 
+                parseInt(minuto), 
+                parseInt(segundo)
+            );
+            
+        } else {
+            dataEvento = new Date(dataCorrigida);
+        }
+        
+        if (isNaN(dataEvento.getTime())) {
+            return 'Data inválida';
+        }
+        
+        const hoje = new Date();
+        
+        // 🔥 CORREÇÃO: Zerar horas para comparar apenas datas
+        const hojeZerado = new Date(hoje.getFullYear(), hoje.getMonth(), hoje.getDate());
+        const dataEventoZerada = new Date(dataEvento.getFullYear(), dataEvento.getMonth(), dataEvento.getDate());
+        
+        const diffTempo = hojeZerado.getTime() - dataEventoZerada.getTime();
+        const diffDias = Math.floor(diffTempo / (1000 * 3600 * 24));
+        
+        if (diffDias === 0) return 'Hoje';
+        if (diffDias === 1) return '1 dia';
+        if (diffDias > 1) return `${diffDias} dias`;
+        if (diffDias < 0) return 'Futuro';
+        
+        return 'N/A';
+        
+    } catch (error) {
+        return 'Erro no cálculo';
+    }
+}
+
+// 🔥 CORREÇÃO DA FUNÇÃO calcularDiasDefasagem
+function calcularDiasDefasagem(dataUltimoEvento) {
+    const defasagem = calcularDefasagem(dataUltimoEvento);
+    
+    if (defasagem === 'N/A' || defasagem === 'Erro' || defasagem === 'Futuro' || defasagem === 'Data inválida' || defasagem === 'Erro no cálculo') {
+        return 9999;
+    }
+    if (defasagem === 'Hoje') return 0;
+    if (defasagem === '1 dia') return 1;
+    
+    // Extrair número de dias de strings como "5 dias"
+    const match = defasagem.match(/(\d+)\s*dias?/);
+    if (match && match[1]) {
+        return parseInt(match[1]);
+    }
+    
+    const dias = parseInt(defasagem);
+    if (isNaN(dias)) return 9999;
+    
+    return dias;
+}
+
+function getDefasagemClass(defasagem) {
+  if (defasagem === 'N/A' || defasagem === 'Erro') return 'defasagem-media';
+  if (defasagem === 'Hoje') return 'defasagem-baixa';
+  if (defasagem === '1 dia') return 'defasagem-baixa';
+  
+  const dias = parseInt(defasagem);
+  if (isNaN(dias)) return 'defasagem-media';
+  
+  if (dias <= 3) return 'defasagem-baixa';
+  if (dias <= 7) return 'defasagem-media';
+  return 'defasagem-alta';
+}
+
+function getSituacaoClass(situacao) {
+  if (!situacao) return 'situacao-cadastrado';
+  
+  const situacaoUpper = situacao.toUpperCase().trim();
+  
+  if (situacaoUpper.includes('NOVO REGISTRO')) return 'situacao-novo-registro';
+  else if (situacaoUpper.includes('CADASTRADO')) return 'situacao-cadastrado';
+  else if (situacaoUpper.includes('EM ANDAMENTO')) return 'situacao-andamento';
+  else if (situacaoUpper.includes('REJEITADO')) return 'situacao-rejeitado';
+  else if (situacaoUpper.includes('DESCREDENCIADO')) return 'situacao-descredenciado';
+  else if (situacaoUpper.includes('DESISTIU')) return 'situacao-desistiu';
+  else return 'situacao-cadastrado';
+}
+
+function getCorBordaSituacao(situacao) {
+  const situacaoLower = situacao ? situacao.toLowerCase() : '';
+  
+  if (situacaoLower.includes('novo registro')) return '#bfe1f6';
+  else if (situacaoLower.includes('cadastrado')) return '#D1E7DD';
+  else if (situacaoLower.includes('em andamento')) return '#FFF3CD';
+  else if (situacaoLower.includes('rejeitado')) return '#E2E3E5';
+  else if (situacaoLower.includes('descredenciado')) return '#F8D7DA';
+  else if (situacaoLower.includes('desistiu')) return '#e6cff2';
+  else return 'var(--border)';
+}
+
+// 🔥 FUNÇÃO 1: Para o modal de fornecedores (agrupado)
+function formatarPercentualCorrigido(percentual) {
+    if (!percentual && percentual !== 0) return 'N/A';
+    
+    try {
+        const numero = typeof percentual === 'string' ? 
+            parseFloat(percentual.replace(',', '.')) : percentual;
+        
+        if (isNaN(numero)) return String(percentual);
+        
+        let valorFormatado = numero;
+        if (numero <= 1) {
+            valorFormatado = numero * 100;
+        }
+        
+        const valorString = valorFormatado.toFixed(2);
+        return valorString.replace('.', ',') + '%';
+        
+    } catch (error) {
+        return String(percentual);
+    }
+}
+
+// 🔥 FUNÇÃO 2: Para o modal de detalhes
+function formatarPercentualParaExibicao(percentual) {
+    if (!percentual && percentual !== 0) return '';
+    
+    try {
+        const numero = typeof percentual === 'string' ? 
+            parseFloat(percentual.replace(',', '.')) : percentual;
+        
+        if (isNaN(numero)) return String(percentual || '');
+        
+        let valorFormatado = numero;
+        if (numero <= 1) {
+            valorFormatado = numero * 100;
+        }
+        
+        const valorString = valorFormatado.toFixed(2);
+        return valorString.replace('.', ',') + '%';
+        
+    } catch (error) {
+        return String(percentual || '');
+    }
+}
+
+function formatarMoedaParaInput(valor) {
+  if (!valor) return 'R$ 0,00';
+  const numero = typeof valor === 'number' ? valor : parseFloat(valor);
+  return 'R$ ' + numero.toLocaleString('pt-BR', { minimumFractionDigits: 2 });
+}
+
+function atualizarContador() {
+  const contador = document.getElementById('contadorCadastros');
+  const cadastrosVisiveis = cadastrosFiltrados.length;
+  const totalCadastros = todosCadastros.length;
+  
+  if (cadastrosVisiveis === totalCadastros) {
+    contador.textContent = `${totalCadastros} cadastro${totalCadastros !== 1 ? 's' : ''}`;
+  } else {
+    contador.textContent = `${cadastrosVisiveis} de ${totalCadastros} cadastros`;
+  }
+}
+
+function showLoading() {
+  document.getElementById('loadingCadastros').style.display = 'flex';
+  document.getElementById('tableContainer').style.display = 'none';
+}
+
+function hideLoading() {
+  document.getElementById('loadingCadastros').style.display = 'none';
+}
+
+function showMessage(type, text) {
+  const successEl = document.getElementById('messageSuccess');
+  const errorEl = document.getElementById('messageError');
+  const infoEl = document.getElementById('messageInfo');
+
+  successEl.style.display = 'none';
+  errorEl.style.display = 'none';
+  infoEl.style.display = 'none';
+
+  if (type === 'success') {
+    successEl.querySelector('span').textContent = text;
+    successEl.style.display = 'flex';
+  } else if (type === 'error') {
+    errorEl.querySelector('span').textContent = text;
+    errorEl.style.display = 'flex';
+  } else if (type === 'info') {
+    infoEl.querySelector('span').textContent = text;
+    infoEl.style.display = 'flex';
+  }
+
+  setTimeout(() => {
+    successEl.style.display = 'none';
+    errorEl.style.display = 'none';
+    infoEl.style.display = 'none';
+  }, 5000);
+}
+
+// 🔥 FECHAR MODAIS COM ESC E CLIQUE FORA
+document.addEventListener('keydown', function(e) {
+  if (e.key === 'Escape') {
+    fecharModalDetalhes();
+    fecharModalFornecedores();
+  }
+});
+
+document.getElementById('modalDetalhes').addEventListener('click', function(e) {
+  if (e.target === this) {
+    fecharModalDetalhes();
+  }
+});
+
+document.getElementById('modalFornecedores').addEventListener('click', function(e) {
+  if (e.target === this) {
+    fecharModalFornecedores();
+  }
+});
+  </script>
+</body>
+</html>
