@@ -554,6 +554,26 @@
       color: #0f5132;
     }
 
+    /* 🔥 ESTILO PARA SEM DEFASAGEM */
+    .sem-defasagem {
+      background: #e9ecef !important;
+      color: #6c757d !important;
+      border: 1px solid #dee2e6 !important;
+    }
+
+    .sem-defasagem-badge {
+      padding: 6px 10px !important;
+      border-radius: 8px !important;
+      font-size: 0.75rem !important;
+      font-weight: 600 !important;
+      background: #e9ecef !important;
+      color: #6c757d !important;
+      border: 1px solid #dee2e6 !important;
+      min-width: 70px;
+      display: inline-block;
+      text-align: center;
+    }
+
     /* 🔥 LOADING */
     .loading-container {
       display: flex;
@@ -1358,7 +1378,7 @@ function agruparCadastrosPorCNPJ(cadastros) {
   return Object.values(agrupados);
 }
 
-// 🔥 CORREÇÃO DA FUNÇÃO criarLinhaTabelaAgrupada - COMPLETA E FUNCIONAL
+// 🔥 FUNÇÃO criarLinhaTabelaAgrupada COMPLETA COM CORREÇÃO DE DEFASAGEM
 function criarLinhaTabelaAgrupada(grupo) {
   const row = document.createElement('tr');
   
@@ -1383,13 +1403,39 @@ function criarLinhaTabelaAgrupada(grupo) {
   const eventoMaisAntigo = fornecedorMaisAntigo.evento || 'N/A';
   const nomeFornecedorAntigo = fornecedorMaisAntigo.fornecedor || 'N/A';
 
-  // 🔥 CALCULAR DEFASAGEM (USA O MESMO FORNECEDOR MAIS ATRASADO)
-  const defasagemInfo = calcularDefasagemPorCNPJ(grupo.lojas);
-  
-  const defasagemTexto = defasagemInfo.dias === 0 ? 'Hoje' : 
-                        defasagemInfo.dias === 1 ? '1 dia' : 
-                        defasagemInfo.dias > 1 && defasagemInfo.dias < 9999 ? `${defasagemInfo.dias} dias` : 'N/A';
-  const defasagemClass = getDefasagemClass(defasagemTexto);
+  // 🔥 CORREÇÃO: SÓ MOSTRAR DEFASAGEM SE HOUVER LOJA EM ANDAMENTO
+  const temLojaEmAndamento = grupo.lojas.some(loja => 
+    loja.situacao && loja.situacao.toUpperCase() === 'EM ANDAMENTO'
+  );
+
+  let defasagemHTML = '';
+  if (temLojaEmAndamento) {
+    const defasagemInfo = calcularDefasagemPorCNPJ(grupo.lojas);
+    const defasagemTexto = defasagemInfo.dias === 0 ? 'Hoje' : 
+                          defasagemInfo.dias === 1 ? '1 dia' : 
+                          defasagemInfo.dias > 1 && defasagemInfo.dias < 9999 ? `${defasagemInfo.dias} dias` : 'N/A';
+    const defasagemClass = getDefasagemClass(defasagemTexto);
+    
+    defasagemHTML = `
+      <td style="text-align: center;">
+        <div class="defasagem-container">
+          <span class="defasagem-badge ${defasagemClass}" title="Fornecedor mais antigo: ${defasagemInfo.fornecedor}">
+            ${defasagemTexto}
+          </span>
+        </div>
+      </td>
+    `;
+  } else {
+    defasagemHTML = `
+      <td style="text-align: center;">
+        <div class="defasagem-container">
+          <span class="sem-defasagem-badge" title="Nenhuma loja em andamento">
+            Sem defasagem
+          </span>
+        </div>
+      </td>
+    `;
+  }
 
   // 🔥 AGORA MOSTRA DATA E HORA CORRIGIDA
   let ultimoEventoInfo = '';
@@ -1442,13 +1488,7 @@ function criarLinhaTabelaAgrupada(grupo) {
     <td>
       ${ultimoEventoInfo}
     </td>
-    <td style="text-align: center;">
-      <div class="defasagem-container">
-        <span class="defasagem-badge ${defasagemClass}" title="Fornecedor mais antigo: ${defasagemInfo.fornecedor}">
-          ${defasagemTexto}
-        </span>
-      </div>
-    </td>
+    ${defasagemHTML}
     <td style="font-weight: 600; color: var(--success); text-align: center;">
       ${formatarMoedaParaInput(grupo.lojas[0]?.mensalidade)}
     </td>
@@ -1578,6 +1618,34 @@ function calcularDefasagemPorCNPJ(lojasDoCNPJ) {
   };
 }
 
+// 🔥 NOVA FUNÇÃO: Calcular defasagem para ordenação (considera status)
+function calcularDefasagemParaOrdenacao(lojasDoCNPJ) {
+  if (!lojasDoCNPJ || lojasDoCNPJ.length === 0) {
+    return 0; // Se não tem lojas, defasagem = 0
+  }
+  
+  // 🔥 VERIFICAR SE TEM ALGUMA LOJA EM ANDAMENTO
+  const temLojaEmAndamento = lojasDoCNPJ.some(loja => 
+    loja.situacao && loja.situacao.toUpperCase() === 'EM ANDAMENTO'
+  );
+  
+  // 🔥 SE NÃO TEM LOJA EM ANDAMENTO, DEFASAGEM = 0
+  if (!temLojaEmAndamento) {
+    return 0;
+  }
+  
+  // 🔥 SE TEM LOJA EM ANDAMENTO, CALCULAR A DEFASAGEM REAL
+  const defasagemInfo = calcularDefasagemPorCNPJ(lojasDoCNPJ);
+  
+  console.log("🎯 Defasagem para ordenação:", {
+    cnpj: lojasDoCNPJ[0]?.cnpj,
+    temLojaEmAndamento: temLojaEmAndamento,
+    defasagemDias: defasagemInfo.dias
+  });
+  
+  return defasagemInfo.dias < 9999 ? defasagemInfo.dias : 0;
+}
+
 // 🔥 FUNÇÕES DE FILTRO
 function aplicarFiltroSituacao(situacao) {
   document.querySelectorAll('.filtro-btn').forEach(btn => {
@@ -1658,83 +1726,91 @@ function aplicarTodosFiltros() {
   exibirTabelaCadastros();
 }
 
-// 🔥 ORDENAÇÃO - CORRIGIDA COM MENSALIDADE E ADESÃO
+// 🔥 ORDENAÇÃO - CORRIGIDA COM DEFASAGEM POR STATUS
 function ordenarCadastros() {
   const criterio = document.getElementById('ordenacao').value;
   
   console.log("🎯 Ordenando por:", criterio);
   
-  const cadastrosParaOrdenar = [...cadastrosFiltrados];
+  const cadastrosAgrupados = agruparCadastrosPorCNPJ(cadastrosFiltrados);
   
-  cadastrosParaOrdenar.sort((a, b) => {
+  cadastrosAgrupados.sort((a, b) => {
     switch(criterio) {
       case 'razao_social':
-        const razaoA = (a.razao_social || '').toLowerCase();
-        const razaoB = (b.razao_social || '').toLowerCase();
-        return razaoA.localeCompare(razaoB);
-        
+        return (a.razao_social || '').localeCompare(b.razao_social || '');
       case 'razao_social_desc':
-        const razaoADesc = (a.razao_social || '').toLowerCase();
-        const razaoBDesc = (b.razao_social || '').toLowerCase();
-        return razaoBDesc.localeCompare(razaoADesc);
-        
+        return (b.razao_social || '').localeCompare(a.razao_social || '');
       case 'nome_fantasia':
-        const fantasiaA = (a.nome_fantasia || '').toLowerCase();
-        const fantasiaB = (b.nome_fantasia || '').toLowerCase();
-        return fantasiaA.localeCompare(fantasiaB);
-        
+        return (a.nome_fantasia || '').localeCompare(b.nome_fantasia || '');
       case 'nome_fantasia_desc':
-        const fantasiaADesc = (a.nome_fantasia || '').toLowerCase();
-        const fantasiaBDesc = (b.nome_fantasia || '').toLowerCase();
-        return fantasiaBDesc.localeCompare(fantasiaADesc);
-        
+        return (b.nome_fantasia || '').localeCompare(a.nome_fantasia || '');
       case 'situacao':
-        const situacaoA = (a.situacao || '').toLowerCase();
-        const situacaoB = (b.situacao || '').toLowerCase();
+        const situacaoA = a.lojas[0]?.situacao || '';
+        const situacaoB = b.lojas[0]?.situacao || '';
         return situacaoA.localeCompare(situacaoB);
-        
       case 'fornecedor':
-        const fornecedorA = (a.fornecedor || '').toLowerCase();
-        const fornecedorB = (b.fornecedor || '').toLowerCase();
+        const fornecedorA = a.lojas[0]?.fornecedor || '';
+        const fornecedorB = b.lojas[0]?.fornecedor || '';
         return fornecedorA.localeCompare(fornecedorB);
-        
-      case 'mensalidade':
-        const mensalidadeA = parseFloat(a.mensalidade || 0);
-        const mensalidadeB = parseFloat(b.mensalidade || 0);
-        return mensalidadeB - mensalidadeA; // Maior primeiro
-        
-      case 'mensalidade_asc':
-        const mensalidadeAAsc = parseFloat(a.mensalidade || 0);
-        const mensalidadeBAsc = parseFloat(b.mensalidade || 0);
-        return mensalidadeAAsc - mensalidadeBAsc; // Menor primeiro
-        
-      case 'adesao':
-        const adesaoA = a.adesao === 'Isento' || a.adesao === 0 ? 0 : parseFloat(a.adesao || 0);
-        const adesaoB = b.adesao === 'Isento' || b.adesao === 0 ? 0 : parseFloat(b.adesao || 0);
-        return adesaoB - adesaoA; // Maior primeiro
-        
-      case 'adesao_asc':
-        const adesaoAAsc = a.adesao === 'Isento' || a.adesao === 0 ? 0 : parseFloat(a.adesao || 0);
-        const adesaoBAsc = b.adesao === 'Isento' || b.adesao === 0 ? 0 : parseFloat(b.adesao || 0);
-        return adesaoAAsc - adesaoBAsc; // Menor primeiro
-        
       case 'defasagem':
-        const defasagemA = calcularDiasDefasagem(a.ultimo_evento);
-        const defasagemB = calcularDiasDefasagem(b.ultimo_evento);
-        return defasagemB - defasagemA; // Maior primeiro
-        
+        const defasagemA = calcularDefasagemParaOrdenacao(a.lojas);
+        const defasagemB = calcularDefasagemParaOrdenacao(b.lojas);
+        return defasagemB - defasagemA;
       case 'defasagem_asc':
-        const defasagemAAsc = calcularDiasDefasagem(a.ultimo_evento);
-        const defasagemBAsc = calcularDiasDefasagem(b.ultimo_evento);
-        return defasagemAAsc - defasagemBAsc; // Menor primeiro
-        
+        const defasagemAAsc = calcularDefasagemParaOrdenacao(a.lojas);
+        const defasagemBAsc = calcularDefasagemParaOrdenacao(b.lojas);
+        return defasagemAAsc - defasagemBAsc;
+      case 'mensalidade':
+        const mensalidadeA = parseFloat(a.lojas[0]?.mensalidade || 0);
+        const mensalidadeB = parseFloat(b.lojas[0]?.mensalidade || 0);
+        return mensalidadeB - mensalidadeA;
+      case 'mensalidade_asc':
+        const mensalidadeAAsc = parseFloat(a.lojas[0]?.mensalidade || 0);
+        const mensalidadeBAsc = parseFloat(b.lojas[0]?.mensalidade || 0);
+        return mensalidadeAAsc - mensalidadeBAsc;
+      case 'adesao':
+        const adesaoA = a.lojas[0]?.adesao === 'Isento' || a.lojas[0]?.adesao === 0 ? 0 : parseFloat(a.lojas[0]?.adesao || 0);
+        const adesaoB = b.lojas[0]?.adesao === 'Isento' || b.lojas[0]?.adesao === 0 ? 0 : parseFloat(b.lojas[0]?.adesao || 0);
+        return adesaoB - adesaoA;
+      case 'adesao_asc':
+        const adesaoAAsc = a.lojas[0]?.adesao === 'Isento' || a.lojas[0]?.adesao === 0 ? 0 : parseFloat(a.lojas[0]?.adesao || 0);
+        const adesaoBAsc = b.lojas[0]?.adesao === 'Isento' || b.lojas[0]?.adesao === 0 ? 0 : parseFloat(b.lojas[0]?.adesao || 0);
+        return adesaoAAsc - adesaoBAsc;
       default:
         return 0;
     }
   });
   
-  cadastrosFiltrados = cadastrosParaOrdenar;
-  exibirTabelaCadastros();
+  exibirTabelaCadastrosAgrupada(cadastrosAgrupados, 'Cadastros Ordenados');
+}
+
+function exibirTabelaCadastrosAgrupada(cadastrosAgrupados, titulo) {
+  const tabelaBody = document.getElementById('tabelaCadastrosBody');
+  const loading = document.getElementById('loadingCadastros');
+  const tableContainer = document.getElementById('tableContainer');
+
+  tabelaBody.innerHTML = '';
+
+  if (cadastrosAgrupados.length === 0) {
+    tabelaBody.innerHTML = `
+      <tr>
+        <td colspan="9" style="text-align: center; padding: 40px;">
+          <i class="fas fa-search" style="font-size: 3rem; color: var(--gray); margin-bottom: 15px;"></i>
+          <h3>Nenhum resultado encontrado</h3>
+          <p>Tente alterar os filtros de pesquisa.</p>
+        </td>
+      </tr>
+    `;
+  } else {
+    cadastrosAgrupados.forEach(grupo => {
+      const row = criarLinhaTabelaAgrupada(grupo);
+      tabelaBody.appendChild(row);
+    });
+  }
+
+  loading.style.display = 'none';
+  tableContainer.style.display = 'block';
+  atualizarContador();
 }
 
 function limparTodosFiltros() {
@@ -1775,6 +1851,31 @@ function exibirModalFornecedores(cnpj, lojas) {
             // 🔥 CORRIGIR DATA DO ÚLTIMO EVENTO
             const ultimoEventoCorrigido = corrigirHoraFrontend(loja.ultimo_evento);
             
+            // 🔥 CORREÇÃO: SÓ MOSTRAR DEFASAGEM SE FOR EM ANDAMENTO
+            const mostrarDefasagem = loja.situacao && loja.situacao.toUpperCase() === 'EM ANDAMENTO';
+            
+            const defasagemHTML = mostrarDefasagem ? `
+            <div style="background: #fff3cd; padding: 8px 12px; border-radius: 6px; margin-bottom: 10px; border-left: 3px solid var(--warning);">
+                <strong>⏰ Defasagem:</strong> 
+                <span style="color: ${calcularDefasagem(loja.ultimo_evento).includes('30') || calcularDefasagem(loja.ultimo_evento).includes('31') ? 'var(--danger)' : 'var(--dark)'}; font-weight: 600;">
+                    ${calcularDefasagem(loja.ultimo_evento)}
+                </span>
+                <div style="font-size: 0.8rem; color: var(--gray); margin-top: 4px;">
+                    Último evento: ${ultimoEventoCorrigido}
+                </div>
+            </div>
+            ` : `
+            <div style="background: #e9ecef; padding: 8px 12px; border-radius: 6px; margin-bottom: 10px; border-left: 3px solid #6c757d;">
+                <strong>⏰ Defasagem:</strong> 
+                <span style="color: #6c757d; font-weight: 600;">
+                    Sem defasagem
+                </span>
+                <div style="font-size: 0.8rem; color: var(--gray); margin-top: 4px;">
+                    Último evento: ${ultimoEventoCorrigido}
+                </div>
+            </div>
+            `;
+            
             return `
             <div class="loja-item" style="border-color: ${getCorBordaSituacao(loja.situacao)};">
                 <div style="display: flex; justify-content: space-between; align-items: flex-start; margin-bottom: 10px;">
@@ -1789,15 +1890,7 @@ function exibirModalFornecedores(cnpj, lojas) {
                     <div><strong>🤝 Adesão:</strong> ${loja.adesao === 'Isento' || loja.adesao === 0 ? 'Isento' : formatarMoedaParaInput(loja.adesao)}</div>
                 </div>
                 
-                <div style="background: #f8f9fa; padding: 8px 12px; border-radius: 6px; margin-bottom: 10px; border-left: 3px solid var(--warning);">
-                    <strong>⏰ Defasagem:</strong> 
-                    <span style="color: ${calcularDefasagem(loja.ultimo_evento).includes('30') || calcularDefasagem(loja.ultimo_evento).includes('31') ? 'var(--danger)' : 'var(--dark)'}; font-weight: 600;">
-                        ${calcularDefasagem(loja.ultimo_evento)}
-                    </span>
-                    <div style="font-size: 0.8rem; color: var(--gray); margin-top: 4px;">
-                        Último evento: ${ultimoEventoCorrigido}
-                    </div>
-                </div>
+                ${defasagemHTML}
                 
                 <div style="margin-top: 10px; display: flex; gap: 10px; flex-wrap: wrap;">
                     <button class="btn btn-warning btn-sm" onclick="verDetalhesCadastroModal('${loja.id}'); fecharModalFornecedores();">
@@ -1867,6 +1960,45 @@ function exibirModalDetalhesCompleto(dados) {
     const ativacaoCorrigida = dados.ativacao ? corrigirHoraFrontend(dados.ativacao) : 'N/A';
     const contratoEnviadoCorrigido = dados.contrato_enviado ? corrigirHoraFrontend(dados.contrato_enviado) : 'N/A';
     const contratoAssinadoCorrigido = dados.contrato_assinado ? corrigirHoraFrontend(dados.contrato_assinado) : 'N/A';
+
+    // 🔥 CORREÇÃO: SÓ MOSTRAR DEFASAGEM SE FOR EM ANDAMENTO
+    const mostrarDefasagem = dados.situacao && dados.situacao.toUpperCase() === 'EM ANDAMENTO';
+    const defasagem = calcularDefasagem(ultimoEventoCorrigido);
+
+    // 🔥 SEÇÃO DE DEFASAGEM (SÓ SE FOR EM ANDAMENTO)
+    const secaoDefasagem = mostrarDefasagem && defasagem !== 'N/A' && defasagem !== '0 dias' && defasagem !== 'Data inválida' && defasagem !== 'Erro no cálculo' ? `
+    <div class="detalhe-item" style="grid-column: 1 / -1; background: #fff5f5; border-left: 4px solid #dc3545; margin-top: 10px;">
+        <span class="detalhe-label" style="font-size: 1.1em; color: #dc3545;">
+            <i class="fas fa-clock"></i> ⚠️ INFORMAÇÕES DE DEFASAGEM
+        </span>
+    </div>
+    
+    <div class="detalhe-item">
+        <span class="detalhe-label">⏰ Defasagem</span>
+        <div class="detalhe-valor">
+            <span style="display: inline-flex; align-items: center; gap: 5px; background: #dc3545; color: white; padding: 4px 10px; border-radius: 15px; font-size: 0.9rem; font-weight: 600;">
+                <i class="fas fa-clock"></i>
+                ${defasagem}
+            </span>
+        </div>
+    </div>
+    ` : mostrarDefasagem ? '' : `
+    <div class="detalhe-item" style="grid-column: 1 / -1; background: #e9ecef; border-left: 4px solid #6c757d; margin-top: 10px;">
+        <span class="detalhe-label" style="font-size: 1.1em; color: #6c757d;">
+            <i class="fas fa-clock"></i> INFORMAÇÕES DE DEFASAGEM
+        </span>
+    </div>
+    
+    <div class="detalhe-item">
+        <span class="detalhe-label">⏰ Defasagem</span>
+        <div class="detalhe-valor">
+            <span style="display: inline-flex; align-items: center; gap: 5px; background: #e9ecef; color: #6c757d; padding: 4px 10px; border-radius: 15px; font-size: 0.9rem; font-weight: 600;">
+                <i class="fas fa-clock"></i>
+                Sem defasagem
+            </span>
+        </div>
+    </div>
+    `;
 
     content.innerHTML = `
     <div class="detalhes-grid">
@@ -1995,6 +2127,9 @@ function exibirModalDetalhesCompleto(dados) {
                 ${dados.observacoes || 'Nenhuma observação registrada'}
             </div>
         </div>
+
+        <!-- 🔥 SEÇÃO: DEFASAGEM - AGORA CORRETA -->
+        ${secaoDefasagem}
     </div>
     `;
     
@@ -2006,7 +2141,7 @@ function fecharModalDetalhes() {
   modal.style.display = 'none';
 }
 
-// 🔥 CORREÇÃO DEFINITIVA - UTC para GMT-3 (3 horas de diferença)
+// 🔥 CORREÇÃO DEFINITIVA - UTC para GMT-3 (5 horas de diferença)
 function corrigirHoraFrontend(dataHoraString) {
     if (!dataHoraString || !dataHoraString.includes('/') || !dataHoraString.includes(':')) {
         return dataHoraString;
@@ -2017,7 +2152,7 @@ function corrigirHoraFrontend(dataHoraString) {
         const [dia, mes, ano] = dataPart.split('/');
         const [hora, minuto, segundo] = horaPart.split(':');
         
-        // 🔥 CORREÇÃO: UTC para GMT-3 = SUBTRAIR 3 HORAS
+        // 🔥 CORREÇÃO: UTC para GMT-3 = SUBTRAIR 5 HORAS
         const dataUTC = new Date(Date.UTC(
             parseInt(ano),
             parseInt(mes) - 1,
