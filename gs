@@ -90,7 +90,7 @@ function getWaitlabels() {
 function doGet() {
   return HtmlService.createTemplateFromFile('Index')
     .evaluate()
-    .setTitle('Sistema RESULT - Gestão de Cadastros')
+    .setTitle('Sistema - Gestão de Cadastros')
     .setXFrameOptionsMode(HtmlService.XFrameOptionsMode.ALLOWALL);
 }
 
