@@ -1,35 +1,2549 @@
-// CONFIGURAÇÕES
-const CONFIG = {
-  ID_PLANILHA: "1V4iGN14UpIQcwf3qKU0_Wbiy2exdW2WUmrYTniy0upA",
-  ABA_PRINCIPAL: "Result",
-  TIMEZONE: "America/Sao_Paulo"
-};
+<!DOCTYPE html>
+<html lang="pt-BR">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>Sistema de Gestão de Cadastros - RESULT</title>
+  <link href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.0.0/css/all.min.css" rel="stylesheet">
+<style>
+    /* 🔥 ESTILOS DO SISTEMA - TAMANHO REDUZIDO */
+    * {
+      box-sizing: border-box;
+      margin: 0;
+      padding: 0;
+      font-family: 'Segoe UI', system-ui, -apple-system, sans-serif;
+    }
+    
+    :root {
+      --primary: #7E3E9A;
+      --secondary: #A1CC4C;
+      --accent: #FF6B35;
+      --dark: #2D3047;
+      --light: #FFFFFF;
+      --success: #28A745;
+      --warning: #FFC107;
+      --danger: #DC3545;
+      --info: #17A2B8;
+      --gray: #6C757D;
+      --border: #E0E0E0;
+      --background: #F8F9FA;
+    }
+    
+    body {
+      background: var(--background);
+      min-height: 100vh;
+      padding: 15px;
+      color: var(--dark);
+      font-size: 14px; /* 🔥 TAMANHO REDUZIDO */
+    }
+    
+    .container {
+      max-width: 1800px;
+      margin: 0 auto;
+      background: var(--light);
+      border-radius: 12px;
+      box-shadow: 0 8px 25px rgba(0, 0, 0, 0.08);
+      overflow: hidden;
+    }
+    
+    .header {
+      background: var(--primary);
+      padding: 20px 30px; /* 🔥 TAMANHO REDUZIDO */
+      color: white;
+      text-align: center;
+    }
 
-// 🔥 ESTRUTURA DAS COLUNAS - ATUALIZADA COM SEUS NOMES
-const ESTRUTURA_COLUNAS = {
-  RAZAO_SOCIAL: 'Razão Social',
-  NOME_FANTASIA: 'Nome Fantasia', 
-  CNPJ: 'CNPJ',
-  FORNECEDOR: 'Fornecedor',
-  ULTIMA_ETAPA: 'Ultima etapa',
-  ETAPA: 'Etapa',
-  OBSERVACAO: 'Observação',
-  CONTRATO_ENVIADO: 'Contrato Enviado',
-  CONTRATO_ASSINADO: 'Contrato Assinado',
-  ATIVACAO: 'Ativação',
-  LINK: 'Link',
-  MENSALIDADE: 'Mensalidade',
-  MENSALIDADE_SIM: 'Mensalidade SIM',
-  TARIFA: 'Tarifa',
-  PERCENTUAL_TARIFA: '% Tarifa',
-  ADESAO: 'Adesão',
-  SITUACAO: 'Situação'
-};
+    
+    .logo-container {
+      display: flex;
+      flex-direction: column;
+      align-items: center;
+      gap: 12px;
+      margin-bottom: 8px;
+    }
+    
+    .logo {
+      width: 80px; /* 🔥 TAMANHO REDUZIDO */
+      height: 80px;
+      background: white;
+      padding: 10px;
+      border-radius: 15px;
+      box-shadow: 0 4px 12px rgba(0, 0, 0, 0.15);
+      object-fit: contain;
+    }
+    
+    h1 {
+      font-size: 2rem; /* 🔥 TAMANHO REDUZIDO */
+      font-weight: 700;
+      margin-bottom: 8px;
+    }
+    
+    .subtitle {
+      font-size: 1rem; /* 🔥 TAMANHO REDUZIDO */
+      opacity: 0.9;
+    }
+    
+    .content {
+      padding: 25px; /* 🔥 TAMANHO REDUZIDO */
+    }
+    
+ .card {
+  background: var(--light);
+  border-radius: 10px;
+  padding: 20px; /* 🔥 TAMANHO REDUZIDO */
+  margin-bottom: 20px;
+  margin-top: 30px;
+  box-shadow: 0 3px 12px rgba(0, 0, 0, 0.04);
+  border: 1px solid var(--border);
+}
+    
+    .card-header {
+      display: flex;
+      align-items: center;
+      justify-content: space-between;
+      gap: 12px;
+      margin-bottom: 20px;
+      padding-bottom: 12px;
+      border-bottom: 2px solid var(--primary);
+    }
+    
+    .card-header i {
+      color: var(--primary);
+      font-size: 1.5rem; /* 🔥 TAMANHO REDUZIDO */
+    }
+    
+    .card-title {
+      font-size: 1.3rem; /* 🔥 TAMANHO REDUZIDO */
+      font-weight: 600;
+      color: var(--primary);
+    }
+    
+    .form-grid {
+      display: grid;
+      grid-template-columns: repeat(auto-fit, minmax(280px, 1fr));
+      gap: 15px;
+      margin-bottom: 20px;
+    }
+    
+    .form-group {
+      margin-bottom: 15px;
+    }
+    
+    .form-label {
+      display: flex;
+      align-items: center;
+      gap: 8px;
+      margin-bottom: 6px;
+      font-weight: 600;
+      color: var(--dark);
+      font-size: 0.9rem; /* 🔥 TAMANHO REDUZIDO */
+    }
+    
+    .form-control {
+      width: 100%;
+      padding: 10px 12px; /* 🔥 TAMANHO REDUZIDO */
+      border: 2px solid var(--border);
+      border-radius: 6px;
+      font-size: 0.9rem; /* 🔥 TAMANHO REDUZIDO */
+      transition: all 0.3s ease;
+    }
+    
+    .form-control:focus {
+      outline: none;
+      border-color: var(--primary);
+    }
+    
+    .btn {
+      display: inline-flex;
+      align-items: center;
+      gap: 8px;
+      padding: 10px 18px; /* 🔥 TAMANHO REDUZIDO */
+      border: none;
+      border-radius: 6px;
+      font-size: 0.9rem; /* 🔥 TAMANHO REDUZIDO */
+      font-weight: 600;
+      cursor: pointer;
+      transition: all 0.3s ease;
+    }
+    
+    .btn-primary {
+      background: var(--primary);
+      color: white;
+    }
+    
+    .btn-primary:hover {
+      background: #6a2e82;
+    }
+    
+    .btn-success {
+      background: var(--success);
+      color: white;
+    }
+    
+    .btn-warning {
+      background: var(--warning);
+      color: var(--dark);
+    }
+    
+    .btn-danger {
+      background: var(--danger);
+      color: white;
+    }
+    
+    .btn-info {
+      background: var(--info);
+      color: white;
+    }
+    
+    .btn-outline {
+      background: transparent;
+      border: 2px solid var(--primary);
+      color: var(--primary);
+    }
+    
+    .btn-sm {
+      padding: 6px 12px; /* 🔥 TAMANHO REDUZIDO */
+      font-size: 0.8rem; /* 🔥 TAMANHO REDUZIDO */
+    }
 
-// 🔥 CONFIGURAÇÕES DOS WAITLABELS
+ /* 🔥 ESTILOS PARA BOTÕES DE FILTRO ATIVOS */
+.filtros-container .btn.active {
+  transform: translateY(-2px);
+  box-shadow: 0 4px 12px rgba(126, 62, 154, 0.3);
+  border: 2px solid var(--primary) !important;
+}
+
+/* Estilo específico para o botão "Todos" quando ativo */
+.filtros-container .btn.active[onclick="filtrarTabela('all')"] {
+  background: var(--primary) !important;
+  color: white !important;
+  border-color: var(--primary) !important;
+}
+
+/* Estilo para os outros botões quando ativos */
+.filtros-container .btn.active:not([onclick="filtrarTabela('all')"]) {
+  border: 2px solid var(--primary) !important;
+  box-shadow: 0 0 0 3px rgba(126, 62, 154, 0.2) !important;
+}
+    
+    .btn-group {
+      display: flex;
+      gap: 12px;
+      margin-top: 20px;
+    }
+    
+    .message {
+      padding: 12px 16px; /* 🔥 TAMANHO REDUZIDO */
+      border-radius: 6px;
+      margin: 12px 0;
+      display: none;
+      align-items: center;
+      gap: 8px;
+      font-size: 0.9rem; /* 🔥 TAMANHO REDUZIDO */
+    }
+    
+    .success {
+      background: #d4edda;
+      color: var(--success);
+      border: 1px solid #c3e6cb;
+    }
+    
+    .error {
+      background: #f8d7da;
+      color: var(--danger);
+      border: 1px solid #f5c6cb;
+    }
+    
+    .info {
+      background: #d1ecf1;
+      color: #0c5460;
+      border: 1px solid #bee5eb;
+    }
+    
+    /* 🔥 ESTILOS DE LOADING */
+    .loading-container {
+      display: flex;
+      flex-direction: column;
+      align-items: center;
+      justify-content: center;
+      padding: 30px;
+      text-align: center;
+    }
+    
+    .loading-spinner {
+      width: 40px; /* 🔥 TAMANHO REDUZIDO */
+      height: 40px;
+      border: 4px solid #f3f3f3;
+      border-top: 4px solid var(--primary);
+      border-radius: 50%;
+      animation: spin 1s linear infinite;
+      margin-bottom: 12px;
+    }
+    
+    @keyframes spin {
+      0% { transform: rotate(0deg); }
+      100% { transform: rotate(360deg); }
+    }
+    
+    /* 🔥🔥🔥 NOVOS ESTILOS DA TABELA - TAMANHO REDUZIDO */
+    .table-container {
+      margin-top: 15px;
+      overflow: hidden;
+      border-radius: 8px;
+      box-shadow: 0 2px 8px rgba(0, 0, 0, 0.08);
+    }
+    
+    .table-responsive {
+      overflow-x: auto;
+    }
+    
+    .data-table {
+      width: 100%;
+      border-collapse: collapse;
+      background: white;
+      font-size: 0.8rem; /* 🔥 TAMANHO REDUZIDO */
+    }
+    
+    .data-table th {
+      background: var(--primary);
+      color: white;
+      padding: 10px 6px; /* 🔥 TAMANHO REDUZIDO */
+      text-align: left;
+      font-weight: 600;
+      position: sticky;
+      top: 0;
+      white-space: nowrap;
+      font-size: 0.8rem; /* 🔥 TAMANHO REDUZIDO */
+    }
+    
+    .data-table td {
+      padding: 8px 6px; /* 🔥 TAMANHO REDUZIDO */
+      border-bottom: 1px solid var(--border);
+      word-wrap: break-word;
+      vertical-align: top;
+    }
+    
+    .data-table tbody tr {
+      transition: all 0.3s ease;
+    }
+    
+    .data-table tbody tr:hover {
+      background: #f8f9fa;
+      transform: translateY(-1px);
+      box-shadow: 0 2px 6px rgba(0, 0, 0, 0.08);
+    }
+    
+    .data-table .btn-sm {
+      padding: 5px 10px; /* 🔥 TAMANHO REDUZIDO */
+      font-size: 0.75rem; /* 🔥 TAMANHO REDUZIDO */
+      margin: 2px;
+    }
+    
+    .status-badge {
+      padding: 3px 6px; /* 🔥 TAMANHO REDUZIDO */
+      border-radius: 10px;
+      font-size: 0.7rem; /* 🔥 TAMANHO REDUZIDO */
+      font-weight: 600;
+      text-align: center;
+      display: inline-block;
+      min-width: 70px; /* 🔥 TAMANHO REDUZIDO */
+    }
+    
+    .acoes-cell {
+      display: flex;
+      gap: 4px;
+      justify-content: center;
+      align-items: center;
+    }
+    
+.action-buttons {
+  display: flex;
+  gap: 12px;
+  margin: 30px 0 15px 0;
+  flex-wrap: wrap;
+}
+    
+    .cadastros-container {
+      margin-top: 25px;
+      padding: 20px;
+      background: white;
+      border-radius: 10px;
+      box-shadow: 0 3px 12px rgba(0, 0, 0, 0.08);
+      border: 2px solid var(--primary);
+    }
+    
+    .cadastros-grid {
+      display: grid;
+      grid-template-columns: repeat(auto-fill, minmax(300px, 1fr));
+      gap: 15px;
+      margin-top: 15px;
+    }
+    
+    .cadastro-card {
+      background: white;
+      border-radius: 8px;
+      padding: 15px;
+      border: 2px solid var(--border);
+      transition: all 0.3s ease;
+    }
+    
+    .cadastro-card:hover {
+      transform: translateY(-2px);
+      box-shadow: 0 4px 12px rgba(0, 0, 0, 0.1);
+    }
+    
+    .cadastro-header {
+      display: flex;
+      justify-content: space-between;
+      align-items: flex-start;
+      margin-bottom: 12px;
+    }
+    
+    .cadastro-nome {
+      font-size: 1.1rem; /* 🔥 TAMANHO REDUZIDO */
+      font-weight: 700;
+      color: var(--dark);
+    }
+    
+    .cadastro-situacao {
+      padding: 3px 10px; /* 🔥 TAMANHO REDUZIDO */
+      border-radius: 15px;
+      font-size: 0.75rem; /* 🔥 TAMANHO REDUZIDO */
+      font-weight: 600;
+    }
+    
+    .situacao-cadastrado {
+      background: #D1E7DD;
+      color: #0F5132;
+    }
+
+    .situacao-novo-registro {
+      background-color: #bfe1f6 !important;
+      color: #0c5aa3 !important;
+      border: 1px solid #8bc9f0 !important;
+    }
+    
+    .situacao-andamento {
+      background: #FFF3CD;
+      color: #856404;
+    }
+    
+    .situacao-rejeitado {
+      background: #E2E3E5;
+      color: #383D41;
+    }
+    
+    .situacao-descredenciado {
+      background: #F8D7DA;
+      color: #721C24;
+    }
+
+    .situacao-desistiu {
+      background: #e6cff2 !important;
+      color: #4a1e6b !important;
+      border: 1px solid #d4b5e6 !important;
+    }
+    
+    .cadastro-info {
+      margin-bottom: 6px;
+      font-size: 0.85rem; /* 🔥 TAMANHO REDUZIDO */
+    }
+    
+    .cadastro-info strong {
+      color: var(--primary);
+    }
+    
+    .mensalidade-badge {
+      background: var(--primary);
+      color: white;
+      padding: 3px 8px; /* 🔥 TAMANHO REDUZIDO */
+      border-radius: 12px;
+      font-size: 0.75rem; /* 🔥 TAMANHO REDUZIDO */
+      font-weight: 600;
+    }
+    
+    /* 🔥🔥🔥 NOVOS FILTROS COM ESTILO WHITELABEL - TAMANHO REDUZIDO */
+    .filtros-container {
+      display: flex;
+      gap: 8px;
+      align-items: center;
+      flex-wrap: wrap;
+      margin: 15px 0;
+      padding: 12px;
+      background: #f8f9fa;
+      border-radius: 8px;
+      border: 1px solid var(--border);
+    }
+
+    .filtro-btn {
+      display: inline-flex;
+      align-items: center;
+      gap: 6px;
+      padding: 8px 16px; /* 🔥 TAMANHO REDUZIDO */
+      border: 2px solid var(--border);
+      border-radius: 20px;
+      font-size: 0.85rem; /* 🔥 TAMANHO REDUZIDO */
+      font-weight: 600;
+      cursor: pointer;
+      transition: all 0.3s ease;
+      background: white;
+      color: var(--dark);
+      position: relative;
+    }
+
+    .filtro-btn.active {
+      transform: translateY(-2px);
+      box-shadow: 0 3px 10px rgba(0,0,0,0.15);
+      border-width: 2px;
+    }
+
+    .filtro-btn::before {
+      content: '';
+      width: 10px; /* 🔥 TAMANHO REDUZIDO */
+      height: 10px;
+      border-radius: 50%;
+      margin-right: 4px;
+    }
+
+    .filtro-btn[data-situacao="all"]::before { background: var(--primary); }
+    .filtro-btn[data-situacao="NOVO REGISTRO"]::before { background: #bfe1f6; }
+    .filtro-btn[data-situacao="CADASTRADO"]::before { background: var(--success); }
+    .filtro-btn[data-situacao="EM ANDAMENTO"]::before { background: var(--warning); }
+    .filtro-btn[data-situacao="REJEITADO"]::before { background: var(--gray); }
+    .filtro-btn[data-situacao="DESCREDENCIADO"]::before { background: var(--danger); }
+    .filtro-btn[data-situacao="DESISTIU"]::before { background: #e6cff2; }
+
+    .filtro-btn.active[data-situacao="all"] { 
+      background: var(--primary); 
+      color: white; 
+      border-color: var(--primary); 
+    }
+    .filtro-btn.active[data-situacao="NOVO REGISTRO"] { 
+      background: #bfe1f6; 
+      color: #0c5aa3; 
+      border-color: #bfe1f6; 
+    }
+    .filtro-btn.active[data-situacao="CADASTRADO"] { 
+      background: var(--success); 
+      color: white; 
+      border-color: var(--success); 
+    }
+    .filtro-btn.active[data-situacao="EM ANDAMENTO"] { 
+      background: var(--warning); 
+      color: var(--dark); 
+      border-color: var(--warning); 
+    }
+    .filtro-btn.active[data-situacao="REJEITADO"] { 
+      background: var(--gray); 
+      color: white; 
+      border-color: var(--gray); 
+    }
+    .filtro-btn.active[data-situacao="DESCREDENCIADO"] { 
+      background: var(--danger); 
+      color: white; 
+      border-color: var(--danger); 
+    }
+    .filtro-btn.active[data-situacao="DESISTIU"] { 
+      background: #e6cff2; 
+      color: #4a1e6b; 
+      border-color: #e6cff2; 
+    }
+
+    /* 🔥🔥🔥 FILTROS AVANÇADOS - TAMANHO REDUZIDO */
+    .filtros-avancados {
+      display: grid;
+      grid-template-columns: repeat(auto-fit, minmax(180px, 1fr));
+      gap: 12px;
+      margin: 15px 0;
+      padding: 15px;
+      background: #f8f9fa;
+      border-radius: 8px;
+      border: 1px solid var(--border);
+    }
+
+    .filtro-group {
+      display: flex;
+      flex-direction: column;
+      gap: 6px;
+    }
+
+    .filtro-label {
+      font-weight: 600;
+      color: var(--primary);
+      font-size: 0.85rem; /* 🔥 TAMANHO REDUZIDO */
+    }
+
+    .form-select {
+      width: 100%;
+      padding: 8px 10px; /* 🔥 TAMANHO REDUZIDO */
+      border: 2px solid var(--border);
+      border-radius: 6px;
+      font-size: 0.85rem; /* 🔥 TAMANHO REDUZIDO */
+      background: white;
+      cursor: pointer;
+    }
+
+    .contador-lojas {
+      background: var(--primary);
+      color: white;
+      padding: 5px 10px; /* 🔥 TAMANHO REDUZIDO */
+      border-radius: 15px;
+      font-size: 0.85rem; /* 🔥 TAMANHO REDUZIDO */
+      font-weight: 600;
+    }
+
+    /* 🔥🔥🔥 TAGS DE FILTROS ATIVOS - TAMANHO REDUZIDO */
+    .filtros-ativos {
+      display: flex;
+      gap: 6px;
+      flex-wrap: wrap;
+      margin: 8px 0;
+    }
+
+    .filtro-chip {
+      background: var(--primary);
+      color: white;
+      padding: 4px 10px; /* 🔥 TAMANHO REDUZIDO */
+      border-radius: 15px;
+      font-size: 0.75rem; /* 🔥 TAMANHO REDUZIDO */
+      display: flex;
+      align-items: center;
+      gap: 5px;
+    }
+
+    .filtro-chip .remover {
+      background: none;
+      border: none;
+      color: white;
+      cursor: pointer;
+      padding: 0;
+      width: 14px; /* 🔥 TAMANHO REDUZIDO */
+      height: 14px;
+      border-radius: 50%;
+      display: flex;
+      align-items: center;
+      justify-content: center;
+      font-size: 9px; /* 🔥 TAMANHO REDUZIDO */
+    }
+
+    /* 🔥🔥🔥 FILTRO DE ETAPAS E FORNECEDORES COM TAGS - TAMANHO REDUZIDO */
+    .filtro-multiselect-container {
+      position: relative;
+    }
+
+    .suggestions {
+      position: absolute;
+      top: 100%;
+      left: 0;
+      right: 0;
+      background: white;
+      border: 2px solid var(--primary);
+      border-top: none;
+      border-radius: 0 0 6px 6px;
+      z-index: 1000;
+      max-height: 180px; /* 🔥 TAMANHO REDUZIDO */
+      overflow-y: auto;
+      box-shadow: 0 3px 10px rgba(0,0,0,0.08);
+      display: none;
+    }
+
+    .suggestion-item {
+      padding: 8px 12px; /* 🔥 TAMANHO REDUZIDO */
+      cursor: pointer;
+      border-bottom: 1px solid var(--border);
+      transition: all 0.2s ease;
+      font-size: 0.85rem; /* 🔥 TAMANHO REDUZIDO */
+    }
+
+    .suggestion-item:hover {
+      background: var(--primary);
+      color: white;
+    }
+
+    .suggestion-item:last-child {
+      border-bottom: none;
+    }
+
+    .tags-selecionadas {
+      display: flex;
+      gap: 6px;
+      flex-wrap: wrap;
+      margin-top: 6px;
+    }
+
+    .tag {
+      background: var(--info);
+      color: white;
+      padding: 3px 8px; /* 🔥 TAMANHO REDUZIDO */
+      border-radius: 12px;
+      font-size: 0.75rem; /* 🔥 TAMANHO REDUZIDO */
+      display: flex;
+      align-items: center;
+      gap: 5px;
+    }
+
+    .tag.fornecedor {
+      background: var(--secondary);
+    }
+
+    .tag .remover {
+      background: none;
+      border: none;
+      color: white;
+      cursor: pointer;
+      padding: 0;
+      width: 12px; /* 🔥 TAMANHO REDUZIDO */
+      height: 12px;
+      border-radius: 50%;
+      display: flex;
+      align-items: center;
+      justify-content: center;
+      font-size: 8px; /* 🔥 TAMANHO REDUZIDO */
+    }
+
+    .tag .remover:hover {
+      background: rgba(255,255,255,0.3);
+    }
+
+    /* 🔥🔥🔥 BOTÃO VISUALIZAR COMPACT - TAMANHO REDUZIDO */
+    .btn-visualizar-compact {
+      padding: 5px 8px !important; /* 🔥 TAMANHO REDUZIDO */
+      font-size: 0.7rem !important; /* 🔥 TAMANHO REDUZIDO */
+      white-space: nowrap;
+      display: inline-flex;
+      align-items: center;
+      justify-content: center;
+      gap: 3px;
+    }
+
+    .defasagem-badge {
+  padding: 6px 10px !important;
+  border-radius: 8px !important;
+  font-size: 0.75rem !important;
+  font-weight: 700 !important;
+  min-width: 70px;
+  display: inline-block;
+  text-align: center;
+  box-shadow: 0 2px 4px rgba(0,0,0,0.1);
+}
+
+    .defasagem-alta {
+      background: #f8d7da;
+      color: #721c24;
+    }
+
+    .defasagem-media {
+      background: #fff3cd;
+      color: #856404;
+    }
+
+    .defasagem-baixa {
+      background: #d1e7dd;
+      color: #0f5132;
+    }
+
+    /* 🔥 ESTILO PARA SEM DEFASAGEM */
+.sem-defasagem {
+  background: #e9ecef !important;
+  color: #6c757d !important;
+  border: 1px solid #dee2e6 !important;
+}
+
+.sem-defasagem-badge {
+  padding: 6px 10px !important;
+  border-radius: 8px !important;
+  font-size: 0.75rem !important;
+  font-weight: 600 !important;
+  background: #e9ecef !important;
+  color: #6c757d !important;
+  border: 1px solid #dee2e6 !important;
+  min-width: 70px;
+  display: inline-block;
+  text-align: center;
+}
+
+    .filtros-etapas {
+      display: none;
+      margin-top: 8px;
+      padding: 8px;
+      background: #f8f9fa;
+      border-radius: 6px;
+      border: 1px solid var(--border);
+    }
+
+/* 🔥 ESTILOS PARA FILTRO DE ETAPAS COM SEARCH */
+.filtro-search-container {
+  margin: 12px 0;
+  padding: 12px;
+  background: var(--light);
+  border-radius: 8px;
+  border: 1px solid var(--border);
+}
+
+.suggestions-etapa {
+  position: absolute;
+  top: 100%;
+  left: 0;
+  right: 0;
+  background: white;
+  border: 1px solid var(--primary);
+  border-top: none;
+  border-radius: 0 0 6px 6px;
+  z-index: 1000;
+  box-shadow: 0 3px 10px rgba(0, 0, 0, 0.08);
+  max-height: 180px; /* 🔥 TAMANHO REDUZIDO */
+  overflow-y: auto;
+  margin-top: -2px;
+}
+
+.suggestion-etapa-item {
+  padding: 8px 12px; /* 🔥 TAMANHO REDUZIDO */
+  cursor: pointer;
+  border-bottom: 1px solid var(--border);
+  transition: all 0.2s ease;
+  font-size: 0.85rem; /* 🔥 TAMANHO REDUZIDO */
+}
+
+.suggestion-etapa-item:hover {
+  background: var(--primary);
+  color: white;
+}
+
+.suggestion-etapa-item:last-child {
+  border-bottom: none;
+}
+
+.suggestion-etapa-section {
+  background: var(--primary);
+  color: white;
+  font-weight: 700;
+  padding: 6px 12px; /* 🔥 TAMANHO REDUZIDO */
+  font-size: 0.75rem; /* 🔥 TAMANHO REDUZIDO */
+  border-bottom: 1px solid var(--border);
+}
+
+.filtro-chip {
+  background: white;
+  border: 2px solid var(--border);
+  border-radius: 15px;
+  padding: 4px 10px; /* 🔥 TAMANHO REDUZIDO */
+  font-size: 11px; /* 🔥 TAMANHO REDUZIDO */
+  display: flex;
+  align-items: center;
+  gap: 5px;
+  cursor: pointer;
+  transition: all 0.3s ease;
+  font-weight: 500;
+}
+
+.filtro-chip.ativo {
+  background: var(--primary);
+  color: white;
+  border-color: var(--primary);
+}
+
+.filtro-chip .remover {
+  background: none;
+  border: none;
+  color: inherit;
+  cursor: pointer;
+  padding: 0;
+  width: 14px; /* 🔥 TAMANHO REDUZIDO */
+  height: 14px;
+  border-radius: 50%;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+      font-size: 9px; /* 🔥 TAMANHO REDUZIDO */
+}
+    
+    /* 🔥 ESTILOS PARA PESQUISA */
+    .search-container {
+      position: relative;
+    }
+
+    .suggestions {
+      position: absolute;
+      top: 100%;
+      left: 0;
+      right: 0;
+      background: white;
+      border: 1px solid var(--primary);
+      border-top: none;
+      border-radius: 0 0 8px 8px;
+      z-index: 1000;
+      box-shadow: 0 3px 10px rgba(0, 0, 0, 0.08);
+      margin-top: -2px;
+      max-height: 250px; /* 🔥 TAMANHO REDUZIDO */
+      overflow-y: auto;
+    }
+
+    .suggestion-item {
+      padding: 10px 14px; /* 🔥 TAMANHO REDUZIDO */
+      cursor: pointer;
+      border-bottom: 1px solid var(--border);
+      transition: all 0.2s ease;
+      font-size: 0.9rem; /* 🔥 TAMANHO REDUZIDO */
+      font-weight: 500;
+    }
+
+    .suggestion-item:hover {
+      background: var(--primary);
+      color: white;
+      font-weight: 600;
+    }
+
+    .suggestion-item:last-child {
+      border-bottom: none;
+    }
+    
+    .suggestion-section {
+      background: var(--primary);
+      color: white;
+      font-weight: 700;
+      padding: 8px 14px; /* 🔥 TAMANHO REDUZIDO */
+      font-size: 0.85rem; /* 🔥 TAMANHO REDUZIDO */
+      border-bottom: 1px solid var(--border);
+    }
+
+    .contador-lojas {
+      background: var(--primary);
+      color: white;
+      padding: 5px 10px; /* 🔥 TAMANHO REDUZIDO */
+      border-radius: 15px;
+      font-size: 0.85rem; /* 🔥 TAMANHO REDUZIDO */
+      font-weight: 600;
+    }
+
+    /* 🔥 ESTILOS PARA CAMPOS OBRIGATÓRIOS */
+    .form-label.obrigatorio::after {
+      content: " *";
+      color: var(--danger);
+      font-weight: bold;
+      margin-left: 2px;
+    }
+
+    .campo-obrigatorio {
+      border-left: 3px solid var(--danger) !important;
+      background-color: #fff5f5 !important;
+    }
+
+    .aviso-obrigatorio {
+      color: var(--danger);
+      font-size: 0.75rem; /* 🔥 TAMANHO REDUZIDO */
+      font-weight: 600;
+      margin-top: 4px;
+      display: none;
+    }
+
+    /* 🔥🔥🔥 ADICIONE ESTE CSS AQUI - ESTILOS MELHORADOS PARA VALIDAÇÃO */
+    .form-control.campo-obrigatorio,
+    select.campo-obrigatorio {
+      border: 2px solid var(--danger) !important;
+      background-color: #fff5f5 !important;
+      box-shadow: 0 0 0 2px rgba(220, 53, 69, 0.1) !important;
+      animation: pulse 0.5s ease-in-out;
+    }
+
+    @keyframes pulse {
+      0% { transform: scale(1); }
+      50% { transform: scale(1.02); }
+      100% { transform: scale(1); }
+    }
+
+    /* Destaque para a seção de fornecedores quando inválida */
+    .fornecedores-invalido {
+      border: 2px solid var(--danger) !important;
+      background: #fff5f5 !important;
+      animation: shake 0.5s ease-in-out;
+    }
+
+    @keyframes shake {
+      0%, 100% { transform: translateX(0); }
+      25% { transform: translateX(-5px); }
+      75% { transform: translateX(5px); }
+    }
+
+    /* 🔥 ESTILOS PARA BOTÕES DE AÇÃO NA TABELA */
+    .btn-editar {
+      background: var(--primary);
+      color: white;
+      border: none;
+      padding: 5px 10px; /* 🔥 TAMANHO REDUZIDO */
+      border-radius: 5px;
+      cursor: pointer;
+      font-size: 0.75rem; /* 🔥 TAMANHO REDUZIDO */
+      transition: all 0.3s ease;
+    }
+    
+    .btn-editar:hover {
+      background: #6a2e82;
+    }
+    
+    .btn-visualizar {
+      background: var(--info);
+      color: white;
+      border: none;
+      padding: 5px 8px; /* 🔥 TAMANHO REDUZIDO */
+      border-radius: 5px;
+      cursor: pointer;
+      font-size: 0.75rem; /* 🔥 TAMANHO REDUZIDO */
+      transition: all 0.3s ease;
+    }
+    
+    .btn-visualizar:hover {
+      background: #138496;
+    }
+
+    /* 🔄 ESTILOS PARA O LOADING OVERLAY */
+    #loadingOverlay {
+      display: none;
+      position: fixed;
+      top: 0;
+      left: 0;
+      width: 100%;
+      height: 100%;
+      background: rgba(0,0,0,0.7);
+      z-index: 9999;
+      justify-content: center;
+      align-items: center;
+      flex-direction: column;
+    }
+
+    .loading-content {
+      background: white;
+      padding: 30px; /* 🔥 TAMANHO REDUZIDO */
+      border-radius: 12px;
+      text-align: center;
+      box-shadow: 0 8px 25px rgba(0,0,0,0.25);
+      min-width: 250px; /* 🔥 TAMANHO REDUZIDO */
+      border: 2px solid var(--primary);
+    }
+
+    .loading-spinner-large {
+      border: 4px solid #f3f3f3;
+      border-top: 4px solid var(--primary);
+      border-radius: 50%;
+      width: 50px; /* 🔥 TAMANHO REDUZIDO */
+      height: 50px;
+      animation: spin 1s linear infinite;
+      margin: 0 auto 15px;
+    }
+
+    .loading-text {
+      margin: 0;
+      color: var(--dark);
+      font-weight: bold;
+      font-size: 16px; /* 🔥 TAMANHO REDUZIDO */
+    }
+
+    .loading-subtext {
+      margin: 6px 0 0 0;
+      color: var(--gray);
+      font-size: 13px; /* 🔥 TAMANHO REDUZIDO */
+    }
+
+    /* 🔥🔥🔥 MODAL DE DETALHES - CORRIGIDO PARA FICAR IGUAL AO MODELO */
+    .modal-overlay {
+      display: none;
+      position: fixed;
+      top: 0;
+      left: 0;
+      width: 100%;
+      height: 100%;
+      background: rgba(0,0,0,0.7);
+      z-index: 10000;
+      justify-content: center;
+      align-items: center;
+      padding: 15px;
+    }
+
+    .modal-content {
+      background: white;
+      border-radius: 12px;
+      padding: 25px; /* 🔥 TAMANHO REDUZIDO */
+      max-width: 900px; /* 🔥 TAMANHO AUMENTADO - IGUAL AO MODELO */
+      width: 100%;
+      max-height: 80vh;
+      overflow-y: auto;
+      box-shadow: 0 15px 50px rgba(0,0,0,0.25);
+      border: 3px solid var(--primary);
+      position: relative;
+    }
+
+    .modal-header {
+  display: flex;
+  justify-content: space-between;
+  align-items: center;
+  margin-bottom: 20px;
+  padding-bottom: 0; /* 🔥 ALTERE PARA 0 */
+  border-bottom: none; /* 🔥 REMOVA A BORDA */
+}
+
+    .modal-title {
+      font-size: 1.4rem; /* 🔥 TAMANHO REDUZIDO */
+      font-weight: 700;
+      color: var(--primary);
+      margin: 0;
+    }
+
+    .btn-close {
+      background: none;
+      border: none;
+      font-size: 1.3rem; /* 🔥 TAMANHO REDUZIDO */
+      cursor: pointer;
+      color: var(--gray);
+      padding: 4px;
+      border-radius: 50%;
+      width: 35px; /* 🔥 TAMANHO REDUZIDO */
+      height: 35px;
+      display: flex;
+      align-items: center;
+      justify-content: center;
+      transition: all 0.3s ease;
+    }
+
+    .btn-close:hover {
+      background: var(--danger);
+      color: white;
+    }
+
+    .detalhes-grid {
+      display: grid;
+      grid-template-columns: repeat(auto-fit, minmax(240px, 1fr));
+      gap: 12px;
+      margin-bottom: 15px;
+    }
+
+    .detalhe-item {
+      margin-bottom: 10px;
+    }
+
+    .detalhe-label {
+      font-weight: 600;
+      color: var(--primary);
+      margin-bottom: 4px;
+      display: block;
+      font-size: 0.9rem; /* 🔥 TAMANHO REDUZIDO */
+    }
+
+    .detalhe-valor {
+  color: var(--dark);
+  background: white; /* 🔥 FUNDO BRANCO */
+  padding: 12px 15px;
+  border-radius: 10px;
+  border-left: 4px solid var(--primary);
+  font-size: 1rem;
+  box-shadow: 0 2px 8px rgba(0,0,0,0.1);
+  border: 1px solid var(--border); /* 🔥 ADICIONE BORDA SUAVE */
+}
+
+    
+/* 🔥🔥🔥 CORREÇÃO DEFINITIVA - LARGURAS E ALINHAMENTO */
+.data-table {
+  table-layout: fixed;
+  width: 100%;
+}
+
+/* 🔥 LARGURAS DAS COLUNAS - OTIMIZADAS E CENTRALIZADAS */
+.data-table th:nth-child(1),
+.data-table td:nth-child(1) {
+  width: 18%; /* Razão Social */
+}
+
+.data-table th:nth-child(2),
+.data-table td:nth-child(2) {
+  width: 12%; /* CNPJ */
+}
+
+.data-table th:nth-child(3),
+.data-table td:nth-child(3) {
+  width: 12%; /* Fornecedor */
+}
+
+.data-table th:nth-child(4),
+.data-table td:nth-child(4) {
+  width: 10%; /* Situação */
+}
+
+.data-table th:nth-child(5),
+.data-table td:nth-child(5) {
+  width: 14%; /* Última Etapa */
+}
+
+.data-table th:nth-child(6),
+.data-table td:nth-child(6) {
+  width: 8%; /* Defasagem */
+}
+
+.data-table th:nth-child(7),
+.data-table td:nth-child(7) {
+  width: 10%; /* Mensalidade */
+}
+
+.data-table th:nth-child(8),
+.data-table td:nth-child(8) {
+  width: 8%; /* Adesão */
+}
+
+.data-table th:nth-child(9),
+.data-table td:nth-child(9) {
+  width: 8%; /* Ações */
+}
+
+/* 🔥 CABEÇALHOS CENTRALIZADOS E COM NEGRITO */
+.data-table th {
+  background: var(--primary);
+  color: white;
+  padding: 12px 6px !important;
+  text-align: center !important;
+  font-weight: 700 !important;
+  position: sticky;
+  top: 0;
+  white-space: nowrap;
+  font-size: 0.85rem !important;
+  letter-spacing: 0.5px;
+  border-bottom: 2px solid rgba(255,255,255,0.2);
+}
+
+/* 🔥 EXCEÇÃO: Razão Social alinhada à esquerda */
+.data-table th:nth-child(1) {
+  text-align: left !important;
+  padding-left: 12px !important;
+}
+
+/* 🔥 EXCEÇÃO: Última Etapa alinhado à esquerda */
+.data-table th:nth-child(5) {
+  text-align: left !important;
+  padding-left: 12px !important;
+}
+
+/* 🔥 ALINHAMENTO DAS CÉLULAS - CONSISTENTE */
+.data-table td:nth-child(1) {
+  text-align: left !important;
+  vertical-align: top !important;
+}
+
+.data-table td:nth-child(2) {
+  text-align: center !important;
+  vertical-align: middle !important;
+}
+
+.data-table td:nth-child(3) {
+  text-align: center !important;
+  vertical-align: middle !important;
+}
+
+.data-table td:nth-child(4) {
+  text-align: center !important;
+  vertical-align: middle !important;
+}
+
+.data-table td:nth-child(5) {
+  text-align: left !important;
+  vertical-align: middle !important;
+}
+
+.data-table td:nth-child(6) {
+  text-align: center !important;
+  vertical-align: middle !important;
+}
+
+.data-table td:nth-child(7) {
+  text-align: center !important;
+  vertical-align: middle !important;
+  font-weight: 600;
+  color: var(--success) !important;
+}
+
+.data-table td:nth-child(8) {
+  text-align: center !important;
+  vertical-align: middle !important;
+  font-weight: 600;
+  color: var(--info) !important;
+}
+
+.data-table td:nth-child(9) {
+  text-align: center !important;
+  vertical-align: middle !important;
+}
+
+/* 🔥 MELHORAR VISUALIZAÇÃO DOS VALORES */
+.data-table td:nth-child(7),
+.data-table td:nth-child(8) {
+  font-weight: 600;
+  font-size: 0.75rem;
+}
+
+.data-table td:nth-child(7) {
+  color: var(--success) !important; /* Verde para mensalidade */
+}
+
+.data-table td:nth-child(8) {
+  color: var(--info) !important; /* Azul para adesão */
+}
+
+/* 🔥 CORREÇÃO ESPECÍFICA PARA O BOTÃO VISUALIZAR */
+.btn-visualizar-compact {
+  padding: 6px 10px !important; /* 🔥 TAMANHO REDUZIDO */
+  font-size: 0.75rem !important; /* 🔥 TAMANHO REDUZIDO */
+  min-width: 90px; /* 🔥 TAMANHO REDUZIDO */
+  white-space: nowrap;
+  display: inline-flex;
+  align-items: center;
+  justify-content: center;
+  gap: 4px;
+}
+
+/* 🔥 GARANTIR QUE TODAS AS CÉLULAS TENHAM MESMA ALTURA */
+.data-table tbody tr {
+}
+
+
+
+/* 🔥 LARGURAS DAS COLUNAS */
+.data-table th:nth-child(6),
+.data-table td:nth-child(6) {
+  width: 17%; /* Ações */
+}
+
+
+
+
+
+/* 🔥 ESTILOS MELHORADOS PARA O CAMPO DE ETAPA SEARCH - TAMANHO REDUZIDO */
+#inputEtapaSearch {
+  background-image: url('data:image/svg+xml;utf8,<svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24" fill="%237E3E9A" width="16" height="16"><path d="M15.5 14h-.79l-.28-.27C15.41 12.59 16 11.11 16 9.5 16 5.91 13.09 3 9.5 3S3 5.91 3 9.5 5.91 16 9.5 16c1.61 0 3.09-.59 4.23-1.57l.27.28v.79l5 4.99L20.49 19l-4.99-5zm-6 0C7.01 14 5 11.99 5 9.5S7.01 5 9.5 5 14 7.01 14 9.5 11.99 14 9.5 14z"/></svg>');
+  background-repeat: no-repeat;
+  background-position: right 10px center;
+  background-size: 16px;
+  padding-right: 35px;
+  cursor: pointer;
+  
+  /* 🔥 TAMANHO REDUZIDO */
+  font-size: 14px;
+  padding: 12px 15px;
+  height: auto;
+  min-height: 45px;
+}
+
+/* 🔥 CORREÇÃO DEFINITIVA - REMOVER SCROLL HORIZONTAL */
+.suggestions-etapa-search {
+  position: absolute;
+  top: 100%;
+  left: 0;
+  right: 0;
+  background: white;
+  border: 2px solid var(--primary);
+  border-top: none;
+  border-radius: 0 0 8px 8px;
+  z-index: 1000;
+  max-height: 250px; /* 🔥 TAMANHO REDUZIDO */
+  overflow-y: auto;
+  overflow-x: hidden !important;
+  box-shadow: 0 6px 20px rgba(0,0,0,0.12);
+  
+  white-space: normal !important;
+  word-wrap: break-word !important;
+  width: 100% !important;
+}
+
+/* 🔥 GARANTIR QUE OS ITENS QUEBREM LINHA SE PRECISAR */
+.suggestion-etapa-item-search {
+  padding: 10px 14px; /* 🔥 TAMANHO REDUZIDO */
+  cursor: pointer;
+  border-bottom: 1px solid var(--border);
+  transition: all 0.2s ease;
+  display: flex;
+  align-items: center;
+  gap: 8px;
+  
+  white-space: normal !important;
+  word-wrap: break-word !important;
+  overflow-wrap: break-word !important;
+  line-height: 1.3;
+}
+
+.suggestion-etapa-item-search:hover {
+  background: var(--primary);
+  color: white;
+  transform: translateX(5px);
+}
+
+.suggestion-etapa-item-search:last-child {
+  border-bottom: none;
+}
+
+/* 🔥 SEÇÕES TAMBÉM */
+.suggestion-etapa-section-search {
+  background: var(--primary);
+  color: white;
+  font-weight: 700;
+  padding: 8px 14px; /* 🔥 TAMANHO REDUZIDO */
+  font-size: 0.85rem; /* 🔥 TAMANHO REDUZIDO */
+  border-bottom: 1px solid rgba(255,255,255,0.2);
+  position: sticky;
+  top: 0;
+  display: flex;
+  align-items: center;
+  gap: 6px;
+  
+  white-space: normal !important;
+  word-wrap: break-word !important;
+  line-height: 1.3;
+}
+
+/* 🔥 CORREÇÃO ADICIONAL PARA O CONTAINER DO INPUT */
+#etapaFormGroup {
+  position: relative;
+  width: 100%;
+}
+
+#etapaFormGroup .suggestions-etapa {
+  width: 100% !important;
+  left: 0 !important;
+  right: 0 !important;
+}
+
+/* 🔥 CORREÇÃO DO LABEL DA OBSERVAÇÃO */
+.form-group:has(#observacoes) .form-label {
+  margin-left: 80px !important; /* 🔥 TAMANHO REDUZIDO */
+  width: 85% !important;
+}
+
+/* 🔥 OBSERVAÇÃO MAIS PARA DIREITA */
+#observacoes {
+  margin-left: 40px !important; /* 🔥 TAMANHO REDUZIDO */
+  width: 90% !important;
+  min-height: 80px; /* 🔥 TAMANHO REDUZIDO */
+}
+
+/* 🔥 BOTÕES MAIS PARA DIREITA */
+.btn-group {
+  display: flex;
+  gap: 12px;
+  margin-top: 20px;
+  justify-content: flex-end !important;
+  margin-left: auto;
+  width: fit-content;
+}
+
+/* 🔥 OU SE PREFERIR ALINHAMENTO MAIS À DIREITA */
+.form-group:last-of-type {
+  display: flex;
+  justify-content: flex-end;
+}
+
+.form-group:last-of-type textarea {
+  width: 95%;
+  margin-left: auto;
+}
+
+  /* 🔥🔥🔥 CORREÇÃO DEFINITIVA - ALINHAMENTO VERTICAL DA COLUNA AÇÕES */
+.data-table tbody tr {
+    display: table-row;
+    height: auto;
+}
+
+.data-table td {
+    vertical-align: middle !important;
+    padding: 12px 6px !important; /* 🔥 TAMANHO REDUZIDO */
+    height: 100% !important;
+    border-bottom: 1px solid var(--border);
+}
+
+/* 🔥🔥🔥 CORREÇÃO URGENTE - BOTÃO NO MEIO DA CÉLULA */
+.data-table td:nth-child(9) {
+    height: 100% !important;
+    min-height: 100% !important;
+    vertical-align: middle !important;
+    padding: 0 !important;
+    display: table-cell !important;
+}
+
+.acoes-cell {
+    height: 100% !important;
+    min-height: 100% !important;
+    display: flex !important;
+    align-items: center !important;
+    justify-content: center !important;
+    padding: 0 !important;
+    margin: 0 !important;
+}
+
+/* 🔥 GARANTIR QUE O BOTÃO OCUPE TODA A ALTURA */
+.btn-visualizar-compact {
+    height: 100% !important;
+    min-height: 35px !important; /* 🔥 TAMANHO REDUZIDO */
+    display: flex !important;
+    align-items: center !important;
+    justify-content: center !important;
+    padding: 6px 10px !important; /* 🔥 TAMANHO REDUZIDO */
+    margin: 0 !important;
+    width: 100%;
+    border-radius: 5px !important;
+}
+
+/* 🔥 CORREÇÃO DA PRIMEIRA COLUNA (mantém alinhamento ao topo) */
+.data-table td:nth-child(1) {
+    vertical-align: top !important;
+}
+
+/* 🔥 CORREÇÃO DAS OUTRAS COLUNAS (alinhamento no meio) */
+.data-table td:nth-child(2),
+.data-table td:nth-child(3),
+.data-table td:nth-child(4),
+.data-table td:nth-child(5),
+.data-table td:nth-child(6),
+.data-table td:nth-child(7),
+.data-table td:nth-child(8),
+.data-table td:nth-child(9) {
+    vertical-align: middle !important;
+}
+
+/* 🔥🔥🔥 ESTILOS PARA WAITLABELS - TAMANHO REDUZIDO */
+.waitlabel-selector {
+  background: linear-gradient(135deg, #f8f9fa 0%, #e9ecef 100%);
+  padding: 15px;
+  border-radius: 10px;
+  border: 2px solid var(--border);
+  margin-bottom: 20px;
+}
+
+.waitlabel-title {
+  font-size: 1.1rem; /* 🔥 TAMANHO REDUZIDO */
+  font-weight: 700;
+  color: var(--primary);
+  margin-bottom: 12px;
+  display: flex;
+  align-items: center;
+  gap: 8px;
+}
+
+.waitlabel-buttons {
+  display: flex;
+  gap: 8px;
+  flex-wrap: wrap;
+}
+
+.waitlabel-btn {
+  padding: 10px 16px; /* 🔥 TAMANHO REDUZIDO */
+  border: 2px solid var(--border);
+  border-radius: 6px;
+  background: white;
+  color: var(--dark);
+  font-weight: 600;
+  cursor: pointer;
+  transition: all 0.3s ease;
+  display: flex;
+  align-items: center;
+  gap: 6px;
+  min-width: 120px; /* 🔥 TAMANHO REDUZIDO */
+  justify-content: center;
+  font-size: 0.9rem; /* 🔥 TAMANHO REDUZIDO */
+}
+
+.waitlabel-btn:hover {
+  transform: translateY(-2px);
+  box-shadow: 0 3px 8px rgba(0,0,0,0.08);
+}
+
+.waitlabel-btn.active {
+  transform: translateY(-2px);
+  box-shadow: 0 3px 10px rgba(0,0,0,0.15);
+  border-width: 2px;
+}
+
+.waitlabel-indicator {
+  display: inline-block;
+  width: 10px; /* 🔥 TAMANHO REDUZIDO */
+  height: 10px;
+  border-radius: 50%;
+  margin-right: 4px;
+}
+
+
+
+.btn-aplicar-todos:hover {
+  background: linear-gradient(135deg, #E55A2B 0%, #E57C2B 100%) !important;
+  transform: translateY(-2px) !important;
+  box-shadow: 0 3px 10px rgba(255, 107, 53, 0.25) !important;
+}
+
+/* 🔥 ESTILOS PARA CHECKBOXES APLICAR A TODOS */
+.checkbox-aplicar-todos {
+  display: flex;
+  align-items: center;
+  gap: 6px;
+  margin-top: 6px;
+  padding: 6px 10px; /* 🔥 TAMANHO REDUZIDO */
+  background: #fff8f0;
+  border-radius: 5px;
+  border-left: 2px solid #FF6B35;
+}
+
+.checkbox-aplicar-todos input[type="checkbox"] {
+  width: 16px; /* 🔥 TAMANHO REDUZIDO */
+  height: 16px;
+  accent-color: #FF6B35;
+}
+
+.checkbox-aplicar-todos label {
+  font-size: 0.8rem; /* 🔥 TAMANHO REDUZIDO */
+  color: #FF6B35;
+  font-weight: 600;
+  cursor: pointer;
+}
+
+/* 🔥 MODO APLICAR A TODOS ATIVO */
+.modo-aplicar-todos .form-group {
+  border: 2px solid #fff8f0;
+  border-radius: 6px;
+  padding: 12px;
+  background: #fffdfa;
+}
+
+.modo-aplicar-todos .card-header {
+  background: linear-gradient(135deg, #fff8f0 0%, #fff0e0 100%);
+  border-radius: 6px;
+  padding: 12px;
+  margin-bottom: 15px;
+}
+
+/* 🔥🔥🔥 NOVOS ESTILOS PARA MODAL MELHORADO */
+.modal-content {
+  background: white;
+  border-radius: 15px;
+  padding: 30px;
+  max-width: 950px;
+  width: 95%;
+  max-height: 85vh;
+  overflow-y: auto;
+  box-shadow: 0 20px 60px rgba(0,0,0,0.3);
+  border: 4px solid var(--primary);
+  position: relative;
+  backdrop-filter: blur(10px);
+}
+
+.modal-header {
+  display: flex;
+  justify-content: space-between;
+  align-items: center;
+  margin-bottom: 25px;
+  padding-bottom: 15px;
+  border-bottom: 3px solid var(--primary);
+}
+
+.modal-title {
+  font-size: 1.6rem;
+  font-weight: 700;
+  color: var(--primary);
+  margin: 0;
+}
+
+.btn-close {
+  background: none;
+  border: none;
+  font-size: 1.5rem;
+  cursor: pointer;
+  color: var(--gray);
+  padding: 5px;
+  border-radius: 50%;
+  width: 40px;
+  height: 40px;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  transition: all 0.3s ease;
+}
+
+.btn-close:hover {
+  background: var(--danger);
+  color: white;
+}
+
+.detalhes-grid {
+  display: grid;
+  grid-template-columns: repeat(auto-fit, minmax(280px, 1fr));
+  gap: 20px;
+  margin-bottom: 25px;
+}
+
+.detalhe-item {
+  margin-bottom: 15px;
+}
+
+.detalhe-label {
+  font-weight: 700;
+  color: var(--primary);
+  margin-bottom: 8px;
+  display: block;
+  font-size: 1rem;
+  border-bottom: 2px solid var(--border);
+  padding-bottom: 4px;
+}
+
+.detalhe-valor {
+  color: var(--dark);
+  background: linear-gradient(135deg, #f8f9fa 0%, #e9ecef 100%);
+  padding: 12px 15px;
+  border-radius: 10px;
+  border-left: 4px solid var(--primary);
+  font-size: 1rem;
+  box-shadow: 0 2px 8px rgba(0,0,0,0.1);
+}
+
+/* 🔥 ESTILOS PARA LOJAS AGRUPADAS NO MODAL */
+.loja-item {
+  border: 3px solid;
+  border-radius: 12px;
+  padding: 20px;
+  margin-bottom: 15px;
+  background: white;
+  box-shadow: 0 4px 15px rgba(0,0,0,0.1);
+  transition: all 0.3s ease;
+  position: relative;
+  overflow: hidden;
+}
+
+.loja-item::before {
+  content: '';
+  position: absolute;
+  top: 0;
+  left: 0;
+  right: 0;
+  height: 4px;
+  background: currentColor;
+  opacity: 0.3;
+}
+
+.loja-item:hover {
+  transform: translateY(-3px);
+  box-shadow: 0 8px 25px rgba(0,0,0,0.15);
+}
+
+/* 🔥 BOTÃO EDITAR NO MODAL */
+.btn-editar-modal {
+  background: linear-gradient(135deg, var(--warning) 0%, #ffb347 100%);
+  color: var(--dark);
+  border: none;
+  padding: 12px 25px;
+  border-radius: 8px;
+  font-weight: 700;
+  font-size: 1rem;
+  cursor: pointer;
+  transition: all 0.3s ease;
+  box-shadow: 0 4px 15px rgba(255, 193, 7, 0.3);
+  display: inline-flex;
+  align-items: center;
+  gap: 8px;
+}
+
+.btn-editar-modal:hover {
+  transform: translateY(-2px);
+  box-shadow: 0 6px 20px rgba(255, 193, 7, 0.4);
+  background: linear-gradient(135deg, #ffc107 0%, #ffb347 100%);
+}
+  
+    @media (max-width: 768px) {
+      .content {
+        padding: 15px;
+      }
+      
+      .form-grid {
+        grid-template-columns: 1fr;
+      }
+      
+      .btn-group {
+        flex-direction: column;
+      }
+
+        h1 {
+        font-size: 1.8rem; /* 🔥 TAMANHO REDUZIDO */
+      }
+      
+      .logo {
+        width: 60px; /* 🔥 TAMANHO REDUZIDO */
+        height: 60px;
+      }
+      
+      .action-buttons {
+        flex-direction: column;
+      }
+      
+      .cadastros-grid {
+        grid-template-columns: 1fr;
+      }
+      
+      .card-header {
+        flex-direction: column;
+        align-items: flex-start;
+      }
+      
+      .filtros-container {
+        margin-top: 12px;
+      }
+      
+      .data-table {
+        font-size: 0.75rem; /* 🔥 TAMANHO REDUZIDO */
+      }
+      
+      .acoes-cell {
+        flex-direction: column;
+      }
+      
+      .waitlabel-buttons {
+        flex-direction: column;
+      }
+      
+      .waitlabel-btn {
+        min-width: 100%;
+      }
+
+      /* 🔥 MODAL RESPONSIVO */
+      .modal-content {
+        padding: 20px;
+        margin: 10px;
+        max-width: 95%;
+      }
+      
+      .modal-title {
+        font-size: 1.2rem;
+      }
+
+      .detalhes-grid {
+        grid-template-columns: 1fr;
+        gap: 15px;
+      }
+
+      /* 🔥 GARANTIR QUE O CONTAINER DA DEFASAGEM FIQUE CENTRALIZADO */
+.defasagem-container {
+  display: flex !important;
+  justify-content: center !important;
+  align-items: center !important;
+  height: 100% !important;
+}
+
+  }
+
+  /* 🔥 ESTILOS PARA OS NOVOS ETAPAS COM ÍCONES COLORIDOS */
+.etapa-pendente-fornecedor {
+  background: linear-gradient(135deg, #FF6B35 0%, #FF8E35 100%) !important;
+  color: white !important;
+  border: 2px solid #FF6B35 !important;
+}
+
+.etapa-pendente-sim {
+  background: linear-gradient(135deg, #7E3E9A 0%, #9A5FB8 100%) !important;
+  color: white !important;
+  border: 2px solid #7E3E9A !important;
+}
+
+.etapa-pendente-wl {
+  background: linear-gradient(135deg, #2EBE76 0%, #4CD494 100%) !important;
+  color: white !important;
+  border: 2px solid #2EBE76 !important;
+}
+
+.etapa-pendente-clinica {
+  background: linear-gradient(135deg, #0682c5 0%, #2AA0E6 100%) !important;
+  color: white !important;
+  border: 2px solid #0682c5 !important;
+}
+
+/* Ícones para os etapas nas sugestões */
+.suggestion-etapa-item-search[data-etapa="PENDENTE FORNECEDOR(ES)"] i {
+  color: #FF6B35 !important;
+}
+
+.suggestion-etapa-item-search[data-etapa="PENDENTE SIM"] i {
+  color: #7E3E9A !important;
+}
+
+.suggestion-etapa-item-search[data-etapa="PENDENTE WL"] i {
+  color: #2EBE76 !important;
+}
+
+.suggestion-etapa-item-search[data-etapa="PENDENTE CLÍNICA/LOJA"] i {
+  color: #0682c5 !important;
+}
+
+/* 🔥 ADICIONE ESTE CSS - ANIMAÇÃO SHAKE */
+@keyframes shake {
+  0%, 100% { transform: translateX(0); }
+  25% { transform: translateX(-8px); }
+  75% { transform: translateX(8px); }
+}
+
+.shake {
+  animation: shake 0.5s ease-in-out;
+}
+  </style>
+</head>
+<body>
+  <div class="container">
+    <div class="header">
+      <div class="logo-container">
+        <img src="https://i.ibb.co/B2r5xtbS/sim-cred-5.png" class="logo" alt="SIM CRED">
+        <div class="header-content">
+          <h1>Sistema de Cadastros de Lojas</h1>
+          <div class="subtitle">Situação e Acompanhamento de Lojas</div>
+          <div class="version">
+            <i class="fas fa-rocket"></i>
+            Versão 2.0
+          </div>
+        </div>
+      </div>
+    </div>
+    
+    <div class="content">
+      <!-- 🔥🔥🔥 SEÇÃO WAITLABELS - ADICIONADA AQUI -->
+      <div class="waitlabel-selector">
+        <div class="waitlabel-title">
+          <i class="fas fa-layer-group"></i>
+          Selecione o White Label:
+        </div>
+        <div class="waitlabel-buttons" id="waitlabelButtons">
+          <!-- Os botões serão preenchidos via JavaScript -->
+        </div>
+      </div>
+
+      <!-- BOTÕES DE AÇÃO SIMPLIFICADOS -->
+      <div class="action-buttons">
+        <button type="button" class="btn btn-primary" onclick="mostrarTodosCadastros()">
+          <i class="fas fa-store"></i>
+          Ver Todos os Cadastros
+        </button>
+        <button type="button" class="btn btn-info" onclick="limparBusca()">
+          <i class="fas fa-broom"></i>
+          Limpar Busca
+        </button>
+      </div>
+
+      <!-- CARD DADOS DO CADASTRO -->
+      <div class="card" id="cardCadastro">
+        <div class="card-header">
+          <i class="fas fa-info-circle"></i>
+          <h2 class="card-title">Dados do Cadastro</h2>
+          <!-- 🔥 LOCAL PARA TÍTULO DO MODO APLICAR A TODOS -->
+          <div id="tituloAplicarTodos" style="display: none;"></div>
+        </div>
+        
+        <div class="form-grid">
+          <div class="form-group">
+            <label class="form-label obrigatorio">
+              <i class="fas fa-building"></i>
+              Razão Social
+            </label>
+            <input type="text" id="razao_social" class="form-control">
+          </div>
+          
+          <div class="form-group">
+            <label class="form-label">
+              <i class="fas fa-signature"></i>
+              Nome Fantasia
+            </label>
+            <input type="text" id="nome_fantasia" class="form-control">
+          </div>
+          
+          <!-- 🔥 CAMPO CNPJ ADICIONADO AQUI -->
+          <div class="form-group">
+            <label class="form-label obrigatorio">
+              <i class="fas fa-id-card"></i>
+              CNPJ
+            </label>
+            <input type="text" id="cnpj_cadastro" class="form-control" 
+                   placeholder="Digite o CNPJ para cadastro..."
+                   oninput="formatarCNPJ(this)">
+          </div>
+          
+          
+          <div class="form-group">
+            <label class="form-label obrigatorio">
+              <i class="fas fa-file-contract"></i>
+              Contrato Enviado
+            </label>
+            <select id="contrato_enviado" class="form-control">
+              <option value="">-- Selecione --</option>
+              <option value="SIM">SIM</option>
+              <option value="NAO">NAO</option>
+            </select>
+          </div>
+
+          <div class="form-group">
+            <label class="form-label obrigatorio">
+              <i class="fas fa-file-signature"></i>
+              Contrato Assinado
+            </label>
+            <select id="contrato_assinado" class="form-control">
+              <option value="">-- Selecione --</option>
+              <option value="SIM">SIM</option>
+              <option value="NAO">NAO</option>
+            </select>
+          </div>
+          
+          <div class="form-group">
+            <label class="form-label">
+              <i class="fas fa-play-circle"></i>
+              Ativação
+            </label>
+            <input type="date" id="ativacao" class="form-control">
+          </div>
+          
+          <div class="form-group">
+            <label class="form-label">
+              <i class="fas fa-link"></i>
+              Link
+            </label>
+            <input type="text" id="link" class="form-control" placeholder="https://...">
+          </div>
+          
+          <div class="form-group">
+            <label class="form-label obrigatorio">
+              <i class="fas fa-money-bill-wave"></i>
+              Mensalidade
+            </label>
+            <input type="text" id="mensalidade" class="form-control" placeholder="R$ 0,00" oninput="formatarMoeda(this)">
+          </div>
+
+          <!-- 🔥 ADICIONE ESTE CAMPO AQUI - DEPOIS DO CAMPO MENSALIDADE -->
+           <!-- ✅ CORRETO - DEIXE ASSIM SIMPLES -->
+            <div class="form-group">
+  <label class="form-label" style="color: var(--primary); font-weight: 700;">
+    <i class="fas fa-money-bill-wave" style="color: var(--primary);"></i>
+    Mensalidade SIM
+  </label>
+  <input type="text" id="mensalidade_sim" name="mensalidade_sim" class="form-control" placeholder="R$ 0,00" oninput="formatarMoeda(this)">
+</div>
+
+          <!-- 🔥 CAMPO ADESÃO -->
+          <div class="form-group">
+            <label class="form-label">
+              <i class="fas fa-handshake"></i>
+              Adesão
+            </label>
+            <input type="text" id="adesao" class="form-control" placeholder="R$ 0,00" oninput="formatarMoeda(this)" value="R$ 0,00">
+            <small style="color: var(--gray); font-size: 0.75rem;">
+              <i class="fas fa-info-circle"></i> Valor "0,00" será salvo como "Isento"
+            </small>
+          </div>
+          
+          <div class="form-group">
+            <label class="form-label obrigatorio">
+              <i class="fas fa-flag"></i>
+              Situação
+            </label>
+            <select id="situacao" class="form-control">
+              <option value="NOVO REGISTRO">NOVO REGISTRO</option>
+              <option value="CADASTRADO">CADASTRADO</option>
+              <option value="EM ANDAMENTO">EM ANDAMENTO</option>
+              <option value="REJEITADO">REJEITADO</option>
+              <option value="DESCREDENCIADO">DESCREDENCIADO</option>
+              <option value="DESISTIU">DESISTIU</option>
+            </select>
+          </div>
+
+          <!-- 🔥 FORNECEDORES COM TARIFAS INDIVIDUAIS -->
+          <div class="form-group" style="grid-column: 1 / -1;">
+            <label class="form-label">
+              <i class="fas fa-truck"></i>
+              Fornecedor(es) - <span style="color: var(--primary); font-weight: 600;">Selecione e configure cada um</span>
+            </label>
+            <div style="background: linear-gradient(135deg, #f8f9fa 0%, #e9ecef 100%); padding: 15px; border-radius: 10px; border: 2px dashed var(--primary);">
+              
+              <!-- FORNECEDOR Agil -->
+              <div class="fornecedor-item" style="margin-bottom: 15px; padding: 12px; background: white; border-radius: 8px; border: 2px solid var(--border);">
+                <div style="display: flex; align-items: center; gap: 12px; margin-bottom: 12px;">
+                  <input type="checkbox" name="fornecedor" value="Agil" style="width: 18px; height: 18px; accent-color: var(--primary);" onchange="toggleFornecedorConfig(this, 'agil')">
+                  <span style="font-weight: 600; color: var(--dark); font-size: 1rem;">AGIL</span>
+                </div>
+                <div id="config-agil" style="display: none; grid-template-columns: 1fr 1fr; gap: 12px; padding: 12px; background: #f8f9fa; border-radius: 6px;">
+                  <div>
+                    <label style="font-weight: 600; margin-bottom: 6px; display: block;">Tipo de Tarifa</label>
+                    <div style="display: flex; gap: 12px;">
+                      <div style="display: flex; align-items: center; gap: 6px;">
+                        <input type="radio" name="tarifa_agil" value="MDR" style="accent-color: var(--primary);">
+                        <label style="font-weight: 600;">MDR</label>
+                      </div>
+                      <div style="display: flex; align-items: center; gap: 6px;">
+                        <input type="radio" name="tarifa_agil" value="TIS" style="accent-color: var(--primary);">
+                        <label style="font-weight: 600;">TIS</label>
+                      </div>
+                    </div>
+                  </div>
+                  <div>
+                    <label style="font-weight: 600; margin-bottom: 6px; display: block;">Valor da Tarifa</label>
+                    <input type="text" 
+                      name="percentual_agil" 
+                      style="width: 100%; padding: 6px 10px; border: 2px solid var(--border); border-radius: 5px;"
+                      placeholder="Digite o % (ex: 3,2%)"
+                      oninput="formatarPercentual(this)">
+                  </div>
+                </div>
+              </div>
+
+              <!-- FORNECEDOR BC -->
+              <div class="fornecedor-item" style="margin-bottom: 15px; padding: 12px; background: white; border-radius: 8px; border: 2px solid var(--border);">
+                <div style="display: flex; align-items: center; gap: 12px; margin-bottom: 12px;">
+                  <input type="checkbox" name="fornecedor" value="BC" style="width: 18px; height: 18px; accent-color: var(--primary);" onchange="toggleFornecedorConfig(this, 'bc')">
+                  <span style="font-weight: 600; color: var(--dark); font-size: 1rem;">BC</span>
+                </div>
+                <div id="config-bc" style="display: none; grid-template-columns: 1fr 1fr; gap: 12px; padding: 12px; background: #f8f9fa; border-radius: 6px;">
+                  <div>
+                    <label style="font-weight: 600; margin-bottom: 6px; display: block;">Tipo de Tarifa</label>
+                    <div style="display: flex; gap: 12px;">
+                      <div style="display: flex; align-items: center; gap: 6px;">
+                        <input type="radio" name="tarifa_bc" value="MDR" style="accent-color: var(--primary);">
+                        <label style="font-weight: 600;">MDR</label>
+                      </div>
+                      <div style="display: flex; align-items: center; gap: 6px;">
+                        <input type="radio" name="tarifa_bc" value="TIS" style="accent-color: var(--primary);">
+                        <label style="font-weight: 600;">TIS</label>
+                      </div>
+                    </div>
+                  </div>
+                  <div>
+                    <label style="font-weight: 600; margin-bottom: 6px; display: block;">Valor da Tarifa</label>
+                    <input type="text" 
+                      name="percentual_bc" 
+                      style="width: 100%; padding: 6px 10px; border: 2px solid var(--border); border-radius: 5px;"
+                      placeholder="Digite o % (ex: 3,2%)"
+                      oninput="formatarPercentual(this)">
+                  </div>
+                </div>
+              </div>
+
+              <!-- FORNECEDOR PARCELEX -->
+              <div class="fornecedor-item" style="margin-bottom: 15px; padding: 12px; background: white; border-radius: 8px; border: 2px solid var(--border);">
+                <div style="display: flex; align-items: center; gap: 12px; margin-bottom: 12px;">
+                  <input type="checkbox" name="fornecedor" value="Parcelex" style="width: 18px; height: 18px; accent-color: var(--primary);" onchange="toggleFornecedorConfig(this, 'parcelex')">
+                  <span style="font-weight: 600; color: var(--dark); font-size: 1rem;">PARCELEX</span>
+                </div>
+                <div id="config-parcelex" style="display: none; grid-template-columns: 1fr 1fr; gap: 12px; padding: 12px; background: #f8f9fa; border-radius: 6px;">
+                  <div>
+                    <label style="font-weight: 600; margin-bottom: 6px; display: block;">Tipo de Tarifa</label>
+                    <div style="display: flex; gap: 12px;">
+                      <div style="display: flex; align-items: center; gap: 6px;">
+                        <input type="radio" name="tarifa_parcelex" value="MDR" style="accent-color: var(--primary);">
+                        <label style="font-weight: 600;">MDR</label>
+                      </div>
+                      <div style="display: flex; align-items: center; gap: 6px;">
+                        <input type="radio" name="tarifa_parcelex" value="TIS" style="accent-color: var(--primary);">
+                        <label style="font-weight: 600;">TIS</label>
+                      </div>
+                    </div>
+                  </div>
+                  <div>
+                    <label style="font-weight: 600; margin-bottom: 6px; display: block;">Valor da Tarifa</label>
+                    <input type="text" 
+                      name="percentual_parcelex" 
+                      style="width: 100%; padding: 6px 10px; border: 2px solid var(--border); border-radius: 5px;"
+                      placeholder="Digite o % (ex: 3,2%)"
+                      oninput="formatarPercentual(this)">
+                  </div>
+                </div>
+              </div>
+
+              <!-- FORNECEDOR AGORACRED -->
+              <div class="fornecedor-item" style="margin-bottom: 15px; padding: 12px; background: white; border-radius: 8px; border: 2px solid var(--border);">
+                <div style="display: flex; align-items: center; gap: 12px; margin-bottom: 12px;">
+                  <input type="checkbox" name="fornecedor" value="Agoracred" style="width: 18px; height: 18px; accent-color: var(--primary);" onchange="toggleFornecedorConfig(this, 'agoracred')">
+                  <span style="font-weight: 600; color: var(--dark); font-size: 1rem;">AGORACRED</span>
+                </div>
+                <div id="config-agoracred" style="display: none; grid-template-columns: 1fr 1fr; gap: 12px; padding: 12px; background: #f8f9fa; border-radius: 6px;">
+                  <div>
+                    <label style="font-weight: 600; margin-bottom: 6px; display: block;">Tipo de Tarifa</label>
+                    <div style="display: flex; gap: 12px;">
+                      <div style="display: flex; align-items: center; gap: 6px;">
+                        <input type="radio" name="tarifa_agoracred" value="MDR" style="accent-color: var(--primary);">
+                        <label style="font-weight: 600;">MDR</label>
+                      </div>
+                      <div style="display: flex; align-items: center; gap: 6px;">
+                        <input type="radio" name="tarifa_agoracred" value="TIS" style="accent-color: var(--primary);">
+                        <label style="font-weight: 600;">TIS</label>
+                      </div>
+                    </div>
+                  </div>
+                  <div>
+                    <label style="font-weight: 600; margin-bottom: 6px; display: block;">Valor da Tarifa</label>
+                    <input type="text" 
+                      name="percentual_agoracred" 
+                      style="width: 100%; padding: 6px 10px; border: 2px solid var(--border); border-radius: 5px;"
+                      placeholder="Digite o % (ex: 3,2%)"
+                      oninput="formatarPercentual(this)">
+                  </div>
+                </div>
+              </div>
+
+              <!-- FORNECEDOR AFINZ -->
+              <div class="fornecedor-item" style="margin-bottom: 15px; padding: 12px; background: white; border-radius: 8px; border: 2px solid var(--border);">
+                <div style="display: flex; align-items: center; gap: 12px; margin-bottom: 12px;">
+                  <input type="checkbox" name="fornecedor" value="Afinz" style="width: 18px; height: 18px; accent-color: var(--primary);" onchange="toggleFornecedorConfig(this, 'afinz')">
+                  <span style="font-weight: 600; color: var(--dark); font-size: 1rem;">AFINZ</span>
+                </div>
+                <div id="config-afinz" style="display: none; grid-template-columns: 1fr 1fr; gap: 12px; padding: 12px; background: #f8f9fa; border-radius: 6px;">
+                  <div>
+                    <label style="font-weight: 600; margin-bottom: 6px; display: block;">Tipo de Tarifa</label>
+                    <div style="display: flex; gap: 12px;">
+                      <div style="display: flex; align-items: center; gap: 6px;">
+                        <input type="radio" name="tarifa_afinz" value="MDR" style="accent-color: var(--primary);">
+                        <label style="font-weight: 600;">MDR</label>
+                      </div>
+                      <div style="display: flex; align-items: center; gap: 6px;">
+                        <input type="radio" name="tarifa_afinz" value="TIS" style="accent-color: var(--primary);">
+                        <label style="font-weight: 600;">TIS</label>
+                      </div>
+                    </div>
+                  </div>
+                  <div>
+                    <label style="font-weight: 600; margin-bottom: 6px; display: block;">Valor da Tarifa</label>
+                    <input type="text" 
+                      name="percentual_afinz" 
+                      style="width: 100%; padding: 6px 10px; border: 2px solid var(--border); border-radius: 5px;"
+                      placeholder="Digite o % (ex: 3,2%)"
+                      oninput="formatarPercentual(this)">
+                  </div>
+                </div>
+              </div>
+
+            </div>
+          </div>
+
+                    <!-- 🔥 MANTENHA EXATAMENTE ASSIM - SÓ ADICIONE UM ID NO FORM-GROUP -->
+          <div class="form-group" id="etapaFormGroup">
+            <label class="form-label">
+              <i class="fas fa-calendar-check"></i>
+              Etapa
+            </label>
+            
+            <!-- 🔥 MANTENHA O SELECT ORIGINAL, MAS VAMOS ESCONDER ELE -->
+            <select id="etapa" class="form-control" style="display: none;">
+              <option value="">-- Selecione uma etapa --</option>
+            </select>
+            
+            <!-- 🔥 TAMANHO REDUZIDO NO INPUT -->
+            <div style="position: relative; width: 100%;">
+              <input type="text" 
+                     id="inputEtapaSearch" 
+                     class="form-control" 
+                     placeholder="Digite para buscar etapa..."
+                     oninput="filtrarSugestoesEtapaSearch()"
+                     style="padding-right: 35px; width: 100%; min-width: 350px;">
+              
+              <div class="suggestions-etapa" id="suggestionsEtapaSearch" style="display: none;">
+              </div>
+            </div>
+
+            <!-- ✅ ✅ ✅ CORREÇÃO DO CHECKBOX - MUDAR data-campo para "inputEtapaSearch" -->
+            <div class="checkbox-aplicar-todos">
+              <input type="checkbox" id="check_etapas" data-campo="inputEtapaSearch" onchange="toggleCampoParaTodos('inputEtapaSearch')">
+              <label for="check_etapas">
+                  <i class="fas fa-copy"></i> Aplicar Etapa a todos
+              </label>
+            </div>
+          </div> <!-- ← ESTE </div> FECHA TUDO -->
+
+          
+
+ 
+<!-- OBSERVAÇÃO ALINHADA À DIREITA -->
+<div class="form-group" style="display: flex; justify-content: flex-end;">
+  <div style="width: 95%;">
+    <label class="form-label">
+      <i class="fas fa-sticky-note"></i>
+      Observação
+    </label>
+    <textarea id="observacoes" class="form-control" rows="3" style="width: 100%;"></textarea>
+    <!-- 🔥 REMOVIDO O CHECKBOX DA OBSERVAÇÃO -->
+  </div>
+</div>
+
+          <!-- BOTÕES ALINHADOS À DIREITA -->
+          <div class="btn-group" style="justify-content: flex-end; margin-left: auto; width: fit-content;">
+            <button type="button" class="btn btn-success" onclick="cadastrar()" id="btnCadastrar">
+              <i class="fas fa-plus-circle"></i>
+              Cadastrar
+            </button>
+            <button type="button" class="btn btn-warning" onclick="atualizar()" id="btnAtualizar" style="display: none;">
+              <i class="fas fa-save"></i>
+              Atualizar
+            </button>
+
+            <!-- 🔥 BOTÃO APLICAR A TODOS (APARECE QUANDO CONFIGURADO) -->
+            <button type="button" class="btn btn-aplicar-todos" id="btnAplicarATodos" onclick="aplicarAlteracoesATodos()" style="display: none;">
+              <i class="fas fa-copy"></i>
+              Aplicar a Todos
+            </button>
+          </div>
+        </div>
+      </div>
+
+      <!-- 🔥🔥🔥 SEÇÃO: TODOS OS CADASTROS - ATUALIZADA SEGUINDO O MODELO -->
+      <div class="cadastros-container" id="secaoCadastros" style="display: none;">
+        <div class="card-header">
+          <i class="fas fa-store"></i>
+          <h2 class="card-title" id="tituloCadastros">Todos os Cadastros</h2>
+          <span class="contador-lojas" id="contadorCadastros">0 cadastros</span>
+        </div>
+
+        <!-- BARRA DE PESQUISA PRINCIPAL -->
+        <div class="search-container">
+          <input type="text" id="pesquisaCadastros" class="form-control" 
+                 placeholder="🔍 Pesquisar por nome, CNPJ, fornecedor, etapa..."
+                 oninput="filtrarPesquisa()">
+        </div>
+
+        <!-- 🔥🔥🔥 FILTROS RÁPIDOS POR SITUAÇÃO - NOVO ESTILO SEGUINDO O MODELO -->
+        <div class="filtros-container" id="filtrosContainer" style="display: none;">
+          <button type="button" class="filtro-btn active" data-situacao="all" onclick="aplicarFiltroSituacao('all')">
+            Todos
+          </button>
+          <button type="button" class="filtro-btn" data-situacao="NOVO REGISTRO" onclick="aplicarFiltroSituacao('NOVO REGISTRO')">
+            Novos
+          </button>
+          <button type="button" class="filtro-btn" data-situacao="CADASTRADO" onclick="aplicarFiltroSituacao('CADASTRADO')">
+            Cadastrados
+          </button>
+          <button type="button" class="filtro-btn" data-situacao="EM ANDAMENTO" onclick="aplicarFiltroSituacao('EM ANDAMENTO')">
+            Em Andamento
+          </button>
+          <button type="button" class="filtro-btn" data-situacao="REJEITADO" onclick="aplicarFiltroSituacao('REJEITADO')">
+            Rejeitado
+          </button>
+          <button type="button" class="filtro-btn" data-situacao="DESCREDENCIADO" onclick="aplicarFiltroSituacao('DESCREDENCIADO')">
+            Descredenciados
+          </button>
+          <button type="button" class="filtro-btn" data-situacao="DESISTIU" onclick="aplicarFiltroSituacao('DESISTIU')">
+            Desistiu
+          </button>
+          
+          <!-- BOTÃO ATUALIZAR -->
+          <button type="button" class="btn btn-info btn-sm" onclick="recarregarCadastros()" style="margin-left: auto;">
+            <i class="fas fa-sync-alt"></i> Atualizar
+          </button>
+        </div>
+
+        <!-- 🔥🔥🔥 FILTROS AVANÇADOS - SEGUINDO O MODELO -->
+        <div class="filtros-avancados" id="filtrosAvancadosContainer" style="display: none;">
+          <!-- FILTRO DE ETAPAS COM TAGS -->
+          <div class="filtro-group">
+            <label class="filtro-label">📅 Filtrar por Etapa:</label>
+            <div class="filtro-multiselect-container">
+              <input type="text" id="filtroEtapa" class="form-control" 
+                     placeholder="Digite para buscar etapas..." 
+                     oninput="filtrarSugestoesEtapa()"
+                     onfocus="mostrarSugestoesEtapa()">
+              <div class="suggestions" id="suggestionsEtapa"></div>
+              <div class="tags-selecionadas" id="etapasSelecionados"></div>
+            </div>
+          </div>
+          
+          <!-- FILTRO DE FORNECEDORES COM TAGS -->
+          <div class="filtro-group">
+            <label class="filtro-label">🚚 Filtrar por Fornecedor:</label>
+            <div class="filtro-multiselect-container">
+              <input type="text" id="filtroFornecedor" class="form-control" 
+                     placeholder="Digite para buscar fornecedores..." 
+                     oninput="filtrarSugestoesFornecedor()"
+                     onfocus="mostrarSugestoesFornecedor()">
+              <div class="suggestions" id="suggestionsFornecedor"></div>
+              <div class="tags-selecionadas" id="fornecedoresSelecionados"></div>
+            </div>
+          </div>
+          
+          <div class="filtro-group">
+            <label class="filtro-label">📊 Ordenar por:</label>
+            <select id="ordenacaoCadastros" class="form-select" onchange="ordenarCadastros()">
+  <option value="razao_social">Razão Social (A-Z)</option>
+  <option value="razao_social_desc">Razão Social (Z-A)</option>
+  <option value="nome_fantasia">Nome Fantasia (A-Z)</option>
+  <option value="nome_fantasia_desc">Nome Fantasia (Z-A)</option>
+  <option value="situacao">Situação</option>
+  <option value="fornecedor">Fornecedor</option>
+  
+  <!-- 🔥 NOVAS OPÇÕES DE ORDENAÇÃO POR VALORES -->
+  <option value="mensalidade">Mensalidade (Maior)</option>
+  <option value="mensalidade_asc">Mensalidade (Menor)</option>
+  <option value="adesao">Adesão (Maior)</option>
+  <option value="adesao_asc">Adesão (Menor)</option>
+  
+  <option value="defasagem">Defasagem (Maior)</option>
+  <option value="defasagem_asc">Defasagem (Menor)</option>
+</select>
+          </div>
+
+          <div class="filtro-group">
+            <label class="filtro-label">🧹 Limpar Filtros:</label>
+            <button type="button" class="btn btn-outline btn-sm" onclick="limparTodosFiltros()" style="margin-top: 6px;">
+              <i class="fas fa-broom"></i> Limpar Tudo
+            </button>
+          </div>
+        </div>
+
+        <!-- TAGS DE FILTROS ATIVOS -->
+        <div class="filtros-ativos" id="filtrosAtivosContainer" style="display: none;"></div>
+
+        <!-- LOADING -->
+        <div class="loading-container" id="loadingCadastros" style="display: none;">
+          <div class="loading-spinner"></div>
+          <p>Carregando cadastros...</p>
+        </div>
+        
+        <!-- 🔥🔥🔥 TABELA MAIOR COM MAIS INFORMAÇÕES - SEGUINDO O MODELO -->
+        <div class="table-container" id="tableContainer" style="display: none;">
+          <div class="table-responsive">
+            <table class="data-table" id="tabelaCadastros">
+              <thead>
+                <tr>
+                  <th width="18%">Razão Social</th>
+                  <th width="12%">CNPJ</th>
+                  <th width="12%">Fornecedor</th>
+                  <th width="10%">Situação</th>
+                  <th width="14%">Última Etapa</th>
+                  <th width="8%">Defasagem</th>
+                  <th width="10%">Mensalidade</th>
+                  <th width="8%">Adesão</th>
+                  <th width="8%">Ações</th>
+                </tr>
+              </thead>
+              <tbody id="tabelaCadastrosBody">
+                <!-- Dados serão preenchidos via JavaScript -->
+              </tbody>
+            </table>
+          </div>
+        </div>
+      </div>
+      
+      <!-- MENSAGENS DO SISTEMA -->
+      <div id="messageSuccess" class="message success" style="display: none;">
+        <i class="fas fa-check-circle"></i>
+        <span></span>
+      </div>
+      
+      <div id="messageError" class="message error" style="display: none;">
+        <i class="fas fa-exclamation-circle"></i>
+        <span></span>
+      </div>
+
+      <div id="messageInfo" class="message info" style="display: none;">
+        <i class="fas fa-info-circle"></i>
+        <span></span>
+      </div>
+    </div>
+  </div>
+
+  <!-- 🔄 OVERLAY DE CARREGAMENTO -->
+  <div id="loadingOverlay">
+    <div class="loading-content">
+      <div class="loading-spinner-large"></div>
+      <p class="loading-text">Salvando dados...</p>
+      <p class="loading-subtext">Aguarde um momento</p>
+    </div>
+  </div>
+
+  <!-- 🔥🔥🔥 MODAL DE DETALHES - CORRIGIDO PARA FICAR IGUAL AO MODELO -->
+  <div id="modalDetalhes" class="modal-overlay">
+    <div class="modal-content">
+      <div class="modal-header">
+        <h3 class="modal-title">📋 Detalhes do Cadastro</h3>
+        <button class="btn-close" onclick="fecharModalDetalhes()">
+          <i class="fas fa-times"></i>
+        </button>
+      </div>
+
+      <div id="modalDetalhesContent">
+        <!-- Conteúdo será preenchido via JavaScript -->
+      </div>
+
+      <div style="text-align: center; margin-top: 20px; padding-top: 15px; border-top: 1px solid var(--border);">
+        <!-- 🔥🔥🔥 BOTÃO EDITAR ADICIONADO DENTRO DO MODAL -->
+        <button class="btn-editar-modal" onclick="editarCadastroDoModal()" style="margin-right: 10px;">
+          <i class="fas fa-edit"></i> Editar Cadastro
+        </button>
+        <button class="btn btn-primary" onclick="fecharModalDetalhes()">
+          <i class="fas fa-check"></i> Fechar
+        </button>
+      </div>
+    </div>
+  </div>
+
+  <!-- 🔥 MODAL 1: VISUALIZAR TODOS OS FORNECEDORES - NOVO MODAL -->
+  <div id="modalFornecedores" class="modal-overlay" style="display: none;">
+    <div class="modal-content">
+      <div class="modal-header">
+        <h3 class="modal-title">🏪 Todos os Fornecedores</h3>
+        <button class="btn-close" onclick="fecharModalFornecedores()">
+          <i class="fas fa-times"></i>
+        </button>
+      </div>
+
+      <div id="modalFornecedoresContent">
+        <!-- Conteúdo será preenchido via JavaScript -->
+      </div>
+
+      <div style="text-align: center; margin-top: 20px; padding-top: 15px; border-top: 1px solid var(--border);">
+        <button class="btn btn-primary" onclick="fecharModalFornecedores()">
+          <i class="fas fa-check"></i> Fechar
+        </button>
+      </div>
+    </div>
+  </div>
+
+  <!-- Modal de Senha - VERSÃO CORRIGIDA -->
+  <div id="modalSenha" class="modal-overlay" style="display: none;">
+    <div class="modal-content">
+      <div class="modal-header">
+        <h3 class="modal-title">🔒 Acesso Restrito</h3>
+        <button class="btn-close" onclick="fecharModalSenha()">
+          <i class="fas fa-times"></i>
+        </button>
+      </div>
+      
+      <div style="padding: 15px;">
+        <p>Para editar este campo é necessário informar a senha:</p>
+        <input type="password" id="inputSenha" class="form-control" placeholder="Digite a senha" style="margin: 12px 0;">
+        <div class="btn-group">
+          <button class="btn btn-primary" onclick="validarSenha()">
+            <i class="fas fa-check"></i> Validar
+          </button>
+          <button class="btn btn-outline" onclick="fecharModalSenha()">
+            <i class="fas fa-times"></i> Cancelar
+          </button>
+        </div>
+      </div>
+    </div>
+  </div>
+
+  <script>
+// 🔥 VARIÁVEIS GLOBAIS
+
+// 🔥 FUNÇÃO DE DELAY PARA EVITAR ERRO 429 (ADICIONAR ESTA FUNÇÃO)
+function delay(ms) {
+    return new Promise(resolve => setTimeout(resolve, ms));
+}
+
+// 🔥 VARIÁVEIS PARA "APLICAR A TODOS"
+let camposParaAplicarATodos = {};
+let cnpjAtualParaAplicar = null;
+let cadastroAtualId = null;
+let todosCadastros = [];
+let cadastrosFiltrados = [];
+let campoEditavel = null;
+const SENHA_PERMITIDA = '519901';
+let waitlabelAtual = 'Sim_Facilita'; // 🔥 VARIÁVEL PARA WAITLABEL ATUAL
+
+// 🔥🔥🔥 NOVAS VARIÁVEIS PARA FILTROS - SEGUINDO O MODELO
+let filtrosAtivos = {};
+let situacaoAtiva = 'all';
+let etapasSelecionados = [];
+let fornecedoresSelecionados = [];
+
+// 🔥 VARIÁVEL PARA ARMAZENAR O ID DO CADASTRO ATUAL NO MODAL
+let cadastroAtualModalId = null;
+
+// 🔥 CONFIGURAÇÃO DOS WAITLABELS
 const WAITLABELS_CONFIG = {
   WAITLABELS: ['Sim_Facilita', 'Result', 'Set_9', 'Doktorbank', 'Dr_Parcela'],
-  WAITLABEL_PADRAO: 'Sim_Facilita',
   CORES: {
     'Sim_Facilita': '#7E3E9A',
     'Result': '#2EBE76', 
@@ -39,1112 +2553,4021 @@ const WAITLABELS_CONFIG = {
   }
 };
 
-// 🔥🔥🔥 FUNÇÃO CORRIGIDA PARA HORÁRIO BRASIL - COM FUSO CORRETO
-function formatarDataBrasil(data) {
-  if (!data) return '';
+// 🔥 NOVO SISTEMA DE ETAPAS - 4 TIPOS DE PENDÊNCIAS COM ÍCONES
+const etapasPendenteFornecedor = [
+  "PENDENTE FORNECEDOR(ES)"
+];
+
+const etapasPendenteSIM = [
+  "PENDENTE SIM"
+];
+
+const etapasPendenteWL = [
+  "PENDENTE WL"
+];
+
+const etapasPendenteClinicaLoja = [
+  "PENDENTE CLÍNICA/LOJA"
+];
+
+// 🔥 ETAPAS DISPONÍVEIS PARA FILTRO - NOVO SISTEMA
+const etapasDisponiveis = [
+  ...etapasPendenteFornecedor,
+  ...etapasPendenteSIM,
+  ...etapasPendenteWL,
+  ...etapasPendenteClinicaLoja
+];
+
+// 🔥🔥🔥 FORNECEDORES DISPONÍVEIS PARA FILTRO - SEGUINDO O MODELO
+const fornecedoresDisponiveis = [
+  "AGIL", "BC", "PARCELEX", "AGORACRED", "AFINZ"
+].sort();
+
+// ✅ VERIFICAR SE USUÁRIO JÁ ESTÁ AUTORIZADO AO CARREGAR A PÁGINA
+document.addEventListener('DOMContentLoaded', function() {
+  console.log('Sistema de Gestão de Cadastros - RESULT inicializado');
   
-  try {
-    // Se já é string no formato brasileiro, retornar COMO ESTÁ
-    if (typeof data === 'string' && data.includes('/') && data.includes(':')) {
-      return data;
+  // 🔥 INICIALIZAR WAITLABELS
+  inicializarWaitlabels();
+  
+  // Inicializar valores padrão
+  document.getElementById('mensalidade').value = 'R$ 0,00';
+  document.getElementById('situacao').value = 'CADASTRADO';
+  
+  // Configurações iniciais
+  configurarValidacaoEmTempoReal();
+  document.getElementById('situacao').addEventListener('change', atualizarEtapas);
+  atualizarEtapas();
+  
+  // 🔥 CORREÇÃO: Configurar proteção APÓS o DOM estar carregado
+  setTimeout(() => {
+    configurarCamposProtegidos();
+  }, 500);
+  
+  // Configurar eventos do modal de senha
+  configurarModalSenha();
+  
+  // 🔥🔥🔥 NOVA LINHA: Sincronizar campos de etapa
+  sincronizarCamposEtapa();
+  
+  // 🔥🔥🔥 CONFIGURAR EVENTOS DOS FILTROS - SEGUINDO O MODELO
+  configurarEventosFiltro();
+  
+  // 🔥🔥🔥 CORREÇÃO: Configurar evento do campo de etapa
+  const inputEtapa = document.getElementById('inputEtapaSearch');
+  if (inputEtapa) {
+    inputEtapa.addEventListener('focus', function() {
+      console.log("🎯 Campo de etapa recebeu foco - mostrando sugestões");
+      filtrarSugestoesEtapaSearch();
+    });
+  }
+});
+
+// 🔥🔥🔥 CONFIGURAR EVENTOS DOS FILTROS - SEGUINDO O MODELO
+function configurarEventosFiltro() {
+  const inputEtapa = document.getElementById('filtroEtapa');
+  const inputFornecedor = document.getElementById('filtroFornecedor');
+  
+  // Fechar sugestões ao clicar fora
+  document.addEventListener('click', function(e) {
+    const suggestionsEtapa = document.getElementById('suggestionsEtapa');
+    const suggestionsFornecedor = document.getElementById('suggestionsFornecedor');
+    
+    if (suggestionsEtapa && !inputEtapa.contains(e.target) && !suggestionsEtapa.contains(e.target)) {
+      suggestionsEtapa.style.display = 'none';
     }
     
-    // Se é objeto Date, formatar CORRETAMENTE com fuso do Brasil
-    if (data instanceof Date) {
-      // 🔥 CORREÇÃO: Usar o fuso horário de Brasília corretamente
-      const dataBrasil = Utilities.formatDate(data, CONFIG.TIMEZONE, "dd/MM/yyyy HH:mm:ss");
-      console.log("✅ Date convertido:", data.toString(), "→", dataBrasil);
-      return dataBrasil;
+    if (suggestionsFornecedor && !inputFornecedor.contains(e.target) && !suggestionsFornecedor.contains(e.target)) {
+      suggestionsFornecedor.style.display = 'none';
+    }
+  });
+  
+  // Fechar sugestões com ESC
+  inputEtapa.addEventListener('keydown', function(e) {
+    if (e.key === 'Escape') {
+      document.getElementById('suggestionsEtapa').style.display = 'none';
+    }
+    if (e.key === 'Enter') {
+      e.preventDefault();
+      const texto = inputEtapa.value.trim();
+      if (texto && !etapasSelecionados.includes(texto.toUpperCase())) {
+        adicionarEtapa(texto.toUpperCase());
+      }
+      inputEtapa.value = '';
+      document.getElementById('suggestionsEtapa').style.display = 'none';
+    }
+  });
+  
+  inputFornecedor.addEventListener('keydown', function(e) {
+    if (e.key === 'Escape') {
+      document.getElementById('suggestionsFornecedor').style.display = 'none';
+    }
+    if (e.key === 'Enter') {
+      e.preventDefault();
+      const texto = inputFornecedor.value.trim();
+      if (texto && !fornecedoresSelecionados.includes(texto.toUpperCase())) {
+        adicionarFornecedor(texto.toUpperCase());
+      }
+      inputFornecedor.value = '';
+      document.getElementById('suggestionsFornecedor').style.display = 'none';
+    }
+  });
+}
+
+// 🔥🔥🔥 FUNÇÕES DO FILTRO DE ETAPAS - SEGUINDO O MODELO
+function mostrarSugestoesEtapa() {
+  const input = document.getElementById('filtroEtapa');
+  if (input.value.trim().length > 0) {
+    filtrarSugestoesEtapa();
+  }
+}
+
+function filtrarSugestoesEtapa() {
+  const input = document.getElementById('filtroEtapa');
+  const suggestions = document.getElementById('suggestionsEtapa');
+  const termo = input.value.toLowerCase().trim();
+  
+  if (termo.length < 1) {
+    suggestions.style.display = 'none';
+    return;
+  }
+  
+  // 🔥 CORREÇÃO: Usar Set para remover duplicatas
+  const etapasUnicos = [...new Set(etapasDisponiveis)];
+  const etapasFiltrados = etapasUnicos.filter(etapa => 
+    etapa.toLowerCase().includes(termo) && !etapasSelecionados.includes(etapa)
+  );
+  
+  if (etapasFiltrados.length === 0) {
+    suggestions.innerHTML = `
+      <div class="suggestion-item" style="color: var(--gray);">
+        <i class="fas fa-search"></i> Nenhuma etapa encontrada
+      </div>
+    `;
+  } else {
+    let html = etapasFiltrados.map(etapa => `
+      <div class="suggestion-item" onclick="adicionarEtapa('${etapa.replace(/'/g, "\\'")}')">
+        <i class="fas fa-calendar-check"></i> ${etapa}
+      </div>
+    `).join('');
+    
+    suggestions.innerHTML = html;
+  }
+  
+  suggestions.style.display = 'block';
+}
+
+function adicionarEtapa(etapa) {
+  if (!etapasSelecionados.includes(etapa)) {
+    etapasSelecionados.push(etapa);
+    atualizarEtapasSelecionados();
+    aplicarFiltroEtapas();
+  }
+  
+  document.getElementById('filtroEtapa').value = '';
+  document.getElementById('suggestionsEtapa').style.display = 'none';
+}
+
+function removerEtapa(etapa) {
+  etapasSelecionados = etapasSelecionados.filter(e => e !== etapa);
+  atualizarEtapasSelecionados();
+  aplicarFiltroEtapas();
+}
+
+function atualizarEtapasSelecionados() {
+  const container = document.getElementById('etapasSelecionados');
+  
+  if (etapasSelecionados.length === 0) {
+    container.innerHTML = '';
+    container.style.display = 'none';
+    return;
+  }
+  
+  container.style.display = 'flex';
+  container.innerHTML = etapasSelecionados.map(etapa => `
+    <div class="tag">
+      <i class="fas fa-calendar"></i> ${etapa}
+      <button class="remover" onclick="removerEtapa('${etapa}')">
+        <i class="fas fa-times"></i>
+      </button>
+    </div>
+  `).join('');
+}
+
+function aplicarFiltroEtapas() {
+  if (etapasSelecionados.length > 0) {
+    filtrosAtivos.etapas = etapasSelecionados;
+  } else {
+    delete filtrosAtivos.etapas;
+  }
+  aplicarTodosFiltros();
+}
+
+// 🔥🔥🔥 FUNÇÕES DO FILTRO DE FORNECEDORES - SEGUINDO O MODELO
+function mostrarSugestoesFornecedor() {
+  const input = document.getElementById('filtroFornecedor');
+  if (input.value.trim().length > 0) {
+    filtrarSugestoesFornecedor();
+  }
+}
+
+function filtrarSugestoesFornecedor() {
+  const input = document.getElementById('filtroFornecedor');
+  const suggestions = document.getElementById('suggestionsFornecedor');
+  const termo = input.value.toLowerCase().trim();
+  
+  if (termo.length < 1) {
+    suggestions.style.display = 'none';
+    return;
+  }
+  
+  const fornecedoresFiltrados = fornecedoresDisponiveis.filter(fornecedor => 
+    fornecedor.toLowerCase().includes(termo) && !fornecedoresSelecionados.includes(fornecedor)
+  );
+  
+  if (fornecedoresFiltrados.length === 0) {
+    suggestions.innerHTML = `
+      <div class="suggestion-item" style="color: var(--gray);">
+        <i class="fas fa-search"></i> Nenhum fornecedor encontrado
+      </div>
+    `;
+  } else {
+    let html = fornecedoresFiltrados.map(fornecedor => `
+      <div class="suggestion-item" onclick="adicionarFornecedor('${fornecedor}')">
+        <i class="fas fa-truck"></i> ${fornecedor}
+      </div>
+    `).join('');
+    
+    suggestions.innerHTML = html;
+  }
+  
+  suggestions.style.display = 'block';
+}
+
+function adicionarFornecedor(fornecedor) {
+  if (!fornecedoresSelecionados.includes(fornecedor)) {
+    fornecedoresSelecionados.push(fornecedor);
+    atualizarFornecedoresSelecionados();
+    aplicarFiltroFornecedores();
+  }
+  
+  document.getElementById('filtroFornecedor').value = '';
+  document.getElementById('suggestionsFornecedor').style.display = 'none';
+}
+
+function removerFornecedor(fornecedor) {
+  fornecedoresSelecionados = fornecedoresSelecionados.filter(f => f !== fornecedor);
+  atualizarFornecedoresSelecionados();
+  aplicarFiltroFornecedores();
+}
+
+function atualizarFornecedoresSelecionados() {
+  const container = document.getElementById('fornecedoresSelecionados');
+  
+  if (fornecedoresSelecionados.length === 0) {
+    container.innerHTML = '';
+    container.style.display = 'none';
+    return;
+  }
+  
+  container.style.display = 'flex';
+  container.innerHTML = fornecedoresSelecionados.map(fornecedor => `
+    <div class="tag fornecedor">
+      <i class="fas fa-truck"></i> ${fornecedor}
+      <button class="remover" onclick="removerFornecedor('${fornecedor}')">
+        <i class="fas fa-times"></i>
+      </button>
+    </div>
+  `).join('');
+}
+
+function aplicarFiltroFornecedores() {
+  if (fornecedoresSelecionados.length > 0) {
+    filtrosAtivos.fornecedores = fornecedoresSelecionados;
+  } else {
+    delete filtrosAtivos.fornecedores;
+  }
+  aplicarTodosFiltros();
+}
+
+// 🔥🔥🔥 APLICAR TODOS OS FILTROS - SEGUINDO O MODELO
+function aplicarTodosFiltros() {
+  let resultado = [...todosCadastros];
+  
+  if (filtrosAtivos.situacao) {
+    resultado = resultado.filter(cadastro => 
+      cadastro.situacao === filtrosAtivos.situacao
+    );
+  }
+  
+  if (filtrosAtivos.etapas && filtrosAtivos.etapas.length > 0) {
+    resultado = resultado.filter(cadastro => 
+      filtrosAtivos.etapas.some(etapa => 
+        cadastro.etapa && cadastro.etapa.toUpperCase().includes(etapa)
+      )
+    );
+  }
+  
+  if (filtrosAtivos.fornecedores && filtrosAtivos.fornecedores.length > 0) {
+    resultado = resultado.filter(cadastro => 
+      filtrosAtivos.fornecedores.includes(cadastro.fornecedor)
+    );
+  }
+  
+  if (filtrosAtivos.pesquisa) {
+    resultado = resultado.filter(cadastro => 
+      (cadastro.razao_social && cadastro.razao_social.toLowerCase().includes(filtrosAtivos.pesquisa)) ||
+      (cadastro.nome_fantasia && cadastro.nome_fantasia.toLowerCase().includes(filtrosAtivos.pesquisa)) ||
+      (cadastro.cnpj && cadastro.cnpj.includes(filtrosAtivos.pesquisa)) ||
+      (cadastro.fornecedor && cadastro.fornecedor.toLowerCase().includes(filtrosAtivos.pesquisa)) ||
+      (cadastro.etapa && cadastro.etapa.toLowerCase().includes(filtrosAtivos.pesquisa))
+    );
+  }
+  
+  cadastrosFiltrados = resultado;
+  exibirTabelaCadastrosAgrupada(agruparCadastrosPorCNPJ(cadastrosFiltrados), 'Cadastros Filtrados');
+}
+
+// 🔥🔥🔥 APLICAR FILTRO SITUAÇÃO - SEGUINDO O MODELO
+function aplicarFiltroSituacao(situacao) {
+  document.querySelectorAll('.filtro-btn').forEach(btn => {
+    btn.classList.remove('active');
+  });
+  
+  if (situacao !== situacaoAtiva) {
+    const btnAtivo = document.querySelector(`.filtro-btn[data-situacao="${situacao}"]`);
+    if (btnAtivo) {
+      btnAtivo.classList.add('active');
+    }
+    situacaoAtiva = situacao;
+  } else {
+    situacaoAtiva = 'all';
+    const btnTodos = document.querySelector('.filtro-btn[data-situacao="all"]');
+    if (btnTodos) {
+      btnTodos.classList.add('active');
+    }
+  }
+
+  if (situacaoAtiva === 'all') {
+    delete filtrosAtivos.situacao;
+  } else {
+    filtrosAtivos.situacao = situacaoAtiva;
+  }
+  aplicarTodosFiltros();
+}
+
+// 🔥🔥🔥 LIMPAR TODOS OS FILTROS - SEGUINDO O MODELO
+function limparTodosFiltros() {
+  filtrosAtivos = {};
+  situacaoAtiva = 'all';
+  etapasSelecionados = [];
+  fornecedoresSelecionados = [];
+  document.getElementById('pesquisaCadastros').value = '';
+  
+  // 🔥 CORREÇÃO: DEFINIR ORDENAÇÃO POR RAZÃO SOCIAL (A-Z) POR PADRÃO
+  document.getElementById('ordenacaoCadastros').value = 'razao_social';
+  
+  document.getElementById('filtroEtapa').value = '';
+  document.getElementById('filtroFornecedor').value = '';
+  
+  document.querySelectorAll('.filtro-btn').forEach(btn => {
+    btn.classList.remove('active');
+  });
+  document.querySelector('.filtro-btn[data-situacao="all"]').classList.add('active');
+  
+  atualizarEtapasSelecionados();
+  atualizarFornecedoresSelecionados();
+  
+  // 🔥 CORREÇÃO: APLICAR ORDENAÇÃO APÓS LIMPAR FILTROS
+  aplicarTodosFiltros();
+  
+  // 🔥 CORREÇÃO ADICIONAL: FORÇAR ORDENAÇÃO ALFABÉTICA
+  setTimeout(() => {
+    ordenarCadastros();
+  }, 100);
+}
+
+// 🔥 CORREÇÃO DA FUNÇÃO FORMATAR CNPJ
+function formatarCNPJ(input) {
+    let value = input.value.replace(/\D/g, '');
+    
+    if (value.length <= 14) {
+        // Aplicar máscara: 00.000.000/0000-00
+        if (value.length > 12) {
+            value = value.replace(/^(\d{2})(\d{3})(\d{3})(\d{4})(\d{0,2})/, '$1.$2.$3/$4-$5');
+        } else if (value.length > 8) {
+            value = value.replace(/^(\d{2})(\d{3})(\d{3})(\d{0,4})/, '$1.$2.$3/$4');
+        } else if (value.length > 5) {
+            value = value.replace(/^(\d{2})(\d{3})(\d{0,3})/, '$1.$2.$3');
+        } else if (value.length > 2) {
+            value = value.replace(/^(\d{2})(\d{0,3})/, '$1.$2');
+        }
     }
     
-    // Para outros casos, tentar converter
+    input.value = value;
+}
+
+// 🔥 ADICIONAR EVENT LISTENER PARA O CAMPO CNPJ
+document.addEventListener('DOMContentLoaded', function() {
+  // ... código existente ...
+  
+  // 🔥 CORREÇÃO: Configurar máscara do CNPJ
+  const cnpjInput = document.getElementById('cnpj_cadastro');
+  if (cnpjInput) {
+    cnpjInput.addEventListener('input', function() {
+      formatarCNPJ(this);
+    });
+    
+    // Permitir colar CNPJ formatado
+    cnpjInput.addEventListener('paste', function(e) {
+      setTimeout(() => {
+        formatarCNPJ(this);
+      }, 100);
+    });
+  }
+});
+
+// 🔥🔥🔥 FUNÇÃO PARA VER TODOS OS FORNECEDORES - SEGUINDO O MODELO
+function verTodosFornecedores(cnpj) {
+  const lojasDoCNPJ = todosCadastros.filter(cadastro => cadastro.cnpj === cnpj);
+  exibirModalFornecedores(cnpj, lojasDoCNPJ);
+}
+
+function exibirModalFornecedores(cnpj, lojas) {
+  const modal = document.getElementById('modalFornecedores');
+  const content = document.getElementById('modalFornecedoresContent');
+  
+  let lojasHTML = '';
+  
+  if (lojas && lojas.length > 0) {
+    lojasHTML = lojas.map(loja => {
+      // 🔥🔥🔥 CORREÇÃO: APLICAR CORREÇÃO DE 5 HORAS NA ÚLTIMA ETAPA
+      const ultimaEtapaCorrigido = loja.ultima_etapa ? 
+          corrigirHoraFrontend(loja.ultima_etapa) : 'N/A';
+      
+      return `
+      <div class="loja-item" style="border-color: ${getCorBordaSituacao(loja.situacao)};">
+        <div style="display: flex; justify-content: space-between; align-items: flex-start; margin-bottom: 8px;">
+          <h4 style="margin: 0; color: var(--primary);">🏪 ${loja.fornecedor || 'Fornecedor'}</h4>
+          <span class="status-badge ${getSituacaoClass(loja.situacao)}">${loja.situacao || 'N/A'}</span>
+        </div>
+        
+        <div style="display: grid; grid-template-columns: 1fr 1fr; gap: 8px; margin-bottom: 8px;">
+          <div><strong>📅 Etapa:</strong> ${loja.etapa || 'N/A'}</div>
+          <div><strong>💰 Tarifa:</strong> ${loja.tarifa || 'N/A'} ${formatarPercentualCorrigido(loja.percentual_tarifa)}</div>
+          <div><strong>💵 Mensalidade:</strong> ${formatarMoedaParaInput(loja.mensalidade)}</div>
+          <div><strong>🤝 Adesão:</strong> ${loja.adesao === 'Isento' || loja.adesao === 0 ? 'Isento' : formatarMoedaParaInput(loja.adesao)}</div>
+        </div>
+        
+        <div style="background: #f8f9fa; padding: 6px 10px; border-radius: 5px; margin-bottom: 8px; border-left: 2px solid var(--warning);">
+          <strong>⏰ Última Etapa:</strong> 
+          <span style="color: var(--dark); font-weight: 600;">
+            ${ultimaEtapaCorrigido}
+          </span>
+        </div>
+        
+        ${loja.situacao && loja.situacao.toUpperCase() === 'EM ANDAMENTO' ? `
+        <div style="background: #fff3cd; padding: 6px 10px; border-radius: 5px; margin-bottom: 8px; border-left: 2px solid var(--warning);">
+          <strong>⏰ Defasagem:</strong> 
+          <span style="color: ${calcularDefasagem(loja.ultima_etapa).includes('30') || calcularDefasagem(loja.ultima_etapa).includes('31') ? 'var(--danger)' : 'var(--dark)'}; font-weight: 600;">
+            ${calcularDefasagem(loja.ultima_etapa)}
+          </span>
+        </div>
+        ` : `
+        <div style="background: #e9ecef; padding: 6px 10px; border-radius: 5px; margin-bottom: 8px; border-left: 2px solid #6c757d;">
+          <strong>⏰ Defasagem:</strong> 
+          <span style="color: #6c757d; font-weight: 600;">
+            Sem defasagem
+          </span>
+        </div>
+        `}
+        
+        <div style="margin-top: 8px; display: flex; gap: 8px; flex-wrap: wrap;">
+          <!-- 🔥🔥🔥 BOTÃO EDITAR ADICIONADO AQUI -->
+          <button class="btn btn-warning btn-sm" onclick="editarCadastroModal('${loja.id}'); fecharModalFornecedores();">
+            <i class="fas fa-edit"></i> Editar
+          </button>
+          <button class="btn btn-info btn-sm" onclick="verDetalhesCadastroModal('${loja.id}'); fecharModalFornecedores();">
+            <i class="fas fa-eye"></i> Detalhes
+          </button>
+        </div>
+      </div>
+    `}).join('');
+  } else {
+    lojasHTML = `
+      <div style="text-align: center; padding: 30px; color: var(--gray);">
+        <i class="fas fa-store-slash" style="font-size: 2.5rem; margin-bottom: 12px;"></i>
+        <h4>Nenhuma loja encontrada</h4>
+        <p>Não há lojas cadastradas para este CNPJ.</p>
+      </div>
+    `;
+  }
+
+  content.innerHTML = `
+    <div style="margin-bottom: 12px;">
+      <div style="font-family: monospace; background: #f8f9fa; padding: 8px; border-radius: 5px; text-align: center;">
+        <strong>CNPJ:</strong> ${cnpj}
+      </div>
+    </div>
+    
+    <div style="max-height: 60vh; overflow-y: auto;">
+      <h4 style="color: var(--primary); margin-bottom: 12px;">
+        📊 ${lojas ? lojas.length : 0} loja(s) encontrada(s)
+      </h4>
+      ${lojasHTML}
+    </div>
+  `;
+  
+  modal.style.display = 'flex';
+}
+
+// 🔥🔥🔥 FUNÇÃO PARA FECHAR MODAL DE FORNECEDORES
+function fecharModalFornecedores() {
+  const modal = document.getElementById('modalFornecedores');
+  modal.style.display = 'none';
+}
+
+// 🔥🔥🔥 FUNÇÃO PARA CALCULAR DIAS DE DEFASAGEM - CORRIGIDA
+function calcularDiasDefasagem(dataUltimaEtapa) {
+  const defasagem = calcularDefasagem(dataUltimaEtapa);
+  console.log("🔢 Calculando dias de defasagem:", dataUltimaEtapa, "→", defasagem);
+  
+  if (defasagem === 'N/A' || defasagem === 'Erro' || defasagem === 'Futuro' || defasagem === 'Data inválida' || defasagem === 'Erro no cálculo') {
+    return 9999; // Coloca no final
+  }
+  if (defasagem === 'Hoje') return 0;
+  if (defasagem === '1 dia') return 1;
+  
+  // Extrair número de dias de strings como "5 dias"
+  const match = defasagem.match(/(\d+)\s*dias?/);
+  if (match && match[1]) {
+    return parseInt(match[1]);
+  }
+  
+  const dias = parseInt(defasagem);
+  if (isNaN(dias)) return 9999;
+  
+  return dias;
+}
+
+// 🔥🔥🔥 FUNÇÃO PARA OBTER CLASSE DE DEFASAGEM - SEGUINDO O MODELO
+function getDefasagemClass(defasagem) {
+  if (defasagem === 'N/A' || defasagem === 'Erro') return 'defasagem-media';
+  if (defasagem === 'Hoje') return 'defasagem-baixa';
+  if (defasagem === '1 dia') return 'defasagem-baixa';
+  
+  const dias = parseInt(defasagem);
+  if (isNaN(dias)) return 'defasagem-media';
+  
+  if (dias <= 3) return 'defasagem-baixa';
+  if (dias <= 7) return 'defasagem-media';
+  return 'defasagem-alta';
+}
+
+// 🔥🔥🔥 FUNÇÃO PARA OBTER COR DA BORDA POR SITUAÇÃO - SEGUINDO O MODELO
+function getCorBordaSituacao(situacao) {
+  const situacaoLower = situacao ? situacao.toLowerCase() : '';
+  
+  if (situacaoLower.includes('novo registro')) return '#bfe1f6';
+  else if (situacaoLower.includes('cadastrado')) return '#D1E7DD';
+  else if (situacaoLower.includes('em andamento')) return '#FFF3CD';
+  else if (situacaoLower.includes('rejeitado') || situacaoLower.includes('rejeitado')) return '#E2E3E5';
+  else if (situacaoLower.includes('descredenciado')) return '#F8D7DA';
+  else if (situacaoLower.includes('desistiu')) return '#e6cff2';
+  else return 'var(--border)';
+}
+
+// 🔥🔥🔥 FUNÇÃO PARA FORMATAR PERCENTUAL CORRIGIDO - SEGUINDO O MODELO
+function formatarPercentualCorrigido(percentual) {
+    if (!percentual && percentual !== 0) return 'N/A';
+    
     try {
-      const dataObj = new Date(data);
-      if (!isNaN(dataObj.getTime())) {
-        const dataBrasil = Utilities.formatDate(dataObj, CONFIG.TIMEZONE, "dd/MM/yyyy HH:mm:ss");
-        return dataBrasil;
-      }
-    } catch (e) {
-      return data.toString();
+        const numero = typeof percentual === 'string' ? parseFloat(percentual) : percentual;
+        
+        if (isNaN(numero)) return String(percentual);
+        
+        const porcentagem = numero * 100;
+        return porcentagem.toFixed(2).replace('.', ',') + '%';
+        
+    } catch (error) {
+        return String(percentual);
     }
-    
-    return data.toString();
-    
-  } catch (error) {
-    console.error("❌ Erro em formatarDataBrasil:", error);
-    return data ? data.toString() : '';
-  }
 }
 
-// 🔥🔥🔥 FUNÇÃO SIMPLES - SEM COMPENSAR FUSO HORÁRIO
-function formatarDataBrasilCorrigida(data) {
-  if (!data) return '';
+// 🔥🔥🔥 FUNÇÃO PARA VER DETALHES DE CADASTRO - SEGUINDO O MODELO
+function verDetalhesCadastroModal(id) {
+  console.log("👀 Visualizando detalhes ID:", id, "Waitlabel:", waitlabelAtual);
+  showLoading("Carregando detalhes...", "Buscando informações completas");
   
-  try {
-    // Se já está no formato correto, retornar como está
-    if (typeof data === 'string' && data.includes('/') && data.includes(':')) {
-      return data;
-    }
-    
-    let dataObj;
-    
-    // Se já é Date, usar direto
-    if (data instanceof Date) {
-      dataObj = data;
-    } else {
-      // Tentar converter para Date
-      dataObj = new Date(data);
-      if (isNaN(dataObj.getTime())) {
-        return data.toString();
-      }
-    }
-    
-    // 🔥🔥🔥 MÉTODO SIMPLES: Usar Utilities.formatDate sem compensações
-    // Isso deve pegar automaticamente o fuso horário de Brasília
-    const dataFormatada = Utilities.formatDate(dataObj, CONFIG.TIMEZONE, "dd/MM/yyyy HH:mm:ss");
-    
-    console.log("🔥 DATA SIMPLES:", dataFormatada);
-    
-    return dataFormatada;
-    
-  } catch (error) {
-    console.error("❌ Erro em formatarDataBrasilCorrigida:", error);
-    return data ? data.toString() : '';
-  }
-}
-
-// 🔥🔥🔥 VERSÃO MAIS SIMPLES - APENAS USANDO HORÁRIO LOCAL DO USUÁRIO
-function formatarDataBrasilSimples() {
-  const agora = new Date();
+  // 🔥 ARMAZENAR O ID DO CADASTRO ATUAL PARA USAR NO BOTÃO EDITAR
+  cadastroAtualModalId = id;
   
-  // Usar métodos locais do JavaScript que pegam o fuso do usuário
-  const dia = String(agora.getDate()).padStart(2, '0');
-  const mes = String(agora.getMonth() + 1).padStart(2, '0');
-  const ano = agora.getFullYear();
-  const horas = String(agora.getHours()).padStart(2, '0');
-  const minutos = String(agora.getMinutes()).padStart(2, '0');
-  const segundos = String(agora.getSeconds()).padStart(2, '0');
-  
-  const dataFormatada = `${dia}/${mes}/${ano} ${horas}:${minutos}:${segundos}`;
-  
-  console.log("🔥 DATA SIMPLES (Local):", dataFormatada);
-  
-  return dataFormatada;
-}
-
-
-
-// 🔥 FUNÇÕES DE GERENCIAMENTO DE WAITLABELS
-function getWaitlabelAtual() {
-  const cache = CacheService.getScriptCache();
-  const waitlabelAtual = cache.get('waitlabel_atual');
-  return waitlabelAtual || WAITLABELS_CONFIG.WAITLABEL_PADRAO;
-}
-
-function setWaitlabelAtual(waitlabel) {
-  if (WAITLABELS_CONFIG.WAITLABELS.includes(waitlabel)) {
-    const cache = CacheService.getScriptCache();
-    cache.put('waitlabel_atual', waitlabel, 21600);
-    return { success: true, message: `Waitlabel alterado para: ${waitlabel}` };
-  }
-  return { success: false, message: 'Waitlabel inválido' };
-}
-
-function getCoresWaitlabels() {
-  return WAITLABELS_CONFIG.CORES;
-}
-
-function getWaitlabels() {
-  return WAITLABELS_CONFIG.WAITLABELS;
-}
-
-// 🔥 FUNÇÃO PRINCIPAL
-function doGet() {
-  return HtmlService.createTemplateFromFile('Index')
-    .evaluate()
-    .setTitle('Sistema - Gestão de Cadastros')
-    .setXFrameOptionsMode(HtmlService.XFrameOptionsMode.ALLOWALL);
-}
-
-function include(filename) {
-  return HtmlService.createHtmlOutputFromFile(filename).getContent();
-}
-
-// 🔥 FUNÇÕES PRINCIPAIS COM WAITLABEL
-function processarCadastroComWaitlabel(dados, waitlabel) {
-  try {
-    console.log("🎯 PROCESSAR CADASTRO COM WAITLABEL - Dados:", dados, "Waitlabel:", waitlabel);
-    
-    const ss = SpreadsheetApp.openById(CONFIG.ID_PLANILHA);
-    let aba = ss.getSheetByName(waitlabel);
-
-    if (!aba) {
-      console.log("📝 Criando nova aba para waitlabel:", waitlabel);
-      aba = ss.insertSheet(waitlabel);
-      const cabecalho = [
-        'Razão Social', 'Nome Fantasia', 'CNPJ', 'Fornecedor', 
-        'Ultima etapa', 'Etapa',
-        'Observação', 'Contrato Enviado', 'Contrato Assinado',
-        'Ativação', 'Link', 'Mensalidade', 'Mensalidade SIM', 'Tarifa', '% Tarifa', 'Adesão', 'Situação'
-      ];
-      aba.getRange('A1:Q1').setValues([cabecalho]);
-      aba.getRange(1, 1, 1, cabecalho.length)
-        .setBackground(WAITLABELS_CONFIG.CORES[waitlabel] || "#7E3E9A")
-        .setFontColor("white")
-        .setFontWeight("bold");
-      aba.setFrozenRows(1);
-    }
-
-    if (dados.acao === 'cadastrar') {
-      return cadastrarNovoComWaitlabel(aba, dados, waitlabel);
-    } else if (dados.acao === 'atualizar') {
-      return atualizarCadastroComWaitlabel(aba, dados, waitlabel);
-    } else {
-      return { success: false, message: "Ação não reconhecida" };
-    }
-
-  } catch (error) {
-    console.error("❌ Erro em processarCadastroComWaitlabel:", error);
-    return { success: false, message: "Erro: " + error.message };
-  }
-}
-
-function cadastrarNovoComWaitlabel(aba, dados, waitlabel) {
-  try {
-    console.log("🆕 CADASTRAR NOVO COM WAITLABEL - INICIANDO");
-    
-    // 🔥🔥🔥 VALIDAÇÃO DA ETAPA - USANDO FUNÇÃO AUXILIAR COM SITUAÇÃO
-    console.log("🎯 Validando etapa selecionada no cadastro...");
-    const validacaoEtapa = validarEtapa(dados.etapa, dados.situacao);
-    if (!validacaoEtapa.valida) {
-      return { success: false, message: validacaoEtapa.mensagem };
-    }
-    const etapaValidada = validacaoEtapa.etapa;
-    
-    // Verificar duplicatas
-    const fornecedoresParaCadastrar = dados.fornecedores || [];
-    const fornecedoresDuplicados = [];
-    const cadastrosExistentes = buscarTodosCadastrosPorCNPJComWaitlabel(dados.cnpj, waitlabel);
-    
-    for (let fornecedor of fornecedoresParaCadastrar) {
-      const nomeFornecedor = fornecedor.nome || fornecedor;
-      const jaExiste = cadastrosExistentes.some(cad => cad.fornecedor === nomeFornecedor);
-      if (jaExiste) {
-        fornecedoresDuplicados.push(nomeFornecedor);
-      }
-    }
-    
-    if (fornecedoresDuplicados.length > 0) {
-      return { 
-        success: false, 
-        message: `❌ Este CNPJ já possui cadastro no ${waitlabel} para: ${fornecedoresDuplicados.join(', ')}` 
-      };
-    }
-
-    const ultimaLinha = aba.getLastRow();
-    let linhaInserir = Math.max(2, ultimaLinha + 1);
-    const resultados = [];
-    let registrosCriados = 0;
-
-    let situacaoParaSalvar = normalizarTexto(dados.situacao) || 'NOVO REGISTRO';
-    if (situacaoParaSalvar === 'Novo registro') {
-      situacaoParaSalvar = 'Novo Registro';
-    }
-
-    for (let i = 0; i < dados.fornecedores.length; i++) {
-      const fornecedorObj = dados.fornecedores[i];
+  google.script.run
+    .withSuccessHandler(function(dados) {
+      hideLoading();
+      console.log("✅✅✅ DADOS RECEBIDOS DO GOOGLE APPS SCRIPT:");
+      console.log("Última etapa recebida:", dados.ultima_etapa);
+      console.log("Etapa recebida:", dados.etapa);
+      console.log("Dados completos:", dados);
       
-      let nomeFornecedor = '';
-      let tarifaFornecedor = '';
-      let percentualTarifaFornecedor = '0%';
+      // 🔥 ADICIONAR WAITLABEL AOS DADOS PARA EXIBIÇÃO
+      dados.waitlabel = waitlabelAtual;
+      exibirModalDetalhesCompleto(dados);
+    })
+    .withFailureHandler(function(error) {
+      hideLoading();
+      console.error("❌ ERRO AO BUSCAR DADOS:", error);
+      showMessage('error', '❌ Erro ao carregar detalhes: ' + error.message);
+    })
+    .buscarCadastroPorIDComWaitlabel(id, waitlabelAtual);
+}
+
+// 🔥🔥🔥 FUNÇÃO PARA EXIBIR TABELA AGRUPADA - ATUALIZADA SEGUINDO O MODELO
+function exibirTabelaCadastrosAgrupada(cadastrosAgrupados, titulo) {
+  const secao = document.getElementById('secaoCadastros');
+  const tituloElement = document.getElementById('tituloCadastros');
+  const tableContainer = document.getElementById('tableContainer');
+  const tabelaBody = document.getElementById('tabelaCadastrosBody');
+  const loading = document.getElementById('loadingCadastros');
+  const filtrosAvancados = document.getElementById('filtrosAvancadosContainer');
+
+  tituloElement.textContent = `${titulo} (${cadastrosAgrupados.length})`;
+  tabelaBody.innerHTML = '';
+
+  if (cadastrosAgrupados.length === 0) {
+    tabelaBody.innerHTML = `
+      <tr>
+        <td colspan="9" style="text-align: center; padding: 30px;">
+          <i class="fas fa-search" style="font-size: 2.5rem; color: var(--gray); margin-bottom: 12px;"></i>
+          <h3>Nenhum resultado encontrado</h3>
+          <p>Tente alterar os filtros de pesquisa.</p>
+        </td>
+      </tr>
+    `;
+  } else {
+    cadastrosAgrupados.forEach(cadastro => {
+      const row = criarLinhaTabelaAgrupada(cadastro);
+      tabelaBody.appendChild(row);
+    });
+  }
+
+  loading.style.display = 'none';
+  tableContainer.style.display = 'block';
+  filtrosAvancados.style.display = 'grid';
+  secao.style.display = 'block';
+  atualizarContador();
+  
+  // 🔥🔥🔥 CORREÇÃO: SCROLL SUAVE PARA A SEÇÃO DE CADASTROS
+  setTimeout(() => {
+    secao.scrollIntoView({ behavior: 'smooth', block: 'start' });
+  }, 300);
+}
+
+// 🔥 CORREÇÃO DEFINITIVA - UTC para GMT-3 (5 horas de diferença)
+function corrigirHoraFrontend(dataHoraString) {
+    if (!dataHoraString || !dataHoraString.includes('/') || !dataHoraString.includes(':')) {
+        return dataHoraString;
+    }
+    
+    console.log("🕒 Data recebida do backend (UTC):", dataHoraString);
+    
+    try {
+        const [dataPart, horaPart] = dataHoraString.split(' ');
+        const [dia, mes, ano] = dataPart.split('/');
+        const [hora, minuto, segundo] = horaPart.split(':');
+        
+        // 🔥 CORREÇÃO: UTC para GMT-3 = SUBTRAIR 3 HORAS
+        // Mas parece que precisamos subtrair 5 horas
+        const dataUTC = new Date(Date.UTC(
+            parseInt(ano),
+            parseInt(mes) - 1,
+            parseInt(dia),
+            parseInt(hora),
+            parseInt(minuto), 
+            parseInt(segundo)
+        ));
+        
+        // 🔥 MUDANÇA: Subtrair 5 horas em vez de 3
+        const dataGMT3 = new Date(dataUTC.getTime() - (5 * 60 * 60 * 1000));
+        
+        // Formatar de volta para string
+        const diaCorrigido = String(dataGMT3.getUTCDate()).padStart(2, '0');
+        const mesCorrigido = String(dataGMT3.getUTCMonth() + 1).padStart(2, '0');
+        const anoCorrigido = dataGMT3.getUTCFullYear();
+        const horaCorrigida = String(dataGMT3.getUTCHours()).padStart(2, '0');
+        const minutoCorrigido = String(dataGMT3.getUTCMinutes()).padStart(2, '0');
+        const segundoCorrigido = String(dataGMT3.getUTCSeconds()).padStart(2, '0');
+        
+        const resultado = `${diaCorrigido}/${mesCorrigido}/${anoCorrigido} ${horaCorrigida}:${minutoCorrigido}:${segundoCorrigido}`;
+        
+        console.log("✅ Data corrigida (GMT-3):", resultado);
+        return resultado;
+        
+    } catch (error) {
+        console.error("❌ Erro ao corrigir data:", error);
+        return dataHoraString;
+    }
+}
+
+console.log("🔥 Correção aplicada: UTC → GMT-3 (5 horas)");
+
+
+function criarLinhaTabelaAgrupada(grupo) {
+  const row = document.createElement('tr');
+  
+  const situacoes = grupo.lojas.map(l => l.situacao);
+  const situacaoPrincipal = situacoes.includes('DESCREDENCIADO') ? 'DESCREDENCIADO' :
+                           situacoes.includes('REJEITADO') ? 'REJEITADO' :
+                           situacoes.includes('EM ANDAMENTO') ? 'EM ANDAMENTO' :
+                           situacoes.includes('NOVO REGISTRO') ? 'NOVO REGISTRO' :
+                           situacoes.includes('DESISTIU') ? 'DESISTIU' :
+                           'CADASTRADO';
+
+  // 🔥🔥🔥 CORREÇÃO: ENCONTRAR O FORNECEDOR MAIS ATRASADO
+  const fornecedorMaisAntigo = encontrarFornecedorMaisAntigo(grupo.lojas);
+  
+  console.log("🔍 FORNECEDOR MAIS ANTIGO ENCONTRADO:", fornecedorMaisAntigo);
+
+  // 🔥🔥🔥 CORREÇÃO DEFINITIVA: APLICAR CORREÇÃO DE 5 HORAS
+  const dataHoraMaisAntiga = fornecedorMaisAntigo.data || 'N/A';
+  
+  // 🔥 APLICAR CORREÇÃO DE 5 HORAS
+  const dataHoraCorrigida = dataHoraMaisAntiga !== 'N/A' ? 
+      corrigirHoraFrontend(dataHoraMaisAntiga) : 'N/A';
+
+  const etapaMaisAntigo = fornecedorMaisAntigo.etapa || 'N/A';
+  const nomeFornecedorAntigo = fornecedorMaisAntigo.fornecedor || 'N/A';
+
+  // 🔥🔥🔥 AGORA MOSTRA DATA E HORA CORRIGIDA
+  let ultimaEtapaInfo = '';
+  if (dataHoraCorrigida !== 'N/A') {
+    // Se já está no formato brasileiro com hora (DD/MM/YYYY HH:mm:ss)
+    if (dataHoraCorrigida.includes('/') && dataHoraCorrigida.includes(':')) {
+      const [dataPart, horaPart] = dataHoraCorrigida.split(' ');
+      ultimaEtapaInfo = `
+        <div style="font-size: 0.75rem;">
+          <div style="font-weight: 500; margin-bottom: 2px;">${etapaMaisAntigo}</div>
+          <div style="color: var(--gray); font-size: 0.65rem;">
+            ${dataPart} ${horaPart}
+          </div>
+          <div style="color: var(--danger); font-size: 0.6rem; margin-top: 2px;">
+            ⚠️ ${nomeFornecedorAntigo}
+          </div>
+        </div>
+      `;
+    } else {
+      // Tentar formatar outros formatos de data
+      ultimaEtapaInfo = `
+        <div style="font-size: 0.75rem;">
+          <div style="font-weight: 500; margin-bottom: 2px;">${etapaMaisAntigo}</div>
+          <div style="color: var(--gray); font-size: 0.65rem;">${dataHoraCorrigida}</div>
+          <div style="color: var(--danger); font-size: 0.6rem; margin-top: 2px;">
+            ⚠️ ${nomeFornecedorAntigo}
+          </div>
+        </div>
+      `;
+    }
+  } else {
+    ultimaEtapaInfo = `
+      <div style="font-size: 0.75rem;">
+        <div style="font-weight: 500; margin-bottom: 2px;">${etapaMaisAntigo}</div>
+        <div style="color: var(--gray); font-size: 0.65rem;">N/A</div>
+        <div style="color: var(--danger); font-size: 0.6rem; margin-top: 2px;">
+          ⚠️ ${nomeFornecedorAntigo}
+        </div>
+      </div>
+    `;
+  }
+
+  // 🔥 CORREÇÃO: SÓ MOSTRAR DEFASAGEM SE HOUVER LOJA EM ANDAMENTO
+  const temLojaEmAndamento = grupo.lojas.some(loja => 
+    loja.situacao && loja.situacao.toUpperCase() === 'EM ANDAMENTO'
+  );
+
+  let defasagemHTML = '';
+  if (temLojaEmAndamento) {
+    const defasagemInfo = calcularDefasagemPorCNPJ(grupo.lojas);
+    const defasagemTexto = defasagemInfo.dias === 0 ? 'Hoje' : 
+                          defasagemInfo.dias === 1 ? '1 dia' : 
+                          defasagemInfo.dias > 1 && defasagemInfo.dias < 9999 ? `${defasagemInfo.dias} dias` : 'N/A';
+    const defasagemClass = getDefasagemClass(defasagemTexto);
+    
+    defasagemHTML = `
+      <td style="text-align: center;">
+        <div class="defasagem-container">
+          <span class="defasagem-badge ${defasagemClass}" title="Fornecedor mais antigo: ${defasagemInfo.fornecedor}">
+            ${defasagemTexto}
+          </span>
+        </div>
+      </td>
+    `;
+  } else {
+    defasagemHTML = `
+      <td style="text-align: center;">
+        <div class="defasagem-container">
+          <span class="sem-defasagem-badge" title="Nenhuma loja em andamento">
+            Sem defasagem
+          </span>
+        </div>
+      </td>
+    `;
+  }
+
+  row.innerHTML = `
+    <td>
+      <div style="font-weight: 600; color: var(--primary); margin-bottom: 2px;">${grupo.razao_social || 'N/A'}</div>
+      <div style="font-size: 0.7rem; color: var(--gray);">${grupo.nome_fantasia || 'Sem nome fantasia'}</div>
+      <div style="font-size: 0.65rem; color: var(--info); margin-top: 2px;">
+        <strong>${grupo.lojas.length}</strong> fornecedor(es)
+      </div>
+    </td>
+    <td>
+      <div style="font-family: monospace; font-size: 0.75rem; font-weight: 600; color: var(--dark);">
+        ${grupo.cnpj || 'N/A'}
+      </div>
+    </td>
+    <td>
+      <div style="font-weight: 500; color: var(--dark);">
+        ${grupo.lojas.map(l => l.fornecedor).join(', ')}
+      </div>
+    </td>
+    <td>
+      <span class="status-badge ${getSituacaoClass(situacaoPrincipal)}">${situacaoPrincipal}</span>
+    </td>
+    <td>
+      ${ultimaEtapaInfo}
+    </td>
+    ${defasagemHTML}
+    <td style="font-weight: 600; color: var(--success); text-align: center;">
+      ${formatarMoedaParaInput(grupo.lojas[0]?.mensalidade)}
+    </td>
+    <td style="font-weight: 600; color: var(--info); text-align: center;">
+      ${grupo.lojas[0]?.adesao === 'Isento' || grupo.lojas[0]?.adesao === 0 ? 'Isento' : formatarMoedaParaInput(grupo.lojas[0]?.adesao)}
+    </td>
+    <td style="text-align: center;">
+      <button class="btn btn-info btn-sm btn-visualizar-compact" onclick="verTodosFornecedores('${grupo.cnpj}')" title="Visualizar Todos">
+        <i class="fas fa-eye"></i> Ver Todos
+      </button>
+    </td>
+  `;
+
+  return row;
+}
+
+
+// 🔥🔥🔥 FUNÇÃO AUXILIAR PARA ENCONTRAR FORNECEDOR MAIS ATRASADO
+function encontrarFornecedorMaisAntigo(lojasDoCNPJ) {
+  if (!lojasDoCNPJ || lojasDoCNPJ.length === 0) {
+    return { fornecedor: 'N/A', data: 'N/A', etapa: 'N/A', dias: 9999 };
+  }
+  
+  console.log("🔍 Buscando fornecedor mais antigo entre", lojasDoCNPJ.length, "lojas");
+  
+  // Filtrar apenas lojas com data válida
+  const lojasComData = lojasDoCNPJ.filter(loja => {
+    if (!loja.ultima_etapa || loja.ultima_etapa === 'N/A') return false;
+    
+    try {
+      const data = new Date(loja.ultima_etapa.split('/').reverse().join('-'));
+      return !isNaN(data.getTime());
+    } catch (error) {
+      return false;
+    }
+  });
+  
+  if (lojasComData.length === 0) {
+    console.log("❌ Nenhuma loja com data válida encontrada");
+    return { fornecedor: 'N/A', data: 'N/A', etapa: 'N/A', dias: 9999 };
+  }
+  
+  // Encontrar a loja com etapa mais antigo
+  const lojaMaisAntiga = lojasComData.reduce((maisAntiga, atual) => {
+    try {
+      const dataMaisAntiga = new Date(maisAntiga.ultima_etapa.split('/').reverse().join('-'));
+      const dataAtual = new Date(atual.ultima_etapa.split('/').reverse().join('-'));
       
-      if (typeof fornecedorObj === 'object' && fornecedorObj !== null) {
-        nomeFornecedor = fornecedorObj.nome || '';
-        tarifaFornecedor = fornecedorObj.tarifa || '';
-        percentualTarifaFornecedor = fornecedorObj.percentual_tarifa || '0%';
-      }
+      console.log(`📊 Comparando: ${atual.fornecedor} (${dataAtual}) vs ${maisAntiga.fornecedor} (${dataMaisAntiga})`);
+      
+      return dataAtual < dataMaisAntiga ? atual : maisAntiga;
+    } catch (error) {
+      console.log("❌ Erro ao comparar datas:", error);
+      return maisAntiga;
+    }
+  });
+  
+  const diasDefasagem = calcularDiasDefasagem(lojaMaisAntiga.ultima_etapa);
+  
+  console.log("✅ Fornecedor mais antigo encontrado:", {
+    fornecedor: lojaMaisAntiga.fornecedor,
+    data: lojaMaisAntiga.ultima_etapa,
+    etapa: lojaMaisAntiga.etapa,
+    dias: diasDefasagem
+  });
+  
+  return {
+    fornecedor: lojaMaisAntiga.fornecedor,
+    data: lojaMaisAntiga.ultima_etapa,
+    etapa: lojaMaisAntiga.etapa,
+    dias: diasDefasagem
+  };
+}
 
-      if (!nomeFornecedor || nomeFornecedor.trim() === '') {
-        resultados.push(`❌ Fornecedor sem nome - pulado`);
-        continue;
-      }
 
-      let mensalidadeNumero = parseFloat(dados.mensalidade) || 0;
-      let adesaoNumero = processarAdesaoParaSalvar(dados.adesao);
+// 🔥 NOVA FUNÇÃO: Calcular defasagem correta por CNPJ (usando o mais antigo)
+function calcularDefasagemPorCNPJ(lojasDoCNPJ) {
+  if (!lojasDoCNPJ || lojasDoCNPJ.length === 0) {
+    return { dias: 9999, fornecedor: 'N/A', data: 'N/A', etapa: 'N/A' };
+  }
+  
+  console.log("🔍 Calculando defasagem para CNPJ com", lojasDoCNPJ.length, "lojas");
+  
+  // Filtrar apenas lojas com data válida
+  const lojasComData = lojasDoCNPJ.filter(loja => {
+    if (!loja.ultima_etapa || loja.ultima_etapa === 'N/A') return false;
+    
+    try {
+      const data = new Date(loja.ultima_etapa.split('/').reverse().join('-'));
+      return !isNaN(data.getTime());
+    } catch (error) {
+      return false;
+    }
+  });
+  
+  if (lojasComData.length === 0) {
+    console.log("❌ Nenhuma loja com data válida encontrada");
+    return { dias: 9999, fornecedor: 'N/A', data: 'N/A', etapa: 'N/A' };
+  }
+  
+  // Encontrar a loja com etapa mais antigo
+  const lojaMaisAntiga = lojasComData.reduce((maisAntiga, atual) => {
+    try {
+      const dataMaisAntiga = new Date(maisAntiga.ultima_etapa.split('/').reverse().join('-'));
+      const dataAtual = new Date(atual.ultima_etapa.split('/').reverse().join('-'));
+      
+      console.log(`📊 Comparando: ${atual.fornecedor} (${dataAtual}) vs ${maisAntiga.fornecedor} (${dataMaisAntiga})`);
+      
+      return dataAtual < dataMaisAntiga ? atual : maisAntiga;
+    } catch (error) {
+      console.log("❌ Erro ao comparar datas:", error);
+      return maisAntiga;
+    }
+  });
+  
+  const diasDefasagem = calcularDiasDefasagem(lojaMaisAntiga.ultima_etapa);
+  
+  console.log("✅ Fornecedor mais antigo encontrado:", {
+    fornecedor: lojaMaisAntiga.fornecedor,
+    data: lojaMaisAntiga.ultima_etapa,
+    dias: diasDefasagem
+  });
+  
+  return {
+    dias: diasDefasagem,
+    fornecedor: lojaMaisAntiga.fornecedor,
+    data: lojaMaisAntiga.ultima_etapa,
+    etapa: lojaMaisAntiga.etapa
+  };
+}
 
-      // 🔥🔥🔥 CORREÇÃO: USAR A MESMA FUNÇÃO SIMPLES
-      const dataUltimaEtapa = formatarDataBrasilSimples();
+// 🔥🔥🔥 FUNÇÃO PARA FILTRAR PESQUISA - ATUALIZADA SEGUINDO O MODELO
+function filtrarPesquisa() {
+  const termo = document.getElementById('pesquisaCadastros').value.toLowerCase().trim();
+  if (termo) {
+    filtrosAtivos.pesquisa = termo;
+  } else {
+    delete filtrosAtivos.pesquisa;
+  }
+  aplicarTodosFiltros();
+}
 
-      let dataAtivacaoParaSalvar = '';
-      if (dados.ativacao && dados.ativacao.trim() !== '') {
-        try {
-          const dataUsuario = new Date(dados.ativacao);
-          dataUsuario.setDate(dataUsuario.getDate() + 1);
-          dataAtivacaoParaSalvar = Utilities.formatDate(dataUsuario, CONFIG.TIMEZONE, "dd/MM/yyyy");
-        } catch (e) {
-          console.error("❌ Erro ao processar data do usuário:", e);
-          dataAtivacaoParaSalvar = '';
+
+// 🔥🔥🔥 FUNÇÃO PARA ORDENAR CADASTROS - CORRIGIDA
+function ordenarCadastros() {
+  const criterio = document.getElementById('ordenacaoCadastros').value;
+  
+  console.log("🎯 [DEBUG] Ordenando por:", criterio);
+  
+  // Ordenar os cadastros agrupados, não os individuais
+  const cadastrosAgrupados = agruparCadastrosPorCNPJ(cadastrosFiltrados);
+  
+  cadastrosAgrupados.sort((a, b) => {
+    switch(criterio) {
+      case 'razao_social':
+        return (a.razao_social || '').localeCompare(b.razao_social || '');
+      case 'razao_social_desc':
+        return (b.razao_social || '').localeCompare(a.razao_social || '');
+      case 'nome_fantasia':
+        return (a.nome_fantasia || '').localeCompare(b.nome_fantasia || '');
+      case 'nome_fantasia_desc':
+        return (b.nome_fantasia || '').localeCompare(a.nome_fantasia || '');
+      case 'situacao':
+        const situacaoA = a.lojas[0]?.situacao || '';
+        const situacaoB = b.lojas[0]?.situacao || '';
+        return situacaoA.localeCompare(situacaoB);
+      case 'fornecedor':
+        const fornecedorA = a.lojas[0]?.fornecedor || '';
+        const fornecedorB = b.lojas[0]?.fornecedor || '';
+        return fornecedorA.localeCompare(fornecedorB);
+      case 'defasagem':
+        const defasagemA = calcularDefasagemParaOrdenacao(a.lojas);
+        const defasagemB = calcularDefasagemParaOrdenacao(b.lojas);
+        return defasagemB - defasagemA;
+      case 'defasagem_asc':
+        const defasagemAAsc = calcularDefasagemParaOrdenacao(a.lojas);
+        const defasagemBAsc = calcularDefasagemParaOrdenacao(b.lojas);
+        return defasagemAAsc - defasagemBAsc;
+      case 'mensalidade':
+        const mensalidadeA = parseFloat(a.lojas[0]?.mensalidade || 0);
+        const mensalidadeB = parseFloat(b.lojas[0]?.mensalidade || 0);
+        return mensalidadeB - mensalidadeA;
+      case 'mensalidade_asc':
+        const mensalidadeAAsc = parseFloat(a.lojas[0]?.mensalidade || 0);
+        const mensalidadeBAsc = parseFloat(b.lojas[0]?.mensalidade || 0);
+        return mensalidadeAAsc - mensalidadeBAsc;
+      case 'adesao':
+        const adesaoA = a.lojas[0]?.adesao === 'Isento' || a.lojas[0]?.adesao === 0 ? 0 : parseFloat(a.lojas[0]?.adesao || 0);
+        const adesaoB = b.lojas[0]?.adesao === 'Isento' || b.lojas[0]?.adesao === 0 ? 0 : parseFloat(b.lojas[0]?.adesao || 0);
+        return adesaoB - adesaoA;
+      case 'adesao_asc':
+        const adesaoAAsc = a.lojas[0]?.adesao === 'Isento' || a.lojas[0]?.adesao === 0 ? 0 : parseFloat(a.lojas[0]?.adesao || 0);
+        const adesaoBAsc = b.lojas[0]?.adesao === 'Isento' || b.lojas[0]?.adesao === 0 ? 0 : parseFloat(b.lojas[0]?.adesao || 0);
+        return adesaoAAsc - adesaoBAsc;
+      default:
+        return 0;
+    }
+  });
+  
+  exibirTabelaCadastrosAgrupada(cadastrosAgrupados, 'Cadastros Ordenados');
+}
+
+// 🔥 NOVA FUNÇÃO: Calcular defasagem para ordenação (considera status)
+function calcularDefasagemParaOrdenacao(lojasDoCNPJ) {
+  if (!lojasDoCNPJ || lojasDoCNPJ.length === 0) {
+    return 0; // Se não tem lojas, defasagem = 0
+  }
+  
+  // 🔥 VERIFICAR SE TEM ALGUMA LOJA EM ANDAMENTO
+  const temLojaEmAndamento = lojasDoCNPJ.some(loja => 
+    loja.situacao && loja.situacao.toUpperCase() === 'EM ANDAMENTO'
+  );
+  
+  // 🔥 SE NÃO TEM LOJA EM ANDAMENTO, DEFASAGEM = 0
+  if (!temLojaEmAndamento) {
+    return 0;
+  }
+  
+  // 🔥 SE TEM LOJA EM ANDAMENTO, CALCULAR A DEFASAGEM REAL
+  const defasagemInfo = calcularDefasagemPorCNPJ(lojasDoCNPJ);
+  
+  console.log("🎯 Defasagem para ordenação:", {
+    cnpj: lojasDoCNPJ[0]?.cnpj,
+    temLojaEmAndamento: temLojaEmAndamento,
+    defasagemDias: defasagemInfo.dias
+  });
+  
+  return defasagemInfo.dias < 9999 ? defasagemInfo.dias : 0;
+}
+
+// 🔥🔥🔥 FUNÇÃO PARA RECARREGAR CADASTROS - ATUALIZADA SEGUINDO O MODELO
+function recarregarCadastros() {
+  console.log("🎯 [DEBUG] Botão 'Atualizar' na tabela clicado");
+  console.log("🔄 Recarregando lista de cadastros...");
+  console.log("🔄 Recarregando cadastros...");// 🔥 ADICIONE ESTAS 2 LINHAS AQUI:
+  showLoading("Atualizando dados...", "Sincronizando informações mais recentes");
+  
+  mostrarTodosCadastros();
+}
+
+// 🔥🔥🔥 ATUALIZAR CONTADOR - SEGUINDO O MODELO
+function atualizarContador() {
+  const contador = document.getElementById('contadorCadastros');
+  const cadastrosVisiveis = cadastrosFiltrados.length;
+  const totalCadastros = todosCadastros.length;
+  
+  if (cadastrosVisiveis === totalCadastros) {
+    contador.textContent = `${totalCadastros} cadastro${totalCadastros !== 1 ? 's' : ''}`;
+  } else {
+    contador.textContent = `${cadastrosVisiveis} de ${totalCadastros} cadastros`;
+  }
+}
+
+// 🔥🔥🔥 SHOW LOADING - SEGUINDO O MODELO
+function showLoading() {
+  document.getElementById('loadingCadastros').style.display = 'flex';
+  document.getElementById('tableContainer').style.display = 'none';
+}
+
+// 🔥🔥🔥 HIDE LOADING - SEGUINDO O MODELO
+function hideLoading() {
+  document.getElementById('loadingCadastros').style.display = 'none';
+}
+
+// 🔥🔥🔥 FECHAR MODAIS COM ESC E CLIQUE FORA - SEGUINDO O MODELO
+document.addEventListener('keydown', function(e) {
+  if (e.key === 'Escape') {
+    fecharModalDetalhes();
+    fecharModalFornecedores();
+  }
+});
+
+document.getElementById('modalDetalhes').addEventListener('click', function(e) {
+  if (e.target === this) {
+    fecharModalDetalhes();
+  }
+});
+
+document.getElementById('modalFornecedores').addEventListener('click', function(e) {
+  if (e.target === this) {
+    fecharModalFornecedores();
+  }
+});
+
+// 🔥🔥🔥 FUNÇÃO PARA EDITAR CADASTRO DIRETAMENTE DO MODAL
+function editarCadastroDoModal() {
+  if (!cadastroAtualModalId) {
+    showMessage('error', '❌ Nenhum cadastro selecionado para edição!');
+    return;
+  }
+  
+  console.log("✏️ Editando cadastro do modal - ID:", cadastroAtualModalId);
+  
+  fecharModalDetalhes();
+  
+  // Chamar a função existente de edição
+  editarCadastroModal(cadastroAtualModalId);
+}
+
+function exibirModalDetalhesCompleto(dados) {
+  const modal = document.getElementById('modalDetalhes');
+  const content = document.getElementById('modalDetalhesContent');
+  
+  // 🔥 ADICIONAR INFORMAÇÃO DO WAITLABEL
+  const waitlabelInfo = dados.waitlabel ? 
+    `<div style="background: ${WAITLABELS_CONFIG.CORES[dados.waitlabel] || '#7E3E9A'}; color: white; padding: 8px 12px; border-radius: 6px; margin-bottom: 15px; text-align: center;">
+      <strong>📁 Waitlabel:</strong> ${formatarNomeWaitlabel(dados.waitlabel)}
+    </div>` : '';
+  
+  const mensalidadeFormatada = formatarMoedaParaInput(dados.mensalidade);
+  const mensalidadeSimFormatada = formatarMoedaParaInput(dados.mensalidade_sim || 0);
+  const adesaoFormatada = dados.adesao === 'Isento' || dados.adesao === 0 ? 'Isento' : formatarMoedaParaInput(dados.adesao);
+  
+  // 🔥🔥🔥 CORREÇÃO: APLICAR CORREÇÃO DE 5 HORAS NA ÚLTIMA ETAPA
+  const ultimaEtapaCorrigido = dados.ultima_etapa ? 
+      corrigirHoraFrontend(dados.ultima_etapa) : 'N/A';
+
+  // 🔥🔥🔥 CORREÇÃO: USAR A FUNÇÃO calcularDefasagem NORMAL
+  const defasagem = calcularDefasagem(ultimaEtapaCorrigido);
+  
+  console.log("🔍 DEBUG DEFASAGEM - Modal Detalhes:");
+  console.log("Última etapa original:", dados.ultima_etapa);
+  console.log("Última etapa corrigido:", ultimaEtapaCorrigido);
+  console.log("Defasagem calculada:", defasagem);
+
+  // 🔥 CORREÇÃO: SÓ MOSTRAR DEFASAGEM SE FOR EM ANDAMENTO
+  const mostrarDefasagem = dados.situacao && dados.situacao.toUpperCase() === 'EM ANDAMENTO';
+
+  // 🔥 SEÇÃO DE DEFASAGEM (SÓ SE FOR EM ANDAMENTO)
+  const secaoDefasagem = mostrarDefasagem && defasagem !== 'N/A' && defasagem !== '0 dias' && defasagem !== 'Data inválida' && defasagem !== 'Erro no cálculo' ? `
+    <div class="detalhe-item" style="grid-column: 1 / -1; background: #fff5f5; border-left: 4px solid #dc3545; margin-top: 10px;">
+        <span class="detalhe-label" style="font-size: 1.1em; color: #dc3545;">
+            <i class="fas fa-clock"></i> ⚠️ INFORMAÇÕES DE DEFASAGEM
+        </span>
+    </div>
+    
+    <div class="detalhe-item">
+        <span class="detalhe-label">⏰ Defasagem</span>
+        <div class="detalhe-valor">
+            <span style="display: inline-flex; align-items: center; gap: 5px; background: #dc3545; color: white; padding: 4px 10px; border-radius: 15px; font-size: 0.9rem; font-weight: 600;">
+                <i class="fas fa-clock"></i>
+                ${defasagem}
+            </span>
+        </div>
+    </div>
+  ` : mostrarDefasagem ? '' : `
+    <div class="detalhe-item" style="grid-column: 1 / -1; background: #e9ecef; border-left: 4px solid #6c757d; margin-top: 10px;">
+        <span class="detalhe-label" style="font-size: 1.1em; color: #6c757d;">
+            <i class="fas fa-clock"></i> INFORMAÇÕES DE DEFASAGEM
+        </span>
+    </div>
+    
+    <div class="detalhe-item">
+        <span class="detalhe-label">⏰ Defasagem</span>
+        <div class="detalhe-valor">
+            <span style="display: inline-flex; align-items: center; gap: 5px; background: #e9ecef; color: #6c757d; padding: 4px 10px; border-radius: 15px; font-size: 0.9rem; font-weight: 600;">
+                <i class="fas fa-clock"></i>
+                Sem defasagem
+            </span>
+        </div>
+    </div>
+  `;
+
+  content.innerHTML = `
+    ${waitlabelInfo}
+    
+    <div class="detalhes-grid">
+        <!-- 🔥 SEÇÃO: INFORMAÇÕES PRINCIPAIS -->
+        <div class="detalhe-item" style="grid-column: 1 / -1; background: #f0f8ff; border-left: 4px solid #7E3E9A;">
+            <span class="detalhe-label" style="font-size: 1.1em; color: #7E3E9A;">
+                <i class="fas fa-info-circle"></i> 📋 INFORMAÇÕES PRINCIPAIS
+            </span>
+        </div>
+        
+        <div class="detalhe-item">
+            <span class="detalhe-label">🏢 Razão Social</span>
+            <div class="detalhe-valor" style="font-weight: bold; color: #7E3E9A;">${dados.razao_social || 'N/A'}</div>
+        </div>
+        
+        <div class="detalhe-item">
+            <span class="detalhe-label">🏷️ Nome Fantasia</span>
+            <div class="detalhe-valor">${dados.nome_fantasia || 'N/A'}</div>
+        </div>
+        
+        <div class="detalhe-item">
+            <span class="detalhe-label">🔢 CNPJ</span>
+            <div class="detalhe-valor" style="font-family: monospace;">${dados.cnpj || 'N/A'}</div>
+        </div>
+        
+        
+        <div class="detalhe-item">
+            <span class="detalhe-label">🚚 Fornecedor</span>
+            <div class="detalhe-valor">${dados.fornecedor || 'N/A'}</div>
+        </div>
+
+        <!-- 🔥 SEÇÃO: FINANCEIRO -->
+        <div class="detalhe-item" style="grid-column: 1 / -1; background: #f0fff0; border-left: 4px solid #28a745; margin-top: 10px;">
+            <span class="detalhe-label" style="font-size: 1.1em; color: #28a745;">
+                <i class="fas fa-chart-line"></i> 💰 INFORMAÇÕES FINANCEIRAS
+            </span>
+        </div>
+        
+        <div class="detalhe-item">
+            <span class="detalhe-label">💵 Mensalidade</span>
+            <div class="detalhe-valor" style="color: var(--success); font-weight: 600;">${mensalidadeFormatada}</div>
+        </div>
+
+        <div class="detalhe-item">
+            <span class="detalhe-label" style="color: var(--primary); font-weight: 700;">💜 Mensalidade SIM</span>
+            <div class="detalhe-valor" style="color: var(--primary); font-weight: 600;">${mensalidadeSimFormatada}</div>
+        </div>
+        
+        <div class="detalhe-item">
+            <span class="detalhe-label">🤝 Adesão</span>
+            <div class="detalhe-valor" style="color: var(--info); font-weight: 600;">${adesaoFormatada}</div>
+        </div>
+        
+        <div class="detalhe-item">
+            <span class="detalhe-label">💰 Tarifa</span>
+            <div class="detalhe-valor">${dados.tarifa || 'N/A'} ${formatarPercentualParaExibicao(dados.percentual_tarifa)}</div>
+        </div>
+
+        <!-- 🔥 SEÇÃO: CONTRATOS E DATAS -->
+        <div class="detalhe-item" style="grid-column: 1 / -1; background: #fff8f0; border-left: 4px solid #ff6b35; margin-top: 10px;">
+            <span class="detalhe-label" style="font-size: 1.1em; color: #ff6b35;">
+                <i class="fas fa-file-contract"></i> 📄 CONTRATOS E DATAS
+            </span>
+        </div>
+        
+        <div class="detalhe-item">
+            <span class="detalhe-label">📄 Contrato Enviado</span>
+            <div class="detalhe-valor">${dados.contrato_enviado || 'N/A'}</div>
+        </div>
+        
+        <div class="detalhe-item">
+            <span class="detalhe-label">✍️ Contrato Assinado</span>
+            <div class="detalhe-valor">${dados.contrato_assinado || 'N/A'}</div>
+        </div>
+        
+        <div class="detalhe-item">
+            <span class="detalhe-label">🚀 Data Ativação</span>
+            <div class="detalhe-valor">${formatarDataParaExibicao(dados.ativacao) || 'N/A'}</div>
+        </div>
+        
+        <div class="detalhe-item">
+            <span class="detalhe-label">📅 Última Etapa</span>
+            <div class="detalhe-valor">${ultimaEtapaCorrigido}</div>
+        </div>
+
+        <!-- 🔥 SEÇÃO: STATUS E ACOMPANHAMENTO -->
+        <div class="detalhe-item" style="grid-column: 1 / -1; background: #f0f0f8; border-left: 4px solid #6f42c1; margin-top: 10px;">
+            <span class="detalhe-label" style="font-size: 1.1em; color: #6f42c1;">
+                <i class="fas fa-tasks"></i> 📊 STATUS E ACOMPANHAMENTO
+            </span>
+        </div>
+        
+        <div class="detalhe-item">
+            <span class="detalhe-label">🎯 Situação</span>
+            <div class="detalhe-valor">
+                <span class="status-badge ${getSituacaoClass(dados.situacao)}">${dados.situacao || 'N/A'}</span>
+            </div>
+        </div>
+        
+        <div class="detalhe-item">
+            <span class="detalhe-label">📅 Etapa</span>
+            <div class="detalhe-valor">${dados.etapa || 'N/A'}</div>
+        </div>
+
+        <!-- 🔥 SEÇÃO: LINKS E OBSERVAÇÕES -->
+        <div class="detalhe-item" style="grid-column: 1 / -1; background: #f0f0f0; border-left: 4px solid #6c757d; margin-top: 10px;">
+            <span class="detalhe-label" style="font-size: 1.1em; color: #6c757d;">
+                <i class="fas fa-sticky-note"></i> 🔗 LINKS E OBSERVAÇÕES
+            </span>
+        </div>
+        
+        <div class="detalhe-item">
+            <span class="detalhe-label">🔗 Link</span>
+            <div class="detalhe-valor">
+                ${dados.link ? 
+                    `<a href="${dados.link}" target="_blank" style="color: #007bff; text-decoration: none;">
+                        <i class="fas fa-external-link-alt"></i> ${dados.link}
+                    </a>` 
+                    : 'N/A'
+                }
+            </div>
+        </div>
+        
+        <div class="detalhe-item" style="grid-column: 1 / -1;">
+            <span class="detalhe-label">📝 Observações</span>
+            <div class="detalhe-valor" style="max-height: 100px; overflow-y: auto; background: #f8f9fa; padding: 10px; border-radius: 5px;">
+                ${dados.observacoes || 'Nenhuma observação registrada'}
+            </div>
+        </div>
+
+        <!-- 🔥 SEÇÃO: DEFASAGEM - AGORA CORRETA -->
+        ${secaoDefasagem}
+    </div>
+
+    <div class="modal-detalhes-actions">
+        <button type="button" class="btn btn-warning" onclick="editarCadastroModal('${dados.id}')">
+            <i class="fas fa-edit"></i> ✏️ Editar Cadastro
+        </button>
+    </div>
+  `;
+  
+  modal.style.display = 'flex';
+}
+
+// 🔥 FUNÇÃO PARA FORMATAR DATA E HORA CORRETAMENTE
+// 🔥 FUNÇÃO PARA FORMATAR DATA E HORA CORRETAMENTE
+function formatarDataHoraParaExibicao(dataString) {
+    if (!dataString) return 'N/A';
+    
+    try {
+        // Se já está no formato brasileiro, retornar como está
+        if (dataString.includes('/') && dataString.includes(':')) {
+            return dataString;
         }
-      }
-
-      const linhaDados = [
-        normalizarTexto(dados.razao_social) || '',
-        normalizarTexto(dados.nome_fantasia) || '',
-        dados.cnpj ? dados.cnpj.toString() : '',
-        normalizarTexto(nomeFornecedor),
-        dataUltimaEtapa, // 🔥 AGORA COM HORÁRIO CORRETO
-        etapaValidada, // 🔥 USANDO A ETAPA JÁ VALIDADA
-        normalizarTexto(dados.observacoes) || '',
-        normalizarTexto(dados.contrato_enviado) || '',
-        normalizarTexto(dados.contrato_assinado) || '',
-        dataAtivacaoParaSalvar,
-        dados.link || '',
-        mensalidadeNumero,                    
-        converterMoedaParaNumero(dados.mensalidade_sim) || 0,
-        tarifaFornecedor || '',               
-        percentualTarifaFornecedor,           
-        adesaoNumero,                         
-        normalizarTexto(situacaoParaSalvar)   
-      ];
-
-      try {
-        const range = aba.getRange(linhaInserir, 1, 1, linhaDados.length);
-        range.setValues([linhaDados]);
         
-        // Formatar colunas
-        aba.getRange(linhaInserir, 12).setNumberFormat('"R$"#,##0.00');
-        aba.getRange(linhaInserir, 13).setNumberFormat('"R$"#,##0.00');
-        aba.getRange(linhaInserir, 15).setNumberFormat('0.00%');
-        aba.getRange(linhaInserir, 16).setNumberFormat('"R$"#,##0.00');
-        aba.getRange(linhaInserir, 14).setNumberFormat('@');
-        aba.getRange(linhaInserir, 10).setNumberFormat('dd/MM/yyyy');
+        // Converter para formato brasileiro
+        const data = new Date(dataString);
+        if (isNaN(data.getTime())) return dataString;
         
-        SpreadsheetApp.flush();
+        const dia = String(data.getDate()).padStart(2, '0');
+        const mes = String(data.getMonth() + 1).padStart(2, '0');
+        const ano = data.getFullYear();
+        const hora = String(data.getHours()).padStart(2, '0');
+        const minuto = String(data.getMinutes()).padStart(2, '0');
+        const segundo = String(data.getSeconds()).padStart(2, '0');
         
-        linhaInserir++;
-        registrosCriados++;
-        resultados.push(`✅ ${nomeFornecedor} - ${tarifaFornecedor} ${percentualTarifaFornecedor}`);
+        return `${dia}/${mes}/${ano} ${hora}:${minuto}:${segundo}`;
         
-      } catch (erroInsercao) {
-        console.error(`❌ Erro ao salvar:`, erroInsercao);
-        resultados.push(`❌ ${nomeFornecedor} - ERRO: ${erroInsercao.message}`);
-      }
+    } catch (error) {
+        return dataString;
     }
-
-    const sucessos = resultados.filter(r => r.includes('✅')).length;
-    const erros = resultados.filter(r => r.includes('❌')).length;
-    
-    let mensagem = '';
-    if (erros === 0) {
-      mensagem = `✅ "${dados.razao_social}" cadastrado com sucesso no ${waitlabel} para ${sucessos} fornecedor(es)!`;
-    } else if (sucessos === 0) {
-      mensagem = `❌ Erro ao cadastrar "${dados.razao_social}" no ${waitlabel} para todos os fornecedores!`;
-    } else {
-      mensagem = `⚠️ "${dados.razao_social}" cadastrado parcialmente no ${waitlabel}: ${sucessos} sucesso(s), ${erros} erro(s)`;
-    }
-
-    return { 
-      success: erros === 0,
-      message: mensagem,
-      registrosCriados: registrosCriados,
-      detalhes: resultados
-    };
-
-  } catch (error) {
-    console.error("❌ Erro geral:", error);
-    return { 
-      success: false, 
-      message: "Erro ao cadastrar: " + error.message 
-    };
-  }
 }
 
-function atualizarCadastroComWaitlabel(aba, dados, waitlabel) {
-  try {
-    console.log("✏️ ATUALIZAR CADASTRO COM WAITLABEL - INICIANDO");
+// 🔥 CORREÇÃO TEMPORÁRIA - SOBRESCREVER A FUNÇÃO ORIGINAL
+function calcularDefasagem(dataUltimaEtapa) {
+    console.log("🎯 CALCULAR DEFASAGEM COM CORREÇÃO APLICADA");
     
-    const linhaAtualizar = parseInt(dados.id);
-
-    if (linhaAtualizar < 2 || linhaAtualizar > aba.getLastRow()) {
-      return { success: false, message: "Registro não encontrado" };
+    // 🔥 PRIMEIRO aplicar a correção de UTC para GMT-3
+    const dataCorrigida = corrigirHoraFrontend(dataUltimaEtapa);
+    console.log("📅 Data após correção:", dataCorrigida);
+    
+    // 🔥 AGORA calcular com a data corrigida
+    if (!dataCorrigida || dataCorrigida === 'N/A' || dataCorrigida === '' || dataCorrigida === 'Data inválida') {
+        console.log("❌ Sem data válida para calcular defasagem");
+        return 'N/A';
     }
-
-    // 🔥🔥🔥 VALIDAÇÃO DA ETAPA - USANDO FUNÇÃO AUXILIAR COM SITUAÇÃO
-    console.log("🎯 Validando etapa selecionada...");
-    const validacaoEtapa = validarEtapa(dados.etapa, dados.situacao);
-    if (!validacaoEtapa.valida) {
-      return { success: false, message: validacaoEtapa.mensagem };
-    }
-    const etapaNova = validacaoEtapa.etapa;
-
-    const dadosAtuais = aba.getRange(linhaAtualizar, 1, 1, 17).getValues()[0];
-    const dataAtivacaoOriginal = dadosAtuais[9];
-    const etapaAtual = dadosAtuais[5]?.toString().trim() || '';
-    const situacaoAtual = dadosAtuais[16]?.toString().trim() || '';
-    const dataUltimaEtapaAtual = dadosAtuais[4];
     
-    let fornecedorParaAtualizar = '';
-    let tarifaParaAtualizar = dados.tarifa || '';
-    let percentualParaAtualizar = dados.percentual_tarifa || '0%';
-
-    if (Array.isArray(dados.fornecedores) && dados.fornecedores.length > 0) {
-      const primeiroFornecedor = dados.fornecedores[0];
-      fornecedorParaAtualizar = primeiroFornecedor.nome || primeiroFornecedor;
-      tarifaParaAtualizar = primeiroFornecedor.tarifa || tarifaParaAtualizar;
-      percentualParaAtualizar = primeiroFornecedor.percentual_tarifa || percentualParaAtualizar;
-    } else if (typeof dados.fornecedores === 'string') {
-      fornecedorParaAtualizar = dados.fornecedores;
-    } else {
-      fornecedorParaAtualizar = dados.fornecedor || '';
-    }
-
-    let mensalidadeNumero = converterMoedaParaNumero(dados.mensalidade);
-    let adesaoNumero = processarAdesaoParaSalvar(dados.adesao);
-
-    const situacaoValida = (dados.situacao && dados.situacao.trim() !== '') ? dados.situacao : 'Novo registro';
-
-    let dataAtivacaoParaSalvar = dataAtivacaoOriginal;
-    if (dados.ativacao && dados.ativacao.trim() !== '') {
-      try {
-        const dataUsuario = new Date(dados.ativacao);
-        dataUsuario.setDate(dataUsuario.getDate() + 1);
-        dataAtivacaoParaSalvar = Utilities.formatDate(dataUsuario, CONFIG.TIMEZONE, "dd/MM/yyyy");
-      } catch (e) {
-        console.error("❌ Erro ao processar data:", e);
-        dataAtivacaoParaSalvar = dataAtivacaoOriginal;
-      }
-    } else {
-      if (dataAtivacaoOriginal instanceof Date) {
-        dataAtivacaoParaSalvar = Utilities.formatDate(dataAtivacaoOriginal, CONFIG.TIMEZONE, "dd/MM/yyyy");
-      }
-    }
-
-    const situacaoNova = normalizarTexto(situacaoValida);
-    
-    const mudouEtapa = etapaAtual !== etapaNova;
-    const mudouSituacao = situacaoAtual !== situacaoNova;
-    
-    let dataUltimaEtapaParaSalvar = dataUltimaEtapaAtual;
-    
-    // 🔥🔥🔥 CORREÇÃO: USAR A MESMA FUNÇÃO DO "APLICAR A TODOS"
-    if (mudouEtapa || mudouSituacao) {
-      const dataAtual = new Date();
-      
-      // 🔥 USAR A MESMA FUNÇÃO SIMPLES QUE O "APLICAR A TODOS" USA
-      dataUltimaEtapaParaSalvar = formatarDataBrasilSimples();
-      
-      console.log("🔄 ETAPA OU SITUAÇÃO MUDOU - ATUALIZANDO DATA DA ÚLTIMA ETAPA");
-      console.log("📅 NOVA DATA (HORÁRIO BRASIL):", dataUltimaEtapaParaSalvar);
-    }
-
-    const novosDados = [
-      normalizarTexto(dados.razao_social) || '',
-      normalizarTexto(dados.nome_fantasia) || '',
-      dados.cnpj ? dados.cnpj.toString() : '',
-      normalizarTexto(fornecedorParaAtualizar),
-      dataUltimaEtapaParaSalvar, // 🔥 AGORA COM HORÁRIO CORRETO
-      etapaNova, // 🔥 USANDO A ETAPA JÁ VALIDADA
-      normalizarTexto(dados.observacoes) || '',
-      normalizarTexto(dados.contrato_enviado) || '',
-      normalizarTexto(dados.contrato_assinado) || '',
-      dataAtivacaoParaSalvar,
-      dados.link || '',
-      mensalidadeNumero,                                    
-      converterMoedaParaNumero(dados.mensalidade_sim) || 0, 
-      tarifaParaAtualizar || '',                            
-      percentualParaAtualizar,                              
-      adesaoNumero,                                         
-      normalizarTexto(situacaoValida)                       
-    ];
-
-    aba.getRange(linhaAtualizar, 1, 1, novosDados.length).setValues([novosDados]);
-    
-    // Aplicar formatação
-    aba.getRange(linhaAtualizar, 12).setNumberFormat('"R$"#,##0.00');
-    aba.getRange(linhaAtualizar, 13).setNumberFormat('"R$"#,##0.00');
-    aba.getRange(linhaAtualizar, 15).setNumberFormat('0.00%');
-    aba.getRange(linhaAtualizar, 16).setNumberFormat('"R$"#,##0.00');
-    aba.getRange(linhaAtualizar, 14).setNumberFormat('@');
-    aba.getRange(linhaAtualizar, 10).setNumberFormat('dd/MM/yyyy');
-
-    SpreadsheetApp.flush();
-
-    return { 
-      success: true, 
-      message: `✅ "${dados.razao_social}" atualizado com sucesso no ${waitlabel}!` + 
-               (mudouEtapa || mudouSituacao ? ' (Data da última etapa atualizada)' : '')
-    };
-
-  } catch (error) {
-    console.error("❌ Erro em atualizarCadastroComWaitlabel:", error);
-    return { success: false, message: "Erro ao atualizar: " + error.message };
-  }
-}
-
-function aplicarAlteracoesATodos(cnpj, dados, camposSelecionados) {
-  console.log("🎯 APLICAR A TODOS - VERSÃO COM VALIDAÇÃO INTELIGENTE");
-  
-  try {
-    // 🔥🔥🔥 VALIDAÇÃO DA ETAPA - CONSIDERANDO A SITUAÇÃO
-    console.log("🎯 Validando etapa no Aplicar a Todos...");
-    const etapaParaValidar = dados.etapa;
-    const situacaoParaValidar = dados.situacao || '';
-    
-    // Se está tentando aplicar uma nova etapa, validar ela
-    if (camposSelecionados.includes('etapa') || camposSelecionados.includes('inputEtapaSearch')) {
-      console.log("🔍 Validando NOVA etapa...");
-      const validacaoEtapa = validarEtapa(etapaParaValidar, situacaoParaValidar);
-      if (!validacaoEtapa.valida) {
-        return { success: false, message: validacaoEtapa.mensagem };
-      }
-      console.log("✅ Nova etapa válida");
-    } else {
-      // 🔥🔥🔥 VALIDAÇÃO INTELIGENTE: Só validar etapa se a situação for EM ANDAMENTO
-      const situacaoNormalizada = normalizarTexto(situacaoParaValidar);
-      const ehEmAndamento = situacaoNormalizada === 'EM ANDAMENTO';
-      
-      if (ehEmAndamento) {
-        console.log("🔍 Situação é EM ANDAMENTO - validando etapa atual do formulário...");
-        const validacaoEtapa = validarEtapa(etapaParaValidar, situacaoParaValidar);
-        if (!validacaoEtapa.valida) {
-          return { 
-            success: false, 
-            message: `❌ OPERAÇÃO BLOQUEADA!\n\nPara situações "EM ANDAMENTO" a etapa é obrigatória.\n\nA etapa atual no formulário ("${etapaParaValidar}") não é válida.\n\nCorrija a etapa para uma das opções válidas:\n\n• PENDENTE FORNECEDOR(ES)\n• PENDENTE SIM\n• PENDENTE WL\n• PENDENTE CLÍNICA/LOJA` 
-          };
+    try {
+        let dataEtapa;
+        
+        if (dataCorrigida.includes('/') && dataCorrigida.includes(':')) {
+            const [dataPart, horaPart] = dataCorrigida.split(' ');
+            const [dia, mes, ano] = dataPart.split('/');
+            const [hora, minuto, segundo] = horaPart.split(':');
+            
+            dataEtapa = new Date(
+                parseInt(ano), 
+                parseInt(mes) - 1,
+                parseInt(dia),
+                parseInt(hora), 
+                parseInt(minuto), 
+                parseInt(segundo)
+            );
+            
+            console.log("✅ Data etapa (já corrigida):", dataEtapa.toString());
+            
+        } else {
+            dataEtapa = new Date(dataCorrigida);
         }
-        console.log("✅ Etapa atual do formulário é válida para EM ANDAMENTO");
-      } else {
-        console.log("✅ Situação não é EM ANDAMENTO - etapa não precisa ser validada");
-      }
-    }
-
-    const waitlabelAtual = getWaitlabelAtual();
-    const ss = SpreadsheetApp.openById(CONFIG.ID_PLANILHA);
-    const aba = ss.getSheetByName(waitlabelAtual);
-    
-    if (!aba) {
-      return { success: false, message: "❌ Planilha não encontrada" };
-    }
-    
-    const dadosCompletos = aba.getDataRange().getValues();
-    const cabecalhos = dadosCompletos[0];
-    
-    const cnpjIndex = cabecalhos.indexOf("CNPJ");
-    const ultimaEtapaIndex = cabecalhos.indexOf("Ultima etapa");
-    const etapaIndex = cabecalhos.indexOf("Etapa");
-    const situacaoIndex = cabecalhos.indexOf("Situação");
-    
-    console.log("🎯 Índices: UltimaEtapa=" + ultimaEtapaIndex);
-    
-    // BUSCAR REGISTROS
-    const cnpjBuscado = cnpj.toString().replace(/\D/g, '');
-    const registrosParaAtualizar = [];
-    
-    for (let i = 1; i < dadosCompletos.length; i++) {
-      const linha = dadosCompletos[i];
-      if (!linha[0] || linha[0].toString().trim() === '') continue;
-      
-      const cnpjLinha = linha[cnpjIndex]?.toString().replace(/\D/g, '') || '';
-      
-      if (cnpjLinha === cnpjBuscado) {
-        registrosParaAtualizar.push({
-          linhaNumero: i + 1,
-          dadosOriginais: linha
-        });
-      }
-    }
-    
-    console.log(`🔍 Encontrados ${registrosParaAtualizar.length} registros`);
-    
-    // 🔥🔥🔥 VALIDAÇÃO ADICIONAL: Verificar se algum registro atual tem etapa inválida
-    console.log("🔍 Verificando etapas existentes nos registros...");
-    for (const registro of registrosParaAtualizar) {
-      const etapaExistente = registro.dadosOriginais[etapaIndex]?.toString().trim() || '';
-      if (etapaExistente) {
-        const etapasValidas = ["PENDENTE FORNECEDOR(ES)", "PENDENTE SIM", "PENDENTE WL", "PENDENTE CLÍNICA/LOJA"];
-        const etapaNormalizada = normalizarTexto(etapaExistente);
         
-        if (!etapasValidas.includes(etapaNormalizada)) {
-          console.log(`⚠️ Registro linha ${registro.linhaNumero} tem etapa inválida: "${etapaExistente}"`);
+        if (isNaN(dataEtapa.getTime())) {
+            return 'Data inválida';
         }
-      }
+        
+        const hoje = new Date();
+        const hojeZerado = new Date(hoje.getFullYear(), hoje.getMonth(), hoje.getDate(), 0, 0, 0);
+        const dataEtapaZerada = new Date(dataEtapa.getFullYear(), dataEtapa.getMonth(), dataEtapa.getDate(), 0, 0, 0);
+        
+        console.log("📊 COMPARAÇÃO COM DATA CORRIGIDA:");
+        console.log("Data etapa (zerada):", dataEtapaZerada.toLocaleDateString('pt-BR'));
+        console.log("Data hoje (zerada):", hojeZerado.toLocaleDateString('pt-BR'));
+        
+        const diffTempo = hojeZerado.getTime() - dataEtapaZerada.getTime();
+        const diffDias = Math.floor(diffTempo / (1000 * 3600 * 24));
+        
+        console.log("✅ Diferença em dias:", diffDias);
+        
+        if (diffDias === 0) return 'Hoje';
+        if (diffDias === 1) return '1 dia';
+        if (diffDias > 1) return `${diffDias} dias`;
+        if (diffDias < 0) return 'Futuro';
+        
+        return 'N/A';
+        
+    } catch (error) {
+        return 'Erro no cálculo';
     }
-    
-    const mudouEtapa = camposSelecionados.includes('etapa') || camposSelecionados.includes('inputEtapaSearch');
-    const mudouSituacao = camposSelecionados.includes('situacao');
-    
-    console.log("🔄 Mudanças: Etapa=" + mudouEtapa + ", Situacao=" + mudouSituacao);
-    
-    let registrosAtualizados = 0;
-    let atualizouDataUltimaEtapa = false;
-    
-    for (const registro of registrosParaAtualizar) {
-      console.log(`🔄 Atualizando linha ${registro.linhaNumero}...`);
-      
-      const novosDados = [...registro.dadosOriginais];
-      
-      // APLICAR ALTERAÇÕES
-      for (const campo of camposSelecionados) {
-        const valor = obterValorParaAplicarTodos(campo, dados);
-        
-        switch(campo) {
-          case 'razao_social': novosDados[0] = valor; break;
-          case 'nome_fantasia': novosDados[1] = valor; break;
-          case 'cnpj_cadastro': novosDados[2] = valor; break;
-          case 'etapa':
-          case 'inputEtapaSearch': 
-            novosDados[etapaIndex] = valor; 
-            break;
-          case 'situacao':
-            novosDados[situacaoIndex] = valor;
-            break;
-          case 'observacoes': novosDados[6] = valor; break;
-          case 'contrato_enviado': novosDados[7] = valor; break;
-          case 'contrato_assinado': novosDados[8] = valor; break;
-          case 'ativacao': novosDados[9] = valor; break;
-          case 'link': novosDados[10] = valor; break;
-          case 'mensalidade': novosDados[11] = valor; break;
-          case 'mensalidade_sim': novosDados[12] = valor; break;
-          case 'adesao': novosDados[15] = valor; break;
-        }
-      }
-      
-      // 🔥🔥🔥 ATUALIZAR DATA DA ÚLTIMA ETAPA SE MUDOU ETAPA/SITUAÇÃO
-      if (ultimaEtapaIndex !== -1 && (mudouEtapa || mudouSituacao)) {
-        const dataAtual = new Date();
-        
-        // 🔥 USAR A FORMATAÇÃO CORRIGIDA PARA HORÁRIO BRASIL
-        const dataFormatada = formatarDataBrasilSimples();
-        novosDados[ultimaEtapaIndex] = dataFormatada; // 🔥 AGORA COM HORÁRIO CORRETO
-        
-        atualizouDataUltimaEtapa = true;
-        console.log(`   📅📅📅 DATA ATUALIZADA (HORÁRIO BRASIL): ${dataFormatada}`);
-      }
-      
-      // SALVAR
-      aba.getRange(registro.linhaNumero, 1, 1, novosDados.length).setValues([novosDados]);
-      registrosAtualizados++;
-    }
-    
-    SpreadsheetApp.flush();
-    
-    return {
-      success: true,
-      registrosAtualizados: registrosAtualizados,
-      message: `✅ ${registrosAtualizados} registro(s) atualizado(s) com sucesso!` +
-               (atualizouDataUltimaEtapa ? ' (Data da última etapa atualizada)' : '')
-    };
-    
-  } catch (error) {
-    console.error("❌ ERRO:", error);
-    return { success: false, message: "❌ Erro: " + error.toString() };
-  }
 }
 
-function obterValorParaAplicarTodos(campo, dados) {
-  switch(campo) {
-    case 'razao_social':
-      return normalizarTexto(dados.razao_social) || '';
-    case 'nome_fantasia':
-      return normalizarTexto(dados.nome_fantasia) || '';
-    case 'cnpj_cadastro':
-      return dados.cnpj ? dados.cnpj.toString() : '';
-    case 'etapa':
-    case 'inputEtapaSearch':
-      // 🔥 GARANTIR QUE A ETAPA SEJA NORMALIZADA CORRETAMENTE
-      let etapa = normalizarTexto(dados.etapa) || '';
-      // Se estiver vazia, não aplicar
-      if (!etapa) return '';
-      return etapa;
-    case 'observacoes':
-      return normalizarTexto(dados.observacoes) || '';
-    case 'contrato_enviado':
-      return normalizarTexto(dados.contrato_enviado) || '';
-    case 'contrato_assinado':
-      return normalizarTexto(dados.contrato_assinado) || '';
-    case 'ativacao':
-      return dados.ativacao || '';
-    case 'link':
-      return dados.link || '';
-    case 'mensalidade':
-      return converterMoedaParaNumero(dados.mensalidade) || 0;
-    case 'mensalidade_sim':
-      return converterMoedaParaNumero(dados.mensalidade_sim) || 0;
-    case 'adesao':
-      return processarAdesaoParaSalvar(dados.adesao);
-    case 'situacao':
-      let situacao = normalizarTexto(dados.situacao) || 'NOVO REGISTRO';
-      if (situacao === 'NOVO REGISTRO') situacao = 'Novo Registro';
-      return situacao;
-    default:
-      return '';
-  }
+console.log("🔥 Função calcularDefasagem SOBRESCRITA com correção!");
+
+function testarDefasagemFrontend() {
+    const dataTeste = "14/11/2025 15:46:23";
+    console.log("🧪 TESTE DEFASAGEM FRONTEND:");
+    console.log("Data de entrada:", dataTeste);
+    console.log("Resultado:", calcularDefasagem(dataTeste));
+    
+    // Verificar se a data está correta
+    const [dataPart, horaPart] = dataTeste.split(' ');
+    const [dia, mes, ano] = dataPart.split('/');
+    const [hora, minuto, segundo] = horaPart.split(':');
+    
+    const dataObj = new Date(ano, mes-1, dia, hora, minuto, segundo);
+    console.log("Data objeto:", dataObj);
+    console.log("Hora no objeto:", dataObj.getHours() + ":" + dataObj.getMinutes());
 }
 
-// 🔥 FUNÇÃO AUXILIAR PARA VALIDAR ETAPAS - VERSÃO COM SITUAÇÃO
-function validarEtapa(etapa, situacao) {
-  // 🔥 SE NÃO FOR "EM ANDAMENTO", ETAPA NÃO É OBRIGATÓRIA
-  const situacaoNormalizada = normalizarTexto(situacao || '');
-  const naoEhEmAndamento = situacaoNormalizada !== 'EM ANDAMENTO';
+
+// 🔥 MANTENDO TODAS AS FUNÇÕES ORIGINAIS EXISTENTES
+// 🔥 FUNÇÕES PARA WAITLABELS
+function inicializarWaitlabels() {
+  console.log("🎯 Inicializando waitlabels...");
   
-  if (naoEhEmAndamento) {
-    console.log("✅ Situação não é EM ANDAMENTO - etapa não é obrigatória");
-    return { valida: true, etapa: etapa ? normalizarTexto(etapa) : '' };
+  // Buscar waitlabel atual do servidor
+  google.script.run
+    .withSuccessHandler(function(waitlabel) {
+      waitlabelAtual = waitlabel;
+      console.log("✅ Waitlabel atual:", waitlabelAtual);
+      criarBotoesWaitlabels();
+      atualizarInterfaceWaitlabel();
+    })
+    .withFailureHandler(function(error) {
+      console.error("❌ Erro ao buscar waitlabel:", error);
+      criarBotoesWaitlabels(); // Criar mesmo com erro
+    })
+    .getWaitlabelAtual();
+}
+
+function criarBotoesWaitlabels() {
+  const container = document.getElementById('waitlabelButtons');
+  let html = '';
+  
+  WAITLABELS_CONFIG.WAITLABELS.forEach(waitlabel => {
+    const cor = WAITLABELS_CONFIG.CORES[waitlabel];
+    const isActive = waitlabel === waitlabelAtual;
+    const classeAtiva = isActive ? 'active' : '';
+    
+    html += `
+      <button class="waitlabel-btn ${classeAtiva}" 
+              onclick="selecionarWaitlabel('${waitlabel}')"
+              style="border-color: ${cor}; ${isActive ? `background: ${cor}; color: white;` : `color: ${cor};`}">
+        <span class="waitlabel-indicator" style="background: ${cor};"></span>
+        ${formatarNomeWaitlabel(waitlabel)}
+      </button>
+    `;
+  });
+  
+  container.innerHTML = html;
+}
+
+function formatarNomeWaitlabel(nome) {
+  const formatacoes = {
+    'Sim_Facilita': 'Sim Facilita',
+    'Set_9': 'Set 9',
+    'Doktorbank': 'DoktorBank',
+    'Dr_Parcela': 'Dr Parcela',
+    'Result': 'Result'
+  };
+  return formatacoes[nome] || nome;
+}
+
+function selecionarWaitlabel(waitlabel) {
+  console.log("🎯 Selecionando waitlabel:", waitlabel);
+  
+  waitlabelAtual = waitlabel;
+  criarBotoesWaitlabels();
+  atualizarInterfaceWaitlabel();
+  
+  google.script.run
+    .withSuccessHandler(function(res) {
+      console.log("✅ Waitlabel salvo:", res);
+      showMessage('success', `✅ Waitlabel alterado para: ${formatarNomeWaitlabel(waitlabel)}`);
+    })
+    .withFailureHandler(function(error) {
+      console.error("❌ Erro ao salvar waitlabel:", error);
+      showMessage('error', '❌ Erro ao alterar waitlabel');
+    })
+    .setWaitlabelAtual(waitlabel);
+}
+
+function atualizarInterfaceWaitlabel() {
+  const header = document.querySelector('.header');
+  const cor = WAITLABELS_CONFIG.CORES[waitlabelAtual] || '#7E3E9A';
+  header.style.background = cor;
+  
+  const titulo = document.getElementById('tituloCadastros');
+  if (titulo) {
+    titulo.textContent = `Cadastros - ${formatarNomeWaitlabel(waitlabelAtual)}`;
   }
   
-  // 🔥 SE É "EM ANDAMENTO", ENTÃO ETAPA É OBRIGATÓRIA
-  if (!etapa || etapa.trim() === '') {
-    return { 
-      valida: false, 
-      mensagem: '❌ Para situações "EM ANDAMENTO" o campo Etapa é obrigatório!' 
+  console.log("🎨 Interface atualizada para waitlabel:", waitlabelAtual);
+}
+
+// 🔥 FUNÇÕES PARA "APLICAR A TODOS"
+function toggleCampoParaTodos(campoId) {
+    console.log("🎯 Toggle campo para aplicar a todos:", campoId);
+    
+    const campoParaAplicar = campoId === 'inputEtapaSearch' ? 'etapa' : campoId;
+    
+    camposParaAplicarATodos[campoParaAplicar] = !camposParaAplicarATodos[campoParaAplicar];
+    
+    const checkbox = document.querySelector(`[data-campo="${campoId}"]`);
+    if (checkbox) {
+        checkbox.checked = camposParaAplicarATodos[campoParaAplicar];
+    }
+    
+    console.log("📋 Campos selecionados para aplicar:", camposParaAplicarATodos);
+}
+
+// 🔥 FUNÇÃO MELHORADA PARA APLICAR A TODOS (SUBSTITUIR COMPLETAMENTE)
+async function aplicarAlteracoesATodos() {
+  console.log("🎯 [DEBUG] Botão 'Aplicar a Todos' clicado");
+  console.log("📋 Campos selecionados:", camposParaAplicarATodos);
+  console.log("🎯 Aplicando alterações a todos do mesmo CNPJ...");
+  
+  const btnAplicar = document.getElementById('btnAplicarATodos');
+  if (btnAplicar && btnAplicar.disabled) {
+    console.log("⏳ Botão já está processando, aguarde...");
+    return;
+  }
+  
+  // Desabilitar botão durante o processamento
+  if (btnAplicar) {
+    btnAplicar.disabled = true;
+    btnAplicar.innerHTML = '<i class="fas fa-spinner fa-spin"></i> Aplicando...';
+  }
+  
+  const camposSelecionados = Object.keys(camposParaAplicarATodos).filter(campo => camposParaAplicarATodos[campo]);
+  
+  if (camposSelecionados.length === 0) {
+    showMessage('error', '❌ Selecione pelo menos um campo para aplicar a todos!');
+    if (btnAplicar) {
+      btnAplicar.disabled = false;
+      btnAplicar.innerHTML = '<i class="fas fa-copy"></i> Aplicar a Todos';
+    }
+    return;
+  }
+  
+  const dadosAtuais = coletarDadosFormulario();
+  if (!dadosAtuais) {
+    showMessage('error', '❌ Erro ao coletar dados do formulário');
+    if (btnAplicar) {
+      btnAplicar.disabled = false;
+      btnAplicar.innerHTML = '<i class="fas fa-copy"></i> Aplicar a Todos';
+    }
+    return;
+  }
+  
+  const cnpjCorreto = document.getElementById('cnpj_cadastro')?.value || dadosAtuais.cnpj;
+  
+  if (!cnpjCorreto) {
+    showMessage('error', '❌ CNPJ não identificado!');
+    if (btnAplicar) {
+      btnAplicar.disabled = false;
+      btnAplicar.innerHTML = '<i class="fas fa-copy"></i> Aplicar a Todos';
+    }
+    return;
+  }
+  
+  // 🔥 AGORA USANDO A NOVA FUNÇÃO COM DELAY
+  mostrarPopupAplicarTodosMelhorado(cnpjCorreto, camposSelecionados, dadosAtuais);
+}
+
+function mostrarPopupAplicarTodos(cnpj, camposSelecionados, dados) {
+    const formatarValorParaPopup = (campo, valor) => {
+        if (campo === 'ativacao' && valor && valor !== 'Não preenchido') {
+            if (valor.includes('-')) {
+                const partes = valor.split('-');
+                if (partes.length === 3) {
+                    return `${partes[2]}/${partes[1]}/${partes[0]}`;
+                }
+            }
+            return valor;
+        }
+        
+        if ((campo === 'mensalidade' || campo === 'adesao') && valor && valor !== 'Não preenchido') {
+            if (typeof valor === 'number' || !isNaN(parseFloat(valor))) {
+                const numero = parseFloat(valor);
+                return numero.toLocaleString('pt-BR', {
+                    style: 'currency',
+                    currency: 'BRL'
+                });
+            } else if (typeof valor === 'string') {
+                const numeroMatch = valor.match(/[\d,\.]+/);
+                if (numeroMatch) {
+                    const numero = parseFloat(numeroMatch[0].replace(/\./g, '').replace(',', '.'));
+                    if (!isNaN(numero)) {
+                        return numero.toLocaleString('pt-BR', {
+                            style: 'currency',
+                            currency: 'BRL'
+                        });
+                    }
+                }
+            }
+        }
+        
+        if (campo === 'etapa' && valor && valor !== 'Não preenchido') {
+            return valor.charAt(0).toUpperCase() + valor.slice(1).toLowerCase();
+        }
+        
+        return valor;
     };
-  }
-  
-  const etapasValidas = [
-    "PENDENTE FORNECEDOR(ES)",
-    "PENDENTE SIM", 
-    "PENDENTE WL",
-    "PENDENTE CLÍNICA/LOJA"
+
+    const modalHTML = `
+        <div id="modalAplicarTodos" style="position:fixed; top:0; left:0; width:100%; height:100%; background:rgba(0,0,0,0.6); display:flex; justify-content:center; align-items:center; z-index:9999; font-family: 'Segoe UI', Arial, sans-serif;">
+            <div style="background:linear-gradient(135deg, #ffffff 0%, #f8f6ff 100%); padding:20px; border-radius:12px; width:400px; box-shadow:0 8px 25px rgba(0,0,0,0.25); border:2px solid #8B5FBF; position:relative;">
+                <div style="background:linear-gradient(135deg, #8B5FBF 0%, #6A4C9C 100%); color:white; padding:12px; margin:-20px -20px 15px -20px; border-radius:10px 10px 0 0; text-align:center;">
+                    <h3 style="margin:0; font-size:18px; font-weight:600;">🎯 Aplicar Alterações em Lote</h3>
+                </div>
+                
+                <div style="margin-bottom:15px;">
+                    <div style="display:flex; align-items:center; margin-bottom:8px;">
+                        <span style="background:#8B5FBF; color:white; padding:4px 8px; border-radius:15px; font-size:11px; font-weight:bold;">📋 CNPJ</span>
+                        <span style="margin-left:8px; font-weight:600; color:#333;">${cnpj}</span>
+                    </div>
+                    
+                    <div style="display:flex; align-items:center; margin-bottom:12px;">
+                        <span style="background:#8B5FBF; color:white; padding:4px 8px; border-radius:15px; font-size:11px; font-weight:bold;">🏢 Registros</span>
+                        <span style="margin-left:8px; color:#666;">Todos com este CNPJ</span>
+                    </div>
+                </div>
+                
+                <div style="background:#f0ebfa; padding:12px; border-radius:8px; margin-bottom:15px; border-left:3px solid #8B5FBF;">
+                    <div style="display:flex; align-items:center; margin-bottom:8px;">
+                        <span style="color:#8B5FBF; font-weight:bold; font-size:14px;">📝 Campos Selecionados</span>
+                    </div>
+                    <div style="max-height:120px; overflow-y:auto;">
+                      ${camposSelecionados.map(campo => {
+                          const nomeCampo = formatarNomeCampoPopup(campo);
+                          let valorCampo = dados[campo] || document.getElementById(campo)?.value || 'Não preenchido';
+                          valorCampo = formatarValorParaPopup(campo, valorCampo);
+                          return `
+                              <div style="display:flex; justify-content:space-between; align-items:center; padding:6px 4px; border-bottom:1px solid #e0e0e0;">
+                                  <span style="color:#555; font-weight:500;">${nomeCampo}</span>
+                                  <span style="background:#8B5FBF; color:white; padding:3px 6px; border-radius:10px; font-size:11px; font-weight:bold;">${valorCampo}</span>
+                              </div>
+                          `;
+                      }).join('')}
+                    </div>
+                </div>
+                
+                <div style="background:#fff3cd; border:2px solid #ffc107; padding:10px; border-radius:6px; margin-bottom:15px; display:flex; align-items:center;">
+                    <span style="color:#856404; font-size:20px; margin-right:8px;">⚠️</span>
+                    <span style="color:#856404; font-size:12px; font-weight:500;">Esta ação atualizará TODOS os registros e não pode ser desfeita</span>
+                </div>
+                
+                <div style="display:flex; gap:10px; justify-content:flex-end;">
+                    <button onclick="fecharPopupAplicarTodos(false)" style="padding:10px 16px; border:2px solid #6c757d; background:white; color:#6c757d; border-radius:6px; cursor:pointer; font-weight:600; transition:all 0.3s; display:flex; align-items:center; gap:4px;">
+                        <span>✖</span> Cancelar
+                    </button>
+                    <button onclick="fecharPopupAplicarTodos(true)" style="padding:10px 20px; background:linear-gradient(135deg, #28a745 0%, #20c997 100%); color:white; border:none; border-radius:6px; cursor:pointer; font-weight:600; transition:all 0.3s; display:flex; align-items:center; gap:4px; box-shadow:0 3px 10px rgba(40, 167, 69, 0.25);">
+                        <span>✅</span> Aplicar a Todos
+                    </button>
+                </div>
+            </div>
+        </div>
+    `;
+    
+    document.body.insertAdjacentHTML('beforeend', modalHTML);
+}
+
+const formatarNomeCampoPopup = (campo) => {
+    const nomes = {
+        'razao_social': 'Razão Social',
+        'nome_fantasia': 'Nome Fantasia', 
+        'cnpj_cadastro': 'CNPJ',
+        'contrato_enviado': 'Contrato Enviado',
+        'contrato_assinado': 'Contrato Assinado',
+        'ativacao': 'Ativação',
+        'link': 'Link',
+        'mensalidade': 'Mensalidade',
+        'adesao': 'Adesão',
+        'situacao': 'Situação',
+        'etapa': 'Etapa',
+        'observacoes': 'Observações',
+        'inputEtapaSearch': 'Etapa'
+    };
+    
+    return nomes[campo] || campo;
+};
+
+// 🔥 POPUP MELHORADO COM INFORMAÇÕES DE SEGURANÇA (FUNÇÃO NOVA)
+function mostrarPopupAplicarTodosMelhorado(cnpj, camposSelecionados, dados) {
+    const formatarValorParaPopup = (campo, valor) => {
+        if (campo === 'ativacao' && valor && valor !== 'Não preenchido') {
+            if (valor.includes('-')) {
+                const partes = valor.split('-');
+                if (partes.length === 3) {
+                    return `${partes[2]}/${partes[1]}/${partes[0]}`;
+                }
+            }
+            return valor;
+        }
+        
+        if ((campo === 'mensalidade' || campo === 'adesao') && valor && valor !== 'Não preenchido') {
+            if (typeof valor === 'number' || !isNaN(parseFloat(valor))) {
+                const numero = parseFloat(valor);
+                return numero.toLocaleString('pt-BR', {
+                    style: 'currency',
+                    currency: 'BRL'
+                });
+            } else if (typeof valor === 'string') {
+                const numeroMatch = valor.match(/[\d,\.]+/);
+                if (numeroMatch) {
+                    const numero = parseFloat(numeroMatch[0].replace(/\./g, '').replace(',', '.'));
+                    if (!isNaN(numero)) {
+                        return numero.toLocaleString('pt-BR', {
+                            style: 'currency',
+                            currency: 'BRL'
+                        });
+                    }
+                }
+            }
+        }
+        
+        if (campo === 'etapa' && valor && valor !== 'Não preenchido') {
+            return valor.charAt(0).toUpperCase() + valor.slice(1).toLowerCase();
+        }
+        
+        return valor;
+    };
+
+    const modalHTML = `
+        <div id="modalAplicarTodos" style="position:fixed; top:0; left:0; width:100%; height:100%; background:rgba(0,0,0,0.6); display:flex; justify-content:center; align-items:center; z-index:9999; font-family: 'Segoe UI', Arial, sans-serif;">
+            <div style="background:linear-gradient(135deg, #ffffff 0%, #f8f6ff 100%); padding:25px; border-radius:12px; width:450px; box-shadow:0 8px 25px rgba(0,0,0,0.25); border:2px solid #8B5FBF; position:relative;">
+                <div style="background:linear-gradient(135deg, #8B5FBF 0%, #6A4C9C 100%); color:white; padding:15px; margin:-25px -25px 20px -25px; border-radius:10px 10px 0 0; text-align:center;">
+                    <h3 style="margin:0; font-size:18px; font-weight:600;">🎯 Aplicar Alterações em Lote</h3>
+                </div>
+                
+                <div style="margin-bottom:15px;">
+                    <div style="display:flex; align-items:center; margin-bottom:8px;">
+                        <span style="background:#8B5FBF; color:white; padding:4px 8px; border-radius:15px; font-size:11px; font-weight:bold;">📋 CNPJ</span>
+                        <span style="margin-left:8px; font-weight:600; color:#333; font-family: monospace;">${cnpj}</span>
+                    </div>
+                    
+                    <div style="display:flex; align-items:center; margin-bottom:12px;">
+                        <span style="background:#8B5FBF; color:white; padding:4px 8px; border-radius:15px; font-size:11px; font-weight:bold;">🏢 Registros</span>
+                        <span style="margin-left:8px; color:#666;">Todos com este CNPJ</span>
+                    </div>
+                </div>
+                
+                <div style="background:#f0ebfa; padding:15px; border-radius:8px; margin-bottom:15px; border-left:3px solid #8B5FBF;">
+                    <div style="display:flex; align-items:center; margin-bottom:10px;">
+                        <span style="color:#8B5FBF; font-weight:bold; font-size:14px;">📝 Campos Selecionados (${camposSelecionados.length})</span>
+                    </div>
+                    <div style="max-height:120px; overflow-y:auto;">
+                      ${camposSelecionados.map(campo => {
+                          const nomeCampo = formatarNomeCampoPopup(campo);
+                          let valorCampo = dados[campo] || document.getElementById(campo)?.value || 'Não preenchido';
+                          valorCampo = formatarValorParaPopup(campo, valorCampo);
+                          return `
+                              <div style="display:flex; justify-content:space-between; align-items:center; padding:6px 4px; border-bottom:1px solid #e0e0e0;">
+                                  <span style="color:#555; font-weight:500;">${nomeCampo}</span>
+                                  <span style="background:#8B5FBF; color:white; padding:3px 8px; border-radius:10px; font-size:11px; font-weight:bold; max-width:150px; overflow:hidden; text-overflow:ellipsis; white-space:nowrap;">${valorCampo}</span>
+                              </div>
+                          `;
+                      }).join('')}
+                    </div>
+                </div>
+                
+                <!-- 🔥 NOVA SEÇÃO: INFORMAÇÕES DE SEGURANÇA -->
+                <div style="background:#e8f4fd; border:2px solid #2196F3; padding:12px; border-radius:6px; margin-bottom:15px;">
+                    <div style="display:flex; align-items:flex-start; gap:10px;">
+                        <span style="color:#2196F3; font-size:18px;">⏰</span>
+                        <div>
+                            <div style="color:#0c5460; font-weight:600; font-size:13px;">Processamento Seguro</div>
+                            <div style="color:#0c5460; font-size:11px; margin-top:4px;">
+                                • Delay entre requisições: 1 segundo<br>
+                                • Processamento sequencial<br>
+                                • Prevenção de erro 429
+                            </div>
+                        </div>
+                    </div>
+                </div>
+                
+                <div style="background:#fff3cd; border:2px solid #ffc107; padding:12px; border-radius:6px; margin-bottom:20px; display:flex; align-items:flex-start; gap:10px;">
+                    <span style="color:#856404; font-size:18px; margin-top:2px;">⚠️</span>
+                    <div>
+                        <div style="color:#856404; font-weight:600; font-size:13px;">Atenção</div>
+                        <div style="color:#856404; font-size:11px; margin-top:4px;">
+                            Esta ação atualizará TODOS os registros com este CNPJ e não pode ser desfeita.
+                        </div>
+                    </div>
+                </div>
+                
+                <div style="display:flex; gap:12px; justify-content:flex-end;">
+                    <button onclick="fecharPopupAplicarTodos(false)" style="padding:10px 20px; border:2px solid #6c757d; background:white; color:#6c757d; border-radius:6px; cursor:pointer; font-weight:600; transition:all 0.3s; display:flex; align-items:center; gap:6px; min-width:100px; justify-content:center;">
+                        <i class="fas fa-times"></i> Cancelar
+                    </button>
+                    <button onclick="processarAplicarATodosComDelay()" style="padding:10px 20px; background:linear-gradient(135deg, #28a745 0%, #20c997 100%); color:white; border:none; border-radius:6px; cursor:pointer; font-weight:600; transition:all 0.3s; display:flex; align-items:center; gap:6px; min-width:120px; justify-content:center; box-shadow:0 3px 10px rgba(40, 167, 69, 0.25);">
+                        <i class="fas fa-play"></i> Iniciar
+                    </button>
+                </div>
+            </div>
+        </div>
+    `;
+    
+    document.body.insertAdjacentHTML('beforeend', modalHTML);
+    
+    // 🔥 ARMAZENAR DADOS PARA USO POSTERIOR
+    window.dadosAplicarTodos = {
+        cnpj: cnpj,
+        campos: camposSelecionados,
+        dados: dados
+    };
+}
+
+async function processarAplicarATodosComDelay() {
+    const modal = document.getElementById('modalAplicarTodos');
+    if (modal) modal.remove();
+    
+    const { cnpj, campos, dados } = window.dadosAplicarTodos;
+    const btnAplicar = document.getElementById('btnAplicarATodos');
+    
+    console.log("🚀 INICIANDO PROCESSAMENTO COM DELAY...");
+    showLoading(`Aplicando ${campos.length} campo(s) a todos os registros...`, "Processamento seguro com delay entre requisições");
+    
+    try {
+        // 🔥🔥🔥 CORREÇÃO: GARANTIR QUE NÃO HAJA DATA FIXA
+        const dadosSemDataFixa = { ...dados };
+        delete dadosSemDataFixa.ultima_etapa; // Remove qualquer data fixa
+        
+        console.log("📤 Enviando requisição única para o Google Apps Script...");
+        console.log("🔥 Dados SEM data fixa:", dadosSemDataFixa);
+        
+        google.script.run
+            .withSuccessHandler(function(res) {
+                console.log("✅ RESPOSTA DO GS:", res);
+                hideLoading();
+                
+                if (btnAplicar) {
+                    btnAplicar.disabled = false;
+                    btnAplicar.innerHTML = '<i class="fas fa-copy"></i> Aplicar a Todos';
+                }
+                
+                if (res && res.success) {
+                    showMessage('success', `✅ ${res.registrosAtualizados} registro(s) atualizado(s) com sucesso!`);
+                    limparSelecaoAplicarATodos();
+                    
+                    // Recarregar a lista se estiver visível
+                    if (document.getElementById('secaoCadastros').style.display === 'block') {
+                        setTimeout(() => {
+                            mostrarTodosCadastros();
+                        }, 1000);
+                    }
+                } else {
+                    // 🔥🔥🔥 APLICAR ESTILO VERMELHO NO CAMPO DE ETAPA QUANDO HOUVER ERRO
+                    const inputEtapa = document.getElementById('inputEtapaSearch');
+                    if (inputEtapa && res && res.message && res.message.includes('ETAPA')) {
+                        inputEtapa.style.border = '3px solid var(--danger)';
+                        inputEtapa.style.backgroundColor = '#fff5f5';
+                        inputEtapa.style.boxShadow = '0 0 10px rgba(220, 53, 69, 0.3)';
+                        inputEtapa.focus();
+                        inputEtapa.scrollIntoView({ behavior: 'smooth', block: 'center' });
+                        
+                        inputEtapa.style.animation = 'shake 0.5s ease-in-out';
+                        setTimeout(() => {
+                            inputEtapa.style.animation = '';
+                        }, 500);
+                    }
+                    
+                    showMessage('error', '❌ ' + (res ? res.message : 'Erro ao aplicar alterações'));
+                }
+            })
+            .withFailureHandler(function(error) {
+                console.error("❌ ERRO DO GS:", error);
+                hideLoading();
+                
+                if (btnAplicar) {
+                    btnAplicar.disabled = false;
+                    btnAplicar.innerHTML = '<i class="fas fa-copy"></i> Aplicar a Todos';
+                }
+                
+                // 🔥 TRATAMENTO ESPECÍFICO PARA ERRO 429
+                if (error.message && error.message.includes('429')) {
+                    showMessage('error', '❌ Muitas requisições simultâneas. Aguarde alguns segundos e tente novamente.');
+                } else {
+                    showMessage('error', '❌ Erro: ' + error.message);
+                }
+            })
+            .aplicarAlteracoesATodos(cnpj, dadosSemDataFixa, campos); // 🔥 Envia dados SEM data fixa
+            
+    } catch (error) {
+        console.error("❌ ERRO NO PROCESSAMENTO:", error);
+        hideLoading();
+        
+        if (btnAplicar) {
+            btnAplicar.disabled = false;
+            btnAplicar.innerHTML = '<i class="fas fa-copy"></i> Aplicar a Todos';
+        }
+        
+        showMessage('error', '❌ Erro crítico: ' + error.message);
+    }
+}
+
+function fecharPopupAplicarTodos(confirmado) {
+    const modal = document.getElementById('modalAplicarTodos');
+    if (modal) modal.remove();
+    
+    if (confirmado) {
+        const btnAplicar = document.getElementById('btnAplicarATodos');
+        const camposSelecionados = Object.keys(camposParaAplicarATodos).filter(campo => camposParaAplicarATodos[campo]);
+        const dadosAtuais = coletarDadosFormulario();
+        const cnpjCorreto = document.getElementById('cnpj_cadastro')?.value || dadosAtuais.cnpj;
+        
+        console.log("🚀 CHAMANDO GOOGLE APPS SCRIPT...");
+        showLoading(`Aplicando alterações para ${camposSelecionados.length} campo(s)...`, "Atualizando todos os registros do mesmo CNPJ");
+        
+        google.script.run
+            .withSuccessHandler(function(res) {
+                console.log("✅ RESPOSTA DO GS:", res);
+                hideLoading();
+                
+                if (btnAplicar) {
+                    btnAplicar.disabled = false;
+                    btnAplicar.innerHTML = '<i class="fas fa-copy"></i> Aplicar a Todos';
+                }
+                
+                if (res && res.success) {
+                    showMessage('success', `✅ ${res.registrosAtualizados} registro(s) atualizado(s) com sucesso!`);
+                    limparSelecaoAplicarATodos();
+                    if (document.getElementById('secaoCadastros').style.display === 'block') {
+                        mostrarTodosCadastros();
+                    }
+                } else {
+                    showMessage('error', '❌ ' + (res ? res.message : 'Erro ao aplicar alterações'));
+                }
+            })
+            .withFailureHandler(function(error) {
+                console.error("❌ ERRO DO GS:", error);
+                hideLoading();
+                
+                if (btnAplicar) {
+                    btnAplicar.disabled = false;
+                    btnAplicar.innerHTML = '<i class="fas fa-copy"></i> Aplicar a Todos';
+                }
+                
+                showMessage('error', '❌ Erro: ' + error.message);
+            })
+            .aplicarAlteracoesATodos(cnpjCorreto, dadosAtuais, camposSelecionados);
+    } else {
+        const btnAplicar = document.getElementById('btnAplicarATodos');
+        if (btnAplicar) {
+            btnAplicar.disabled = false;
+            btnAplicar.innerHTML = '<i class="fas fa-copy"></i> Aplicar a Todos';
+        }
+    }
+}
+
+function limparSelecaoAplicarATodos() {
+    camposParaAplicarATodos = {};
+    cnpjAtualParaAplicar = null;
+    
+    document.querySelectorAll('[data-campo]').forEach(checkbox => {
+        checkbox.checked = false;
+    });
+    
+    const btnAplicar = document.getElementById('btnAplicarATodos');
+    if (btnAplicar) {
+        btnAplicar.style.display = 'none';
+    }
+    
+    document.querySelectorAll('.checkbox-aplicar-todos').forEach(checkbox => {
+        checkbox.remove();
+    });
+    
+    const titulo = document.getElementById('tituloAplicarTodos');
+    if (titulo) {
+        titulo.style.display = 'none';
+        titulo.innerHTML = '';
+    }
+    
+    document.getElementById('cardCadastro').classList.remove('modo-aplicar-todos');
+}
+
+function configurarAplicarATodos(cnpj, id) {
+    console.log("🎯 CONFIGURANDO APLICAR A TODOS - CNPJ:", cnpj, "ID:", id);
+    
+    fecharModalDetalhes();
+    
+    editarCadastroModal(id);
+    
+    setTimeout(() => {
+        cnpjAtualParaAplicar = cnpj;
+        cadastroAtualId = id;
+        
+        mostrarInterfaceAplicarATodos();
+        
+        showMessage('info', '🎯 Modo "Aplicar a Todos" ativado! Selecione os campos que deseja aplicar.');
+    }, 1000);
+}
+
+function mostrarInterfaceAplicarATodos() {
+    adicionarCheckboxesAosCampos();
+    
+    mostrarBotaoAplicarATodos();
+    
+    const titulo = document.getElementById('tituloAplicarTodos');
+    if (titulo) {
+        titulo.style.display = 'block';
+        titulo.innerHTML = `
+            <div style="background: linear-gradient(135deg, #FF6B35 0%, #FF8E35 100%); color: white; padding: 8px 12px; border-radius: 6px; margin-top: 8px; text-align: center;">
+                <i class="fas fa-copy"></i> <strong>MODO APLICAR A TODOS</strong> - CNPJ: ${cnpjAtualParaAplicar}
+                <br><small>Selecione os campos que deseja aplicar a todos os registros deste CNPJ</small>
+            </div>
+        `;
+    }
+    
+    document.getElementById('cardCadastro').classList.add('modo-aplicar-todos');
+}
+
+function adicionarCheckboxesAosCampos() {
+  const camposAplicaveis = [
+    'razao_social', 'nome_fantasia','contrato_enviado', 
+    'contrato_assinado', 'ativacao', 'link', 'mensalidade', 
+    'mensalidade_sim', 'adesao', 'situacao', 'inputEtapaSearch'
   ];
-  
-  const etapaNormalizada = normalizarTexto(etapa);
-  
-  // 🔥 BLOQUEAR EXPLICITAMENTE "DESISTIU" E OUTRAS ETAPAS INVÁLIDAS
-  const etapasBloqueadas = ["DESISTIU", "REJEITADO", "CADASTRADO", "NOVO REGISTRO", "EM ANDAMENTO", "DESCREDENCIADO"];
-  
-  if (etapasBloqueadas.includes(etapaNormalizada)) {
-    const mensagemErro = `❌ ETAPA NÃO PERMITIDA!\n\nA etapa "${etapa}" é uma SITUAÇÃO, não uma etapa do processo.\n\n📋 ETAPAS VÁLIDAS (do processo):\n• PENDENTE FORNECEDOR(ES)\n• PENDENTE SIM\n• PENDENTE WL\n• PENDENTE CLÍNICA/LOJA\n\n💡 Use o campo "Situação" para: ${etapa}`;
     
-    return { valida: false, mensagem: mensagemErro };
-  }
-  
-  if (!etapasValidas.includes(etapaNormalizada)) {
-    const mensagemErro = `❌ ETAPA INVÁLIDA!\n\nA etapa "${etapa}" não é válida.\n\n📋 ETAPAS VÁLIDAS:\n• PENDENTE FORNECEDOR(ES)\n• PENDENTE SIM\n• PENDENTE WL\n• PENDENTE CLÍNICA/LOJA\n\nSelecione uma das etapas acima para continuar.`;
-    
-    return { valida: false, mensagem: mensagemErro };
-  }
-  
-  return { valida: true, etapa: etapaNormalizada };
+    camposAplicaveis.forEach(campoId => {
+        const campoElement = document.getElementById(campoId);
+        if (campoElement) {
+            const formGroup = campoElement.closest('.form-group');
+            if (formGroup && !formGroup.querySelector('.checkbox-aplicar-todos')) {
+                const checkboxHtml = `
+                    <div class="checkbox-aplicar-todos">
+                        <input type="checkbox" id="check_${campoId}" data-campo="${campoId}" 
+                               onchange="toggleCampoParaTodos('${campoId}')">
+                        <label for="check_${campoId}">
+                            <i class="fas fa-copy"></i> Aplicar este campo a todos
+                        </label>
+                    </div>
+                `;
+                formGroup.insertAdjacentHTML('beforeend', checkboxHtml);
+            }
+        }
+    });
 }
 
-// 🔥 FUNÇÕES DE BUSCA
-function buscarTodosCadastrosComWaitlabel(waitlabel) {
-  try {
-    const ss = SpreadsheetApp.openById(CONFIG.ID_PLANILHA);
-    const aba = ss.getSheetByName(waitlabel);
-    if (!aba) return [];
-    
-    const ultimaLinha = aba.getLastRow();
-    if (ultimaLinha < 2) return [];
-    
-    const dados = aba.getRange(2, 1, ultimaLinha - 1, 17).getValues();
-    const cadastros = [];
-    
-    for (let i = 0; i < dados.length; i++) {
-      const linha = dados[i];
-      if (!linha[0] || linha[0].toString().trim() === '') continue;
+function mostrarBotaoAplicarATodos() {
+    const btnAplicar = document.getElementById('btnAplicarATodos');
+    if (btnAplicar) {
+        btnAplicar.style.display = 'block';
+    }
+}
 
-      let ultimaEtapaFormatada = '';
-      if (linha[4] && linha[4] instanceof Date) {
-        ultimaEtapaFormatada = formatarDataBrasil(linha[4]);
-      } else if (linha[4]) {
-        ultimaEtapaFormatada = linha[4].toString();
+
+function cadastrar() {
+  console.log("🎯 [DEBUG] Botão 'Cadastrar' clicado");
+  console.log("📝 Iniciando processo de cadastro...");
+  console.log("🎯 CADASTRAR: Iniciando cadastro no waitlabel:", waitlabelAtual);
+  
+  const camposInvalidos = validarCamposObrigatorios();
+  if (camposInvalidos.length > 0) {
+    showMessage('error', `❌ Preencha os campos obrigatórios: ${camposInvalidos.join(', ')}`);
+    return;
+  }
+
+  const fornecedoresSelecionados = document.querySelectorAll('input[name="fornecedor"]:checked');
+  if (fornecedoresSelecionados.length === 0) {
+    showMessage('error', '❌ Selecione pelo menos um fornecedor!');
+    return;
+  }
+
+  const dadosBase = coletarDadosFormulario();
+  if (!dadosBase) {
+    showMessage('error', '❌ Erro ao coletar dados do formulário');
+    return;
+  }
+
+  // 🔥🔥🔥 VALIDAÇÃO DA ETAPA - CORRIGIDA (APENAS PARA EM ANDAMENTO)
+  console.log("🎯 Validando etapa selecionada...");
+  const etapaSelecionada = dadosBase.etapa;
+  const situacaoSelecionada = dadosBase.situacao;
+
+  // 🔥 SÓ VALIDAR ETAPA SE A SITUAÇÃO FOR "EM ANDAMENTO"
+  const situacaoNormalizada = situacaoSelecionada ? situacaoSelecionada.toUpperCase().trim() : '';
+  const ehEmAndamento = situacaoNormalizada === 'EM ANDAMENTO';
+
+  if (ehEmAndamento) {
+    console.log("🔍 Situação é EM ANDAMENTO - validando etapa...");
+    
+    if (!etapaSelecionada) {
+      showMessage('error', '❌ Para situações "EM ANDAMENTO" o campo Etapa é obrigatório!');
+      
+      const inputEtapa = document.getElementById('inputEtapaSearch');
+      if (inputEtapa) {
+        inputEtapa.style.border = '2px solid var(--danger)';
+        inputEtapa.style.backgroundColor = '#fff5f5';
+        inputEtapa.focus();
+        inputEtapa.scrollIntoView({ behavior: 'smooth', block: 'center' });
       }
-      
-      let ativacaoFormatada = '';
-      if (linha[9] && linha[9] instanceof Date) {
-        ativacaoFormatada = Utilities.formatDate(linha[9], CONFIG.TIMEZONE, "dd/MM/yyyy");
-      } else if (linha[9]) {
-        ativacaoFormatada = linha[9].toString();
-      }
-      
-      const cadastro = {
-        id: i + 2,
-        razao_social: linha[0]?.toString().trim() || '',
-        nome_fantasia: linha[1]?.toString().trim() || '',
-        cnpj: formatarCNPJNoSheets(linha[2]?.toString().trim() || ''),
-        fornecedor: linha[3]?.toString().trim() || '',
-        ultima_etapa: ultimaEtapaFormatada,
-        etapa: linha[5]?.toString().trim() || '',
-        observacoes: linha[6]?.toString().trim() || '',
-        contrato_enviado: linha[7]?.toString().trim() || '',
-        contrato_assinado: linha[8]?.toString().trim() || '',
-        ativacao: ativacaoFormatada,
-        link: linha[10]?.toString().trim() || '',
-        mensalidade: parseFloat(linha[11]) || 0,
-        mensalidade_sim: parseFloat(linha[12]) || 0,
-        tarifa: linha[13]?.toString().trim() || '',
-        percentual_tarifa: linha[14]?.toString().trim() || '',
-        adesao: processarAdesao(linha[15]),
-        situacao: (linha[16]?.toString().trim() || 'Novo registro'),
-        waitlabel: waitlabel
-      };
-      
-      cadastros.push(cadastro);
+      return;
     }
     
-    return cadastros;
+    const etapasValidas = [
+      "PENDENTE FORNECEDOR(ES)",
+      "PENDENTE SIM", 
+      "PENDENTE WL",
+      "PENDENTE CLÍNICA/LOJA"
+    ];
     
-  } catch (error) {
-    console.error("❌ Erro em buscarTodosCadastrosComWaitlabel:", error);
-    return [];
+    if (!etapasValidas.includes(etapaSelecionada)) {
+      const mensagemErro = `❌ ETAPA INVÁLIDA PARA "EM ANDAMENTO"!\n\nA etapa "${etapaSelecionada}" não é válida.\n\n📋 ETAPAS VÁLIDAS:\n• PENDENTE FORNECEDOR(ES)\n• PENDENTE SIM\n• PENDENTE WL\n• PENDENTE CLÍNICA/LOJA`;
+      
+      showMessage('error', mensagemErro);
+      
+      const inputEtapa = document.getElementById('inputEtapaSearch');
+      const cardCadastro = document.getElementById('cardCadastro');
+      
+      if (inputEtapa) {
+        inputEtapa.style.border = '3px solid var(--danger)';
+        inputEtapa.style.backgroundColor = '#fff5f5';
+        inputEtapa.style.boxShadow = '0 0 10px rgba(220, 53, 69, 0.3)';
+        inputEtapa.focus();
+        inputEtapa.scrollIntoView({ behavior: 'smooth', block: 'center' });
+        
+        inputEtapa.style.animation = 'shake 0.5s ease-in-out';
+        setTimeout(() => {
+          inputEtapa.style.animation = '';
+        }, 500);
+      }
+      
+      if (cardCadastro) {
+        cardCadastro.style.border = '2px solid var(--danger)';
+        setTimeout(() => {
+          cardCadastro.style.border = '';
+        }, 2000);
+      }
+      
+      return;
+    }
+  } else {
+    console.log("✅ Situação não é EM ANDAMENTO - etapa não precisa ser validada");
   }
+
+  console.log("✅ Validação de etapa concluída, continuando com o cadastro...");
+  console.log("🔢 Fornecedores selecionados:", dadosBase.fornecedores.length);
+  console.log("📋 Lista de fornecedores:", dadosBase.fornecedores);
+
+  dadosBase.acao = 'cadastrar';
+
+  showLoading(`Cadastrando loja ${dadosBase.razao_social}...`, `Processando ${dadosBase.fornecedores.length} fornecedor(es)`);
+
+  const btnCadastrar = document.getElementById('btnCadastrar');
+  btnCadastrar.innerHTML = '<i class="fas fa-spinner fa-spin"></i> Cadastrando...';
+  btnCadastrar.disabled = true;
+
+  google.script.run
+    .withSuccessHandler(function(res) {
+      console.log("✅ [SUCESSO] Cadastro realizado com sucesso:", res);
+      
+      console.log("✅ Resposta do cadastro MULTIPLO:", res);
+      hideLoading();
+      
+      btnCadastrar.innerHTML = '<i class="fas fa-plus-circle"></i> Cadastrar';
+      btnCadastrar.disabled = false;
+      
+      if (res.success) {
+        showMessage('success', `✅ ${res.message} - ${res.registrosCriados} registro(s) criado(s)`);
+        limparFormulario();
+      } else {
+        showMessage('error', '❌ ' + res.message);
+      }
+    })
+    .withFailureHandler(function(error) {
+      console.error("❌ [ERRO] Falha no cadastro:", error);
+      
+      console.error("❌ Erro no cadastro:", error);
+      hideLoading();
+      
+      btnCadastrar.innerHTML = '<i class="fas fa-plus-circle"></i> Cadastrar';
+      btnCadastrar.disabled = false;
+      showMessage('error', '❌ Erro: ' + error.message);
+    })
+    .processarCadastroComWaitlabel(dadosBase, waitlabelAtual);
 }
 
-function buscarTodosCadastrosPorCNPJComWaitlabel(cnpj, waitlabel) {
-  try {
-    const ss = SpreadsheetApp.openById(CONFIG.ID_PLANILHA);
-    const aba = ss.getSheetByName(waitlabel);
-    if (!aba) return [];
+function atualizar() {
+  console.log("🎯 [DEBUG] Botão 'Atualizar' clicado");
+  console.log("✏️ Iniciando atualização do ID:", cadastroAtualId);
+  console.log("🎯 ATUALIZAR: Iniciando atualização no waitlabel:", waitlabelAtual);
+  
+  console.log("🔍 DEBUG 1: cadastroAtualId =", cadastroAtualId);
+  
+  if (!cadastroAtualId) {
+    showMessage('error', '❌ Nenhum cadastro selecionado para atualizar!');
+    return;
+  }
+
+  const camposInvalidos = validarCamposObrigatorios();
+  console.log("🔍 DEBUG 2: Campos inválidos:", camposInvalidos);
+  
+  if (camposInvalidos.length > 0) {
+    showMessage('error', `❌ Preencha os campos obrigatórios: ${camposInvalidos.join(', ')}`);
+    return;
+  }
+
+  const fornecedoresSelecionados = document.querySelectorAll('input[name="fornecedor"]:checked');
+  console.log("🔍 DEBUG 3: Fornecedores selecionados:", fornecedoresSelecionados.length);
+  
+  if (fornecedoresSelecionados.length === 0) {
+    showMessage('error', '❌ Selecione pelo menos um fornecedor!');
+    return;
+  }
+
+  console.log("🔍 DEBUG 4: Chamando coletarDadosFormulario()...");
+  const dados = coletarDadosFormulario();
+  console.log("🔍 DEBUG 5: Dados coletados:", dados);
+  
+  if (!dados) {
+    showMessage('error', '❌ Erro ao coletar dados do formulário');
+    return;
+  }
+  
+  // 🔥🔥🔥 VALIDAÇÃO DA ETAPA - CORRIGIDA (APENAS PARA EM ANDAMENTO)
+  console.log("🎯 Validando etapa selecionada...");
+  const etapaSelecionada = dados.etapa;
+  const situacaoSelecionada = dados.situacao;
+
+  // 🔥 SÓ VALIDAR ETAPA SE A SITUAÇÃO FOR "EM ANDAMENTO"
+  const situacaoNormalizada = situacaoSelecionada ? situacaoSelecionada.toUpperCase().trim() : '';
+  const ehEmAndamento = situacaoNormalizada === 'EM ANDAMENTO';
+
+  if (ehEmAndamento) {
+    console.log("🔍 Situação é EM ANDAMENTO - validando etapa...");
     
-    const ultimaLinha = aba.getLastRow();
-    if (ultimaLinha < 2) return [];
-    
-    const dados = aba.getRange(2, 1, ultimaLinha - 1, 17).getValues();
-    const cnpjBuscado = cnpj.toString().replace(/\D/g, '');
-    const cadastrosEncontrados = [];
-    
-    for (let i = 0; i < dados.length; i++) {
-      const linha = dados[i];
-      if (!linha[0] || linha[0].toString().trim() === '') continue;
+    if (!etapaSelecionada) {
+      showMessage('error', '❌ Para situações "EM ANDAMENTO" o campo Etapa é obrigatório!');
       
-      const cnpjCadastro = linha[2]?.toString().replace(/\D/g, '') || '';
+      const inputEtapa = document.getElementById('inputEtapaSearch');
+      if (inputEtapa) {
+        inputEtapa.style.border = '2px solid var(--danger)';
+        inputEtapa.style.backgroundColor = '#fff5f5';
+        inputEtapa.focus();
+        inputEtapa.scrollIntoView({ behavior: 'smooth', block: 'center' });
+      }
+      return;
+    }
+    
+    const etapasValidas = [
+      "PENDENTE FORNECEDOR(ES)",
+      "PENDENTE SIM", 
+      "PENDENTE WL",
+      "PENDENTE CLÍNICA/LOJA"
+    ];
+    
+    if (!etapasValidas.includes(etapaSelecionada)) {
+      const mensagemErro = `❌ ETAPA INVÁLIDA PARA "EM ANDAMENTO"!\n\nA etapa "${etapaSelecionada}" não é válida.\n\n📋 ETAPAS VÁLIDAS:\n• PENDENTE FORNECEDOR(ES)\n• PENDENTE SIM\n• PENDENTE WL\n• PENDENTE CLÍNICA/LOJA`;
       
-      if (cnpjCadastro === cnpjBuscado) {
-        let ultimaEtapaFormatada = '';
-        if (linha[4] && linha[4] instanceof Date) {
-          ultimaEtapaFormatada = formatarDataBrasil(linha[4]);
-        } else if (linha[4]) {
-          ultimaEtapaFormatada = linha[4].toString();
+      showMessage('error', mensagemErro);
+      
+      const inputEtapa = document.getElementById('inputEtapaSearch');
+      const cardCadastro = document.getElementById('cardCadastro');
+      
+      if (inputEtapa) {
+        inputEtapa.style.border = '3px solid var(--danger)';
+        inputEtapa.style.backgroundColor = '#fff5f5';
+        inputEtapa.style.boxShadow = '0 0 10px rgba(220, 53, 69, 0.3)';
+        inputEtapa.focus();
+        inputEtapa.scrollIntoView({ behavior: 'smooth', block: 'center' });
+        
+        inputEtapa.style.animation = 'shake 0.5s ease-in-out';
+        setTimeout(() => {
+          inputEtapa.style.animation = '';
+        }, 500);
+      }
+      
+      if (cardCadastro) {
+        cardCadastro.style.border = '2px solid var(--danger)';
+        setTimeout(() => {
+          cardCadastro.style.border = '';
+        }, 2000);
+      }
+      
+      return;
+    }
+  } else {
+    console.log("✅ Situação não é EM ANDAMENTO - etapa não precisa ser validada");
+  }
+
+  console.log("✅ Validação de etapa concluída, continuando com a atualização...");
+  
+  dados.acao = 'atualizar';
+  dados.id = cadastroAtualId;
+  
+  console.log("📤 Dados para atualização:", dados);
+
+  showLoading(`Atualizando loja ${dados.razao_social}...`, `Processando alterações nos dados`);
+
+  const btnAtualizar = document.getElementById('btnAtualizar');
+  const btnOriginalHTML = btnAtualizar.innerHTML;
+  btnAtualizar.innerHTML = '<i class="fas fa-spinner fa-spin"></i> Atualizando...';
+  btnAtualizar.disabled = true;
+
+  console.log("🔍 DEBUG 6: Chamando Google Apps Script...");
+
+  google.script.run
+    .withSuccessHandler(function(res) {
+      console.log("✅ [SUCESSO] Atualização realizada com sucesso:", res);
+      
+      console.log("✅ DEBUG 7: Resposta da atualização:", res);
+      hideLoading();
+      
+      btnAtualizar.innerHTML = btnOriginalHTML;
+      btnAtualizar.disabled = false;
+      
+      if (res && res.success) {
+        showMessage('success', '✅ ' + res.message);
+        
+        if (document.getElementById('secaoCadastros').style.display === 'block') {
+          mostrarTodosCadastros();
         }
         
-        let ativacaoFormatada = '';
-        if (linha[9] && linha[9] instanceof Date) {
-          ativacaoFormatada = Utilities.formatDate(linha[9], CONFIG.TIMEZONE, "dd/MM/yyyy");
-        } else if (linha[9]) {
-          ativacaoFormatada = linha[9].toString();
+        limparFormulario();
+      } else {
+        showMessage('error', '❌ ' + (res ? res.message : 'Resposta inválida do servidor'));
+      }
+    })
+    .withFailureHandler(function(error) {
+      console.error("❌ [ERRO] Falha na atualização:", error);
+      
+      console.error("❌ DEBUG 8: Erro na atualização:", error);
+      hideLoading();
+      
+      btnAtualizar.innerHTML = btnOriginalHTML;
+      btnAtualizar.disabled = false;
+      showMessage('error', '❌ Erro ao atualizar: ' + error.message);
+    })
+    .processarCadastroComWaitlabel(dados, waitlabelAtual);
+}
+
+function mostrarTodosCadastros() {
+  console.log("🎯 [DEBUG] Botão 'Ver Todos os Cadastros' clicado");
+  console.log("🔄 Carregando dados do waitlabel:", waitlabelAtual);
+
+  // 🔥 ADICIONE ESTAS 2 LINHAS AQUI:
+  showLoading(`Carregando dados da loja ${formatarNomeWaitlabel(waitlabelAtual)}...`, "Buscando todos os cadastros");
+  
+  const loading = document.getElementById('loadingCadastros');
+  
+  showLoading(`Carregando cadastros do ${formatarNomeWaitlabel(waitlabelAtual)}...`, "Buscando todos os registros");
+  
+  
+  const tableContainer = document.getElementById('tableContainer');
+  const filtrosContainer = document.getElementById('filtrosContainer');
+  const secao = document.getElementById('secaoCadastros');
+
+  loading.style.display = 'flex';
+  tableContainer.style.display = 'none';
+  filtrosContainer.style.display = 'none';
+  secao.style.display = 'block';
+
+  limparTodosFiltros();
+
+  google.script.run
+    .withSuccessHandler(function(cadastros) {
+      console.log("✅ [SUCESSO] Cadastros carregados:", cadastros?.length || 0, "registros");
+      
+      hideLoading();
+      
+      console.log("✅ Cadastros recebidos:", cadastros);
+      
+      if (cadastros && cadastros.length > 0) {
+        todosCadastros = cadastros;
+        cadastrosFiltrados = [...cadastros];
+        
+        // 🔥 DEFINIR ORDENAÇÃO POR RAZÃO SOCIAL POR PADRÃO
+        document.getElementById('ordenacaoCadastros').value = 'razao_social';
+        
+        // 🔥 CHAMAR A FUNÇÃO DE ORDENAÇÃO PARA APLICAR O PADRÃO
+        ordenarCadastros();
+        
+        document.getElementById('filtrosContainer').style.display = 'flex';
+        
+        showMessage('success', `✅ ${cadastros.length} cadastros carregados do ${formatarNomeWaitlabel(waitlabelAtual)}!`);
+      } else {
+        loading.style.display = 'none';
+        tableContainer.style.display = 'block';
+        document.getElementById('tabelaCadastrosBody').innerHTML = `
+          <tr>
+            <td colspan="9" style="text-align: center; padding: 30px;">
+              <i class="fas fa-inbox" style="font-size: 2.5rem; color: var(--gray); margin-bottom: 12px;"></i>
+              <h3>Nenhum cadastro encontrado</h3>
+              <p>Não há cadastros no waitlabel ${formatarNomeWaitlabel(waitlabelAtual)}.</p>
+            </td>
+          </tr>
+        `;
+        showMessage('info', `📝 Nenhum cadastro encontrado no ${formatarNomeWaitlabel(waitlabelAtual)}.`);
+      }
+    })
+    .withFailureHandler(function(error) {
+      console.error("❌ [ERRO] Falha ao carregar cadastros:", error);
+      
+      hideLoading();
+      
+      console.error("❌ Erro ao carregar cadastros:", error);
+      loading.style.display = 'none';
+      showMessage('error', '❌ Erro ao carregar cadastros: ' + error.message);
+    })
+    .buscarTodosCadastrosComWaitlabel(waitlabelAtual);
+}
+
+function formatarMoeda(input) {
+  let value = input.value.replace(/\D/g, '');
+  value = (value / 100).toFixed(2);
+  value = value.replace('.', ',');
+  value = value.replace(/(\d)(?=(\d{3})+\,)/g, "$1.");
+  input.value = 'R$ ' + value;
+}
+
+function formatarMoedaParaInput(valor) {
+  if (!valor) return 'R$ 0,00';
+  const numero = typeof valor === 'number' ? valor : parseFloat(valor);
+  return 'R$ ' + numero.toLocaleString('pt-BR', { minimumFractionDigits: 2 });
+}
+
+function showMessage(type, text) {
+  const successEl = document.getElementById('messageSuccess');
+  const errorEl = document.getElementById('messageError');
+  const infoEl = document.getElementById('messageInfo');
+
+  successEl.style.display = 'none';
+  errorEl.style.display = 'none';
+  infoEl.style.display = 'none';
+
+  if (type === 'success') {
+    successEl.querySelector('span').textContent = text;
+    successEl.style.display = 'flex';
+  } else if (type === 'error') {
+    errorEl.querySelector('span').textContent = text;
+    errorEl.style.display = 'flex';
+  } else if (type === 'info') {
+    infoEl.querySelector('span').textContent = text;
+    infoEl.style.display = 'flex';
+  }
+
+  setTimeout(() => {
+    successEl.style.display = 'none';
+    errorEl.style.display = 'none';
+    infoEl.style.display = 'none';
+  }, 5000);
+}
+
+function padronizarNomeFornecedor(nome) {
+  if (!nome) return '';
+  
+  const fornecedoresPadronizados = {
+    'agil': 'AGIL',
+    'bc': 'BC', 
+    'parcelex': 'PARCELEX',
+    'agoracred': 'AGORACRED',
+    'afinz': 'AFINZ'
+  };
+  
+  const nomeLower = nome.toLowerCase();
+  return fornecedoresPadronizados[nomeLower] || nome.toUpperCase();
+}
+
+function coletarDadosFormulario() {
+  console.log("🔍 COLETANDO DADOS - INICIANDO");
+  
+  try {
+    const razaoSocial = document.getElementById('razao_social').value.trim();
+    const cnpj = document.getElementById('cnpj_cadastro').value.trim();
+    
+    if (!razaoSocial || !cnpj) {
+      showMessage('error', '❌ Razão Social e CNPJ são obrigatórios!');
+      return null;
+    }
+
+    const cnpjInput = document.getElementById('cnpj_cadastro');
+    const cnpjFormatado = cnpjInput.value;
+
+    let adesaoValue = document.getElementById('adesao').value;
+    console.log("💰 Adesão original:", adesaoValue);
+
+    if (adesaoValue === 'R$ 0,00' || adesaoValue === '0,00' || adesaoValue === '0' || adesaoValue === 'R$ 0') {
+      adesaoValue = 0;
+      console.log("✅ Adesão definida como isenta (0)");
+    } else {
+      adesaoValue = converterMoedaParaNumero(adesaoValue);
+      console.log("✅ Adesão convertida para número:", adesaoValue);
+    }
+    console.log("🎯🎯🎯 ADESÃO FINAL PARA ENVIO:", adesaoValue, "Tipo:", typeof adesaoValue);
+
+    const etapaValue = document.getElementById('inputEtapaSearch').value || 
+                       document.getElementById('etapa').value || '';
+    console.log("✅ Etapa coletada:", etapaValue);
+
+    // 🔥 VALIDAÇÃO OBRIGATÓRIA DA ETAPA
+    if (!etapaValue) {
+      showMessage('error', '❌ O campo Etapa é obrigatório!');
+      return null;
+    }
+
+    const checkboxesFornecedores = document.querySelectorAll('input[name="fornecedor"]:checked');
+    const fornecedoresComConfiguracoes = [];
+
+    if (checkboxesFornecedores.length === 0) {
+      showMessage('error', '❌ Selecione pelo menos um fornecedor!');
+      return null;
+    }
+
+    checkboxesFornecedores.forEach(checkbox => {
+      const fornecedorNome = checkbox.value;
+      const fornecedorPadronizado = padronizarNomeFornecedor(fornecedorNome);
+      const fornecedorId = fornecedorNome.toLowerCase();
+      
+      const configDiv = document.getElementById(`config-${fornecedorId}`);
+      if (!configDiv || configDiv.style.display !== 'grid') {
+        console.warn(`❌ Fornecedor ${fornecedorNome} não tem configuração ativa!`);
+        return;
+      }
+      
+      const tarifaRadio = document.querySelector(`input[name="tarifa_${fornecedorId}"]:checked`);
+      const percentualInput = document.querySelector(`input[name^="percentual_${fornecedorId}"]`);
+      
+      let tarifaSelecionada = tarifaRadio ? tarifaRadio.value : 'MDR';
+      let percentualSelecionado = percentualInput ? percentualInput.value : '0%';
+
+      console.log("🔥 VALOR DO INPUT:", percentualSelecionado);
+      
+      if (!tarifaRadio) {
+        const radioMDR = document.querySelector(`input[name="tarifa_${fornecedorId}"][value="MDR"]`);
+        if (radioMDR) {
+          radioMDR.checked = true;
+          console.log(`✅ MDR selecionado automaticamente para ${fornecedorNome}`);
+        }
+      }
+      
+      let percentualNumerico = converterPercentualParaNumero(percentualSelecionado);
+
+      fornecedoresComConfiguracoes.push({
+          nome: fornecedorPadronizado,
+          tarifa: tarifaSelecionada,
+          percentual_tarifa: percentualNumerico,
+          percentual_exibicao: percentualSelecionado
+      });
+    });
+
+    const dados = {
+      razao_social: razaoSocial,
+      nome_fantasia: document.getElementById('nome_fantasia').value,
+      cnpj: cnpjFormatado,
+      adesao: adesaoValue,
+      fornecedores: fornecedoresComConfiguracoes,
+      fornecedor: fornecedoresComConfiguracoes.length > 0 ? fornecedoresComConfiguracoes[0].nome : '',
+      tarifa: fornecedoresComConfiguracoes.length > 0 ? fornecedoresComConfiguracoes[0].tarifa : '',
+      percentual_tarifa: fornecedoresComConfiguracoes.length > 0 ? fornecedoresComConfiguracoes[0].percentual_tarifa : '0%',
+      observacoes: document.getElementById('observacoes').value,
+      contrato_enviado: document.getElementById('contrato_enviado').value,
+      contrato_assinado: document.getElementById('contrato_assinado').value,
+      ativacao: document.getElementById('ativacao').value,
+      link: document.getElementById('link').value,
+      mensalidade: converterMoedaParaNumero(document.getElementById('mensalidade').value),
+      mensalidade_sim: converterMoedaParaNumero(document.getElementById('mensalidade_sim').value),
+      situacao: document.getElementById('situacao').value,
+      etapa: etapaValue,
+      // 🔥🔥🔥 CORREÇÃO CRÍTICA: NÃO ENVIAR DATA FIXA - DEIXAR O BACKEND GERAR
+      // ❌ REMOVIDO: ultima_etapa: new Date().toLocaleString('pt-BR')
+      // ✅ AGORA: O backend vai gerar a data atual individual para cada registro
+    };
+
+    console.log("📦 DADOS FINAIS PARA ENVIO (SEM DATA FIXA):", dados);
+    return dados;
+
+  } catch (error) {
+    console.error("❌ ERRO CRÍTICO ao coletar dados:", error);
+    showMessage('error', '❌ Erro interno ao processar formulário');
+    return null;
+  }
+}
+
+function formatarPercentualParaExibicao(percentual) {
+    if (!percentual && percentual !== 0) return '';
+    
+    console.log("🎨 Formatando para exibição:", percentual, "Tipo:", typeof percentual);
+    
+    try {
+        if (typeof percentual === 'string') {
+            if (percentual.match(/^\d*\.?\d+$/)) {
+                console.log("✅ String numérica detectada, convertendo:", percentual);
+                const numero = parseFloat(percentual);
+                if (!isNaN(numero)) {
+                    const valorFormatado = numero * 100;
+                    const valorString = valorFormatado.toFixed(2);
+                    const valorFinal = valorString.replace('.', ',') + '%';
+                    console.log("✅ String convertida:", percentual + " → " + valorFinal);
+                    return valorFinal;
+                }
+            }
+            if (percentual.includes('%')) {
+                console.log("✅ Valor com % - retornando como está:", percentual);
+                return percentual;
+            }
+            console.log("✅ String sem % - adicionando %:", percentual + '%');
+            return percentual + '%';
         }
         
-        const cadastro = {
-          id: i + 2,
-          razao_social: linha[0]?.toString().trim() || '',
-          nome_fantasia: linha[1]?.toString().trim() || '',
-          cnpj: formatarCNPJNoSheets(linha[2]?.toString().trim() || ''),
-          fornecedor: linha[3]?.toString().trim() || '',
-          ultima_etapa: ultimaEtapaFormatada,
-          etapa: linha[5]?.toString().trim() || '',
-          observacoes: linha[6]?.toString().trim() || '',
-          contrato_enviado: linha[7]?.toString().trim() || '',
-          contrato_assinado: linha[8]?.toString().trim() || '',
-          ativacao: ativacaoFormatada,
-          link: linha[10]?.toString().trim() || '',
-          mensalidade: parseFloat(linha[11]) || 0,
-          mensalidade_sim: parseFloat(linha[12]) || 0,
-          tarifa: linha[13]?.toString().trim() || '',
-          percentual_tarifa: linha[14]?.toString().trim() || '',
-          adesao: processarAdesao(linha[15]),
-          situacao: (linha[16]?.toString().trim() || 'Novo registro'),
-          waitlabel: waitlabel
-        };
+        if (typeof percentual === 'number') {
+            let valorFormatado = percentual * 100;
+            const valorString = valorFormatado.toFixed(2);
+            const valorFinal = valorString.replace('.', ',') + '%';
+            console.log("✅ Número convertido:", percentual + " → " + valorFinal);
+            return valorFinal;
+        }
         
-        cadastrosEncontrados.push(cadastro);
-      }
+        return String(percentual);
+        
+    } catch (error) {
+        console.error("❌ Erro ao formatar percentual:", error);
+        return String(percentual || '');
     }
-    
-    return cadastrosEncontrados;
-    
-  } catch (error) {
-    console.error("❌ Erro em buscarTodosCadastrosPorCNPJComWaitlabel:", error);
-    return [];
-  }
 }
 
-function buscarCadastroPorIDComWaitlabel(id, waitlabel) {
-  try {
-    const ss = SpreadsheetApp.openById(CONFIG.ID_PLANILHA);
-    const aba = ss.getSheetByName(waitlabel);
-    if (!aba) return { encontrado: false, mensagem: "Waitlabel não encontrado" };
+function converterPercentualParaNumero(valorInput) {
+    if (!valorInput) return 0;
+    console.log("🔢 Convertendo para número:", valorInput);
     
-    const ultimaLinha = aba.getLastRow();
-    if (ultimaLinha < id) return { encontrado: false, mensagem: "Registro não encontrado" };
-    
-    const linha = aba.getRange(id, 1, 1, 17).getValues()[0];
-    
-    if (!linha[0] || linha[0].toString().trim() === '') {
-      return { encontrado: false, mensagem: "Registro vazio ou não encontrado" };
+    try {
+        let valor = valorInput.toString();
+        valor = valor.replace('%', '').replace(/\s/g, '').trim();
+        valor = valor.replace(',', '.');
+        
+        const numero = parseFloat(valor);
+        
+        if (isNaN(numero)) {
+            console.log("❌ Não é um número válido:", valorInput);
+            return 0;
+        }
+        
+        if (valorInput.toString().includes('%')) {
+            const resultado = numero / 100;
+            console.log("✅ Convertido % para decimal:", valorInput, "→", resultado);
+            return resultado;
+        }
+        
+        console.log("✅ Já está em decimal:", valorInput, "→", numero);
+        return numero;
+        
+    } catch (error) {
+        console.error("❌ Erro ao converter percentual:", error);
+        return 0;
     }
-
-    let ultimaEtapaFormatada = '';
-    if (linha[4] && linha[4] instanceof Date) {
-      ultimaEtapaFormatada = formatarDataBrasil(linha[4]);
-    } else if (linha[4]) {
-      ultimaEtapaFormatada = linha[4].toString();
-    }
-    
-    let ativacaoFormatada = '';
-    if (linha[9] && linha[9] instanceof Date) {
-      ativacaoFormatada = Utilities.formatDate(linha[9], CONFIG.TIMEZONE, "yyyy-MM-dd");
-    } else if (linha[9]) {
-      if (linha[9].includes('/')) {
-        const partes = linha[9].split('/');
-        ativacaoFormatada = `${partes[2]}-${partes[1]}-${partes[0]}`;
-      } else {
-        ativacaoFormatada = linha[9].toString();
-      }
-    }
-
-    let tarifa = linha[13]?.toString().trim() || '';
-    let percentualTarifa = '0%';
-    if (linha[14] !== null && linha[14] !== undefined && linha[14] !== '') {
-      const valor = parseFloat(linha[14]);
-      if (!isNaN(valor)) {
-        percentualTarifa = (valor * 100).toFixed(2) + '%';
-      } else {
-        percentualTarifa = linha[14]?.toString().trim() || '0%';
-      }
-    }
-
-    const fornecedorParaFormulario = {
-      nome: linha[3]?.toString().trim() || '',
-      tarifa: tarifa,
-      percentual_tarifa: percentualTarifa
-    };
-    
-    const resultado = {
-      encontrado: true,
-      id: id,
-      razao_social: linha[0]?.toString().trim() || '',
-      nome_fantasia: linha[1]?.toString().trim() || '',
-      cnpj: formatarCNPJNoSheets(linha[2]?.toString().trim() || ''),
-      fornecedor: linha[3]?.toString().trim() || '',
-      fornecedores: [fornecedorParaFormulario],
-      ultima_etapa: ultimaEtapaFormatada,
-      etapa: linha[5]?.toString().trim() || '',
-      observacoes: linha[6]?.toString().trim() || '',
-      contrato_enviado: linha[7]?.toString().trim() || '',
-      contrato_assinado: linha[8]?.toString().trim() || '',
-      ativacao: ativacaoFormatada,
-      link: linha[10]?.toString().trim() || '',
-      mensalidade: parseFloat(linha[11]) || 0,
-      mensalidade_sim: parseFloat(linha[12]) || 0,
-      tarifa: tarifa,
-      percentual_tarifa: percentualTarifa,
-      adesao: processarAdesao(linha[15]),
-      situacao: (linha[16]?.toString().trim() || 'Novo registro'),
-      waitlabel: waitlabel
-    };
-
-    return resultado;
-    
-  } catch (error) {
-    console.error("❌ Erro em buscarCadastroPorIDComWaitlabel:", error);
-    return { encontrado: false, mensagem: "Erro: " + error.message };
-  }
 }
 
-// 🔥 FUNÇÕES AUXILIARES
-function processarAdesao(valorAdesao) {
-  if (!valorAdesao && valorAdesao !== 0) return 'Isento';
-  const valorStr = valorAdesao.toString().trim();
-  if (valorStr === 'Isento' || valorStr === '0' || valorStr === '0.00' || valorStr === 'R$ 0,00') {
-    return 'Isento';
-  }
-  const numero = parseFloat(valorStr);
-  if (!isNaN(numero)) {
-    return numero;
-  }
-  return valorStr;
+function validarPercentuais() {
+    const inputsPercentual = document.querySelectorAll('input[name^="percentual_"]');
+    let todosValidos = true;
+    
+    inputsPercentual.forEach(input => {
+        if (input.closest('.fornecedor-item').style.display === 'grid') {
+            const valor = input.value.trim();
+            if (valor && !valor.match(/^\d+[,]?\d*%$/)) {
+                input.style.borderColor = 'var(--danger)';
+                todosValidos = false;
+                console.log("❌ Percentual inválido:", valor);
+            } else {
+                input.style.borderColor = '';
+            }
+        }
+    });
+    
+    return todosValidos;
 }
 
-function processarAdesaoParaSalvar(valorAdesao) {
-  if (!valorAdesao && valorAdesao !== 0) return 0;
-  if (typeof valorAdesao === 'number') return valorAdesao;
+function toggleFornecedorConfig(checkbox, fornecedorId) {
+  const configDiv = document.getElementById(`config-${fornecedorId}`);
   
-  const valorStr = valorAdesao.toString().trim();
-  if (valorStr === 'Isento' || valorStr === '0' || valorStr === '0.00' || valorStr === 'R$ 0,00') {
-    return 0;
+  if (checkbox.checked) {
+    configDiv.style.display = 'grid';
+  } else {
+    configDiv.style.display = 'none';
+    const radios = configDiv.querySelectorAll('input[type="radio"]');
+    radios.forEach(radio => radio.checked = false);
+    const select = configDiv.querySelector('select');
+    if (select) select.value = '0%';
   }
   
-  try {
-    const valorLimpo = valorStr
-      .replace('R$', '')
-      .replace(/\./g, '')
-      .replace(',', '.')
-      .trim();
-    
-    const numero = parseFloat(valorLimpo);
-    return isNaN(numero) ? 0 : numero;
-    
-  } catch (error) {
-    console.error("Erro ao processar adesão:", error);
-    return 0;
+  atualizarTarifaPrincipal();
+}
+
+function atualizarTarifaPrincipal() {
+  const checkboxesFornecedores = document.querySelectorAll('input[name="fornecedor"]:checked');
+  if (checkboxesFornecedores.length > 0) {
+    const primeiroFornecedor = checkboxesFornecedores[0].value.toLowerCase();
   }
 }
 
 function converterMoedaParaNumero(valorMoeda) {
   if (!valorMoeda) return 0;
+  
   try {
-    if (typeof valorMoeda === 'number') return valorMoeda;
+    console.log("🔢 CONVERTENDO MOEDA - Valor original:", valorMoeda, "Tipo:", typeof valorMoeda);
+    
+    if (typeof valorMoeda === 'number') {
+      console.log("✅ Já é número, retornando:", valorMoeda);
+      return valorMoeda;
+    }
+    
     if (typeof valorMoeda === 'string') {
-      const valorLimpo = valorMoeda
+      let valorLimpo = valorMoeda
         .replace('R$', '')
         .replace(/\./g, '')
         .replace(',', '.')
         .trim();
+      
+      console.log("🔧 Valor limpo:", valorLimpo);
+      
       const numero = parseFloat(valorLimpo);
-      return isNaN(numero) ? 0 : numero;
+      
+      if (isNaN(numero)) {
+        console.log("❌ Não é um número válido:", valorLimpo);
+        return 0;
+      }
+      
+      console.log("✅ Número convertido (SEM multiplicação):", numero);
+      return numero;
     }
+    
     return parseFloat(valorMoeda) || 0;
+    
   } catch (error) {
-    console.error("❌ Erro ao converter moeda:", valorMoeda, error);
+    console.error("❌ ERRO CRÍTICO ao converter moeda:", valorMoeda, error);
     return 0;
   }
 }
 
-function normalizarTexto(texto) {
-  if (!texto || typeof texto !== 'string') return texto;
-  return texto
-    .normalize('NFD')
-    .replace(/[\u0300-\u036f]/g, '')
-    .toUpperCase()
-    .trim();
-}
+function preencherDadosCadastro(dados) {
+  console.log("🎯 PREENCHER DADOS CADASTRO: Iniciando CORRETAMENTE");
+  console.log("📦 Dados recebidos:", dados);
 
-function formatarCNPJNoSheets(cnpj) {
-  if (!cnpj) return '';
-  if (cnpj.toString().includes('.') || cnpj.toString().includes('/') || cnpj.toString().includes('-')) {
-    return cnpj.toString();
+  if (!dados.encontrado) {
+    showMessage('error', '❌ ' + dados.mensagem);
+    return;
   }
-  const cnpjStr = cnpj.toString().replace(/\D/g, '');
-  if (cnpjStr.length === 14) {
-    return cnpjStr.replace(/^(\d{2})(\d{3})(\d{3})(\d{4})(\d{2})/, '$1.$2.$3/$4-$5');
-  }
-  return cnpj;
-}
 
-// 🔥 FUNÇÕES DE EXCLUSÃO
-function excluirTodosFornecedoresCNPJ(cnpj) {
   try {
-    const waitlabelAtual = getWaitlabelAtual();
-    const ss = SpreadsheetApp.openById(CONFIG.ID_PLANILHA);
-    const aba = ss.getSheetByName(waitlabelAtual);
+    preencherCampoSeExistir('razao_social', dados.razao_social);
+    preencherCampoSeExistir('nome_fantasia', dados.nome_fantasia);
+    preencherCampoSeExistir('cnpj_cadastro', dados.cnpj);
+    preencherCampoSeExistir('observacoes', dados.observacoes);
+    preencherCampoSeExistir('contrato_enviado', dados.contrato_enviado);
+    preencherCampoSeExistir('contrato_assinado', dados.contrato_assinado);
+    preencherCampoSeExistir('ativacao', dados.ativacao);
+    preencherCampoSeExistir('link', dados.link);
+    preencherCampoSeExistir('situacao', dados.situacao || 'NOVO REGISTRO');
     
-    if (!aba) {
-      return { success: false, message: "Waitlabel não encontrado" };
+    preencherCampoSeExistir('mensalidade', formatarMoedaParaInput(dados.mensalidade));
+    preencherCampoSeExistir('mensalidade_sim', formatarMoedaParaInput(dados.mensalidade_sim));
+    preencherCampoSeExistir('adesao', dados.adesao === 'Isento' || dados.adesao === 0 ? 'R$ 0,00' : formatarMoedaParaInput(dados.adesao));
+    
+    console.log("🎯 PREENCHENDO ETAPAS CORRETAMENTE:");
+    console.log("Etapa (deve ser TEXTO):", dados.etapa);
+    console.log("Última Etapa (deve ser DATA):", dados.ultima_etapa);
+    
+    preencherCampoSeExistir('inputEtapaSearch', dados.etapa);
+    preencherCampoSeExistir('inputUltimaEtapa', dados.ultima_etapa);
+    
+    preencherFornecedorComTarifas(dados);
+
+    cadastroAtualId = dados.id;
+    
+    const btnCadastrar = document.getElementById('btnCadastrar');
+    const btnAtualizar = document.getElementById('btnAtualizar');
+    
+    if (btnCadastrar) btnCadastrar.style.display = 'none';
+    if (btnAtualizar) btnAtualizar.style.display = 'block';
+
+    setTimeout(() => {
+      window.scrollTo({ top: 0, behavior: 'smooth' });
+    }, 100);
+    
+    console.log("✅✅✅ Formulário preenchido COM SUCESSO!");
+    showMessage('success', '✅ Cadastro carregado para edição!');
+    
+  } catch (error) {
+    console.error("❌ Erro ao preencher formulário:", error);
+    showMessage('error', '❌ Erro ao carregar cadastro: ' + error.message);
+  }
+}
+
+function preencherCampoSeExistir(campoId, valor) {
+  const campo = document.getElementById(campoId);
+  if (campo) {
+    campo.value = valor || '';
+    console.log(`✅ Campo ${campoId} preenchido:`, valor);
+  } else {
+    console.log(`⚠️ Campo ${campoId} não encontrado no HTML`);
+  }
+}
+
+function validarCamposObrigatorios() {
+  console.log("🔍 Validando campos obrigatórios...");
+  
+  document.querySelectorAll('.campo-obrigatorio').forEach(campo => {
+    campo.classList.remove('campo-obrigatorio');
+  });
+
+  let camposInvalidos = [];
+
+  const isAtualizacao = cadastroAtualId !== null;
+  
+  console.log("🔍 Modo:", isAtualizacao ? "ATUALIZAÇÃO" : "CADASTRO");
+
+  const camposSempreObrigatorios = [
+    { 
+      id: 'razao_social', 
+      nome: 'Razão Social', 
+      elemento: document.getElementById('razao_social'),
+      tipo: 'text'
+    },
+    { 
+      id: 'cnpj_cadastro', 
+      nome: 'CNPJ', 
+      elemento: document.getElementById('cnpj_cadastro'),
+      tipo: 'text'
+    },
+    { 
+      id: 'mensalidade', 
+      nome: 'Mensalidade', 
+      elemento: document.getElementById('mensalidade'),
+      tipo: 'moeda'
+    },
+    { 
+      id: 'situacao', 
+      nome: 'Situação', 
+      elemento: document.getElementById('situacao'),
+      tipo: 'select'
     }
-    
-    const ultimaLinha = aba.getLastRow();
-    if (ultimaLinha < 2) {
-      return { success: false, message: "Nenhum cadastro encontrado" };
+    // 🔥 REMOVIDO: A etapa NÃO está mais aqui como sempre obrigatória
+  ];
+
+  const camposApenasCadastro = [
+    { 
+      id: 'contrato_enviado', 
+      nome: 'Contrato Enviado', 
+      elemento: document.getElementById('contrato_enviado'),
+      tipo: 'select'
+    },
+    { 
+      id: 'contrato_assinado', 
+      nome: 'Contrato Assinado', 
+      elemento: document.getElementById('contrato_assinado'),
+      tipo: 'select'
     }
-    
-    const dados = aba.getRange(2, 1, ultimaLinha - 1, 17).getValues();
-    const cnpjBuscado = cnpj.toString().replace(/\D/g, '');
-    
-    const linhasParaExcluir = [];
-    
-    for (let i = dados.length - 1; i >= 0; i--) {
-      const linha = dados[i];
-      const cnpjCadastro = linha[2]?.toString().replace(/\D/g, '') || '';
+  ];
+
+  let camposParaValidar = [...camposSempreObrigatorios];
+  
+  if (!isAtualizacao) {
+    camposParaValidar = [...camposParaValidar, ...camposApenasCadastro];
+  }
+
+  // 🔥🔥🔥 VALIDAÇÃO INTELIGENTE DA ETAPA: Só é obrigatória se situação for EM ANDAMENTO
+  const situacaoSelecionada = document.getElementById('situacao').value;
+  const situacaoNormalizada = situacaoSelecionada ? situacaoSelecionada.toUpperCase().trim() : '';
+  const ehEmAndamento = situacaoNormalizada === 'EM ANDAMENTO';
+  
+  console.log("🎯 Situação selecionada:", situacaoSelecionada, "É EM ANDAMENTO?", ehEmAndamento);
+  
+  if (ehEmAndamento) {
+    console.log("🔍 Situação é EM ANDAMENTO - etapa se torna obrigatória");
+    camposParaValidar.push({
+      id: 'inputEtapaSearch', 
+      nome: 'Etapa',
+      elemento: document.getElementById('inputEtapaSearch'),
+      tipo: 'text'
+    });
+  } else {
+    console.log("✅ Situação não é EM ANDAMENTO - etapa não é obrigatória");
+  }
+
+  for (const campo of camposParaValidar) {
+    let valor = campo.elemento.value;
+    let estaVazio = false;
+
+    switch(campo.tipo) {
+      case 'select':
+        estaVazio = !valor || valor === '' || valor === '-- Selecione --';
+        break;
+      case 'moeda':
+          estaVazio = !valor || valor.toString().trim() === '';
+        break;
+      default:
+        estaVazio = !valor || valor.toString().trim() === '';
+    }
+
+    if (estaVazio) {
+      campo.elemento.classList.add('campo-obrigatorio');
+      camposInvalidos.push(campo.nome);
       
-      if (cnpjCadastro === cnpjBuscado) {
-        linhasParaExcluir.push(i + 2);
+      if (camposInvalidos.length === 1) {
+        campo.elemento.scrollIntoView({ behavior: 'smooth', block: 'center' });
       }
     }
+  }
+
+  console.log(`📊 Validação: ${camposInvalidos.length} campos inválidos`);
+  console.log(`🔍 Campos inválidos:`, camposInvalidos);
+  return camposInvalidos;
+}
+
+function preencherFornecedorComTarifas(dados) {
+  console.log("🔧 PREENCHER FORNECEDOR - INICIANDO");
+  console.log("📦 Dados recebidos:", dados);
+  
+  const checkboxes = document.querySelectorAll('input[name="fornecedor"]');
+  checkboxes.forEach(cb => {
+    cb.checked = false;
+    const fornecedorId = cb.value.toLowerCase();
+    const configDiv = document.getElementById(`config-${fornecedorId}`);
+    if (configDiv) {
+      configDiv.style.display = 'none';
+      const radios = configDiv.querySelectorAll('input[type="radio"]');
+      radios.forEach(radio => radio.checked = false);
+      
+      const percentualInput = configDiv.querySelector(`input[name^="percentual_"]`);
+      if (percentualInput) {
+        percentualInput.value = '';
+      }
+    }
+  });
+  
+  if (!dados.fornecedor) {
+    console.log("ℹ️ Nenhum fornecedor para preencher");
+    return;
+  }
+  
+  const fornecedorBuscado = dados.fornecedor.toUpperCase().trim();
+  console.log("🎯 Buscando fornecedor:", fornecedorBuscado);
+  
+  let checkboxEncontrado = null;
+  
+  checkboxes.forEach(cb => {
+    const checkboxValor = cb.value.toUpperCase().trim();
+    console.log(`🔍 Comparando: "${checkboxValor}" com "${fornecedorBuscado}"`);
     
-    linhasParaExcluir.forEach(linha => {
-      try {
-        aba.deleteRow(linha);
-      } catch (erroExclusao) {
-        console.error(`❌ Erro ao excluir linha ${linha}:`, erroExclusao);
+    if (checkboxValor === fornecedorBuscado) {
+      checkboxEncontrado = cb;
+    }
+  });
+  
+  if (checkboxEncontrado) {
+    console.log("✅ Fornecedor encontrado:", checkboxEncontrado.value);
+    checkboxEncontrado.checked = true;
+    
+    const fornecedorId = checkboxEncontrado.value.toLowerCase();
+    const configDiv = document.getElementById(`config-${fornecedorId}`);
+    
+    if (configDiv) {
+      configDiv.style.display = 'grid';
+      
+      if (dados.tarifa) {
+        const tarifaBuscada = dados.tarifa.toUpperCase().trim();
+        console.log("💰 Buscando tarifa:", tarifaBuscada);
+        
+        const radioTarifa = configDiv.querySelector(`input[name="tarifa_${fornecedorId}"][value="${tarifaBuscada}"]`);
+        if (radioTarifa) {
+          radioTarifa.checked = true;
+          console.log("✅ Tarifa selecionada:", tarifaBuscada);
+        } else {
+          console.log("⚠️ Tarifa não encontrada, usando MDR como padrão");
+          const radioMDR = configDiv.querySelector(`input[name="tarifa_${fornecedorId}"][value="MDR"]`);
+          if (radioMDR) {
+            radioMDR.checked = true;
+          }
+        }
+      }
+      
+      if (dados.percentual_tarifa !== undefined && dados.percentual_tarifa !== null) {
+        const percentualInput = configDiv.querySelector(`input[name="percentual_${fornecedorId}"]`);
+
+        if (percentualInput) {
+          console.log("🔴🔴🔴 DEBUG CRÍTICO - percentual_tarifa:");
+          console.log("Valor BRUTO que chegou:", dados.percentual_tarifa);
+          console.log("Tipo do valor:", typeof dados.percentual_tarifa);
+          console.log("Valor exato (toString):", dados.percentual_tarifa.toString());
+          
+          let percentualFormatado = formatarPercentualParaExibicao(dados.percentual_tarifa);
+          console.log("Após formatação:", percentualFormatado);
+          
+          percentualInput.value = percentualFormatado;
+          console.log("✅ Valor colocado no input:", percentualInput.value);
+        } else {
+          console.log("❌ Input de percentual não encontrado para:", fornecedorId);
+        }
+      }
+    }
+  } else {
+    console.log("❌ Fornecedor NÃO encontrado:", fornecedorBuscado);
+    console.log("🔍 Checkboxes disponíveis:", Array.from(checkboxes).map(cb => cb.value));
+  }
+}
+
+function limparFormulario() {
+  console.log("🧹 LIMPANDO FORMULÁRIO COMPLETAMENTE");
+  
+  document.getElementById('razao_social').value = '';
+  document.getElementById('nome_fantasia').value = '';
+  document.getElementById('cnpj_cadastro').value = '';
+  
+  const checkboxes = document.querySelectorAll('input[name="fornecedor"]');
+  checkboxes.forEach(cb => {
+    cb.checked = false;
+    const fornecedorId = cb.value.toLowerCase();
+    const configDiv = document.getElementById(`config-${fornecedorId}`);
+    if (configDiv) {
+      configDiv.style.display = 'none';
+      
+      const radios = configDiv.querySelectorAll('input[type="radio"]');
+      radios.forEach(radio => radio.checked = false);
+      
+      const percentualInputs = configDiv.querySelectorAll('input[name^="percentual_"]');
+      percentualInputs.forEach(input => input.value = '');
+    }
+  });
+  
+  document.getElementById('observacoes').value = '';
+  document.getElementById('contrato_enviado').value = '';
+  document.getElementById('contrato_assinado').value = '';
+  document.getElementById('ativacao').value = '';
+  document.getElementById('link').value = '';
+  document.getElementById('mensalidade').value = 'R$ 0,00';
+  document.getElementById('mensalidade_sim').value = 'R$ 0,00';
+  
+  document.getElementById('situacao').value = 'NOVO REGISTRO';
+  document.getElementById('adesao').value = 'R$ 0,00';
+  
+  document.getElementById('inputEtapaSearch').value = '';
+  document.getElementById('etapa').value = '';
+  document.getElementById('suggestionsEtapaSearch').style.display = 'none';
+  
+  atualizarEtapas();
+  
+  document.getElementById('btnCadastrar').style.display = 'block';
+  document.getElementById('btnAtualizar').style.display = 'none';
+  cadastroAtualId = null;
+  
+  console.log("🔓 LIBERANDO CAMPOS DE FORNECEDOR PARA NOVO CADASTRO");
+  const checkboxesFornecedores = document.querySelectorAll('input[name="fornecedor"]');
+  const configsFornecedores = document.querySelectorAll('[id^="config-"]');
+
+  checkboxesFornecedores.forEach(checkbox => {
+      checkbox.disabled = false;
+      checkbox.style.cursor = 'pointer';
+      checkbox.style.opacity = '1';
+  });
+
+  configsFornecedores.forEach(config => {
+      const inputs = config.querySelectorAll('input, select');
+      inputs.forEach(input => {
+          input.disabled = false;
+          input.style.cursor = 'pointer';
+          input.style.opacity = '1';
+      });
+  });
+  
+  document.querySelectorAll('.campo-obrigatorio').forEach(campo => {
+    campo.classList.remove('campo-obrigatorio');
+    campo.style.borderColor = '';
+    campo.style.backgroundColor = '';
+  });
+  
+  limparSelecaoAplicarATodos();
+  
+  document.getElementById('btnAplicarATodos').style.display = 'none';
+  
+  console.log("✅ Formulário limpo completamente!");
+}
+
+function configurarBotoesAplicarATodos(cnpj) {
+    console.log("🎯 Configurando botões aplicar a todos para CNPJ:", cnpj);
+    cnpjAtualParaAplicar = cnpj;
+    
+    limparSelecaoAplicarATodos();
+    
+    adicionarCheckboxesAosCampos();
+    
+    mostrarBotaoAplicarATodos();
+}
+
+function agruparCadastrosPorCNPJ(cadastros) {
+  const agrupados = {};
+  
+  cadastros.forEach(cadastro => {
+    if (!agrupados[cadastro.cnpj]) {
+      agrupados[cadastro.cnpj] = {
+        razao_social: cadastro.razao_social,
+        nome_fantasia: cadastro.nome_fantasia,
+        cnpj: cadastro.cnpj,
+        lojas: []
+      };
+    }
+    
+    agrupados[cadastro.cnpj].lojas.push(cadastro);
+  });
+  
+  return Object.values(agrupados);
+}
+
+function getSituacaoClass(situacao) {
+  if (!situacao) return 'situacao-cadastrado';
+  
+  const situacaoUpper = situacao.toUpperCase().trim();
+  
+  if (situacaoUpper.includes('NOVO REGISTRO')) return 'situacao-novo-registro';
+  else if (situacaoUpper.includes('CADASTRADO')) return 'situacao-cadastrado';
+  else if (situacaoUpper.includes('EM ANDAMENTO')) return 'situacao-andamento';
+  else if (situacaoUpper.includes('REJEITADO') || situacaoUpper.includes('REJEITADO')) return 'situacao-rejeitado';
+  else if (situacaoUpper.includes('DESCREDENCIADO')) return 'situacao-descredenciado';
+  else if (situacaoUpper.includes('DESISTIU')) return 'situacao-desistiu';
+  else return 'situacao-cadastrado';
+}
+
+function editarCadastroModal(id) {
+    console.log("🎯 [DEBUG] Editando cadastro modal - ID:", id);
+    console.log("✏️ EDITANDO CADASTRO MODAL - INICIANDO");
+    console.log("🔍 ID recebido:", id, "Waitlabel atual:", waitlabelAtual);
+    
+    showLoading("Carregando dados...", "Buscando informações da loja");
+    
+    google.script.run
+        .withSuccessHandler(function(dados) {
+            console.log("✅ [SUCESSO] Dados do cadastro carregados:", dados);
+            
+            console.log("✅ DADOS RECEBIDOS DO GS:", dados);
+            hideLoading();
+            fecharModalDetalhes();
+            
+            if (dados.encontrado) {
+                preencherDadosCadastro(dados);
+                document.getElementById('razao_social').scrollIntoView({ behavior: 'smooth' });
+                showMessage('success', '✅ Cadastro carregado para edição!');
+                
+                configurarBotoesAplicarATodos(dados.cnpj);
+                
+                document.getElementById('btnAplicarATodos').style.display = 'block';
+            } else {
+                showMessage('error', '❌ ' + dados.mensagem);
+            }
+        })
+        .withFailureHandler(function(error) {
+            console.error("❌ [ERRO] Falha ao carregar cadastro:", error);
+            
+            console.error("❌ ERRO AO CARREGAR CADASTRO:", error);
+            hideLoading();
+            showMessage('error', '❌ Erro ao carregar cadastro: ' + error.message);
+        })
+        .buscarCadastroPorIDComWaitlabel(id, waitlabelAtual);
+}
+
+function atualizarEtapas() {
+  const selectEtapa = document.getElementById('etapa');
+  
+  console.log("🎯 Atualizando etapas - NOVO SISTEMA");
+  
+  selectEtapa.innerHTML = '<option value="">-- Selecione uma etapa --</option>';
+  
+  // 🔥 NOVO SISTEMA: Todas as etapas disponíveis para qualquer situação
+  const etapas = [
+    ...etapasPendenteFornecedor,
+    ...etapasPendenteSIM,
+    ...etapasPendenteWL,
+    ...etapasPendenteClinicaLoja
+  ];
+  
+  console.log("📋 Etapas disponíveis (novo sistema):", etapas.length);
+  
+  // Adicionar etapas
+  etapas.forEach(etapa => {
+    const option = document.createElement('option');
+    option.value = etapa;
+    option.textContent = etapa;
+    selectEtapa.appendChild(option);
+  });
+  
+  atualizarEtapasSearch();
+}
+
+function verificarDuplicatasEtapas() {
+  console.log("=== 🔍 VERIFICANDO DUPLICATAS NAS ETAPAS ===");
+  
+  const todasEtapas = [
+    ...etapasPendenteFornecedor,
+    ...etapasPendenteSIM,
+    ...etapasPendenteWL,
+    ...etapasPendenteClinicaLoja
+  ];
+  
+  const etapasUnicos = [...new Set(todasEtapas)];
+  const etapasDuplicados = todasEtapas.filter((item, index) => todasEtapas.indexOf(item) !== index);
+  
+  console.log(`📊 Total de etapas: ${todasEtapas.length}`);
+  console.log(`📊 Etapas únicos: ${etapasUnicos.length}`);
+  console.log(`📊 Etapas duplicados: ${etapasDuplicados.length}`);
+  
+  if (etapasDuplicados.length > 0) {
+    console.log("❌ Etapas duplicados encontrados:", [...new Set(etapasDuplicados)]);
+  } else {
+    console.log("✅ Nenhuma etapa duplicado encontrado!");
+  }
+  
+  return etapasDuplicados.length === 0;
+}
+
+// Execute esta função para verificar
+setTimeout(verificarDuplicatasEtapas, 2000);
+
+function limparDuplicatasEtapas() {
+  console.log("🧹 LIMPANDO DUPLICATAS DAS ETAPAS...");
+  
+  // Remove duplicatas de cada array
+  etapasPendenteFornecedor = [...new Set(etapasPendenteFornecedor)];
+  etapasPendenteSIM = [...new Set(etapasPendenteSIM)];
+  etapasPendenteWL = [...new Set(etapasPendenteWL)];
+  etapasPendenteClinicaLoja = [...new Set(etapasPendenteClinicaLoja)];
+  
+  console.log("✅ Duplicatas removidas!");
+  verificarDuplicatasEtapas();
+}
+
+// Execute esta função uma vez para limpar
+setTimeout(limparDuplicatasEtapas, 3000);
+
+function atualizarEtapasSearch() {
+  const situacao = document.getElementById('situacao').value;
+  const inputSearch = document.getElementById('inputEtapaSearch');
+  
+  inputSearch.value = '';
+  
+  console.log("🔄 Campo de search atualizado para situação:", situacao);
+}
+
+function filtrarSugestoesEtapaSearch() {
+  const input = document.getElementById('inputEtapaSearch');
+  const suggestions = document.getElementById('suggestionsEtapaSearch');
+  const termo = input.value.toLowerCase().trim();
+  
+  console.log("🎯 FILTRAR SUGESTÕES ETAPA SEARCH - Termo:", termo);
+  
+  // 🔥 NOVO SISTEMA: Todas as etapas disponíveis
+  const todasEtapas = [
+    ...etapasPendenteFornecedor,
+    ...etapasPendenteSIM,
+    ...etapasPendenteWL,
+    ...etapasPendenteClinicaLoja
+  ];
+  
+  console.log("🎯 Total de etapas disponíveis (novo sistema):", todasEtapas.length);
+  
+  let etapasParaMostrar = todasEtapas;
+  
+  if (termo.length > 0) {
+    etapasParaMostrar = todasEtapas.filter(etapa => 
+      etapa.toLowerCase().includes(termo)
+    );
+    console.log("🔍 Etapas filtrados:", etapasParaMostrar.length);
+  }
+  
+  if (etapasParaMostrar.length === 0) {
+    suggestions.innerHTML = `
+      <div class="suggestion-etapa-item-search" style="color: var(--gray);">
+        <i class="fas fa-search"></i>
+        Nenhuma etapa encontrada
+      </div>
+    `;
+  } else {
+    let html = '';
+    
+    // 🔥 ORGANIZAR POR CATEGORIAS COM CORES (SEM TÍTULO, SEM ANIMAÇÃO)
+    const categorias = [
+      {
+        etapas: etapasPendenteFornecedor,
+        icone: "fas fa-truck",
+        cor: "#FF6B35",
+        classe: "etapa-pendente-fornecedor"
+      },
+      {
+        etapas: etapasPendenteSIM,
+        icone: "fas fa-building",
+        cor: "#7E3E9A", 
+        classe: "etapa-pendente-sim"
+      },
+      {
+        etapas: etapasPendenteWL,
+        icone: "fas fa-layer-group",
+        cor: "#2EBE76",
+        classe: "etapa-pendente-wl"
+      },
+      {
+        etapas: etapasPendenteClinicaLoja,
+        icone: "fas fa-store-medical",
+        cor: "#0682c5",
+        classe: "etapa-pendente-clinica"
+      }
+    ];
+    
+    categorias.forEach(categoria => {
+      const etapasDaCategoria = etapasParaMostrar.filter(etapa => 
+        categoria.etapas.includes(etapa)
+      );
+      
+      if (etapasDaCategoria.length > 0) {
+        etapasDaCategoria.forEach(etapa => {
+          html += `
+            <div class="suggestion-etapa-item-search ${categoria.classe}" 
+                 onclick="selecionarEtapaSearch('${etapa.replace(/'/g, "\\'")}')"
+                 data-etapa="${etapa}"
+                 style="background: ${categoria.cor}">
+              <i class="${categoria.icone}"></i>
+              <span>${etapa}</span>
+            </div>
+          `;
+        });
       }
     });
     
-    return {
-      success: true,
-      message: `✅ ${linhasParaExcluir.length} registro(s) excluído(s) do CNPJ ${cnpj}`,
-      registrosExcluidos: linhasParaExcluir.length
-    };
-    
-  } catch (error) {
-    console.error("❌ Erro em excluirTodosFornecedoresCNPJ:", error);
-    return { 
-      success: false, 
-      message: "Erro ao excluir registros: " + error.message 
-    };
+    suggestions.innerHTML = html;
   }
+  
+  suggestions.style.display = 'block';
+  console.log("✅ Sugestões mostradas com sucesso!");
 }
 
-function contarRegistrosPorCNPJ(cnpj) {
-  try {
-    const waitlabelAtual = getWaitlabelAtual();
-    const ss = SpreadsheetApp.openById(CONFIG.ID_PLANILHA);
-    const aba = ss.getSheetByName(waitlabelAtual);
+function selecionarEtapaSearch(etapa) {
+  const input = document.getElementById('inputEtapaSearch');
+  const suggestions = document.getElementById('suggestionsEtapaSearch');
+  const selectEtapa = document.getElementById('etapa');
+  
+  input.value = etapa;
+  selectEtapa.value = etapa;
+  
+  suggestions.style.display = 'none';
+  
+  console.log("✅ Etapa selecionada:", etapa);
+}
+
+function formatarPercentual(input) {
+    console.log("🎯 Digitando percentual:", input.value);
     
-    if (!aba) return 0;
+    const cursorPos = input.selectionStart;
+    let valor = input.value;
     
-    const ultimaLinha = aba.getLastRow();
-    if (ultimaLinha < 2) return 0;
+    valor = valor.replace(/[^\d,%]/g, '');
     
-    const dados = aba.getRange(2, 1, ultimaLinha - 1, 17).getValues();
-    const cnpjBuscado = cnpj.toString().replace(/\D/g, '');
-    
-    let contador = 0;
-    
-    for (let i = 0; i < dados.length; i++) {
-      const linha = dados[i];
-      const cnpjCadastro = linha[2]?.toString().replace(/\D/g, '') || '';
-      
-      if (cnpjCadastro === cnpjBuscado) {
-        contador++;
-      }
+    if (valor && !valor.includes('%')) {
+        valor = valor + '%';
     }
     
-    return contador;
+    input.value = valor;
     
+    setTimeout(() => {
+        let novaPos = Math.min(cursorPos, input.value.length);
+        input.setSelectionRange(novaPos, novaPos);
+    }, 0);
+    
+    console.log("✅ Percentual formatado:", input.value);
+}
+
+function sincronizarCamposEtapa() {
+  const inputSearch = document.getElementById('inputEtapaSearch');
+  const selectEtapa = document.getElementById('etapa');
+  
+  if (!inputSearch || !selectEtapa) {
+    console.log("❌ Campos de etapa não encontrados");
+    return;
+  }
+  
+  console.log("✅ Sincronizando campos de etapa...");
+  
+  inputSearch.addEventListener('input', function() {
+    const valor = this.value;
+    console.log("🔄 Input etapa alterado:", valor);
+    
+    const opcoes = Array.from(selectEtapa.options);
+    const opcaoCorrespondente = opcoes.find(opt => opt.text === valor);
+    
+    if (opcaoCorrespondente) {
+      selectEtapa.value = opcaoCorrespondente.value;
+      console.log("✅ Select atualizado para:", opcaoCorrespondente.value);
+    } else {
+      selectEtapa.value = '';
+      console.log("⚠️ Nenhuma opção correspondente encontrada");
+    }
+  });
+  
+  selectEtapa.addEventListener('change', function() {
+    const opcaoSelecionada = this.options[this.selectedIndex];
+    if (opcaoSelecionada && opcaoSelecionada.value) {
+      inputSearch.value = opcaoSelecionada.text;
+      console.log("✅ Input search atualizado para:", opcaoSelecionada.text);
+    }
+  });
+}
+
+function formatarDataParaExibicao(data) {
+  if (!data) return '';
+  
+  try {
+    if (typeof data === 'string' && data.includes('/')) {
+      return data;
+    }
+    
+    const dateObj = new Date(data);
+    if (!isNaN(dateObj.getTime())) {
+      return dateObj.toLocaleDateString('pt-BR');
+    }
+    
+    return data;
   } catch (error) {
-    console.error("❌ Erro em contarRegistrosPorCNPJ:", error);
-    return 0;
+    return data;
   }
 }
 
-// 🔥 FUNÇÃO DE TESTE
-function testar() {
-  return { 
-    success: true, 
-    message: "✅ Sistema funcionando!",
-    timestamp: new Date().toISOString()
+function limparBusca() {
+  console.log("🎯 [DEBUG] Botão 'Limpar Busca' clicado");
+  
+  limparFormulario();
+  
+  document.getElementById('secaoCadastros').style.display = 'none';
+  showMessage('info', 'Formulário limpo e busca cancelada!');
+}
+
+// 🔥 MANTENDO AS FUNÇÕES DE PROTEÇÃO DE CAMPOS
+function configurarValidacaoEmTempoReal() {
+  const campos = document.querySelectorAll('#razao_social, #cnpj_cadastro, #tipo');
+  campos.forEach(campo => {
+    campo.addEventListener('input', function() {
+      this.style.borderColor = '';
+    });
+  });
+}
+
+function configurarModalSenha() {
+  const inputSenha = document.getElementById('inputSenha');
+  if (inputSenha) {
+    inputSenha.addEventListener('keydown', function(e) {
+      if (e.key === 'Enter') {
+        validarSenha();
+      }
+    });
+  }
+  
+  const modalSenha = document.getElementById('modalSenha');
+  if (modalSenha) {
+    modalSenha.addEventListener('click', function(e) {
+      if (e.target === this) {
+        fecharModalSenha();
+      }
+    });
+  }
+  
+  document.addEventListener('keydown', function(e) {
+    if (e.key === 'Escape' && document.getElementById('modalSenha').style.display === 'flex') {
+      fecharModalSenha();
+    }
+  });
+}
+
+function solicitarSenha(campo) {
+  campoEditavel = campo;
+  
+  document.getElementById('modalSenha').style.display = 'flex';
+  
+  const inputSenha = document.getElementById('inputSenha');
+  if (inputSenha) {
+    inputSenha.value = '';
+    inputSenha.focus();
+  }
+}
+
+function validarSenha() {
+  const inputSenha = document.getElementById('inputSenha');
+  if (!inputSenha) {
+    console.log("❌ inputSenha não encontrado");
+    return;
+  }
+  
+  const senha = inputSenha.value;
+  console.log("🔐 Validando senha:", senha);
+  
+  if (senha === SENHA_PERMITIDA) {
+    console.log("✅ SENHA CORRETA - Configurando autorização diária");
+    
+    const agora = new Date();
+    const expiracao = new Date(agora.getTime() + (24 * 60 * 60 * 1000));
+    
+    localStorage.setItem('usuarioAutorizado', 'true');
+    localStorage.setItem('autorizacaoExpiracao', expiracao.getTime().toString());
+    localStorage.setItem('ultimaAutorizacao', agora.getTime().toString());
+    
+    console.log("💾 Autorização salva até:", expiracao.toLocaleString('pt-BR'));
+    
+    fecharModalSenha();
+    
+    liberarTodosCamposProtegidos();
+    
+    showMessage('success', '✅ Todos os campos liberados por 24 horas!');
+    
+  } else {
+    console.log("❌ SENHA INCORRETA");
+    showMessage('error', '❌ Senha incorreta!');
+    inputSenha.value = '';
+    inputSenha.focus();
+  }
+}
+
+function coletarDadosFormularioTemporario() {
+  const dados = {
+    razao_social: document.getElementById('razao_social').value,
+    nome_fantasia: document.getElementById('nome_fantasia').value,
+    cnpj_cadastro: document.getElementById('cnpj_cadastro').value,
+    observacoes: document.getElementById('observacoes').value,
+    contrato_enviado: document.getElementById('contrato_enviado').value,
+    contrato_assinado: document.getElementById('contrato_assinado').value,
+    ativacao: document.getElementById('ativacao').value,
+    link: document.getElementById('link').value,
+    mensalidade: document.getElementById('mensalidade').value,
+    situacao: document.getElementById('situacao').value,
+    adesao: document.getElementById('adesao').value,
+    etapa: document.getElementById('inputEtapaSearch').value
   };
+  
+  const fornecedoresSelecionados = [];
+  const checkboxes = document.querySelectorAll('input[name="fornecedor"]:checked');
+  checkboxes.forEach(checkbox => {
+    const fornecedorNome = checkbox.value;
+    const fornecedorId = fornecedorNome.toLowerCase();
+    const configDiv = document.getElementById(`config-${fornecedorId}`);
+    
+    if (configDiv && configDiv.style.display === 'grid') {
+      const tarifaRadio = document.querySelector(`input[name="tarifa_${fornecedorId}"]:checked`);
+      const percentualSelect = document.querySelector(`select[name="percentual_${fornecedorId}"]`);
+      
+      fornecedoresSelecionados.push({
+        nome: fornecedorNome,
+        tarifa: tarifaRadio ? tarifaRadio.value : '',
+        percentual: percentualSelect ? percentualSelect.value : ''
+      });
+    }
+  });
+
+  dados.fornecedores = fornecedoresSelecionados;
+  return dados;
 }
 
-// 🔥 FUNÇÃO PARA VERIFICAR COLUNAS
-function verificarColunas() {
-  try {
-    const waitlabelAtual = getWaitlabelAtual();
-    const ss = SpreadsheetApp.openById(CONFIG.ID_PLANILHA);
-    const aba = ss.getSheetByName(waitlabelAtual);
+function restaurarDadosFormulario(dados) {
+  if (!dados) return;
+  
+  console.log("🔄 Restaurando dados do formulário:", dados);
+  
+  document.getElementById('razao_social').value = dados.razao_social || '';
+  document.getElementById('nome_fantasia').value = dados.nome_fantasia || '';
+  document.getElementById('cnpj_cadastro').value = dados.cnpj_cadastro || '';
+  document.getElementById('observacoes').value = dados.observacoes || '';
+  document.getElementById('contrato_enviado').value = dados.contrato_enviado || '';
+  document.getElementById('contrato_assinado').value = dados.contrato_assinado || '';
+  document.getElementById('ativacao').value = dados.ativacao || '';
+  document.getElementById('link').value = dados.link || '';
+  document.getElementById('mensalidade').value = dados.mensalidade || 'R$ 0,00';
+  document.getElementById('situacao').value = dados.situacao || 'NOVO REGISTRO';
+  document.getElementById('adesao').value = dados.adesao || 'R$ 0,00';
+  document.getElementById('inputEtapaSearch').value = dados.etapa || '';
+  
+  if (dados.fornecedores && dados.fornecedores.length > 0) {
+    dados.fornecedores.forEach(fornecedor => {
+      const checkbox = document.querySelector(`input[name="fornecedor"][value="${fornecedor.nome}"]`);
+      if (checkbox) {
+        checkbox.checked = true;
+        const fornecedorId = fornecedor.nome.toLowerCase();
+        const configDiv = document.getElementById(`config-${fornecedorId}`);
+        
+        if (configDiv) {
+          configDiv.style.display = 'grid';
+          
+          if (fornecedor.tarifa) {
+            const tarifaRadio = document.querySelector(`input[name="tarifa_${fornecedorId}"][value="${fornecedor.tarifa}"]`);
+            if (tarifaRadio) {
+              tarifaRadio.checked = true;
+            }
+          }
+          
+          if (fornecedor.percentual) {
+            const percentualSelect = document.querySelector(`select[name="percentual_${fornecedorId}"]`);
+            if (percentualSelect) {
+              percentualSelect.value = fornecedor.percentual;
+            }
+          }
+        }
+      }
+    });
+  }
+  
+  console.log("✅ Dados restaurados com sucesso!");
+}
+
+function fecharModalSenha() {
+  document.getElementById('modalSenha').style.display = 'none';
+  campoEditavel = null;
+}
+
+function liberarTodosCamposProtegidos() {
+  console.log("🔓 LIBERANDO TODOS OS CAMPOS...");
+  
+  const dadosAtuais = coletarDadosFormularioTemporario();
+  
+  const camposProtegidos = [
+    'razao_social', 'nome_fantasia', 'cnpj_cadastro', 
+    'mensalidade', 'adesao', 'situacao', 'data_status',
+    'contrato_enviado', 'contrato_assinado', 'ativacao', 'link'
+  ];
+  
+  camposProtegidos.forEach(id => {
+    const campo = document.getElementById(id);
+    if (campo) {
+      console.log(`🔓 Liberando: ${id}`);
+      
+      const novoCampo = campo.cloneNode(true);
+      novoCampo.removeAttribute('readonly');
+      novoCampo.disabled = false;
+      novoCampo.style.backgroundColor = '';
+      novoCampo.style.cursor = 'text';
+      novoCampo.style.opacity = '1';
+      
+      novoCampo.onfocus = null;
+      novoCampo.onclick = null;
+      
+      campo.parentNode.replaceChild(novoCampo, campo);
+      
+      console.log(`✅ ${id} liberado completamente`);
+    }
+  });
+  
+  console.log("🔓 Liberando campos dos fornecedores...");
+  const camposFornecedor = document.querySelectorAll(`
+    input[name="fornecedor"], 
+    input[name^="tarifa_"], 
+    select[name^="percentual_"]
+  `);
+  
+  camposFornecedor.forEach(campo => {
+    const novoCampo = campo.cloneNode(true);
+    novoCampo.disabled = false;
+    novoCampo.style.cursor = '';
+    novoCampo.style.opacity = '1';
+    novoCampo.style.backgroundColor = '';
     
-    if (!aba) return { error: "Aba não encontrada" };
+    novoCampo.onclick = null;
+    novoCampo.onfocus = null;
+    novoCampo.onmousedown = null;
     
-    const cabecalhos = aba.getRange(1, 1, 1, aba.getLastColumn()).getValues()[0];
+    campo.parentNode.replaceChild(novoCampo, campo);
+  });
+  
+  setTimeout(() => {
+    restaurarDadosFormulario(dadosAtuais);
+  }, 100);
+  
+  console.log("🎯 TODOS OS CAMPOS FORAM LIBERADOS COM SUCESSO!");
+}
+
+function configurarCamposProtegidos() {
+  console.log("🎯 CONFIGURAR CAMPOS PROTEGIDOS - VERIFICANDO AUTORIZAÇÃO DIÁRIA");
+  
+  const autorizado = localStorage.getItem('usuarioAutorizado');
+  const expiracao = localStorage.getItem('autorizacaoExpiracao');
+  const agora = new Date().getTime();
+  
+  let usuarioEstaAutorizado = false;
+  
+  if (autorizado === 'true' && expiracao) {
+    const tempoExpiracao = parseInt(expiracao);
     
-    console.log("🔍 COLUNAS ENCONTRADAS:");
-    cabecalhos.forEach((cabecalho, index) => {
-      const letraColuna = String.fromCharCode(65 + index);
-      console.log(`Coluna ${letraColuna} [${index}]: "${cabecalho}"`);
+    if (agora < tempoExpiracao) {
+      console.log("✅ Autorização válida até:", new Date(tempoExpiracao).toLocaleString('pt-BR'));
+      usuarioEstaAutorizado = true;
+      
+      setTimeout(() => {
+        liberarTodosCamposProtegidos();
+        console.log("🔓 Campos liberados automaticamente (autorização diária ativa)");
+      }, 100);
+      
+    } else {
+      console.log("❌ Autorização expirada - limpando dados");
+      localStorage.removeItem('usuarioAutorizado');
+      localStorage.removeItem('autorizacaoExpiracao');
+      localStorage.removeItem('ultimaAutorizacao');
+    }
+  }
+  
+  if (!usuarioEstaAutorizado) {
+    console.log("🔒 PROTECÇÃO ATIVA: Usuário não autorizado hoje");
+    
+    const dadosAtuais = coletarDadosFormularioTemporario();
+    
+    const camposProtegidos = [
+      'razao_social', 'nome_fantasia', 'cnpj_cadastro', 
+      'mensalidade', 'adesao', 'situacao', 'data_status',
+      'contrato_enviado', 'contrato_assinado', 'ativacao', 'link'
+    ];
+    
+    console.log("🔒 Protegendo campos principais...");
+    
+    camposProtegidos.forEach(id => {
+      const campo = document.getElementById(id);
+      if (campo) {
+        console.log(`🔒 Protegendo: ${id}`);
+        campo.setAttribute('readonly', 'true');
+        campo.disabled = false;
+        campo.style.backgroundColor = '#f8f9fa';
+        campo.style.cursor = 'not-allowed';
+        campo.style.opacity = '1';
+        
+        const novoCampo = campo.cloneNode(true);
+        campo.parentNode.replaceChild(novoCampo, campo);
+        
+        document.getElementById(id).addEventListener('focus', function(e) {
+          e.preventDefault();
+          console.log(`🔓 Campo ${id} solicitando senha`);
+          solicitarSenha(this);
+        });
+      }
     });
     
-    const ultimaEtapaIndex = cabecalhos.indexOf("Ultima etapa");
-    console.log("🎯 Índice da coluna 'Ultima etapa':", ultimaEtapaIndex);
+    console.log("🔒 Protegendo APENAS checkboxes dos fornecedores...");
+    const checkboxesFornecedor = document.querySelectorAll('input[name="fornecedor"]');
+    const radiosTarifa = document.querySelectorAll('input[name^="tarifa_"]');
+    const selectsPercentual = document.querySelectorAll('select[name^="percentual_"]');
+
+    checkboxesFornecedor.forEach(checkbox => {
+      checkbox.disabled = true;
+      checkbox.style.cursor = 'not-allowed';
+      checkbox.style.opacity = '0.6';
+    });
+
+    radiosTarifa.forEach(radio => {
+      radio.disabled = false;
+      radio.style.cursor = 'pointer';
+      radio.style.opacity = '1';
+    });
+
+    selectsPercentual.forEach(select => {
+      select.disabled = false;
+      select.style.cursor = 'pointer';
+      select.style.opacity = '1';
+    });
     
-    return {
-      cabecalhos: cabecalhos,
-      ultimaEtapaIndex: ultimaEtapaIndex,
-      encontrada: ultimaEtapaIndex !== -1
-    };
-    
-  } catch (error) {
-    console.error("❌ Erro:", error);
-    return { error: error.message };
+    setTimeout(() => {
+      if (dadosAtuais && (dadosAtuais.razao_social || dadosAtuais.cnpj_cadastro)) {
+        console.log("🔄 Restaurando dados após proteção:", dadosAtuais);
+        restaurarDadosFormulario(dadosAtuais);
+      } else {
+        console.log("ℹ️ Nenhum dado para restaurar - formulário vazio");
+      }
+    }, 300);
+  }
+  
+  console.log("✅ Liberando campos permitidos...");
+  const camposLiberados = ['etapa', 'observacoes', 'inputEtapaSearch'];
+  camposLiberados.forEach(id => {
+    const campo = document.getElementById(id);
+    if (campo) {
+      campo.removeAttribute('readonly');
+      campo.disabled = false;
+      campo.style.backgroundColor = '';
+      campo.style.cursor = 'text';
+      campo.style.opacity = '1';
+    }
+  });
+  
+  console.log("🎯 CONFIGURAÇÃO DE PROTECÇÃO FINALIZADA");
+}
+
+function fecharModalDetalhes() {
+  const modal = document.getElementById('modalDetalhes');
+  modal.style.display = 'none';
+}
+
+// 🔥 MANTENDO AS FUNÇÕES DE DEBUG E TESTE
+function verificarStatusAutorizacao() {
+  const autorizado = localStorage.getItem('usuarioAutorizado');
+  const expiracao = localStorage.getItem('autorizacaoExpiracao');
+  const ultimaAuth = localStorage.getItem('ultimaAutorizacao');
+  
+  const agora = new Date();
+  
+  console.log("=== 🔐 STATUS DA AUTORIZAÇÃO ===");
+  console.log("Autorizado:", autorizado);
+  
+  if (expiracao) {
+    const dataExpiracao = new Date(parseInt(expiracao));
+    console.log("Expira em:", dataExpiracao.toLocaleString('pt-BR'));
+    console.log("Tempo restante:", Math.round((dataExpiracao - agora) / (1000 * 60 * 60)) + " horas");
+  }
+  
+  if (ultimaAuth) {
+    const dataUltimaAuth = new Date(parseInt(ultimaAuth));
+    console.log("Última autorização:", dataUltimaAuth.toLocaleString('pt-BR'));
+  }
+  
+  if (autorizado === 'true' && expiracao && agora.getTime() < parseInt(expiracao)) {
+    console.log("✅ AUTORIZAÇÃO ATIVA - Campos liberados");
+    return true;
+  } else {
+    console.log("❌ AUTORIZAÇÃO INATIVA - Campos protegidos");
+    return false;
   }
 }
+
+function adicionarBotaoStatus() {
+  const btnStatus = document.createElement('button');
+  btnStatus.innerHTML = '🔐 Status Autorização';
+  btnStatus.style.position = 'fixed';
+  btnStatus.style.top = '10px';
+  btnStatus.style.right = '10px';
+  btnStatus.style.zIndex = '9999';
+  btnStatus.style.background = '#FF6B35';
+  btnStatus.style.color = 'white';
+  btnStatus.style.border = 'none';
+  btnStatus.style.padding = '8px';
+  btnStatus.style.borderRadius = '4px';
+  btnStatus.style.cursor = 'pointer';
+  
+  btnStatus.onclick = function() {
+    verificarStatusAutorizacao();
+    alert('Verifique o console (F12) para ver o status da autorização!');
+  };
+  
+  document.body.appendChild(btnStatus);
+}
+
+setTimeout(adicionarBotaoStatus, 2000);
+
+function testarEnvioFormulario() {
+  console.log("🧪 TESTANDO ENVIO DO FORMULÁRIO...");
+  
+  const dados = coletarDadosFormulario();
+  
+  console.log("📤 Dados coletados para envio:", dados);
+  console.log("🔢 Fornecedores coletados:", dados.fornecedores);
+  
+  if (!dados.fornecedores || dados.fornecedores.length === 0) {
+    alert("❌ Nenhum fornecedor selecionado! Selecione pelo menos um.");
+    return;
+  }
+  
+  google.script.run
+    .withSuccessHandler(function(res) {
+      console.log("✅ RESPOSTA DO DEBUG:", res);
+      alert(`DEBUG CONCLUÍDO:\n\n• Fornecedores enviados: ${res.quantidadeFornecedores}\n• Estrutura: ${JSON.stringify(res.estruturaFornecedores, null, 2)}\n\nVerifique o console do GS para detalhes completos.`);
+    })
+    .withFailureHandler(function(error) {
+      console.error("❌ ERRO NO DEBUG:", error);
+      alert("Erro no debug: " + error.message);
+    })
+    .debugFormulario(dados);
+}
+
+function testarConversaoPercentual() {
+    console.log("=== 🧪 TESTE AUTOMÁTICO DEFINITIVO ===");
+    
+    const teste1 = "3,5%";
+    const decimal1 = converterPercentualParaNumero(teste1);
+    const formatado1 = formatarPercentualParaExibicao(decimal1);
+    console.log(`✅ ${teste1} → ${decimal1} → ${formatado1}`);
+    
+    const teste2 = "0,4%";
+    const decimal2 = converterPercentualParaNumero(teste2);
+    const formatado2 = formatarPercentualParaExibicao(decimal2);
+    console.log(`✅ ${teste2} → ${decimal2} → ${formatado2}`);
+    
+    const teste3 = 0.035;
+    const formatado3 = formatarPercentualParaExibicao(teste3);
+    console.log(`✅ ${teste3} → ${formatado3}`);
+    
+    const teste4 = 0.004;
+    const formatado4 = formatarPercentualParaExibicao(teste4);
+    console.log(`✅ ${teste4} → ${formatado4}`);
+}
+
+setTimeout(testarConversaoPercentual, 1000);
+
+function testarEtapas() {
+  console.log("=== 🧪 TESTE DE ETAPAS ===");
+  console.log("PENDENTE FORNECEDOR:", etapasPendenteFornecedor);
+  console.log("PENDENTE SIM:", etapasPendenteSIM);
+  console.log("PENDENTE WL:", etapasPendenteWL);
+  console.log("PENDENTE CLÍNICA/LOJA:", etapasPendenteClinicaLoja);
+  
+  filtrarSugestoesEtapaSearch();
+}
+
+setTimeout(() => {
+  console.log("=== 🧪 TESTE FINAL DO SISTEMA ===");
+  console.log("✅ DOMContentLoaded executado");
+  console.log("✅ Event listener do inputEtapaSearch:", document.getElementById('inputEtapaSearch') !== null);
+  console.log("✅ Função filtrarSugestoesEtapaSearch:", typeof filtrarSugestoesEtapaSearch);
+  console.log("✅ CSS carregado corretamente");
+  
+  const inputEtapa = document.getElementById('inputEtapaSearch');
+  if (inputEtapa) {
+    console.log("🎯 Clique no campo 'Digite para buscar etapa...' para testar as sugestões!");
+  }
+}, 3000);
+
+// 🔥 CONFIGURAÇÃO PARA FECHAR SUGESTÕES AO CLICAR FORA
+document.addEventListener('click', function(e) {
+  const suggestionsSearch = document.getElementById('suggestionsEtapaSearch');
+  const inputSearch = document.getElementById('inputEtapaSearch');
+  
+  if (suggestionsSearch && suggestionsSearch.style.display === 'block') {
+    if (!suggestionsSearch.contains(e.target) && e.target !== inputSearch) {
+      suggestionsSearch.style.display = 'none';
+      console.log("❌ Fechando sugestões - clique fora");
+    }
+  }
+  
+  const suggestionsFiltro = document.getElementById('suggestionsEtapa');
+  const inputFiltro = document.getElementById('inputFiltroEtapa');
+  
+  if (suggestionsFiltro && suggestionsFiltro.style.display === 'block') {
+    if (!suggestionsFiltro.contains(e.target) && e.target !== inputFiltro) {
+      suggestionsFiltro.style.display = 'none';
+    }
+  }
+});
+
+// 🔥 FECHAR SUGESTÕES COM ESC
+document.addEventListener('keydown', function(e) {
+  if (e.key === 'Escape') {
+    const suggestionsSearch = document.getElementById('suggestionsEtapaSearch');
+    const suggestionsFiltro = document.getElementById('suggestionsEtapa');
+    
+    if (suggestionsSearch) {
+      suggestionsSearch.style.display = 'none';
+      console.log("❌ Fechando sugestões - ESC pressionado");
+    }
+    if (suggestionsFiltro) suggestionsFiltro.style.display = 'none';
+  }
+});
+
+// 🔥 MOSTRAR SUGESTÕES AO CLICAR NO CAMPO
+document.getElementById('inputEtapaSearch').addEventListener('click', function() {
+  console.log("🎯 Clicou no campo de etapa - mostrando sugestões");
+  filtrarSugestoesEtapaSearch();
+});
+
+// 🔥 TESTE SIMPLES PARA VERIFICAR SE AS ETAPAS ESTÃO CARREGADOS
+setTimeout(() => {
+  console.log("=== 🔥 TESTE DE ETAPAS ===");
+  console.log("Etapas Em Andamento:", etapasPendenteFornecedor);
+  console.log("Etapas Cadastrado:", etapasPendenteSIM);
+  console.log("Etapas Rejeitado:", etapasPendenteWL);
+}, 2000);
+
+  </script>
+</body>
+</html>
