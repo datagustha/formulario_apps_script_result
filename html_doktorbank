@@ -926,7 +926,7 @@
               <input type="text" id="filtroEtapa" class="form-control" 
                      placeholder="Digite para buscar etapas..." 
                      oninput="filtrarSugestoesEtapa()"
-                     onfocus="mostrarSugestoesEtapa()">
+                     onfocus="mostrarTodasSugestoesEtapa()">
               <div class="suggestions" id="suggestionsEtapa"></div>
               <div class="tags-selecionadas" id="etapasSelecionados"></div>
             </div>
@@ -939,7 +939,7 @@
               <input type="text" id="filtroFornecedor" class="form-control" 
                      placeholder="Digite para buscar fornecedores..." 
                      oninput="filtrarSugestoesFornecedor()"
-                     onfocus="mostrarSugestoesFornecedor()">
+                     onfocus="mostrarTodasSugestoesFornecedor()">
               <div class="suggestions" id="suggestionsFornecedor"></div>
               <div class="tags-selecionadas" id="fornecedoresSelecionados"></div>
             </div>
@@ -1163,11 +1163,39 @@ function configurarEventosFiltro() {
   });
 }
 
-// FUNÇÕES DO FILTRO DE ETAPAS
+// FUNÇÕES DO FILTRO DE ETAPAS - MODIFICADAS
+function mostrarTodasSugestoesEtapa() {
+  const suggestions = document.getElementById('suggestionsEtapa');
+  const etapasUnicos = [...new Set(etapasDisponiveis)];
+  const etapasFiltrados = etapasUnicos.filter(etapa => 
+    !etapasSelecionados.includes(etapa)
+  );
+  
+  if (etapasFiltrados.length === 0) {
+    suggestions.innerHTML = `
+      <div class="suggestion-item" style="color: var(--gray);">
+        <i class="fas fa-check-circle"></i> Todas as etapas já estão selecionadas
+      </div>
+    `;
+  } else {
+    let html = etapasFiltrados.map(etapa => `
+      <div class="suggestion-item" onclick="adicionarEtapa('${etapa}')">
+        <i class="fas fa-calendar-check"></i> ${etapa}
+      </div>
+    `).join('');
+    
+    suggestions.innerHTML = html;
+  }
+  
+  suggestions.style.display = 'block';
+}
+
 function mostrarSugestoesEtapa() {
   const input = document.getElementById('filtroEtapa');
   if (input.value.trim().length > 0) {
     filtrarSugestoesEtapa();
+  } else {
+    mostrarTodasSugestoesEtapa();
   }
 }
 
@@ -1175,11 +1203,6 @@ function filtrarSugestoesEtapa() {
   const input = document.getElementById('filtroEtapa');
   const suggestions = document.getElementById('suggestionsEtapa');
   const termo = input.value.toLowerCase().trim();
-  
-  if (termo.length < 1) {
-    suggestions.style.display = 'none';
-    return;
-  }
   
   const etapasUnicos = [...new Set(etapasDisponiveis)];
   const etapasFiltrados = etapasUnicos.filter(etapa => 
@@ -1251,11 +1274,38 @@ function aplicarFiltroEtapas() {
   aplicarTodosFiltros();
 }
 
-// FUNÇÕES DO FILTRO DE FORNECEDORES
+// FUNÇÕES DO FILTRO DE FORNECEDORES - MODIFICADAS
+function mostrarTodasSugestoesFornecedor() {
+  const suggestions = document.getElementById('suggestionsFornecedor');
+  const fornecedoresFiltrados = fornecedoresDisponiveis.filter(fornecedor => 
+    !fornecedoresSelecionados.includes(fornecedor)
+  );
+  
+  if (fornecedoresFiltrados.length === 0) {
+    suggestions.innerHTML = `
+      <div class="suggestion-item" style="color: var(--gray);">
+        <i class="fas fa-check-circle"></i> Todos os fornecedores já estão selecionados
+      </div>
+    `;
+  } else {
+    let html = fornecedoresFiltrados.map(fornecedor => `
+      <div class="suggestion-item" onclick="adicionarFornecedor('${fornecedor}')">
+        <i class="fas fa-truck"></i> ${fornecedor}
+      </div>
+    `).join('');
+    
+    suggestions.innerHTML = html;
+  }
+  
+  suggestions.style.display = 'block';
+}
+
 function mostrarSugestoesFornecedor() {
   const input = document.getElementById('filtroFornecedor');
   if (input.value.trim().length > 0) {
     filtrarSugestoesFornecedor();
+  } else {
+    mostrarTodasSugestoesFornecedor();
   }
 }
 
@@ -1263,11 +1313,6 @@ function filtrarSugestoesFornecedor() {
   const input = document.getElementById('filtroFornecedor');
   const suggestions = document.getElementById('suggestionsFornecedor');
   const termo = input.value.toLowerCase().trim();
-  
-  if (termo.length < 1) {
-    suggestions.style.display = 'none';
-    return;
-  }
   
   const fornecedoresFiltrados = fornecedoresDisponiveis.filter(fornecedor => 
     fornecedor.toLowerCase().includes(termo) && !fornecedoresSelecionados.includes(fornecedor)
@@ -2243,7 +2288,6 @@ function fecharModalDetalhes() {
   const modal = document.getElementById('modalDetalhes');
   modal.style.display = 'none';
 }
-
 
 function corrigirHoraFrontend(dataHoraString) {
     if (!dataHoraString || !dataHoraString.includes('/') || !dataHoraString.includes(':')) {
