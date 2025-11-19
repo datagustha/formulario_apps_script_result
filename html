@@ -626,7 +626,7 @@
       font-size: 9px; /* 🔥 TAMANHO REDUZIDO */
     }
 
-    /* 🔥🔥🔥 FILTRO DE EVENTOS E FORNECEDORES COM TAGS - TAMANHO REDUZIDO */
+    /* 🔥🔥🔥 FILTRO DE ETAPAS E FORNECEDORES COM TAGS - TAMANHO REDUZIDO */
     .filtro-multiselect-container {
       position: relative;
     }
@@ -762,7 +762,7 @@
   text-align: center;
 }
 
-    .filtros-eventos {
+    .filtros-etapas {
       display: none;
       margin-top: 8px;
       padding: 8px;
@@ -771,7 +771,7 @@
       border: 1px solid var(--border);
     }
 
-/* 🔥 ESTILOS PARA FILTRO DE EVENTOS COM SEARCH */
+/* 🔥 ESTILOS PARA FILTRO DE ETAPAS COM SEARCH */
 .filtro-search-container {
   margin: 12px 0;
   padding: 12px;
@@ -780,7 +780,7 @@
   border: 1px solid var(--border);
 }
 
-.suggestions-evento {
+.suggestions-etapa {
   position: absolute;
   top: 100%;
   left: 0;
@@ -796,7 +796,7 @@
   margin-top: -2px;
 }
 
-.suggestion-evento-item {
+.suggestion-etapa-item {
   padding: 8px 12px; /* 🔥 TAMANHO REDUZIDO */
   cursor: pointer;
   border-bottom: 1px solid var(--border);
@@ -804,16 +804,16 @@
   font-size: 0.85rem; /* 🔥 TAMANHO REDUZIDO */
 }
 
-.suggestion-evento-item:hover {
+.suggestion-etapa-item:hover {
   background: var(--primary);
   color: white;
 }
 
-.suggestion-evento-item:last-child {
+.suggestion-etapa-item:last-child {
   border-bottom: none;
 }
 
-.suggestion-evento-section {
+.suggestion-etapa-section {
   background: var(--primary);
   color: white;
   font-weight: 700;
@@ -1168,7 +1168,7 @@
 
 .data-table th:nth-child(5),
 .data-table td:nth-child(5) {
-  width: 14%; /* Último Evento */
+  width: 14%; /* Última Etapa */
 }
 
 .data-table th:nth-child(6),
@@ -1212,7 +1212,7 @@
   padding-left: 12px !important;
 }
 
-/* 🔥 EXCEÇÃO: Último Evento alinhado à esquerda */
+/* 🔥 EXCEÇÃO: Última Etapa alinhado à esquerda */
 .data-table th:nth-child(5) {
   text-align: left !important;
   padding-left: 12px !important;
@@ -1311,8 +1311,8 @@
 
 
 
-/* 🔥 ESTILOS MELHORADOS PARA O CAMPO DE EVENTO SEARCH - TAMANHO REDUZIDO */
-#inputEventoSearch {
+/* 🔥 ESTILOS MELHORADOS PARA O CAMPO DE ETAPA SEARCH - TAMANHO REDUZIDO */
+#inputEtapaSearch {
   background-image: url('data:image/svg+xml;utf8,<svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24" fill="%237E3E9A" width="16" height="16"><path d="M15.5 14h-.79l-.28-.27C15.41 12.59 16 11.11 16 9.5 16 5.91 13.09 3 9.5 3S3 5.91 3 9.5 5.91 16 9.5 16c1.61 0 3.09-.59 4.23-1.57l.27.28v.79l5 4.99L20.49 19l-4.99-5zm-6 0C7.01 14 5 11.99 5 9.5S7.01 5 9.5 5 14 7.01 14 9.5 11.99 14 9.5 14z"/></svg>');
   background-repeat: no-repeat;
   background-position: right 10px center;
@@ -1328,7 +1328,7 @@
 }
 
 /* 🔥 CORREÇÃO DEFINITIVA - REMOVER SCROLL HORIZONTAL */
-.suggestions-evento-search {
+.suggestions-etapa-search {
   position: absolute;
   top: 100%;
   left: 0;
@@ -1349,7 +1349,7 @@
 }
 
 /* 🔥 GARANTIR QUE OS ITENS QUEBREM LINHA SE PRECISAR */
-.suggestion-evento-item-search {
+.suggestion-etapa-item-search {
   padding: 10px 14px; /* 🔥 TAMANHO REDUZIDO */
   cursor: pointer;
   border-bottom: 1px solid var(--border);
@@ -1364,18 +1364,18 @@
   line-height: 1.3;
 }
 
-.suggestion-evento-item-search:hover {
+.suggestion-etapa-item-search:hover {
   background: var(--primary);
   color: white;
   transform: translateX(5px);
 }
 
-.suggestion-evento-item-search:last-child {
+.suggestion-etapa-item-search:last-child {
   border-bottom: none;
 }
 
 /* 🔥 SEÇÕES TAMBÉM */
-.suggestion-evento-section-search {
+.suggestion-etapa-section-search {
   background: var(--primary);
   color: white;
   font-weight: 700;
@@ -1394,12 +1394,12 @@
 }
 
 /* 🔥 CORREÇÃO ADICIONAL PARA O CONTAINER DO INPUT */
-#eventoFormGroup {
+#etapaFormGroup {
   position: relative;
   width: 100%;
 }
 
-#eventoFormGroup .suggestions-evento {
+#etapaFormGroup .suggestions-etapa {
   width: 100% !important;
   left: 0 !important;
   right: 0 !important;
@@ -1825,6 +1825,59 @@
 }
 
   }
+
+  /* 🔥 ESTILOS PARA OS NOVOS ETAPAS COM ÍCONES COLORIDOS */
+.etapa-pendente-fornecedor {
+  background: linear-gradient(135deg, #FF6B35 0%, #FF8E35 100%) !important;
+  color: white !important;
+  border: 2px solid #FF6B35 !important;
+}
+
+.etapa-pendente-sim {
+  background: linear-gradient(135deg, #7E3E9A 0%, #9A5FB8 100%) !important;
+  color: white !important;
+  border: 2px solid #7E3E9A !important;
+}
+
+.etapa-pendente-wl {
+  background: linear-gradient(135deg, #2EBE76 0%, #4CD494 100%) !important;
+  color: white !important;
+  border: 2px solid #2EBE76 !important;
+}
+
+.etapa-pendente-clinica {
+  background: linear-gradient(135deg, #0682c5 0%, #2AA0E6 100%) !important;
+  color: white !important;
+  border: 2px solid #0682c5 !important;
+}
+
+/* Ícones para os etapas nas sugestões */
+.suggestion-etapa-item-search[data-etapa="PENDENTE FORNECEDOR(ES)"] i {
+  color: #FF6B35 !important;
+}
+
+.suggestion-etapa-item-search[data-etapa="PENDENTE SIM"] i {
+  color: #7E3E9A !important;
+}
+
+.suggestion-etapa-item-search[data-etapa="PENDENTE WL"] i {
+  color: #2EBE76 !important;
+}
+
+.suggestion-etapa-item-search[data-etapa="PENDENTE CLÍNICA/LOJA"] i {
+  color: #0682c5 !important;
+}
+
+/* 🔥 ADICIONE ESTE CSS - ANIMAÇÃO SHAKE */
+@keyframes shake {
+  0%, 100% { transform: translateX(0); }
+  25% { transform: translateX(-8px); }
+  75% { transform: translateX(8px); }
+}
+
+.shake {
+  animation: shake 0.5s ease-in-out;
+}
   </style>
 </head>
 <body>
@@ -2157,35 +2210,35 @@
           </div>
 
                     <!-- 🔥 MANTENHA EXATAMENTE ASSIM - SÓ ADICIONE UM ID NO FORM-GROUP -->
-          <div class="form-group" id="eventoFormGroup">
+          <div class="form-group" id="etapaFormGroup">
             <label class="form-label">
               <i class="fas fa-calendar-check"></i>
-              Evento
+              Etapa
             </label>
             
             <!-- 🔥 MANTENHA O SELECT ORIGINAL, MAS VAMOS ESCONDER ELE -->
-            <select id="evento" class="form-control" style="display: none;">
-              <option value="">-- Selecione um evento --</option>
+            <select id="etapa" class="form-control" style="display: none;">
+              <option value="">-- Selecione uma etapa --</option>
             </select>
             
             <!-- 🔥 TAMANHO REDUZIDO NO INPUT -->
             <div style="position: relative; width: 100%;">
               <input type="text" 
-                     id="inputEventoSearch" 
+                     id="inputEtapaSearch" 
                      class="form-control" 
-                     placeholder="Digite para buscar evento..."
-                     oninput="filtrarSugestoesEventoSearch()"
+                     placeholder="Digite para buscar etapa..."
+                     oninput="filtrarSugestoesEtapaSearch()"
                      style="padding-right: 35px; width: 100%; min-width: 350px;">
               
-              <div class="suggestions-evento" id="suggestionsEventoSearch" style="display: none;">
+              <div class="suggestions-etapa" id="suggestionsEtapaSearch" style="display: none;">
               </div>
             </div>
 
-            <!-- ✅ ✅ ✅ CORREÇÃO DO CHECKBOX - MUDAR data-campo para "inputEventoSearch" -->
+            <!-- ✅ ✅ ✅ CORREÇÃO DO CHECKBOX - MUDAR data-campo para "inputEtapaSearch" -->
             <div class="checkbox-aplicar-todos">
-              <input type="checkbox" id="check_eventos" data-campo="inputEventoSearch" onchange="toggleCampoParaTodos('inputEventoSearch')">
-              <label for="check_eventos">
-                  <i class="fas fa-copy"></i> Aplicar Evento a todos
+              <input type="checkbox" id="check_etapas" data-campo="inputEtapaSearch" onchange="toggleCampoParaTodos('inputEtapaSearch')">
+              <label for="check_etapas">
+                  <i class="fas fa-copy"></i> Aplicar Etapa a todos
               </label>
             </div>
           </div> <!-- ← ESTE </div> FECHA TUDO -->
@@ -2236,7 +2289,7 @@
         <!-- BARRA DE PESQUISA PRINCIPAL -->
         <div class="search-container">
           <input type="text" id="pesquisaCadastros" class="form-control" 
-                 placeholder="🔍 Pesquisar por nome, CNPJ, fornecedor, evento..."
+                 placeholder="🔍 Pesquisar por nome, CNPJ, fornecedor, etapa..."
                  oninput="filtrarPesquisa()">
         </div>
 
@@ -2272,16 +2325,16 @@
 
         <!-- 🔥🔥🔥 FILTROS AVANÇADOS - SEGUINDO O MODELO -->
         <div class="filtros-avancados" id="filtrosAvancadosContainer" style="display: none;">
-          <!-- FILTRO DE EVENTOS COM TAGS -->
+          <!-- FILTRO DE ETAPAS COM TAGS -->
           <div class="filtro-group">
-            <label class="filtro-label">📅 Filtrar por Evento:</label>
+            <label class="filtro-label">📅 Filtrar por Etapa:</label>
             <div class="filtro-multiselect-container">
-              <input type="text" id="filtroEvento" class="form-control" 
-                     placeholder="Digite para buscar eventos..." 
-                     oninput="filtrarSugestoesEvento()"
-                     onfocus="mostrarSugestoesEvento()">
-              <div class="suggestions" id="suggestionsEvento"></div>
-              <div class="tags-selecionadas" id="eventosSelecionados"></div>
+              <input type="text" id="filtroEtapa" class="form-control" 
+                     placeholder="Digite para buscar etapas..." 
+                     oninput="filtrarSugestoesEtapa()"
+                     onfocus="mostrarSugestoesEtapa()">
+              <div class="suggestions" id="suggestionsEtapa"></div>
+              <div class="tags-selecionadas" id="etapasSelecionados"></div>
             </div>
           </div>
           
@@ -2346,7 +2399,7 @@
                   <th width="12%">CNPJ</th>
                   <th width="12%">Fornecedor</th>
                   <th width="10%">Situação</th>
-                  <th width="14%">Último Evento</th>
+                  <th width="14%">Última Etapa</th>
                   <th width="8%">Defasagem</th>
                   <th width="10%">Mensalidade</th>
                   <th width="8%">Adesão</th>
@@ -2482,7 +2535,7 @@ let waitlabelAtual = 'Sim_Facilita'; // 🔥 VARIÁVEL PARA WAITLABEL ATUAL
 // 🔥🔥🔥 NOVAS VARIÁVEIS PARA FILTROS - SEGUINDO O MODELO
 let filtrosAtivos = {};
 let situacaoAtiva = 'all';
-let eventosSelecionados = [];
+let etapasSelecionados = [];
 let fornecedoresSelecionados = [];
 
 // 🔥 VARIÁVEL PARA ARMAZENAR O ID DO CADASTRO ATUAL NO MODAL
@@ -2500,54 +2553,30 @@ const WAITLABELS_CONFIG = {
   }
 };
 
-// 🔥 VARIÁVEIS DOS EVENTOS PARA FILTRO - CONVERTIDAS PARA MAIÚSCULAS
-const eventosNovoRegistro = [
-  "NOVO CADASTRO", "PRIMEIRO CONTATO", "CLIENTE INTERESSADO", "SOLICITOU MAIS INFORMACOES",
-  "AGENDAMENTO DE DEMONSTRACAO", "PROPOSTA ENVIADA", "AGUARDANDO RETORNO"
-].sort();
+// 🔥 NOVO SISTEMA DE ETAPAS - 4 TIPOS DE PENDÊNCIAS COM ÍCONES
+const etapasPendenteFornecedor = [
+  "PENDENTE FORNECEDOR(ES)"
+];
 
-const eventosCadastrado = [
-  "LOJA CADASTRADA", "DOCUMENTACAO RECEBIDA", "CONTRATO ENVIADO", "AGUARDANDO ASSINATURA",
-  "CADASTRO APROVADO", "AGUARDANDO ATIVACAO"
-].sort();
+const etapasPendenteSIM = [
+  "PENDENTE SIM"
+];
 
-const eventosEmAndamento = [
-  "AGUARDANDO ACEITE DA LOJA", "AGUARDANDO ACEITE DO FORNECEDOR", "AGUARDANDO DOCUMENTOS",
-  "AGUARDANDO RETORNO", "AGENDAMENTO DE DEMONSTRACAO", "CLIENTE INTERESSADO", 
-  "CLIENTE NAO INTERESSADO", "CONDICAO ESPECIAL", "CONTRATO ASSINADO", "DESISTIU",
-  "DOCUMENTACAO INCOMPLETA", "EM IMPLANTACAO", "EM TREINAMENTO", "ENVIO DE BOLETO",
-  "ENVIO DE WHATSAPP", "FOLLOW-UP NECESSARIO", "FORNECEDOR ALTERADO", "LIGACAO REALIZADA",
-  "NEGOCIACAO EM ANDAMENTO", "PAGAMENTO EFETUADO", "PAGAMENTO PENDENTE", "PROPOSTA ENVIADA",
-  "QUANTIDADE DE LOJAS ALTERADA", "RECADO REGISTRADO", "REUNIAO AGENDADA", "SEM RETORNO",
-  "SOLICITOU MAIS INFORMACOES", "TELEFONE ALTERADO"
-].sort();
+const etapasPendenteWL = [
+  "PENDENTE WL"
+];
 
-const eventosRejeitado = [
-  "REJEITADO", "BLOQUEADO", "DESISTIU", "CLIENTE NAO INTERESSADO", "SEM RETORNO",
-  "NEGOCIACAO PARADA", "PROCESSO ESTAGNADO"
-].sort();
+const etapasPendenteClinicaLoja = [
+  "PENDENTE CLÍNICA/LOJA"
+];
 
-const eventosDescredenciado = [
-  "DESCREDENCIADO", "CONTRATO CANCELADO", "LOJA DESATIVADA", "FORNECEDOR REMOVIDO",
-  "PROCESSO ENCERRADO", "CADASTRO EXPIRADO"
-].sort();
-
-// 🔥 NOVOS EVENTOS PARA SITUAÇÃO "DESISTIU"
-const eventosDesistiu = [
-  "DESISTIU", "CLIENTE DESISTIU", "DESISTÊNCIA DO CLIENTE", "DESISTÊNCIA VOLUNTÁRIA",
-  "DESISTIU DO PROCESSO", "DESISTIU DA NEGOCIAÇÃO", "DESISTIU DO CADASTRO",
-  "NÃO QUIS CONTINUAR", "DESINTERESSE DO CLIENTE", "ABANDONOU O PROCESSO"
-].sort();
-
-// 🔥🔥🔥 EVENTOS DISPONÍVEIS PARA FILTRO - SEGUINDO O MODELO
-const eventosDisponiveis = [
-  ...eventosNovoRegistro,
-  ...eventosCadastrado,
-  ...eventosEmAndamento,
-  ...eventosRejeitado,
-  ...eventosDescredenciado,
-  ...eventosDesistiu
-].sort();
+// 🔥 ETAPAS DISPONÍVEIS PARA FILTRO - NOVO SISTEMA
+const etapasDisponiveis = [
+  ...etapasPendenteFornecedor,
+  ...etapasPendenteSIM,
+  ...etapasPendenteWL,
+  ...etapasPendenteClinicaLoja
+];
 
 // 🔥🔥🔥 FORNECEDORES DISPONÍVEIS PARA FILTRO - SEGUINDO O MODELO
 const fornecedoresDisponiveis = [
@@ -2567,8 +2596,8 @@ document.addEventListener('DOMContentLoaded', function() {
   
   // Configurações iniciais
   configurarValidacaoEmTempoReal();
-  document.getElementById('situacao').addEventListener('change', atualizarEventos);
-  atualizarEventos();
+  document.getElementById('situacao').addEventListener('change', atualizarEtapas);
+  atualizarEtapas();
   
   // 🔥 CORREÇÃO: Configurar proteção APÓS o DOM estar carregado
   setTimeout(() => {
@@ -2578,34 +2607,34 @@ document.addEventListener('DOMContentLoaded', function() {
   // Configurar eventos do modal de senha
   configurarModalSenha();
   
-  // 🔥🔥🔥 NOVA LINHA: Sincronizar campos de evento
-  sincronizarCamposEvento();
+  // 🔥🔥🔥 NOVA LINHA: Sincronizar campos de etapa
+  sincronizarCamposEtapa();
   
   // 🔥🔥🔥 CONFIGURAR EVENTOS DOS FILTROS - SEGUINDO O MODELO
   configurarEventosFiltro();
   
-  // 🔥🔥🔥 CORREÇÃO: Configurar evento do campo de evento
-  const inputEvento = document.getElementById('inputEventoSearch');
-  if (inputEvento) {
-    inputEvento.addEventListener('focus', function() {
-      console.log("🎯 Campo de evento recebeu foco - mostrando sugestões");
-      filtrarSugestoesEventoSearch();
+  // 🔥🔥🔥 CORREÇÃO: Configurar evento do campo de etapa
+  const inputEtapa = document.getElementById('inputEtapaSearch');
+  if (inputEtapa) {
+    inputEtapa.addEventListener('focus', function() {
+      console.log("🎯 Campo de etapa recebeu foco - mostrando sugestões");
+      filtrarSugestoesEtapaSearch();
     });
   }
 });
 
 // 🔥🔥🔥 CONFIGURAR EVENTOS DOS FILTROS - SEGUINDO O MODELO
 function configurarEventosFiltro() {
-  const inputEvento = document.getElementById('filtroEvento');
+  const inputEtapa = document.getElementById('filtroEtapa');
   const inputFornecedor = document.getElementById('filtroFornecedor');
   
   // Fechar sugestões ao clicar fora
   document.addEventListener('click', function(e) {
-    const suggestionsEvento = document.getElementById('suggestionsEvento');
+    const suggestionsEtapa = document.getElementById('suggestionsEtapa');
     const suggestionsFornecedor = document.getElementById('suggestionsFornecedor');
     
-    if (suggestionsEvento && !inputEvento.contains(e.target) && !suggestionsEvento.contains(e.target)) {
-      suggestionsEvento.style.display = 'none';
+    if (suggestionsEtapa && !inputEtapa.contains(e.target) && !suggestionsEtapa.contains(e.target)) {
+      suggestionsEtapa.style.display = 'none';
     }
     
     if (suggestionsFornecedor && !inputFornecedor.contains(e.target) && !suggestionsFornecedor.contains(e.target)) {
@@ -2614,18 +2643,18 @@ function configurarEventosFiltro() {
   });
   
   // Fechar sugestões com ESC
-  inputEvento.addEventListener('keydown', function(e) {
+  inputEtapa.addEventListener('keydown', function(e) {
     if (e.key === 'Escape') {
-      document.getElementById('suggestionsEvento').style.display = 'none';
+      document.getElementById('suggestionsEtapa').style.display = 'none';
     }
     if (e.key === 'Enter') {
       e.preventDefault();
-      const texto = inputEvento.value.trim();
-      if (texto && !eventosSelecionados.includes(texto.toUpperCase())) {
-        adicionarEvento(texto.toUpperCase());
+      const texto = inputEtapa.value.trim();
+      if (texto && !etapasSelecionados.includes(texto.toUpperCase())) {
+        adicionarEtapa(texto.toUpperCase());
       }
-      inputEvento.value = '';
-      document.getElementById('suggestionsEvento').style.display = 'none';
+      inputEtapa.value = '';
+      document.getElementById('suggestionsEtapa').style.display = 'none';
     }
   });
   
@@ -2645,17 +2674,17 @@ function configurarEventosFiltro() {
   });
 }
 
-// 🔥🔥🔥 FUNÇÕES DO FILTRO DE EVENTOS - SEGUINDO O MODELO
-function mostrarSugestoesEvento() {
-  const input = document.getElementById('filtroEvento');
+// 🔥🔥🔥 FUNÇÕES DO FILTRO DE ETAPAS - SEGUINDO O MODELO
+function mostrarSugestoesEtapa() {
+  const input = document.getElementById('filtroEtapa');
   if (input.value.trim().length > 0) {
-    filtrarSugestoesEvento();
+    filtrarSugestoesEtapa();
   }
 }
 
-function filtrarSugestoesEvento() {
-  const input = document.getElementById('filtroEvento');
-  const suggestions = document.getElementById('suggestionsEvento');
+function filtrarSugestoesEtapa() {
+  const input = document.getElementById('filtroEtapa');
+  const suggestions = document.getElementById('suggestionsEtapa');
   const termo = input.value.toLowerCase().trim();
   
   if (termo.length < 1) {
@@ -2664,21 +2693,21 @@ function filtrarSugestoesEvento() {
   }
   
   // 🔥 CORREÇÃO: Usar Set para remover duplicatas
-  const eventosUnicos = [...new Set(eventosDisponiveis)];
-  const eventosFiltrados = eventosUnicos.filter(evento => 
-    evento.toLowerCase().includes(termo) && !eventosSelecionados.includes(evento)
+  const etapasUnicos = [...new Set(etapasDisponiveis)];
+  const etapasFiltrados = etapasUnicos.filter(etapa => 
+    etapa.toLowerCase().includes(termo) && !etapasSelecionados.includes(etapa)
   );
   
-  if (eventosFiltrados.length === 0) {
+  if (etapasFiltrados.length === 0) {
     suggestions.innerHTML = `
       <div class="suggestion-item" style="color: var(--gray);">
-        <i class="fas fa-search"></i> Nenhum evento encontrado
+        <i class="fas fa-search"></i> Nenhuma etapa encontrada
       </div>
     `;
   } else {
-    let html = eventosFiltrados.map(evento => `
-      <div class="suggestion-item" onclick="adicionarEvento('${evento.replace(/'/g, "\\'")}')">
-        <i class="fas fa-calendar-check"></i> ${evento}
+    let html = etapasFiltrados.map(etapa => `
+      <div class="suggestion-item" onclick="adicionarEtapa('${etapa.replace(/'/g, "\\'")}')">
+        <i class="fas fa-calendar-check"></i> ${etapa}
       </div>
     `).join('');
     
@@ -2688,48 +2717,48 @@ function filtrarSugestoesEvento() {
   suggestions.style.display = 'block';
 }
 
-function adicionarEvento(evento) {
-  if (!eventosSelecionados.includes(evento)) {
-    eventosSelecionados.push(evento);
-    atualizarEventosSelecionados();
-    aplicarFiltroEventos();
+function adicionarEtapa(etapa) {
+  if (!etapasSelecionados.includes(etapa)) {
+    etapasSelecionados.push(etapa);
+    atualizarEtapasSelecionados();
+    aplicarFiltroEtapas();
   }
   
-  document.getElementById('filtroEvento').value = '';
-  document.getElementById('suggestionsEvento').style.display = 'none';
+  document.getElementById('filtroEtapa').value = '';
+  document.getElementById('suggestionsEtapa').style.display = 'none';
 }
 
-function removerEvento(evento) {
-  eventosSelecionados = eventosSelecionados.filter(e => e !== evento);
-  atualizarEventosSelecionados();
-  aplicarFiltroEventos();
+function removerEtapa(etapa) {
+  etapasSelecionados = etapasSelecionados.filter(e => e !== etapa);
+  atualizarEtapasSelecionados();
+  aplicarFiltroEtapas();
 }
 
-function atualizarEventosSelecionados() {
-  const container = document.getElementById('eventosSelecionados');
+function atualizarEtapasSelecionados() {
+  const container = document.getElementById('etapasSelecionados');
   
-  if (eventosSelecionados.length === 0) {
+  if (etapasSelecionados.length === 0) {
     container.innerHTML = '';
     container.style.display = 'none';
     return;
   }
   
   container.style.display = 'flex';
-  container.innerHTML = eventosSelecionados.map(evento => `
+  container.innerHTML = etapasSelecionados.map(etapa => `
     <div class="tag">
-      <i class="fas fa-calendar"></i> ${evento}
-      <button class="remover" onclick="removerEvento('${evento}')">
+      <i class="fas fa-calendar"></i> ${etapa}
+      <button class="remover" onclick="removerEtapa('${etapa}')">
         <i class="fas fa-times"></i>
       </button>
     </div>
   `).join('');
 }
 
-function aplicarFiltroEventos() {
-  if (eventosSelecionados.length > 0) {
-    filtrosAtivos.eventos = eventosSelecionados;
+function aplicarFiltroEtapas() {
+  if (etapasSelecionados.length > 0) {
+    filtrosAtivos.etapas = etapasSelecionados;
   } else {
-    delete filtrosAtivos.eventos;
+    delete filtrosAtivos.etapas;
   }
   aplicarTodosFiltros();
 }
@@ -2831,10 +2860,10 @@ function aplicarTodosFiltros() {
     );
   }
   
-  if (filtrosAtivos.eventos && filtrosAtivos.eventos.length > 0) {
+  if (filtrosAtivos.etapas && filtrosAtivos.etapas.length > 0) {
     resultado = resultado.filter(cadastro => 
-      filtrosAtivos.eventos.some(evento => 
-        cadastro.evento && cadastro.evento.toUpperCase().includes(evento)
+      filtrosAtivos.etapas.some(etapa => 
+        cadastro.etapa && cadastro.etapa.toUpperCase().includes(etapa)
       )
     );
   }
@@ -2851,7 +2880,7 @@ function aplicarTodosFiltros() {
       (cadastro.nome_fantasia && cadastro.nome_fantasia.toLowerCase().includes(filtrosAtivos.pesquisa)) ||
       (cadastro.cnpj && cadastro.cnpj.includes(filtrosAtivos.pesquisa)) ||
       (cadastro.fornecedor && cadastro.fornecedor.toLowerCase().includes(filtrosAtivos.pesquisa)) ||
-      (cadastro.evento && cadastro.evento.toLowerCase().includes(filtrosAtivos.pesquisa))
+      (cadastro.etapa && cadastro.etapa.toLowerCase().includes(filtrosAtivos.pesquisa))
     );
   }
   
@@ -2891,14 +2920,14 @@ function aplicarFiltroSituacao(situacao) {
 function limparTodosFiltros() {
   filtrosAtivos = {};
   situacaoAtiva = 'all';
-  eventosSelecionados = [];
+  etapasSelecionados = [];
   fornecedoresSelecionados = [];
   document.getElementById('pesquisaCadastros').value = '';
   
   // 🔥 CORREÇÃO: DEFINIR ORDENAÇÃO POR RAZÃO SOCIAL (A-Z) POR PADRÃO
   document.getElementById('ordenacaoCadastros').value = 'razao_social';
   
-  document.getElementById('filtroEvento').value = '';
+  document.getElementById('filtroEtapa').value = '';
   document.getElementById('filtroFornecedor').value = '';
   
   document.querySelectorAll('.filtro-btn').forEach(btn => {
@@ -2906,7 +2935,7 @@ function limparTodosFiltros() {
   });
   document.querySelector('.filtro-btn[data-situacao="all"]').classList.add('active');
   
-  atualizarEventosSelecionados();
+  atualizarEtapasSelecionados();
   atualizarFornecedoresSelecionados();
   
   // 🔥 CORREÇÃO: APLICAR ORDENAÇÃO APÓS LIMPAR FILTROS
@@ -2972,9 +3001,9 @@ function exibirModalFornecedores(cnpj, lojas) {
   
   if (lojas && lojas.length > 0) {
     lojasHTML = lojas.map(loja => {
-      // 🔥🔥🔥 CORREÇÃO: APLICAR CORREÇÃO DE 5 HORAS NO ÚLTIMO EVENTO
-      const ultimoEventoCorrigido = loja.ultimo_evento ? 
-          corrigirHoraFrontend(loja.ultimo_evento) : 'N/A';
+      // 🔥🔥🔥 CORREÇÃO: APLICAR CORREÇÃO DE 5 HORAS NA ÚLTIMA ETAPA
+      const ultimaEtapaCorrigido = loja.ultima_etapa ? 
+          corrigirHoraFrontend(loja.ultima_etapa) : 'N/A';
       
       return `
       <div class="loja-item" style="border-color: ${getCorBordaSituacao(loja.situacao)};">
@@ -2984,24 +3013,24 @@ function exibirModalFornecedores(cnpj, lojas) {
         </div>
         
         <div style="display: grid; grid-template-columns: 1fr 1fr; gap: 8px; margin-bottom: 8px;">
-          <div><strong>📅 Evento:</strong> ${loja.evento || 'N/A'}</div>
+          <div><strong>📅 Etapa:</strong> ${loja.etapa || 'N/A'}</div>
           <div><strong>💰 Tarifa:</strong> ${loja.tarifa || 'N/A'} ${formatarPercentualCorrigido(loja.percentual_tarifa)}</div>
           <div><strong>💵 Mensalidade:</strong> ${formatarMoedaParaInput(loja.mensalidade)}</div>
           <div><strong>🤝 Adesão:</strong> ${loja.adesao === 'Isento' || loja.adesao === 0 ? 'Isento' : formatarMoedaParaInput(loja.adesao)}</div>
         </div>
         
         <div style="background: #f8f9fa; padding: 6px 10px; border-radius: 5px; margin-bottom: 8px; border-left: 2px solid var(--warning);">
-          <strong>⏰ Último Evento:</strong> 
+          <strong>⏰ Última Etapa:</strong> 
           <span style="color: var(--dark); font-weight: 600;">
-            ${ultimoEventoCorrigido}
+            ${ultimaEtapaCorrigido}
           </span>
         </div>
         
         ${loja.situacao && loja.situacao.toUpperCase() === 'EM ANDAMENTO' ? `
         <div style="background: #fff3cd; padding: 6px 10px; border-radius: 5px; margin-bottom: 8px; border-left: 2px solid var(--warning);">
           <strong>⏰ Defasagem:</strong> 
-          <span style="color: ${calcularDefasagem(loja.ultimo_evento).includes('30') || calcularDefasagem(loja.ultimo_evento).includes('31') ? 'var(--danger)' : 'var(--dark)'}; font-weight: 600;">
-            ${calcularDefasagem(loja.ultimo_evento)}
+          <span style="color: ${calcularDefasagem(loja.ultima_etapa).includes('30') || calcularDefasagem(loja.ultima_etapa).includes('31') ? 'var(--danger)' : 'var(--dark)'}; font-weight: 600;">
+            ${calcularDefasagem(loja.ultima_etapa)}
           </span>
         </div>
         ` : `
@@ -3059,9 +3088,9 @@ function fecharModalFornecedores() {
 }
 
 // 🔥🔥🔥 FUNÇÃO PARA CALCULAR DIAS DE DEFASAGEM - CORRIGIDA
-function calcularDiasDefasagem(dataUltimoEvento) {
-  const defasagem = calcularDefasagem(dataUltimoEvento);
-  console.log("🔢 Calculando dias de defasagem:", dataUltimoEvento, "→", defasagem);
+function calcularDiasDefasagem(dataUltimaEtapa) {
+  const defasagem = calcularDefasagem(dataUltimaEtapa);
+  console.log("🔢 Calculando dias de defasagem:", dataUltimaEtapa, "→", defasagem);
   
   if (defasagem === 'N/A' || defasagem === 'Erro' || defasagem === 'Futuro' || defasagem === 'Data inválida' || defasagem === 'Erro no cálculo') {
     return 9999; // Coloca no final
@@ -3137,8 +3166,8 @@ function verDetalhesCadastroModal(id) {
     .withSuccessHandler(function(dados) {
       hideLoading();
       console.log("✅✅✅ DADOS RECEBIDOS DO GOOGLE APPS SCRIPT:");
-      console.log("Último evento recebido:", dados.ultimo_evento);
-      console.log("Evento recebido:", dados.evento);
+      console.log("Última etapa recebida:", dados.ultima_etapa);
+      console.log("Etapa recebida:", dados.etapa);
       console.log("Dados completos:", dados);
       
       // 🔥 ADICIONAR WAITLABEL AOS DADOS PARA EXIBIÇÃO
@@ -3194,44 +3223,42 @@ function exibirTabelaCadastrosAgrupada(cadastrosAgrupados, titulo) {
   }, 300);
 }
 
-// 🔥 CORREÇÃO DEFINITIVA - UTC para GMT-3 (5 horas de diferença)
 function corrigirHoraFrontend(dataHoraString) {
     if (!dataHoraString || !dataHoraString.includes('/') || !dataHoraString.includes(':')) {
         return dataHoraString;
     }
     
-    console.log("🕒 Data recebida do backend (UTC):", dataHoraString);
+    console.log("🕒 Data recebida do backend:", dataHoraString);
     
     try {
         const [dataPart, horaPart] = dataHoraString.split(' ');
         const [dia, mes, ano] = dataPart.split('/');
         const [hora, minuto, segundo] = horaPart.split(':');
         
-        // 🔥 CORREÇÃO: UTC para GMT-3 = SUBTRAIR 3 HORAS
-        // Mas parece que precisamos subtrair 5 horas
-        const dataUTC = new Date(Date.UTC(
+        // 🔥 CORREÇÃO: Criar data e SUBTRAIR 4 HORAS
+        const dataOriginal = new Date(
             parseInt(ano),
             parseInt(mes) - 1,
             parseInt(dia),
             parseInt(hora),
             parseInt(minuto), 
             parseInt(segundo)
-        ));
+        );
         
-        // 🔥 MUDANÇA: Subtrair 5 horas em vez de 3
-        const dataGMT3 = new Date(dataUTC.getTime() - (5 * 60 * 60 * 1000));
+        // Subtrair 4 horas (4 * 60 * 60 * 1000 milissegundos)
+        const dataCorrigida = new Date(dataOriginal.getTime() - (4 * 60 * 60 * 1000));
         
         // Formatar de volta para string
-        const diaCorrigido = String(dataGMT3.getUTCDate()).padStart(2, '0');
-        const mesCorrigido = String(dataGMT3.getUTCMonth() + 1).padStart(2, '0');
-        const anoCorrigido = dataGMT3.getUTCFullYear();
-        const horaCorrigida = String(dataGMT3.getUTCHours()).padStart(2, '0');
-        const minutoCorrigido = String(dataGMT3.getUTCMinutes()).padStart(2, '0');
-        const segundoCorrigido = String(dataGMT3.getUTCSeconds()).padStart(2, '0');
+        const diaCorrigido = String(dataCorrigida.getDate()).padStart(2, '0');
+        const mesCorrigido = String(dataCorrigida.getMonth() + 1).padStart(2, '0');
+        const anoCorrigido = dataCorrigida.getFullYear();
+        const horaCorrigida = String(dataCorrigida.getHours()).padStart(2, '0');
+        const minutoCorrigido = String(dataCorrigida.getMinutes()).padStart(2, '0');
+        const segundoCorrigido = String(dataCorrigida.getSeconds()).padStart(2, '0');
         
         const resultado = `${diaCorrigido}/${mesCorrigido}/${anoCorrigido} ${horaCorrigida}:${minutoCorrigido}:${segundoCorrigido}`;
         
-        console.log("✅ Data corrigida (GMT-3):", resultado);
+        console.log("✅ Data corrigida (-4h):", resultado);
         return resultado;
         
     } catch (error) {
@@ -3266,18 +3293,18 @@ function criarLinhaTabelaAgrupada(grupo) {
   const dataHoraCorrigida = dataHoraMaisAntiga !== 'N/A' ? 
       corrigirHoraFrontend(dataHoraMaisAntiga) : 'N/A';
 
-  const eventoMaisAntigo = fornecedorMaisAntigo.evento || 'N/A';
+  const etapaMaisAntigo = fornecedorMaisAntigo.etapa || 'N/A';
   const nomeFornecedorAntigo = fornecedorMaisAntigo.fornecedor || 'N/A';
 
   // 🔥🔥🔥 AGORA MOSTRA DATA E HORA CORRIGIDA
-  let ultimoEventoInfo = '';
+  let ultimaEtapaInfo = '';
   if (dataHoraCorrigida !== 'N/A') {
     // Se já está no formato brasileiro com hora (DD/MM/YYYY HH:mm:ss)
     if (dataHoraCorrigida.includes('/') && dataHoraCorrigida.includes(':')) {
       const [dataPart, horaPart] = dataHoraCorrigida.split(' ');
-      ultimoEventoInfo = `
+      ultimaEtapaInfo = `
         <div style="font-size: 0.75rem;">
-          <div style="font-weight: 500; margin-bottom: 2px;">${eventoMaisAntigo}</div>
+          <div style="font-weight: 500; margin-bottom: 2px;">${etapaMaisAntigo}</div>
           <div style="color: var(--gray); font-size: 0.65rem;">
             ${dataPart} ${horaPart}
           </div>
@@ -3288,9 +3315,9 @@ function criarLinhaTabelaAgrupada(grupo) {
       `;
     } else {
       // Tentar formatar outros formatos de data
-      ultimoEventoInfo = `
+      ultimaEtapaInfo = `
         <div style="font-size: 0.75rem;">
-          <div style="font-weight: 500; margin-bottom: 2px;">${eventoMaisAntigo}</div>
+          <div style="font-weight: 500; margin-bottom: 2px;">${etapaMaisAntigo}</div>
           <div style="color: var(--gray); font-size: 0.65rem;">${dataHoraCorrigida}</div>
           <div style="color: var(--danger); font-size: 0.6rem; margin-top: 2px;">
             ⚠️ ${nomeFornecedorAntigo}
@@ -3299,9 +3326,9 @@ function criarLinhaTabelaAgrupada(grupo) {
       `;
     }
   } else {
-    ultimoEventoInfo = `
+    ultimaEtapaInfo = `
       <div style="font-size: 0.75rem;">
-        <div style="font-weight: 500; margin-bottom: 2px;">${eventoMaisAntigo}</div>
+        <div style="font-weight: 500; margin-bottom: 2px;">${etapaMaisAntigo}</div>
         <div style="color: var(--gray); font-size: 0.65rem;">N/A</div>
         <div style="color: var(--danger); font-size: 0.6rem; margin-top: 2px;">
           ⚠️ ${nomeFornecedorAntigo}
@@ -3366,7 +3393,7 @@ function criarLinhaTabelaAgrupada(grupo) {
       <span class="status-badge ${getSituacaoClass(situacaoPrincipal)}">${situacaoPrincipal}</span>
     </td>
     <td>
-      ${ultimoEventoInfo}
+      ${ultimaEtapaInfo}
     </td>
     ${defasagemHTML}
     <td style="font-weight: 600; color: var(--success); text-align: center;">
@@ -3389,17 +3416,17 @@ function criarLinhaTabelaAgrupada(grupo) {
 // 🔥🔥🔥 FUNÇÃO AUXILIAR PARA ENCONTRAR FORNECEDOR MAIS ATRASADO
 function encontrarFornecedorMaisAntigo(lojasDoCNPJ) {
   if (!lojasDoCNPJ || lojasDoCNPJ.length === 0) {
-    return { fornecedor: 'N/A', data: 'N/A', evento: 'N/A', dias: 9999 };
+    return { fornecedor: 'N/A', data: 'N/A', etapa: 'N/A', dias: 9999 };
   }
   
   console.log("🔍 Buscando fornecedor mais antigo entre", lojasDoCNPJ.length, "lojas");
   
   // Filtrar apenas lojas com data válida
   const lojasComData = lojasDoCNPJ.filter(loja => {
-    if (!loja.ultimo_evento || loja.ultimo_evento === 'N/A') return false;
+    if (!loja.ultima_etapa || loja.ultima_etapa === 'N/A') return false;
     
     try {
-      const data = new Date(loja.ultimo_evento.split('/').reverse().join('-'));
+      const data = new Date(loja.ultima_etapa.split('/').reverse().join('-'));
       return !isNaN(data.getTime());
     } catch (error) {
       return false;
@@ -3408,14 +3435,14 @@ function encontrarFornecedorMaisAntigo(lojasDoCNPJ) {
   
   if (lojasComData.length === 0) {
     console.log("❌ Nenhuma loja com data válida encontrada");
-    return { fornecedor: 'N/A', data: 'N/A', evento: 'N/A', dias: 9999 };
+    return { fornecedor: 'N/A', data: 'N/A', etapa: 'N/A', dias: 9999 };
   }
   
-  // Encontrar a loja com evento mais antigo
+  // Encontrar a loja com etapa mais antigo
   const lojaMaisAntiga = lojasComData.reduce((maisAntiga, atual) => {
     try {
-      const dataMaisAntiga = new Date(maisAntiga.ultimo_evento.split('/').reverse().join('-'));
-      const dataAtual = new Date(atual.ultimo_evento.split('/').reverse().join('-'));
+      const dataMaisAntiga = new Date(maisAntiga.ultima_etapa.split('/').reverse().join('-'));
+      const dataAtual = new Date(atual.ultima_etapa.split('/').reverse().join('-'));
       
       console.log(`📊 Comparando: ${atual.fornecedor} (${dataAtual}) vs ${maisAntiga.fornecedor} (${dataMaisAntiga})`);
       
@@ -3426,19 +3453,19 @@ function encontrarFornecedorMaisAntigo(lojasDoCNPJ) {
     }
   });
   
-  const diasDefasagem = calcularDiasDefasagem(lojaMaisAntiga.ultimo_evento);
+  const diasDefasagem = calcularDiasDefasagem(lojaMaisAntiga.ultima_etapa);
   
   console.log("✅ Fornecedor mais antigo encontrado:", {
     fornecedor: lojaMaisAntiga.fornecedor,
-    data: lojaMaisAntiga.ultimo_evento,
-    evento: lojaMaisAntiga.evento,
+    data: lojaMaisAntiga.ultima_etapa,
+    etapa: lojaMaisAntiga.etapa,
     dias: diasDefasagem
   });
   
   return {
     fornecedor: lojaMaisAntiga.fornecedor,
-    data: lojaMaisAntiga.ultimo_evento,
-    evento: lojaMaisAntiga.evento,
+    data: lojaMaisAntiga.ultima_etapa,
+    etapa: lojaMaisAntiga.etapa,
     dias: diasDefasagem
   };
 }
@@ -3447,17 +3474,17 @@ function encontrarFornecedorMaisAntigo(lojasDoCNPJ) {
 // 🔥 NOVA FUNÇÃO: Calcular defasagem correta por CNPJ (usando o mais antigo)
 function calcularDefasagemPorCNPJ(lojasDoCNPJ) {
   if (!lojasDoCNPJ || lojasDoCNPJ.length === 0) {
-    return { dias: 9999, fornecedor: 'N/A', data: 'N/A', evento: 'N/A' };
+    return { dias: 9999, fornecedor: 'N/A', data: 'N/A', etapa: 'N/A' };
   }
   
   console.log("🔍 Calculando defasagem para CNPJ com", lojasDoCNPJ.length, "lojas");
   
   // Filtrar apenas lojas com data válida
   const lojasComData = lojasDoCNPJ.filter(loja => {
-    if (!loja.ultimo_evento || loja.ultimo_evento === 'N/A') return false;
+    if (!loja.ultima_etapa || loja.ultima_etapa === 'N/A') return false;
     
     try {
-      const data = new Date(loja.ultimo_evento.split('/').reverse().join('-'));
+      const data = new Date(loja.ultima_etapa.split('/').reverse().join('-'));
       return !isNaN(data.getTime());
     } catch (error) {
       return false;
@@ -3466,14 +3493,14 @@ function calcularDefasagemPorCNPJ(lojasDoCNPJ) {
   
   if (lojasComData.length === 0) {
     console.log("❌ Nenhuma loja com data válida encontrada");
-    return { dias: 9999, fornecedor: 'N/A', data: 'N/A', evento: 'N/A' };
+    return { dias: 9999, fornecedor: 'N/A', data: 'N/A', etapa: 'N/A' };
   }
   
-  // Encontrar a loja com evento mais antigo
+  // Encontrar a loja com etapa mais antigo
   const lojaMaisAntiga = lojasComData.reduce((maisAntiga, atual) => {
     try {
-      const dataMaisAntiga = new Date(maisAntiga.ultimo_evento.split('/').reverse().join('-'));
-      const dataAtual = new Date(atual.ultimo_evento.split('/').reverse().join('-'));
+      const dataMaisAntiga = new Date(maisAntiga.ultima_etapa.split('/').reverse().join('-'));
+      const dataAtual = new Date(atual.ultima_etapa.split('/').reverse().join('-'));
       
       console.log(`📊 Comparando: ${atual.fornecedor} (${dataAtual}) vs ${maisAntiga.fornecedor} (${dataMaisAntiga})`);
       
@@ -3484,19 +3511,19 @@ function calcularDefasagemPorCNPJ(lojasDoCNPJ) {
     }
   });
   
-  const diasDefasagem = calcularDiasDefasagem(lojaMaisAntiga.ultimo_evento);
+  const diasDefasagem = calcularDiasDefasagem(lojaMaisAntiga.ultima_etapa);
   
   console.log("✅ Fornecedor mais antigo encontrado:", {
     fornecedor: lojaMaisAntiga.fornecedor,
-    data: lojaMaisAntiga.ultimo_evento,
+    data: lojaMaisAntiga.ultima_etapa,
     dias: diasDefasagem
   });
   
   return {
     dias: diasDefasagem,
     fornecedor: lojaMaisAntiga.fornecedor,
-    data: lojaMaisAntiga.ultimo_evento,
-    evento: lojaMaisAntiga.evento
+    data: lojaMaisAntiga.ultima_etapa,
+    etapa: lojaMaisAntiga.etapa
   };
 }
 
@@ -3682,16 +3709,16 @@ function exibirModalDetalhesCompleto(dados) {
   const mensalidadeSimFormatada = formatarMoedaParaInput(dados.mensalidade_sim || 0);
   const adesaoFormatada = dados.adesao === 'Isento' || dados.adesao === 0 ? 'Isento' : formatarMoedaParaInput(dados.adesao);
   
-  // 🔥🔥🔥 CORREÇÃO: APLICAR CORREÇÃO DE 5 HORAS NO ÚLTIMO EVENTO
-  const ultimoEventoCorrigido = dados.ultimo_evento ? 
-      corrigirHoraFrontend(dados.ultimo_evento) : 'N/A';
+  // 🔥🔥🔥 CORREÇÃO: APLICAR CORREÇÃO DE 5 HORAS NA ÚLTIMA ETAPA
+  const ultimaEtapaCorrigido = dados.ultima_etapa ? 
+      corrigirHoraFrontend(dados.ultima_etapa) : 'N/A';
 
   // 🔥🔥🔥 CORREÇÃO: USAR A FUNÇÃO calcularDefasagem NORMAL
-  const defasagem = calcularDefasagem(ultimoEventoCorrigido);
+  const defasagem = calcularDefasagem(ultimaEtapaCorrigido);
   
   console.log("🔍 DEBUG DEFASAGEM - Modal Detalhes:");
-  console.log("Último evento original:", dados.ultimo_evento);
-  console.log("Último evento corrigido:", ultimoEventoCorrigido);
+  console.log("Última etapa original:", dados.ultima_etapa);
+  console.log("Última etapa corrigido:", ultimaEtapaCorrigido);
   console.log("Defasagem calculada:", defasagem);
 
   // 🔥 CORREÇÃO: SÓ MOSTRAR DEFASAGEM SE FOR EM ANDAMENTO
@@ -3814,8 +3841,8 @@ function exibirModalDetalhesCompleto(dados) {
         </div>
         
         <div class="detalhe-item">
-            <span class="detalhe-label">📅 Último Evento</span>
-            <div class="detalhe-valor">${ultimoEventoCorrigido}</div>
+            <span class="detalhe-label">📅 Última Etapa</span>
+            <div class="detalhe-valor">${ultimaEtapaCorrigido}</div>
         </div>
 
         <!-- 🔥 SEÇÃO: STATUS E ACOMPANHAMENTO -->
@@ -3833,8 +3860,8 @@ function exibirModalDetalhesCompleto(dados) {
         </div>
         
         <div class="detalhe-item">
-            <span class="detalhe-label">📅 Evento</span>
-            <div class="detalhe-valor">${dados.evento || 'N/A'}</div>
+            <span class="detalhe-label">📅 Etapa</span>
+            <div class="detalhe-valor">${dados.etapa || 'N/A'}</div>
         </div>
 
         <!-- 🔥 SEÇÃO: LINKS E OBSERVAÇÕES -->
@@ -3907,11 +3934,11 @@ function formatarDataHoraParaExibicao(dataString) {
 }
 
 // 🔥 CORREÇÃO TEMPORÁRIA - SOBRESCREVER A FUNÇÃO ORIGINAL
-function calcularDefasagem(dataUltimoEvento) {
+function calcularDefasagem(dataUltimaEtapa) {
     console.log("🎯 CALCULAR DEFASAGEM COM CORREÇÃO APLICADA");
     
     // 🔥 PRIMEIRO aplicar a correção de UTC para GMT-3
-    const dataCorrigida = corrigirHoraFrontend(dataUltimoEvento);
+    const dataCorrigida = corrigirHoraFrontend(dataUltimaEtapa);
     console.log("📅 Data após correção:", dataCorrigida);
     
     // 🔥 AGORA calcular com a data corrigida
@@ -3921,14 +3948,14 @@ function calcularDefasagem(dataUltimoEvento) {
     }
     
     try {
-        let dataEvento;
+        let dataEtapa;
         
         if (dataCorrigida.includes('/') && dataCorrigida.includes(':')) {
             const [dataPart, horaPart] = dataCorrigida.split(' ');
             const [dia, mes, ano] = dataPart.split('/');
             const [hora, minuto, segundo] = horaPart.split(':');
             
-            dataEvento = new Date(
+            dataEtapa = new Date(
                 parseInt(ano), 
                 parseInt(mes) - 1,
                 parseInt(dia),
@@ -3937,25 +3964,25 @@ function calcularDefasagem(dataUltimoEvento) {
                 parseInt(segundo)
             );
             
-            console.log("✅ Data evento (já corrigida):", dataEvento.toString());
+            console.log("✅ Data etapa (já corrigida):", dataEtapa.toString());
             
         } else {
-            dataEvento = new Date(dataCorrigida);
+            dataEtapa = new Date(dataCorrigida);
         }
         
-        if (isNaN(dataEvento.getTime())) {
+        if (isNaN(dataEtapa.getTime())) {
             return 'Data inválida';
         }
         
         const hoje = new Date();
         const hojeZerado = new Date(hoje.getFullYear(), hoje.getMonth(), hoje.getDate(), 0, 0, 0);
-        const dataEventoZerada = new Date(dataEvento.getFullYear(), dataEvento.getMonth(), dataEvento.getDate(), 0, 0, 0);
+        const dataEtapaZerada = new Date(dataEtapa.getFullYear(), dataEtapa.getMonth(), dataEtapa.getDate(), 0, 0, 0);
         
         console.log("📊 COMPARAÇÃO COM DATA CORRIGIDA:");
-        console.log("Data evento (zerada):", dataEventoZerada.toLocaleDateString('pt-BR'));
+        console.log("Data etapa (zerada):", dataEtapaZerada.toLocaleDateString('pt-BR'));
         console.log("Data hoje (zerada):", hojeZerado.toLocaleDateString('pt-BR'));
         
-        const diffTempo = hojeZerado.getTime() - dataEventoZerada.getTime();
+        const diffTempo = hojeZerado.getTime() - dataEtapaZerada.getTime();
         const diffDias = Math.floor(diffTempo / (1000 * 3600 * 24));
         
         console.log("✅ Diferença em dias:", diffDias);
@@ -4080,7 +4107,7 @@ function atualizarInterfaceWaitlabel() {
 function toggleCampoParaTodos(campoId) {
     console.log("🎯 Toggle campo para aplicar a todos:", campoId);
     
-    const campoParaAplicar = campoId === 'inputEventoSearch' ? 'evento' : campoId;
+    const campoParaAplicar = campoId === 'inputEtapaSearch' ? 'etapa' : campoId;
     
     camposParaAplicarATodos[campoParaAplicar] = !camposParaAplicarATodos[campoParaAplicar];
     
@@ -4179,7 +4206,7 @@ function mostrarPopupAplicarTodos(cnpj, camposSelecionados, dados) {
             }
         }
         
-        if (campo === 'evento' && valor && valor !== 'Não preenchido') {
+        if (campo === 'etapa' && valor && valor !== 'Não preenchido') {
             return valor.charAt(0).toUpperCase() + valor.slice(1).toLowerCase();
         }
         
@@ -4256,9 +4283,9 @@ const formatarNomeCampoPopup = (campo) => {
         'mensalidade': 'Mensalidade',
         'adesao': 'Adesão',
         'situacao': 'Situação',
-        'evento': 'Evento',
+        'etapa': 'Etapa',
         'observacoes': 'Observações',
-        'inputEventoSearch': 'Evento'
+        'inputEtapaSearch': 'Etapa'
     };
     
     return nomes[campo] || campo;
@@ -4298,7 +4325,7 @@ function mostrarPopupAplicarTodosMelhorado(cnpj, camposSelecionados, dados) {
             }
         }
         
-        if (campo === 'evento' && valor && valor !== 'Não preenchido') {
+        if (campo === 'etapa' && valor && valor !== 'Não preenchido') {
             return valor.charAt(0).toUpperCase() + valor.slice(1).toLowerCase();
         }
         
@@ -4390,7 +4417,6 @@ function mostrarPopupAplicarTodosMelhorado(cnpj, camposSelecionados, dados) {
     };
 }
 
-// 🔥 FUNÇÃO PRINCIPAL MELHORADA COM DELAY (FUNÇÃO NOVA)
 async function processarAplicarATodosComDelay() {
     const modal = document.getElementById('modalAplicarTodos');
     if (modal) modal.remove();
@@ -4402,8 +4428,12 @@ async function processarAplicarATodosComDelay() {
     showLoading(`Aplicando ${campos.length} campo(s) a todos os registros...`, "Processamento seguro com delay entre requisições");
     
     try {
-        // 🔥 CHAMADA ÚNICA PARA O GOOGLE APPS SCRIPT
+        // 🔥🔥🔥 CORREÇÃO: GARANTIR QUE NÃO HAJA DATA FIXA
+        const dadosSemDataFixa = { ...dados };
+        delete dadosSemDataFixa.ultima_etapa; // Remove qualquer data fixa
+        
         console.log("📤 Enviando requisição única para o Google Apps Script...");
+        console.log("🔥 Dados SEM data fixa:", dadosSemDataFixa);
         
         google.script.run
             .withSuccessHandler(function(res) {
@@ -4426,6 +4456,21 @@ async function processarAplicarATodosComDelay() {
                         }, 1000);
                     }
                 } else {
+                    // 🔥🔥🔥 APLICAR ESTILO VERMELHO NO CAMPO DE ETAPA QUANDO HOUVER ERRO
+                    const inputEtapa = document.getElementById('inputEtapaSearch');
+                    if (inputEtapa && res && res.message && res.message.includes('ETAPA')) {
+                        inputEtapa.style.border = '3px solid var(--danger)';
+                        inputEtapa.style.backgroundColor = '#fff5f5';
+                        inputEtapa.style.boxShadow = '0 0 10px rgba(220, 53, 69, 0.3)';
+                        inputEtapa.focus();
+                        inputEtapa.scrollIntoView({ behavior: 'smooth', block: 'center' });
+                        
+                        inputEtapa.style.animation = 'shake 0.5s ease-in-out';
+                        setTimeout(() => {
+                            inputEtapa.style.animation = '';
+                        }, 500);
+                    }
+                    
                     showMessage('error', '❌ ' + (res ? res.message : 'Erro ao aplicar alterações'));
                 }
             })
@@ -4445,7 +4490,7 @@ async function processarAplicarATodosComDelay() {
                     showMessage('error', '❌ Erro: ' + error.message);
                 }
             })
-            .aplicarAlteracoesATodos(cnpj, dados, campos);
+            .aplicarAlteracoesATodos(cnpj, dadosSemDataFixa, campos); // 🔥 Envia dados SEM data fixa
             
     } catch (error) {
         console.error("❌ ERRO NO PROCESSAMENTO:", error);
@@ -4580,7 +4625,7 @@ function adicionarCheckboxesAosCampos() {
   const camposAplicaveis = [
     'razao_social', 'nome_fantasia','contrato_enviado', 
     'contrato_assinado', 'ativacao', 'link', 'mensalidade', 
-    'mensalidade_sim', 'adesao', 'situacao', 'inputEventoSearch'
+    'mensalidade_sim', 'adesao', 'situacao', 'inputEtapaSearch'
   ];
     
     camposAplicaveis.forEach(campoId => {
@@ -4610,8 +4655,6 @@ function mostrarBotaoAplicarATodos() {
     }
 }
 
-// 🔥 MANTENDO TODAS AS OUTRAS FUNÇÕES ORIGINAIS
-// (As funções originais de cadastro, atualização, validação, etc. permanecem intactas)
 
 function cadastrar() {
   console.log("🎯 [DEBUG] Botão 'Cadastrar' clicado");
@@ -4636,10 +4679,76 @@ function cadastrar() {
     return;
   }
 
+  // 🔥🔥🔥 VALIDAÇÃO DA ETAPA - CORRIGIDA (APENAS PARA EM ANDAMENTO)
+  console.log("🎯 Validando etapa selecionada...");
+  const etapaSelecionada = dadosBase.etapa;
+  const situacaoSelecionada = dadosBase.situacao;
+
+  // 🔥 SÓ VALIDAR ETAPA SE A SITUAÇÃO FOR "EM ANDAMENTO"
+  const situacaoNormalizada = situacaoSelecionada ? situacaoSelecionada.toUpperCase().trim() : '';
+  const ehEmAndamento = situacaoNormalizada === 'EM ANDAMENTO';
+
+  if (ehEmAndamento) {
+    console.log("🔍 Situação é EM ANDAMENTO - validando etapa...");
+    
+    if (!etapaSelecionada) {
+      showMessage('error', '❌ Para situações "EM ANDAMENTO" o campo Etapa é obrigatório!');
+      
+      const inputEtapa = document.getElementById('inputEtapaSearch');
+      if (inputEtapa) {
+        inputEtapa.style.border = '2px solid var(--danger)';
+        inputEtapa.style.backgroundColor = '#fff5f5';
+        inputEtapa.focus();
+        inputEtapa.scrollIntoView({ behavior: 'smooth', block: 'center' });
+      }
+      return;
+    }
+    
+    const etapasValidas = [
+      "PENDENTE FORNECEDOR(ES)",
+      "PENDENTE SIM", 
+      "PENDENTE WL",
+      "PENDENTE CLÍNICA/LOJA"
+    ];
+    
+    if (!etapasValidas.includes(etapaSelecionada)) {
+      const mensagemErro = `❌ ETAPA INVÁLIDA PARA "EM ANDAMENTO"!\n\nA etapa "${etapaSelecionada}" não é válida.\n\n📋 ETAPAS VÁLIDAS:\n• PENDENTE FORNECEDOR(ES)\n• PENDENTE SIM\n• PENDENTE WL\n• PENDENTE CLÍNICA/LOJA`;
+      
+      showMessage('error', mensagemErro);
+      
+      const inputEtapa = document.getElementById('inputEtapaSearch');
+      const cardCadastro = document.getElementById('cardCadastro');
+      
+      if (inputEtapa) {
+        inputEtapa.style.border = '3px solid var(--danger)';
+        inputEtapa.style.backgroundColor = '#fff5f5';
+        inputEtapa.style.boxShadow = '0 0 10px rgba(220, 53, 69, 0.3)';
+        inputEtapa.focus();
+        inputEtapa.scrollIntoView({ behavior: 'smooth', block: 'center' });
+        
+        inputEtapa.style.animation = 'shake 0.5s ease-in-out';
+        setTimeout(() => {
+          inputEtapa.style.animation = '';
+        }, 500);
+      }
+      
+      if (cardCadastro) {
+        cardCadastro.style.border = '2px solid var(--danger)';
+        setTimeout(() => {
+          cardCadastro.style.border = '';
+        }, 2000);
+      }
+      
+      return;
+    }
+  } else {
+    console.log("✅ Situação não é EM ANDAMENTO - etapa não precisa ser validada");
+  }
+
+  console.log("✅ Validação de etapa concluída, continuando com o cadastro...");
   console.log("🔢 Fornecedores selecionados:", dadosBase.fornecedores.length);
   console.log("📋 Lista de fornecedores:", dadosBase.fornecedores);
 
-  dadosBase.evento = "Novo cadastro";
   dadosBase.acao = 'cadastrar';
 
   showLoading(`Cadastrando loja ${dadosBase.razao_social}...`, `Processando ${dadosBase.fornecedores.length} fornecedor(es)`);
@@ -4650,7 +4759,6 @@ function cadastrar() {
 
   google.script.run
     .withSuccessHandler(function(res) {
-      // 🔥 ADICIONE ESTE CONSOLE AQUI:
       console.log("✅ [SUCESSO] Cadastro realizado com sucesso:", res);
       
       console.log("✅ Resposta do cadastro MULTIPLO:", res);
@@ -4667,7 +4775,6 @@ function cadastrar() {
       }
     })
     .withFailureHandler(function(error) {
-      // 🔥 ADICIONE ESTE CONSOLE AQUI:
       console.error("❌ [ERRO] Falha no cadastro:", error);
       
       console.error("❌ Erro no cadastro:", error);
@@ -4717,12 +4824,79 @@ function atualizar() {
     return;
   }
   
+  // 🔥🔥🔥 VALIDAÇÃO DA ETAPA - CORRIGIDA (APENAS PARA EM ANDAMENTO)
+  console.log("🎯 Validando etapa selecionada...");
+  const etapaSelecionada = dados.etapa;
+  const situacaoSelecionada = dados.situacao;
+
+  // 🔥 SÓ VALIDAR ETAPA SE A SITUAÇÃO FOR "EM ANDAMENTO"
+  const situacaoNormalizada = situacaoSelecionada ? situacaoSelecionada.toUpperCase().trim() : '';
+  const ehEmAndamento = situacaoNormalizada === 'EM ANDAMENTO';
+
+  if (ehEmAndamento) {
+    console.log("🔍 Situação é EM ANDAMENTO - validando etapa...");
+    
+    if (!etapaSelecionada) {
+      showMessage('error', '❌ Para situações "EM ANDAMENTO" o campo Etapa é obrigatório!');
+      
+      const inputEtapa = document.getElementById('inputEtapaSearch');
+      if (inputEtapa) {
+        inputEtapa.style.border = '2px solid var(--danger)';
+        inputEtapa.style.backgroundColor = '#fff5f5';
+        inputEtapa.focus();
+        inputEtapa.scrollIntoView({ behavior: 'smooth', block: 'center' });
+      }
+      return;
+    }
+    
+    const etapasValidas = [
+      "PENDENTE FORNECEDOR(ES)",
+      "PENDENTE SIM", 
+      "PENDENTE WL",
+      "PENDENTE CLÍNICA/LOJA"
+    ];
+    
+    if (!etapasValidas.includes(etapaSelecionada)) {
+      const mensagemErro = `❌ ETAPA INVÁLIDA PARA "EM ANDAMENTO"!\n\nA etapa "${etapaSelecionada}" não é válida.\n\n📋 ETAPAS VÁLIDAS:\n• PENDENTE FORNECEDOR(ES)\n• PENDENTE SIM\n• PENDENTE WL\n• PENDENTE CLÍNICA/LOJA`;
+      
+      showMessage('error', mensagemErro);
+      
+      const inputEtapa = document.getElementById('inputEtapaSearch');
+      const cardCadastro = document.getElementById('cardCadastro');
+      
+      if (inputEtapa) {
+        inputEtapa.style.border = '3px solid var(--danger)';
+        inputEtapa.style.backgroundColor = '#fff5f5';
+        inputEtapa.style.boxShadow = '0 0 10px rgba(220, 53, 69, 0.3)';
+        inputEtapa.focus();
+        inputEtapa.scrollIntoView({ behavior: 'smooth', block: 'center' });
+        
+        inputEtapa.style.animation = 'shake 0.5s ease-in-out';
+        setTimeout(() => {
+          inputEtapa.style.animation = '';
+        }, 500);
+      }
+      
+      if (cardCadastro) {
+        cardCadastro.style.border = '2px solid var(--danger)';
+        setTimeout(() => {
+          cardCadastro.style.border = '';
+        }, 2000);
+      }
+      
+      return;
+    }
+  } else {
+    console.log("✅ Situação não é EM ANDAMENTO - etapa não precisa ser validada");
+  }
+
+  console.log("✅ Validação de etapa concluída, continuando com a atualização...");
+  
   dados.acao = 'atualizar';
   dados.id = cadastroAtualId;
   
   console.log("📤 Dados para atualização:", dados);
 
-    // 🔥 SUBSTITUA A LINHA ANTIGA POR ESTA:
   showLoading(`Atualizando loja ${dados.razao_social}...`, `Processando alterações nos dados`);
 
   const btnAtualizar = document.getElementById('btnAtualizar');
@@ -4921,9 +5095,15 @@ function coletarDadosFormulario() {
     }
     console.log("🎯🎯🎯 ADESÃO FINAL PARA ENVIO:", adesaoValue, "Tipo:", typeof adesaoValue);
 
-    const eventoValue = document.getElementById('inputEventoSearch').value || 
-                       document.getElementById('evento').value || '';
-    console.log("✅ Evento coletado:", eventoValue);
+    const etapaValue = document.getElementById('inputEtapaSearch').value || 
+                       document.getElementById('etapa').value || '';
+    console.log("✅ Etapa coletada:", etapaValue);
+
+    // 🔥 VALIDAÇÃO OBRIGATÓRIA DA ETAPA
+    if (!etapaValue) {
+      showMessage('error', '❌ O campo Etapa é obrigatório!');
+      return null;
+    }
 
     const checkboxesFornecedores = document.querySelectorAll('input[name="fornecedor"]:checked');
     const fornecedoresComConfiguracoes = [];
@@ -4945,7 +5125,7 @@ function coletarDadosFormulario() {
       }
       
       const tarifaRadio = document.querySelector(`input[name="tarifa_${fornecedorId}"]:checked`);
-      const percentualInput = document.querySelector(`input[name="percentual_${fornecedorId}"]`);
+      const percentualInput = document.querySelector(`input[name^="percentual_${fornecedorId}"]`);
       
       let tarifaSelecionada = tarifaRadio ? tarifaRadio.value : 'MDR';
       let percentualSelecionado = percentualInput ? percentualInput.value : '0%';
@@ -4987,10 +5167,13 @@ function coletarDadosFormulario() {
       mensalidade: converterMoedaParaNumero(document.getElementById('mensalidade').value),
       mensalidade_sim: converterMoedaParaNumero(document.getElementById('mensalidade_sim').value),
       situacao: document.getElementById('situacao').value,
-      evento: eventoValue
+      etapa: etapaValue,
+      // 🔥🔥🔥 CORREÇÃO CRÍTICA: NÃO ENVIAR DATA FIXA - DEIXAR O BACKEND GERAR
+      // ❌ REMOVIDO: ultima_etapa: new Date().toLocaleString('pt-BR')
+      // ✅ AGORA: O backend vai gerar a data atual individual para cada registro
     };
 
-    console.log("📦 DADOS FINAIS PARA ENVIO:", dados);
+    console.log("📦 DADOS FINAIS PARA ENVIO (SEM DATA FIXA):", dados);
     return dados;
 
   } catch (error) {
@@ -5179,12 +5362,12 @@ function preencherDadosCadastro(dados) {
     preencherCampoSeExistir('mensalidade_sim', formatarMoedaParaInput(dados.mensalidade_sim));
     preencherCampoSeExistir('adesao', dados.adesao === 'Isento' || dados.adesao === 0 ? 'R$ 0,00' : formatarMoedaParaInput(dados.adesao));
     
-    console.log("🎯 PREENCHENDO EVENTOS CORRETAMENTE:");
-    console.log("Evento (deve ser TEXTO):", dados.evento);
-    console.log("Último Evento (deve ser DATA):", dados.ultimo_evento);
+    console.log("🎯 PREENCHENDO ETAPAS CORRETAMENTE:");
+    console.log("Etapa (deve ser TEXTO):", dados.etapa);
+    console.log("Última Etapa (deve ser DATA):", dados.ultima_etapa);
     
-    preencherCampoSeExistir('inputEventoSearch', dados.evento);
-    preencherCampoSeExistir('inputUltimoEvento', dados.ultimo_evento);
+    preencherCampoSeExistir('inputEtapaSearch', dados.etapa);
+    preencherCampoSeExistir('inputUltimaEtapa', dados.ultima_etapa);
     
     preencherFornecedorComTarifas(dados);
 
@@ -5257,6 +5440,7 @@ function validarCamposObrigatorios() {
       elemento: document.getElementById('situacao'),
       tipo: 'select'
     }
+    // 🔥 REMOVIDO: A etapa NÃO está mais aqui como sempre obrigatória
   ];
 
   const camposApenasCadastro = [
@@ -5278,6 +5462,25 @@ function validarCamposObrigatorios() {
   
   if (!isAtualizacao) {
     camposParaValidar = [...camposParaValidar, ...camposApenasCadastro];
+  }
+
+  // 🔥🔥🔥 VALIDAÇÃO INTELIGENTE DA ETAPA: Só é obrigatória se situação for EM ANDAMENTO
+  const situacaoSelecionada = document.getElementById('situacao').value;
+  const situacaoNormalizada = situacaoSelecionada ? situacaoSelecionada.toUpperCase().trim() : '';
+  const ehEmAndamento = situacaoNormalizada === 'EM ANDAMENTO';
+  
+  console.log("🎯 Situação selecionada:", situacaoSelecionada, "É EM ANDAMENTO?", ehEmAndamento);
+  
+  if (ehEmAndamento) {
+    console.log("🔍 Situação é EM ANDAMENTO - etapa se torna obrigatória");
+    camposParaValidar.push({
+      id: 'inputEtapaSearch', 
+      nome: 'Etapa',
+      elemento: document.getElementById('inputEtapaSearch'),
+      tipo: 'text'
+    });
+  } else {
+    console.log("✅ Situação não é EM ANDAMENTO - etapa não é obrigatória");
   }
 
   for (const campo of camposParaValidar) {
@@ -5436,11 +5639,11 @@ function limparFormulario() {
   document.getElementById('situacao').value = 'NOVO REGISTRO';
   document.getElementById('adesao').value = 'R$ 0,00';
   
-  document.getElementById('inputEventoSearch').value = '';
-  document.getElementById('evento').value = '';
-  document.getElementById('suggestionsEventoSearch').style.display = 'none';
+  document.getElementById('inputEtapaSearch').value = '';
+  document.getElementById('etapa').value = '';
+  document.getElementById('suggestionsEtapaSearch').style.display = 'none';
   
-  atualizarEventos();
+  atualizarEtapas();
   
   document.getElementById('btnCadastrar').style.display = 'block';
   document.getElementById('btnAtualizar').style.display = 'none';
@@ -5559,158 +5762,170 @@ function editarCadastroModal(id) {
         .buscarCadastroPorIDComWaitlabel(id, waitlabelAtual);
 }
 
-function atualizarEventos() {
-  const situacao = document.getElementById('situacao').value;
-  const selectEvento = document.getElementById('evento');
+function atualizarEtapas() {
+  const selectEtapa = document.getElementById('etapa');
   
-  console.log("🎯 Atualizando eventos para situação:", situacao);
+  console.log("🎯 Atualizando etapas - NOVO SISTEMA");
   
-  selectEvento.innerHTML = '<option value="">-- Selecione um evento --</option>';
+  selectEtapa.innerHTML = '<option value="">-- Selecione uma etapa --</option>';
   
-  let eventos = [];
-  
-  // 🔥 CORREÇÃO: Remover duplicatas também no select
-  if (situacao === 'NOVO REGISTRO' || situacao === 'EM ANDAMENTO') {
-    eventos = [...new Set(eventosEmAndamento)]; // Remove duplicatas
-  } else if (situacao === 'REJEITADO') {
-    eventos = [...new Set(eventosRejeitado)];
-  } else if (situacao === 'CADASTRADO') {
-    eventos = [...new Set(eventosCadastrado)];
-  } else if (situacao === 'DESCREDENCIADO') {
-    eventos = [...new Set(eventosDescredenciado)];
-  } else if (situacao === 'DESISTIU') {
-    eventos = [...new Set(eventosDesistiu)];
-  }
-  
-  console.log("📋 Eventos disponíveis (únicos):", eventos.length);
-  
-  // 🔥 CORREÇÃO: Ordenar alfabeticamente
-  eventos.sort().forEach(evento => {
-    const option = document.createElement('option');
-    option.value = evento;
-    option.textContent = evento;
-    selectEvento.appendChild(option);
-  });
-  
-  atualizarEventosSearch();
-}
-
-function verificarDuplicatasEventos() {
-  console.log("=== 🔍 VERIFICANDO DUPLICATAS NOS EVENTOS ===");
-  
-  const todosEventos = [
-    ...eventosNovoRegistro,
-    ...eventosCadastrado, 
-    ...eventosEmAndamento,
-    ...eventosRejeitado,
-    ...eventosDescredenciado,
-    ...eventosDesistiu
+  // 🔥 NOVO SISTEMA: Todas as etapas disponíveis para qualquer situação
+  const etapas = [
+    ...etapasPendenteFornecedor,
+    ...etapasPendenteSIM,
+    ...etapasPendenteWL,
+    ...etapasPendenteClinicaLoja
   ];
   
-  const eventosUnicos = [...new Set(todosEventos)];
-  const eventosDuplicados = todosEventos.filter((item, index) => todosEventos.indexOf(item) !== index);
+  console.log("📋 Etapas disponíveis (novo sistema):", etapas.length);
   
-  console.log(`📊 Total de eventos: ${todosEventos.length}`);
-  console.log(`📊 Eventos únicos: ${eventosUnicos.length}`);
-  console.log(`📊 Eventos duplicados: ${eventosDuplicados.length}`);
+  // Adicionar etapas
+  etapas.forEach(etapa => {
+    const option = document.createElement('option');
+    option.value = etapa;
+    option.textContent = etapa;
+    selectEtapa.appendChild(option);
+  });
   
-  if (eventosDuplicados.length > 0) {
-    console.log("❌ Eventos duplicados encontrados:", [...new Set(eventosDuplicados)]);
+  atualizarEtapasSearch();
+}
+
+function verificarDuplicatasEtapas() {
+  console.log("=== 🔍 VERIFICANDO DUPLICATAS NAS ETAPAS ===");
+  
+  const todasEtapas = [
+    ...etapasPendenteFornecedor,
+    ...etapasPendenteSIM,
+    ...etapasPendenteWL,
+    ...etapasPendenteClinicaLoja
+  ];
+  
+  const etapasUnicos = [...new Set(todasEtapas)];
+  const etapasDuplicados = todasEtapas.filter((item, index) => todasEtapas.indexOf(item) !== index);
+  
+  console.log(`📊 Total de etapas: ${todasEtapas.length}`);
+  console.log(`📊 Etapas únicos: ${etapasUnicos.length}`);
+  console.log(`📊 Etapas duplicados: ${etapasDuplicados.length}`);
+  
+  if (etapasDuplicados.length > 0) {
+    console.log("❌ Etapas duplicados encontrados:", [...new Set(etapasDuplicados)]);
   } else {
-    console.log("✅ Nenhum evento duplicado encontrado!");
+    console.log("✅ Nenhuma etapa duplicado encontrado!");
   }
   
-  return eventosDuplicados.length === 0;
+  return etapasDuplicados.length === 0;
 }
 
 // Execute esta função para verificar
-setTimeout(verificarDuplicatasEventos, 2000);
+setTimeout(verificarDuplicatasEtapas, 2000);
 
-function limparDuplicatasEventos() {
-  console.log("🧹 LIMPANDO DUPLICATAS DOS EVENTOS...");
+function limparDuplicatasEtapas() {
+  console.log("🧹 LIMPANDO DUPLICATAS DAS ETAPAS...");
   
   // Remove duplicatas de cada array
-  eventosNovoRegistro = [...new Set(eventosNovoRegistro)];
-  eventosCadastrado = [...new Set(eventosCadastrado)];
-  eventosEmAndamento = [...new Set(eventosEmAndamento)];
-  eventosRejeitado = [...new Set(eventosRejeitado)];
-  eventosDescredenciado = [...new Set(eventosDescredenciado)];
-  eventosDesistiu = [...new Set(eventosDesistiu)];
+  etapasPendenteFornecedor = [...new Set(etapasPendenteFornecedor)];
+  etapasPendenteSIM = [...new Set(etapasPendenteSIM)];
+  etapasPendenteWL = [...new Set(etapasPendenteWL)];
+  etapasPendenteClinicaLoja = [...new Set(etapasPendenteClinicaLoja)];
   
   console.log("✅ Duplicatas removidas!");
-  verificarDuplicatasEventos();
+  verificarDuplicatasEtapas();
 }
 
 // Execute esta função uma vez para limpar
-setTimeout(limparDuplicatasEventos, 3000);
+setTimeout(limparDuplicatasEtapas, 3000);
 
-function atualizarEventosSearch() {
+function atualizarEtapasSearch() {
   const situacao = document.getElementById('situacao').value;
-  const inputSearch = document.getElementById('inputEventoSearch');
+  const inputSearch = document.getElementById('inputEtapaSearch');
   
   inputSearch.value = '';
   
   console.log("🔄 Campo de search atualizado para situação:", situacao);
 }
 
-function filtrarSugestoesEventoSearch() {
-  const input = document.getElementById('inputEventoSearch');
-  const suggestions = document.getElementById('suggestionsEventoSearch');
+function filtrarSugestoesEtapaSearch() {
+  const input = document.getElementById('inputEtapaSearch');
+  const suggestions = document.getElementById('suggestionsEtapaSearch');
   const termo = input.value.toLowerCase().trim();
   
-  console.log("🎯 FILTRAR SUGESTÕES EVENTO SEARCH - Termo:", termo);
+  console.log("🎯 FILTRAR SUGESTÕES ETAPA SEARCH - Termo:", termo);
   
-  const situacaoAtual = document.getElementById('situacao').value;
-  let eventosDaSituacao = [];
+  // 🔥 NOVO SISTEMA: Todas as etapas disponíveis
+  const todasEtapas = [
+    ...etapasPendenteFornecedor,
+    ...etapasPendenteSIM,
+    ...etapasPendenteWL,
+    ...etapasPendenteClinicaLoja
+  ];
   
-  console.log("📋 Situação atual do select:", situacaoAtual);
+  console.log("🎯 Total de etapas disponíveis (novo sistema):", todasEtapas.length);
   
-  // 🔥 CORREÇÃO: Garantir que cada situação use apenas seus próprios eventos SEM DUPLICATAS
-  if (situacaoAtual === 'NOVO REGISTRO') {
-    eventosDaSituacao = [...new Set(eventosNovoRegistro)]; // Remove duplicatas
-  } else if (situacaoAtual === 'EM ANDAMENTO') {
-    eventosDaSituacao = [...new Set(eventosEmAndamento)];
-  } else if (situacaoAtual === 'REJEITADO') {
-    eventosDaSituacao = [...new Set(eventosRejeitado)];
-  } else if (situacaoAtual === 'CADASTRADO') {
-    eventosDaSituacao = [...new Set(eventosCadastrado)];
-  } else if (situacaoAtual === 'DESCREDENCIADO') {
-    eventosDaSituacao = [...new Set(eventosDescredenciado)];
-  } else if (situacaoAtual === 'DESISTIU') {
-    eventosDaSituacao = [...new Set(eventosDesistiu)];
-  }
-  
-  console.log("🎯 Total de eventos únicos carregados:", eventosDaSituacao.length);
-  
-  let eventosParaMostrar = eventosDaSituacao;
+  let etapasParaMostrar = todasEtapas;
   
   if (termo.length > 0) {
-    eventosParaMostrar = eventosDaSituacao.filter(evento => 
-      evento.toLowerCase().includes(termo)
+    etapasParaMostrar = todasEtapas.filter(etapa => 
+      etapa.toLowerCase().includes(termo)
     );
-    console.log("🔍 Eventos filtrados:", eventosParaMostrar.length);
+    console.log("🔍 Etapas filtrados:", etapasParaMostrar.length);
   }
   
-  if (eventosParaMostrar.length === 0) {
+  if (etapasParaMostrar.length === 0) {
     suggestions.innerHTML = `
-      <div class="suggestion-evento-item-search" style="color: var(--gray);">
+      <div class="suggestion-etapa-item-search" style="color: var(--gray);">
         <i class="fas fa-search"></i>
-        Nenhum evento encontrado
+        Nenhuma etapa encontrada
       </div>
     `;
   } else {
-    let html = `<div class="suggestion-evento-section-search">
-      <i class="fas fa-filter"></i> Eventos para: ${situacaoAtual} (${eventosParaMostrar.length})
-    </div>`;
+    let html = '';
     
-    // 🔥 CORREÇÃO: Garantir ordenação alfabética
-    eventosParaMostrar.sort().forEach(evento => {
-      html += `
-        <div class="suggestion-evento-item-search" onclick="selecionarEventoSearch('${evento.replace(/'/g, "\\'")}')">
-          <i class="fas fa-calendar-check"></i>
-          ${evento}
-        </div>
-      `;
+    // 🔥 ORGANIZAR POR CATEGORIAS COM CORES (SEM TÍTULO, SEM ANIMAÇÃO)
+    const categorias = [
+      {
+        etapas: etapasPendenteFornecedor,
+        icone: "fas fa-truck",
+        cor: "#FF6B35",
+        classe: "etapa-pendente-fornecedor"
+      },
+      {
+        etapas: etapasPendenteSIM,
+        icone: "fas fa-building",
+        cor: "#7E3E9A", 
+        classe: "etapa-pendente-sim"
+      },
+      {
+        etapas: etapasPendenteWL,
+        icone: "fas fa-layer-group",
+        cor: "#2EBE76",
+        classe: "etapa-pendente-wl"
+      },
+      {
+        etapas: etapasPendenteClinicaLoja,
+        icone: "fas fa-store-medical",
+        cor: "#0682c5",
+        classe: "etapa-pendente-clinica"
+      }
+    ];
+    
+    categorias.forEach(categoria => {
+      const etapasDaCategoria = etapasParaMostrar.filter(etapa => 
+        categoria.etapas.includes(etapa)
+      );
+      
+      if (etapasDaCategoria.length > 0) {
+        etapasDaCategoria.forEach(etapa => {
+          html += `
+            <div class="suggestion-etapa-item-search ${categoria.classe}" 
+                 onclick="selecionarEtapaSearch('${etapa.replace(/'/g, "\\'")}')"
+                 data-etapa="${etapa}"
+                 style="background: ${categoria.cor}">
+              <i class="${categoria.icone}"></i>
+              <span>${etapa}</span>
+            </div>
+          `;
+        });
+      }
     });
     
     suggestions.innerHTML = html;
@@ -5720,17 +5935,17 @@ function filtrarSugestoesEventoSearch() {
   console.log("✅ Sugestões mostradas com sucesso!");
 }
 
-function selecionarEventoSearch(evento) {
-  const input = document.getElementById('inputEventoSearch');
-  const suggestions = document.getElementById('suggestionsEventoSearch');
-  const selectEvento = document.getElementById('evento');
+function selecionarEtapaSearch(etapa) {
+  const input = document.getElementById('inputEtapaSearch');
+  const suggestions = document.getElementById('suggestionsEtapaSearch');
+  const selectEtapa = document.getElementById('etapa');
   
-  input.value = evento;
-  selectEvento.value = evento;
+  input.value = etapa;
+  selectEtapa.value = etapa;
   
   suggestions.style.display = 'none';
   
-  console.log("✅ Evento selecionado:", evento);
+  console.log("✅ Etapa selecionada:", etapa);
 }
 
 function formatarPercentual(input) {
@@ -5755,34 +5970,34 @@ function formatarPercentual(input) {
     console.log("✅ Percentual formatado:", input.value);
 }
 
-function sincronizarCamposEvento() {
-  const inputSearch = document.getElementById('inputEventoSearch');
-  const selectEvento = document.getElementById('evento');
+function sincronizarCamposEtapa() {
+  const inputSearch = document.getElementById('inputEtapaSearch');
+  const selectEtapa = document.getElementById('etapa');
   
-  if (!inputSearch || !selectEvento) {
-    console.log("❌ Campos de evento não encontrados");
+  if (!inputSearch || !selectEtapa) {
+    console.log("❌ Campos de etapa não encontrados");
     return;
   }
   
-  console.log("✅ Sincronizando campos de evento...");
+  console.log("✅ Sincronizando campos de etapa...");
   
   inputSearch.addEventListener('input', function() {
     const valor = this.value;
-    console.log("🔄 Input evento alterado:", valor);
+    console.log("🔄 Input etapa alterado:", valor);
     
-    const opcoes = Array.from(selectEvento.options);
+    const opcoes = Array.from(selectEtapa.options);
     const opcaoCorrespondente = opcoes.find(opt => opt.text === valor);
     
     if (opcaoCorrespondente) {
-      selectEvento.value = opcaoCorrespondente.value;
+      selectEtapa.value = opcaoCorrespondente.value;
       console.log("✅ Select atualizado para:", opcaoCorrespondente.value);
     } else {
-      selectEvento.value = '';
+      selectEtapa.value = '';
       console.log("⚠️ Nenhuma opção correspondente encontrada");
     }
   });
   
-  selectEvento.addEventListener('change', function() {
+  selectEtapa.addEventListener('change', function() {
     const opcaoSelecionada = this.options[this.selectedIndex];
     if (opcaoSelecionada && opcaoSelecionada.value) {
       inputSearch.value = opcaoSelecionada.text;
@@ -5795,21 +6010,31 @@ function formatarDataParaExibicao(data) {
   if (!data) return '';
   
   try {
+    // Se já está no formato brasileiro, retornar como está
     if (typeof data === 'string' && data.includes('/')) {
       return data;
     }
     
-    const dateObj = new Date(data);
-    if (!isNaN(dateObj.getTime())) {
-      return dateObj.toLocaleDateString('pt-BR');
+    // Se veio no formato ISO (2025-08-08)
+    if (typeof data === 'string' && data.includes('-')) {
+      const [ano, mes, dia] = data.split('-');
+      return `${dia}/${mes}/${ano}`;
     }
     
-    return data;
+    // Para outros formatos, usar abordagem simples
+    const dateObj = new Date(data);
+    if (!isNaN(dateObj.getTime())) {
+      const dia = String(dateObj.getDate()).padStart(2, '0');
+      const mes = String(dateObj.getMonth() + 1).padStart(2, '0');
+      const ano = dateObj.getFullYear();
+      return `${dia}/${mes}/${ano}`;
+    }
+    
+    return String(data);
   } catch (error) {
-    return data;
+    return String(data || '');
   }
 }
-
 function limparBusca() {
   console.log("🎯 [DEBUG] Botão 'Limpar Busca' clicado");
   
@@ -5916,7 +6141,7 @@ function coletarDadosFormularioTemporario() {
     mensalidade: document.getElementById('mensalidade').value,
     situacao: document.getElementById('situacao').value,
     adesao: document.getElementById('adesao').value,
-    evento: document.getElementById('inputEventoSearch').value
+    etapa: document.getElementById('inputEtapaSearch').value
   };
   
   const fornecedoresSelecionados = [];
@@ -5958,7 +6183,7 @@ function restaurarDadosFormulario(dados) {
   document.getElementById('mensalidade').value = dados.mensalidade || 'R$ 0,00';
   document.getElementById('situacao').value = dados.situacao || 'NOVO REGISTRO';
   document.getElementById('adesao').value = dados.adesao || 'R$ 0,00';
-  document.getElementById('inputEventoSearch').value = dados.evento || '';
+  document.getElementById('inputEtapaSearch').value = dados.etapa || '';
   
   if (dados.fornecedores && dados.fornecedores.length > 0) {
     dados.fornecedores.forEach(fornecedor => {
@@ -6154,7 +6379,7 @@ function configurarCamposProtegidos() {
   }
   
   console.log("✅ Liberando campos permitidos...");
-  const camposLiberados = ['evento', 'observacoes', 'inputEventoSearch'];
+  const camposLiberados = ['etapa', 'observacoes', 'inputEtapaSearch'];
   camposLiberados.forEach(id => {
     const campo = document.getElementById(id);
     if (campo) {
@@ -6278,34 +6503,33 @@ function testarConversaoPercentual() {
 
 setTimeout(testarConversaoPercentual, 1000);
 
-function testarEventos() {
-  console.log("=== 🧪 TESTE DE EVENTOS ===");
-  console.log("NOVO REGISTRO:", eventosNovoRegistro);
-  console.log("CADASTRADO:", eventosCadastrado);
-  console.log("EM ANDAMENTO:", eventosEmAndamento);
-  console.log("REJEITADO:", eventosRejeitado);
-  console.log("DESCREDENCIADO:", eventosDescredenciado);
+function testarEtapas() {
+  console.log("=== 🧪 TESTE DE ETAPAS ===");
+  console.log("PENDENTE FORNECEDOR:", etapasPendenteFornecedor);
+  console.log("PENDENTE SIM:", etapasPendenteSIM);
+  console.log("PENDENTE WL:", etapasPendenteWL);
+  console.log("PENDENTE CLÍNICA/LOJA:", etapasPendenteClinicaLoja);
   
-  filtrarSugestoesEventoSearch();
+  filtrarSugestoesEtapaSearch();
 }
 
 setTimeout(() => {
   console.log("=== 🧪 TESTE FINAL DO SISTEMA ===");
   console.log("✅ DOMContentLoaded executado");
-  console.log("✅ Event listener do inputEventoSearch:", document.getElementById('inputEventoSearch') !== null);
-  console.log("✅ Função filtrarSugestoesEventoSearch:", typeof filtrarSugestoesEventoSearch);
+  console.log("✅ Event listener do inputEtapaSearch:", document.getElementById('inputEtapaSearch') !== null);
+  console.log("✅ Função filtrarSugestoesEtapaSearch:", typeof filtrarSugestoesEtapaSearch);
   console.log("✅ CSS carregado corretamente");
   
-  const inputEvento = document.getElementById('inputEventoSearch');
-  if (inputEvento) {
-    console.log("🎯 Clique no campo 'Digite para buscar evento...' para testar as sugestões!");
+  const inputEtapa = document.getElementById('inputEtapaSearch');
+  if (inputEtapa) {
+    console.log("🎯 Clique no campo 'Digite para buscar etapa...' para testar as sugestões!");
   }
 }, 3000);
 
 // 🔥 CONFIGURAÇÃO PARA FECHAR SUGESTÕES AO CLICAR FORA
 document.addEventListener('click', function(e) {
-  const suggestionsSearch = document.getElementById('suggestionsEventoSearch');
-  const inputSearch = document.getElementById('inputEventoSearch');
+  const suggestionsSearch = document.getElementById('suggestionsEtapaSearch');
+  const inputSearch = document.getElementById('inputEtapaSearch');
   
   if (suggestionsSearch && suggestionsSearch.style.display === 'block') {
     if (!suggestionsSearch.contains(e.target) && e.target !== inputSearch) {
@@ -6314,8 +6538,8 @@ document.addEventListener('click', function(e) {
     }
   }
   
-  const suggestionsFiltro = document.getElementById('suggestionsEvento');
-  const inputFiltro = document.getElementById('inputFiltroEvento');
+  const suggestionsFiltro = document.getElementById('suggestionsEtapa');
+  const inputFiltro = document.getElementById('inputFiltroEtapa');
   
   if (suggestionsFiltro && suggestionsFiltro.style.display === 'block') {
     if (!suggestionsFiltro.contains(e.target) && e.target !== inputFiltro) {
@@ -6327,8 +6551,8 @@ document.addEventListener('click', function(e) {
 // 🔥 FECHAR SUGESTÕES COM ESC
 document.addEventListener('keydown', function(e) {
   if (e.key === 'Escape') {
-    const suggestionsSearch = document.getElementById('suggestionsEventoSearch');
-    const suggestionsFiltro = document.getElementById('suggestionsEvento');
+    const suggestionsSearch = document.getElementById('suggestionsEtapaSearch');
+    const suggestionsFiltro = document.getElementById('suggestionsEtapa');
     
     if (suggestionsSearch) {
       suggestionsSearch.style.display = 'none';
@@ -6339,17 +6563,17 @@ document.addEventListener('keydown', function(e) {
 });
 
 // 🔥 MOSTRAR SUGESTÕES AO CLICAR NO CAMPO
-document.getElementById('inputEventoSearch').addEventListener('click', function() {
-  console.log("🎯 Clicou no campo de evento - mostrando sugestões");
-  filtrarSugestoesEventoSearch();
+document.getElementById('inputEtapaSearch').addEventListener('click', function() {
+  console.log("🎯 Clicou no campo de etapa - mostrando sugestões");
+  filtrarSugestoesEtapaSearch();
 });
 
-// 🔥 TESTE SIMPLES PARA VERIFICAR SE OS EVENTOS ESTÃO CARREGADOS
+// 🔥 TESTE SIMPLES PARA VERIFICAR SE AS ETAPAS ESTÃO CARREGADOS
 setTimeout(() => {
-  console.log("=== 🔥 TESTE DE EVENTOS ===");
-  console.log("Eventos Em Andamento:", eventosEmAndamento);
-  console.log("Eventos Cadastrado:", eventosCadastrado);
-  console.log("Eventos Rejeitado:", eventosRejeitado);
+  console.log("=== 🔥 TESTE DE ETAPAS ===");
+  console.log("Etapas Em Andamento:", etapasPendenteFornecedor);
+  console.log("Etapas Cadastrado:", etapasPendenteSIM);
+  console.log("Etapas Rejeitado:", etapasPendenteWL);
 }, 2000);
 
   </script>
