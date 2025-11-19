@@ -3,7 +3,7 @@
 <head>
   <meta charset="UTF-8">
   <meta name="viewport" content="width=device-width, initial-scale=1.0">
-  <title>Sistema de Cadastros - VISUALIZAÇÃO</title>
+  <title>Sistema Doktorbank - VISUALIZAÇÃO</title>
   <link href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.0.0/css/all.min.css" rel="stylesheet">
   <style>
     * {
@@ -52,37 +52,36 @@
     }
 
     .logo-container {
-  display: flex;
-  flex-direction: column;
-  align-items: center;
-  gap: 15px;
-  margin-bottom: 10px;
-}
+      display: flex;
+      flex-direction: column;
+      align-items: center;
+      gap: 15px;
+      margin-bottom: 10px;
+    }
 
-/* 🔥 ADICIONE ESTE CSS PARA DEIXAR AS LOGOS LADO A LADO */
-.logo-wrapper {
-  display: flex;
-  align-items: center;
-  gap: 15px;
-}
+    .logo-wrapper {
+      display: flex;
+      align-items: center;
+      gap: 15px;
+    }
 
-.logo-doktorbank-wrapper {
-  background: white;
-  padding: 10px;
-  border-radius: 15px;
-  box-shadow: 0 5px 15px rgba(0, 0, 0, 0.2);
-  width: 80px;
-  height: 80px;
-  display: flex;
-  align-items: center;
-  justify-content: center;
-}
+    .logo-doktorbank-wrapper {
+      background: white;
+      padding: 10px;
+      border-radius: 15px;
+      box-shadow: 0 5px 15px rgba(0, 0, 0, 0.2);
+      width: 80px;
+      height: 80px;
+      display: flex;
+      align-items: center;
+      justify-content: center;
+    }
 
-.logo-doktorbank {
-  width: 70px;
-  height: 70px;
-  object-fit: contain;
-}
+    .logo-doktorbank {
+      width: 70px;
+      height: 70px;
+      object-fit: contain;
+    }
     
     .logo {
       width: 80px;
@@ -139,7 +138,7 @@
       color: var(--primary);
     }
 
-    /* 🔥 FILTROS COM ESTILO WHITELABEL */
+    /* FILTROS COM ESTILO WHITELABEL */
     .filtros-container {
       display: flex;
       gap: 10px;
@@ -280,7 +279,7 @@
       box-shadow: 0 4px 12px rgba(0,0,0,0.15);
     }
 
-    /* 🔥 PESQUISA E FILTROS AVANÇADOS */
+    /* PESQUISA E FILTROS AVANÇADOS */
     .search-container {
       margin: 20px 0;
     }
@@ -341,7 +340,7 @@
       font-weight: 600;
     }
 
-    /* 🔥 TAGS DE FILTROS ATIVOS */
+    /* TAGS DE FILTROS ATIVOS */
     .filtros-ativos {
       display: flex;
       gap: 8px;
@@ -375,7 +374,7 @@
       font-size: 10px;
     }
 
-    /* 🔥 FILTRO DE EVENTOS E FORNECEDORES COM TAGS */
+    /* FILTRO DE ETAPAS E FORNECEDORES COM TAGS */
     .filtro-multiselect-container {
       position: relative;
     }
@@ -454,7 +453,7 @@
       background: rgba(255,255,255,0.3);
     }
 
-    /* 🔥 TABELA MAIOR */
+    /* TABELA MAIOR */
     .table-container {
       margin-top: 20px;
       overflow: hidden;
@@ -511,7 +510,7 @@
       gap: 4px;
     }
 
-    /* 🔥 STATUS BADGES */
+    /* STATUS BADGES */
     .status-badge {
       padding: 4px 8px;
       border-radius: 12px;
@@ -579,7 +578,27 @@
       color: #0f5132;
     }
 
-    /* 🔥 LOADING */
+    /* ESTILO PARA SEM DEFASAGEM */
+    .sem-defasagem {
+      background: #e9ecef !important;
+      color: #6c757d !important;
+      border: 1px solid #dee2e6 !important;
+    }
+
+    .sem-defasagem-badge {
+      padding: 6px 10px !important;
+      border-radius: 8px !important;
+      font-size: 0.75rem !important;
+      font-weight: 600 !important;
+      background: #e9ecef !important;
+      color: #6c757d !important;
+      border: 1px solid #dee2e6 !important;
+      min-width: 70px;
+      display: inline-block;
+      text-align: center;
+    }
+
+    /* LOADING */
     .loading-container {
       display: flex;
       flex-direction: column;
@@ -604,7 +623,7 @@
       100% { transform: rotate(360deg); }
     }
 
-    /* 🔥 MENSAGENS */
+    /* MENSAGENS */
     .message {
       padding: 15px 20px;
       border-radius: 8px;
@@ -632,7 +651,7 @@
       border: 1px solid #bee5eb;
     }
 
-    /* 🔥 MODAL */
+    /* MODAL */
     .modal-overlay {
       display: none;
       position: fixed;
@@ -723,7 +742,7 @@
       border-left: 3px solid var(--primary);
     }
 
-    /* 🔥 ESTILOS PARA LOJAS AGRUPADAS */
+    /* ESTILOS PARA LOJAS AGRUPADAS */
     .loja-item {
       border: 3px solid;
       border-radius: 8px;
@@ -731,6 +750,54 @@
       margin-bottom: 10px;
       background: white;
       box-shadow: 0 2px 8px rgba(0,0,0,0.1);
+    }
+
+    /* POPUP DE CARREGAMENTO */
+    .loading-popup {
+      position: fixed;
+      top: 0;
+      left: 0;
+      width: 100%;
+      height: 100%;
+      background: rgba(0, 0, 0, 0.8);
+      display: none;
+      justify-content: center;
+      align-items: center;
+      z-index: 20000;
+      flex-direction: column;
+    }
+
+    .loading-popup-content {
+      background: white;
+      border-radius: 15px;
+      padding: 30px;
+      max-width: 400px;
+      width: 90%;
+      text-align: center;
+      box-shadow: 0 10px 30px rgba(0, 0, 0, 0.3);
+      border: 3px solid var(--primary);
+    }
+
+    .loading-popup-spinner {
+      width: 60px;
+      height: 60px;
+      border: 5px solid #f3f3f3;
+      border-top: 5px solid var(--primary);
+      border-radius: 50%;
+      animation: spin 1s linear infinite;
+      margin: 0 auto 20px;
+    }
+
+    .loading-popup-text {
+      font-size: 1.2rem;
+      font-weight: 600;
+      color: var(--dark);
+      margin-bottom: 10px;
+    }
+
+    .loading-popup-subtext {
+      font-size: 0.9rem;
+      color: var(--gray);
     }
 
     @media (max-width: 1200px) {
@@ -776,47 +843,33 @@
         align-self: flex-start;
       }
     }
-
-    .logo-doktorbank-wrapper {
-  background: white;
-  padding: 10px;
-  border-radius: 15px;
-  box-shadow: 0 5px 15px rgba(0, 0, 0, 0.2);
-  width: 80px;
-  height: 80px;
-  display: flex;
-  align-items: center;
-  justify-content: center;
-}
-
-.logo-doktorbank {
-  width: 70px;
-  height: 70px;
-  object-fit: contain;
-}
   </style>
 </head>
 <body>
-  <div class="container">
-  <div class="header">
-    <div class="logo-container">
-      <div class="logo-wrapper">
-        <img src="https://i.ibb.co/B2r5xtbS/sim-cred-5.png" class="logo" alt="SIM CRED">
-        <div class="logo-doktorbank-wrapper">
-          <img src="https://i.ibb.co/bgFkW7gG/download-removebg-preview.png" class="logo-doktorbank" alt="doktorbank">
-        </div>
-      </div>
-      <div class="header-content">
-        <h1>Cadastros de Lojas</h1>
-        <div class="subtitle">Visualização de Dados - Somente Leitura</div>
-      </div>
+  <!-- POPUP DE CARREGAMENTO -->
+  <div id="loadingPopup" class="loading-popup">
+    <div class="loading-popup-content">
+      <div class="loading-popup-spinner"></div>
+      <div class="loading-popup-text" id="loadingPopupText">Carregando...</div>
+      <div class="loading-popup-subtext" id="loadingPopupSubtext">Aguarde um momento</div>
     </div>
   </div>
-  
-  <div class="content">
-    <!-- ... resto do conteúdo ... -->
-  </div>
-</div>
+
+  <div class="container">
+    <div class="header">
+      <div class="logo-container">
+        <div class="logo-wrapper">
+          <img src="https://i.ibb.co/B2r5xtbS/sim-cred-5.png" class="logo" alt="SIM CRED">
+          <div class="logo-doktorbank-wrapper">
+            <img src="https://i.ibb.co/bgFkW7gG/download-removebg-preview.png" class="logo-doktorbank" alt="doktorbank">
+          </div>
+        </div>
+        <div class="header-content">
+          <h1>Cadastros de Lojas</h1>
+          <div class="subtitle">Visualização de Dados - Somente Leitura</div>
+        </div>
+      </div>
+    </div>
     
     <div class="content">
       <!-- CARD PRINCIPAL COM TABELA -->
@@ -830,11 +883,11 @@
         <!-- BARRA DE PESQUISA PRINCIPAL -->
         <div class="search-container">
           <input type="text" id="pesquisaCadastros" class="form-control" 
-                 placeholder="🔍 Pesquisar por nome, CNPJ, fornecedor, evento..."
+                 placeholder="🔍 Pesquisar por nome, CNPJ, fornecedor, etapa..."
                  oninput="filtrarPesquisa()">
         </div>
 
-        <!-- FILTROS RÁPIDOS POR SITUAÇÃO - NOVO ESTILO -->
+        <!-- FILTROS RÁPIDOS POR SITUAÇÃO -->
         <div class="filtros-container" id="filtrosContainer">
           <button type="button" class="filtro-btn active" data-situacao="all" onclick="aplicarFiltroSituacao('all')">
             Todos
@@ -866,20 +919,20 @@
 
         <!-- FILTROS AVANÇADOS -->
         <div class="filtros-avancados">
-          <!-- 🔥 NOVO: FILTRO DE EVENTOS COM TAGS -->
+          <!-- FILTRO DE ETAPAS COM TAGS -->
           <div class="filtro-group">
-            <label class="filtro-label">📅 Filtrar por Evento:</label>
+            <label class="filtro-label">📅 Filtrar por Etapa:</label>
             <div class="filtro-multiselect-container">
-              <input type="text" id="filtroEvento" class="form-control" 
-                     placeholder="Digite para buscar eventos..." 
-                     oninput="filtrarSugestoesEvento()"
-                     onfocus="mostrarSugestoesEvento()">
-              <div class="suggestions" id="suggestionsEvento"></div>
-              <div class="tags-selecionadas" id="eventosSelecionados"></div>
+              <input type="text" id="filtroEtapa" class="form-control" 
+                     placeholder="Digite para buscar etapas..." 
+                     oninput="filtrarSugestoesEtapa()"
+                     onfocus="mostrarSugestoesEtapa()">
+              <div class="suggestions" id="suggestionsEtapa"></div>
+              <div class="tags-selecionadas" id="etapasSelecionados"></div>
             </div>
           </div>
           
-          <!-- 🔥 NOVO: FILTRO DE FORNECEDORES COM TAGS -->
+          <!-- FILTRO DE FORNECEDORES COM TAGS -->
           <div class="filtro-group">
             <label class="filtro-label">🚚 Filtrar por Fornecedor:</label>
             <div class="filtro-multiselect-container">
@@ -918,7 +971,7 @@
           </div>
         </div>
 
-        <!-- TAGS DE FILTROS ATIVOS (ESCONDIDO) -->
+        <!-- TAGS DE FILTROS ATIVOS -->
         <div class="filtros-ativos" id="filtrosAtivosContainer" style="display: none;"></div>
 
         <!-- LOADING -->
@@ -937,7 +990,7 @@
                   <th width="12%">CNPJ</th>
                   <th width="12%">Fornecedor</th>
                   <th width="10%">Situação</th>
-                  <th width="14%">Último Evento</th>
+                  <th width="14%">Última Etapa</th>
                   <th width="8%">Defasagem</th>
                   <th width="10%">Mensalidade</th>
                   <th width="8%">Adesão</th>
@@ -1015,53 +1068,62 @@
   </div>
 
   <script>
-// 🔥 VARIÁVEIS GLOBAIS
+// VARIÁVEIS GLOBAIS
 let todosCadastros = [];
 let cadastrosFiltrados = [];
 let filtrosAtivos = {};
 let situacaoAtiva = 'all';
-let eventosSelecionados = [];
+let etapasSelecionados = [];
 let fornecedoresSelecionados = [];
 const waitlabelAtual = 'Doktorbank';
 
-// 🔥 EVENTOS PARA FILTRO - CORRIGIDO (SEM DUPLICADOS)
-const eventosDisponiveis = [
-  "NOVO CADASTRO", "PRIMEIRO CONTATO", "CLIENTE INTERESSADO", "SOLICITOU MAIS INFORMACOES",
-  "AGENDAMENTO DE DEMONSTRACAO", "PROPOSTA ENVIADA", "AGUARDANDO RETORNO", "LOJA CADASTRADA",
-  "DOCUMENTACAO RECEBIDA", "CONTRATO ENVIADO", "AGUARDANDO ASSINATURA", "CADASTRO APROVADO",
-  "AGUARDANDO ATIVACAO", "AGUARDANDO ACEITE DA LOJA", "AGUARDANDO ACEITE DO FORNECEDOR",
-  "AGUARDANDO DOCUMENTOS", "CLIENTE NAO INTERESSADO", "CONDICAO ESPECIAL", "CONTRATO ASSINADO",
-  "DESISTIU", "DOCUMENTACAO INCOMPLETA", "EM IMPLANTACAO", "EM TREINAMENTO", "ENVIO DE BOLETO",
-  "ENVIO DE WHATSAPP", "FOLLOW-UP NECESSARIO", "FORNECEDOR ALTERADO", "LIGACAO REALIZADA",
-  "NEGOCIACAO EM ANDAMENTO", "PAGAMENTO EFETUADO", "PAGAMENTO PENDENTE", "QUANTIDADE DE LOJAS ALTERADA",
-  "RECADO REGISTRADO", "REUNIAO AGENDADA", "SEM RETORNO", "REJEITADO", "BLOQUEADO", "DESCREDENCIADO",
-  "CONTRATO CANCELADO", "LOJA DESATIVADA", "FORNECEDOR REMOVIDO", "PROCESSO ENCERRADO", "CADASTRO EXPIRADO"
+// ETAPAS PARA FILTRO
+const etapasDisponiveis = [
+  "PENDENTE FORNECEDOR(ES)", "PENDENTE SIM", "PENDENTE WL", "PENDENTE CLÍNICA/LOJA"
 ].sort();
 
-// 🔥 FORNECEDORES DISPONÍVEIS
+// FORNECEDORES DISPONÍVEIS
 const fornecedoresDisponiveis = [
   "AGIL", "BC", "PARCELEX", "AGORACRED", "AFINZ"
 ].sort();
 
-// 🔥 INICIALIZAÇÃO
+// INICIALIZAÇÃO
 document.addEventListener('DOMContentLoaded', function() {
   console.log('Sistema de Visualização - Carregando dados...');
+  showLoadingPopup('Carregando Lojas', 'Aguarde enquanto buscamos os dados...');
   carregarCadastros();
   configurarEventosFiltro();
 });
 
-// 🔥 CONFIGURAR EVENTOS DOS FILTROS
+// FUNÇÕES DO POPUP DE CARREGAMENTO
+function showLoadingPopup(texto, subtexto) {
+  const popup = document.getElementById('loadingPopup');
+  const textoEl = document.getElementById('loadingPopupText');
+  const subtextoEl = document.getElementById('loadingPopupSubtext');
+  
+  textoEl.textContent = texto || 'Carregando...';
+  subtextoEl.textContent = subtexto || 'Aguarde um momento';
+  
+  popup.style.display = 'flex';
+}
+
+function hideLoadingPopup() {
+  const popup = document.getElementById('loadingPopup');
+  popup.style.display = 'none';
+}
+
+// CONFIGURAR EVENTOS DOS FILTROS
 function configurarEventosFiltro() {
-  const inputEvento = document.getElementById('filtroEvento');
+  const inputEtapa = document.getElementById('filtroEtapa');
   const inputFornecedor = document.getElementById('filtroFornecedor');
   
   // Fechar sugestões ao clicar fora
   document.addEventListener('click', function(e) {
-    const suggestionsEvento = document.getElementById('suggestionsEvento');
+    const suggestionsEtapa = document.getElementById('suggestionsEtapa');
     const suggestionsFornecedor = document.getElementById('suggestionsFornecedor');
     
-    if (suggestionsEvento && !inputEvento.contains(e.target) && !suggestionsEvento.contains(e.target)) {
-      suggestionsEvento.style.display = 'none';
+    if (suggestionsEtapa && !inputEtapa.contains(e.target) && !suggestionsEtapa.contains(e.target)) {
+      suggestionsEtapa.style.display = 'none';
     }
     
     if (suggestionsFornecedor && !inputFornecedor.contains(e.target) && !suggestionsFornecedor.contains(e.target)) {
@@ -1070,18 +1132,18 @@ function configurarEventosFiltro() {
   });
   
   // Fechar sugestões com ESC
-  inputEvento.addEventListener('keydown', function(e) {
+  inputEtapa.addEventListener('keydown', function(e) {
     if (e.key === 'Escape') {
-      document.getElementById('suggestionsEvento').style.display = 'none';
+      document.getElementById('suggestionsEtapa').style.display = 'none';
     }
     if (e.key === 'Enter') {
       e.preventDefault();
-      const texto = inputEvento.value.trim();
-      if (texto && !eventosSelecionados.includes(texto.toUpperCase())) {
-        adicionarEvento(texto.toUpperCase());
+      const texto = inputEtapa.value.trim();
+      if (texto && !etapasSelecionados.includes(texto.toUpperCase())) {
+        adicionarEtapa(texto.toUpperCase());
       }
-      inputEvento.value = '';
-      document.getElementById('suggestionsEvento').style.display = 'none';
+      inputEtapa.value = '';
+      document.getElementById('suggestionsEtapa').style.display = 'none';
     }
   });
   
@@ -1101,17 +1163,17 @@ function configurarEventosFiltro() {
   });
 }
 
-// 🔥 FUNÇÕES DO FILTRO DE EVENTOS
-function mostrarSugestoesEvento() {
-  const input = document.getElementById('filtroEvento');
+// FUNÇÕES DO FILTRO DE ETAPAS
+function mostrarSugestoesEtapa() {
+  const input = document.getElementById('filtroEtapa');
   if (input.value.trim().length > 0) {
-    filtrarSugestoesEvento();
+    filtrarSugestoesEtapa();
   }
 }
 
-function filtrarSugestoesEvento() {
-  const input = document.getElementById('filtroEvento');
-  const suggestions = document.getElementById('suggestionsEvento');
+function filtrarSugestoesEtapa() {
+  const input = document.getElementById('filtroEtapa');
+  const suggestions = document.getElementById('suggestionsEtapa');
   const termo = input.value.toLowerCase().trim();
   
   if (termo.length < 1) {
@@ -1119,22 +1181,21 @@ function filtrarSugestoesEvento() {
     return;
   }
   
-  // 🔥 CORREÇÃO: Remover duplicatas usando Set
-  const eventosUnicos = [...new Set(eventosDisponiveis)];
-  const eventosFiltrados = eventosUnicos.filter(evento => 
-    evento.toLowerCase().includes(termo) && !eventosSelecionados.includes(evento)
+  const etapasUnicos = [...new Set(etapasDisponiveis)];
+  const etapasFiltrados = etapasUnicos.filter(etapa => 
+    etapa.toLowerCase().includes(termo) && !etapasSelecionados.includes(etapa)
   );
   
-  if (eventosFiltrados.length === 0) {
+  if (etapasFiltrados.length === 0) {
     suggestions.innerHTML = `
       <div class="suggestion-item" style="color: var(--gray);">
-        <i class="fas fa-search"></i> Nenhum evento encontrado
+        <i class="fas fa-search"></i> Nenhuma etapa encontrada
       </div>
     `;
   } else {
-    let html = eventosFiltrados.map(evento => `
-      <div class="suggestion-item" onclick="adicionarEvento('${evento}')">
-        <i class="fas fa-calendar-check"></i> ${evento}
+    let html = etapasFiltrados.map(etapa => `
+      <div class="suggestion-item" onclick="adicionarEtapa('${etapa}')">
+        <i class="fas fa-calendar-check"></i> ${etapa}
       </div>
     `).join('');
     
@@ -1144,53 +1205,53 @@ function filtrarSugestoesEvento() {
   suggestions.style.display = 'block';
 }
 
-function adicionarEvento(evento) {
-  if (!eventosSelecionados.includes(evento)) {
-    eventosSelecionados.push(evento);
-    atualizarEventosSelecionados();
-    aplicarFiltroEventos();
+function adicionarEtapa(etapa) {
+  if (!etapasSelecionados.includes(etapa)) {
+    etapasSelecionados.push(etapa);
+    atualizarEtapasSelecionados();
+    aplicarFiltroEtapas();
   }
   
-  document.getElementById('filtroEvento').value = '';
-  document.getElementById('suggestionsEvento').style.display = 'none';
+  document.getElementById('filtroEtapa').value = '';
+  document.getElementById('suggestionsEtapa').style.display = 'none';
 }
 
-function removerEvento(evento) {
-  eventosSelecionados = eventosSelecionados.filter(e => e !== evento);
-  atualizarEventosSelecionados();
-  aplicarFiltroEventos();
+function removerEtapa(etapa) {
+  etapasSelecionados = etapasSelecionados.filter(e => e !== etapa);
+  atualizarEtapasSelecionados();
+  aplicarFiltroEtapas();
 }
 
-function atualizarEventosSelecionados() {
-  const container = document.getElementById('eventosSelecionados');
+function atualizarEtapasSelecionados() {
+  const container = document.getElementById('etapasSelecionados');
   
-  if (eventosSelecionados.length === 0) {
+  if (etapasSelecionados.length === 0) {
     container.innerHTML = '';
     container.style.display = 'none';
     return;
   }
   
   container.style.display = 'flex';
-  container.innerHTML = eventosSelecionados.map(evento => `
+  container.innerHTML = etapasSelecionados.map(etapa => `
     <div class="tag">
-      <i class="fas fa-calendar"></i> ${evento}
-      <button class="remover" onclick="removerEvento('${evento}')">
+      <i class="fas fa-calendar"></i> ${etapa}
+      <button class="remover" onclick="removerEtapa('${etapa}')">
         <i class="fas fa-times"></i>
       </button>
     </div>
   `).join('');
 }
 
-function aplicarFiltroEventos() {
-  if (eventosSelecionados.length > 0) {
-    filtrosAtivos.eventos = eventosSelecionados;
+function aplicarFiltroEtapas() {
+  if (etapasSelecionados.length > 0) {
+    filtrosAtivos.etapas = etapasSelecionados;
   } else {
-    delete filtrosAtivos.eventos;
+    delete filtrosAtivos.etapas;
   }
   aplicarTodosFiltros();
 }
 
-// 🔥 FUNÇÕES DO FILTRO DE FORNECEDORES
+// FUNÇÕES DO FILTRO DE FORNECEDORES
 function mostrarSugestoesFornecedor() {
   const input = document.getElementById('filtroFornecedor');
   if (input.value.trim().length > 0) {
@@ -1277,7 +1338,7 @@ function aplicarFiltroFornecedores() {
   aplicarTodosFiltros();
 }
 
-// 🔥 CARREGAR CADASTROS
+// CARREGAR CADASTROS
 function carregarCadastros() {
   console.log("🎯 Carregando cadastros...");
   
@@ -1289,6 +1350,7 @@ function carregarCadastros() {
   google.script.run
     .withSuccessHandler(function(cadastros) {
       hideLoading();
+      hideLoadingPopup();
       
       console.log("✅ Cadastros recebidos:", cadastros);
       
@@ -1323,13 +1385,14 @@ function carregarCadastros() {
     })
     .withFailureHandler(function(error) {
       hideLoading();
+      hideLoadingPopup();
       console.error("❌ Erro ao carregar cadastros:", error);
       showMessage('error', '❌ Erro ao carregar cadastros: ' + error.message);
     })
     .buscarTodosCadastrosComWaitlabel(waitlabelAtual);
 }
 
-// 🔥 EXIBIR TABELA AGRUPADA
+// EXIBIR TABELA AGRUPADA
 function exibirTabelaCadastros() {
   const tabelaBody = document.getElementById('tabelaCadastrosBody');
   const loading = document.getElementById('loadingCadastros');
@@ -1360,7 +1423,7 @@ function exibirTabelaCadastros() {
   atualizarContador();
 }
 
-// 🔥 AGRUPAR CADASTROS POR CNPJ
+// AGRUPAR CADASTROS POR CNPJ
 function agruparCadastrosPorCNPJ(cadastros) {
   const agrupados = {};
   
@@ -1380,7 +1443,122 @@ function agruparCadastrosPorCNPJ(cadastros) {
   return Object.values(agrupados);
 }
 
-// 🔥 CORREÇÃO DA FUNÇÃO criarLinhaTabelaAgrupada - COMPLETA E FUNCIONAL
+// FUNÇÃO CORRIGIDA: ENCONTRAR FORNECEDOR MAIS ATRASADO
+function encontrarFornecedorMaisAntigo(lojasDoCNPJ) {
+  if (!lojasDoCNPJ || lojasDoCNPJ.length === 0) {
+    return { fornecedor: 'N/A', data: 'N/A', etapa: 'N/A', dias: 9999 };
+  }
+  
+  console.log("🔍 [DOK] Buscando fornecedor mais antigo entre", lojasDoCNPJ.length, "lojas");
+  
+  // FILTRAR APENAS LOJAS COM DATA VÁLIDA E EM ANDAMENTO
+  const lojasComDataValida = lojasDoCNPJ.filter(loja => {
+    // Verificar se tem data válida
+    if (!loja.ultima_etapa || loja.ultima_etapa === 'N/A' || loja.ultima_etapa === '') {
+      console.log(`❌ [DOK] Loja ${loja.fornecedor} sem data válida:`, loja.ultima_etapa);
+      return false;
+    }
+    
+    // VERIFICAR SE É DATE OBJECT OU STRING VÁLIDA
+    let dataValida = false;
+    
+    try {
+      // Se já é objeto Date
+      if (loja.ultima_etapa instanceof Date) {
+        dataValida = !isNaN(loja.ultima_etapa.getTime());
+      } 
+      // Se é string no formato brasileiro
+      else if (typeof loja.ultima_etapa === 'string' && loja.ultima_etapa.includes('/')) {
+        const [dataPart, horaPart] = loja.ultima_etapa.split(' ');
+        if (dataPart) {
+          const [dia, mes, ano] = dataPart.split('/');
+          const dataObj = new Date(parseInt(ano), parseInt(mes) - 1, parseInt(dia));
+          dataValida = !isNaN(dataObj.getTime());
+        }
+      }
+      // Outros formatos
+      else {
+        const dataObj = new Date(loja.ultima_etapa);
+        dataValida = !isNaN(dataObj.getTime());
+      }
+    } catch (error) {
+      console.log(`❌ [DOK] Erro ao validar data da loja ${loja.fornecedor}:`, error);
+      dataValida = false;
+    }
+    
+    console.log(`📊 [DOK] Loja ${loja.fornecedor} - Data: ${loja.ultima_etapa} - Válida: ${dataValida}`);
+    return dataValida;
+  });
+  
+  if (lojasComDataValida.length === 0) {
+    console.log("❌ [DOK] Nenhuma loja com data válida encontrada");
+    
+    // SE NÃO TEM DATA, PEGA A PRIMEIRA LOJA PARA MOSTRAR INFORMAÇÕES BÁSICAS
+    const primeiraLoja = lojasDoCNPJ[0];
+    return {
+      fornecedor: primeiraLoja?.fornecedor || 'N/A',
+      data: 'N/A',
+      etapa: primeiraLoja?.etapa || 'N/A',
+      dias: 9999
+    };
+  }
+  
+  console.log(`✅ [DOK] ${lojasComDataValida.length} lojas com data válida encontradas`);
+  
+  // ENCONTRAR A LOJA COM DATA MAIS ANTIGA
+  const lojaMaisAntiga = lojasComDataValida.reduce((maisAntiga, atual) => {
+    try {
+      let dataMaisAntiga, dataAtual;
+      
+      // Converter data da mais antiga
+      if (maisAntiga.ultima_etapa instanceof Date) {
+        dataMaisAntiga = maisAntiga.ultima_etapa;
+      } else if (typeof maisAntiga.ultima_etapa === 'string' && maisAntiga.ultima_etapa.includes('/')) {
+        const [dataPart, horaPart] = maisAntiga.ultima_etapa.split(' ');
+        const [dia, mes, ano] = dataPart.split('/');
+        dataMaisAntiga = new Date(parseInt(ano), parseInt(mes) - 1, parseInt(dia));
+      } else {
+        dataMaisAntiga = new Date(maisAntiga.ultima_etapa);
+      }
+      
+      // Converter data da atual
+      if (atual.ultima_etapa instanceof Date) {
+        dataAtual = atual.ultima_etapa;
+      } else if (typeof atual.ultima_etapa === 'string' && atual.ultima_etapa.includes('/')) {
+        const [dataPart, horaPart] = atual.ultima_etapa.split(' ');
+        const [dia, mes, ano] = dataPart.split('/');
+        dataAtual = new Date(parseInt(ano), parseInt(mes) - 1, parseInt(dia));
+      } else {
+        dataAtual = new Date(atual.ultima_etapa);
+      }
+      
+      console.log(`📊 [DOK] Comparando: ${atual.fornecedor} (${dataAtual}) vs ${maisAntiga.fornecedor} (${dataMaisAntiga})`);
+      
+      return dataAtual < dataMaisAntiga ? atual : maisAntiga;
+    } catch (error) {
+      console.log("❌ [DOK] Erro ao comparar datas:", error);
+      return maisAntiga;
+    }
+  });
+  
+  const diasDefasagem = calcularDiasDefasagem(lojaMaisAntiga.ultima_etapa);
+  
+  console.log("✅ [DOK] Fornecedor mais antigo encontrado:", {
+    fornecedor: lojaMaisAntiga.fornecedor,
+    data: lojaMaisAntiga.ultima_etapa,
+    etapa: lojaMaisAntiga.etapa,
+    dias: diasDefasagem
+  });
+  
+  return {
+    fornecedor: lojaMaisAntiga.fornecedor,
+    data: lojaMaisAntiga.ultima_etapa,
+    etapa: lojaMaisAntiga.etapa,
+    dias: diasDefasagem
+  };
+}
+
+// FUNÇÃO criarLinhaTabelaAgrupada COMPLETA COM CORREÇÃO
 function criarLinhaTabelaAgrupada(grupo) {
   const row = document.createElement('tr');
   
@@ -1392,36 +1570,72 @@ function criarLinhaTabelaAgrupada(grupo) {
                            situacoes.includes('DESISTIU') ? 'DESISTIU' :
                            'CADASTRADO';
 
-  // 🔥 CORREÇÃO: ENCONTRAR O FORNECEDOR MAIS ATRASADO
+  // CORREÇÃO: ENCONTRAR O FORNECEDOR MAIS ATRASADO
   const fornecedorMaisAntigo = encontrarFornecedorMaisAntigo(grupo.lojas);
   
-  console.log("🔍 FORNECEDOR MAIS ANTIGO ENCONTRADO:", fornecedorMaisAntigo);
+  console.log("🔍 [DOK] FORNECEDOR MAIS ANTIGO ENCONTRADO:", fornecedorMaisAntigo);
 
-  // 🔥 CORREÇÃO DEFINITIVA: APLICAR CORREÇÃO DE HORAS
-  const dataHoraMaisAntiga = fornecedorMaisAntigo.data || 'N/A';
-  const dataHoraCorrigida = dataHoraMaisAntiga !== 'N/A' ? 
-      corrigirHoraFrontend(dataHoraMaisAntiga) : 'N/A';
+  // CORREÇÃO DEFINITIVA: APLICAR CORREÇÃO DE HORAS APENAS SE HOUVER DATA VÁLIDA
+  let dataHoraMaisAntiga = 'N/A';
+  let dataHoraCorrigida = 'N/A';
 
-  const eventoMaisAntigo = fornecedorMaisAntigo.evento || 'N/A';
+  if (fornecedorMaisAntigo.data && fornecedorMaisAntigo.data !== 'N/A') {
+    dataHoraMaisAntiga = fornecedorMaisAntigo.data;
+    
+    // APLICAR CORREÇÃO APENAS SE FOR STRING COM FORMATO COMPLETO
+    if (typeof dataHoraMaisAntiga === 'string' && dataHoraMaisAntiga.includes('/') && dataHoraMaisAntiga.includes(':')) {
+      dataHoraCorrigida = corrigirHoraFrontend(dataHoraMaisAntiga);
+    } else {
+      dataHoraCorrigida = dataHoraMaisAntiga.toString();
+    }
+  }
+
+  const etapaMaisAntiga = fornecedorMaisAntigo.etapa || 'N/A';
   const nomeFornecedorAntigo = fornecedorMaisAntigo.fornecedor || 'N/A';
 
-  // 🔥 CALCULAR DEFASAGEM (USA O MESMO FORNECEDOR MAIS ATRASADO)
-  const defasagemInfo = calcularDefasagemPorCNPJ(grupo.lojas);
-  
-  const defasagemTexto = defasagemInfo.dias === 0 ? 'Hoje' : 
-                        defasagemInfo.dias === 1 ? '1 dia' : 
-                        defasagemInfo.dias > 1 && defasagemInfo.dias < 9999 ? `${defasagemInfo.dias} dias` : 'N/A';
-  const defasagemClass = getDefasagemClass(defasagemTexto);
+  // CORREÇÃO: SÓ MOSTRAR DEFASAGEM SE HOUVER LOJA EM ANDAMENTO
+  const temLojaEmAndamento = grupo.lojas.some(loja => 
+    loja.situacao && loja.situacao.toUpperCase() === 'EM ANDAMENTO'
+  );
 
-  // 🔥 AGORA MOSTRA DATA E HORA CORRIGIDA
-  let ultimoEventoInfo = '';
-  if (dataHoraCorrigida !== 'N/A') {
+  let defasagemHTML = '';
+  if (temLojaEmAndamento) {
+    const defasagemInfo = calcularDefasagemPorCNPJ(grupo.lojas);
+    const defasagemTexto = defasagemInfo.dias === 0 ? 'Hoje' : 
+                          defasagemInfo.dias === 1 ? '1 dia' : 
+                          defasagemInfo.dias > 1 && defasagemInfo.dias < 9999 ? `${defasagemInfo.dias} dias` : 'N/A';
+    const defasagemClass = getDefasagemClass(defasagemTexto);
+    
+    defasagemHTML = `
+      <td style="text-align: center;">
+        <div class="defasagem-container">
+          <span class="defasagem-badge ${defasagemClass}" title="Fornecedor mais antigo: ${defasagemInfo.fornecedor}">
+            ${defasagemTexto}
+          </span>
+        </div>
+      </td>
+    `;
+  } else {
+    defasagemHTML = `
+      <td style="text-align: center;">
+        <div class="defasagem-container">
+          <span class="sem-defasagem-badge" title="Nenhuma loja em andamento">
+            Sem defasagem
+          </span>
+        </div>
+      </td>
+    `;
+  }
+
+  // AGORA MOSTRA DATA E HORA CORRIGIDA OU INFORMAÇÃO BÁSICA
+  let ultimaEtapaInfo = '';
+  if (dataHoraCorrigida !== 'N/A' && etapaMaisAntiga !== 'N/A') {
     const [dataPart, horaPart] = dataHoraCorrigida.split(' ');
-    ultimoEventoInfo = `
+    ultimaEtapaInfo = `
       <div style="font-size: 0.75rem;">
-        <div style="font-weight: 500; margin-bottom: 2px;">${eventoMaisAntigo}</div>
+        <div style="font-weight: 500; margin-bottom: 2px;">${etapaMaisAntiga}</div>
         <div style="color: var(--gray); font-size: 0.65rem;">
-          ${dataPart} ${horaPart}
+          ${dataPart} ${horaPart || ''}
         </div>
         <div style="color: var(--danger); font-size: 0.6rem; margin-top: 2px;">
           ⚠️ ${nomeFornecedorAntigo}
@@ -1429,12 +1643,12 @@ function criarLinhaTabelaAgrupada(grupo) {
       </div>
     `;
   } else {
-    ultimoEventoInfo = `
+    ultimaEtapaInfo = `
       <div style="font-size: 0.75rem;">
-        <div style="font-weight: 500; margin-bottom: 2px;">${eventoMaisAntigo}</div>
-        <div style="color: var(--gray); font-size: 0.65rem;">N/A</div>
-        <div style="color: var(--danger); font-size: 0.6rem; margin-top: 2px;">
-          ⚠️ ${nomeFornecedorAntigo}
+        <div style="font-weight: 500; margin-bottom: 2px;">${etapaMaisAntiga}</div>
+        <div style="color: var(--gray); font-size: 0.65rem;">Sem data registrada</div>
+        <div style="color: var(--info); font-size: 0.6rem; margin-top: 2px;">
+          📝 ${nomeFornecedorAntigo}
         </div>
       </div>
     `;
@@ -1462,15 +1676,9 @@ function criarLinhaTabelaAgrupada(grupo) {
       <span class="status-badge ${getSituacaoClass(situacaoPrincipal)}">${situacaoPrincipal}</span>
     </td>
     <td>
-      ${ultimoEventoInfo}
+      ${ultimaEtapaInfo}
     </td>
-    <td style="text-align: center;">
-      <div class="defasagem-container">
-        <span class="defasagem-badge ${defasagemClass}" title="Fornecedor mais antigo: ${defasagemInfo.fornecedor}">
-          ${defasagemTexto}
-        </span>
-      </div>
-    </td>
+    ${defasagemHTML}
     <td style="font-weight: 600; color: var(--success); text-align: center;">
       ${formatarMoedaParaInput(grupo.lojas[0]?.mensalidade)}
     </td>
@@ -1487,120 +1695,54 @@ function criarLinhaTabelaAgrupada(grupo) {
   return row;
 }
 
-// 🔥 FUNÇÃO AUXILIAR PARA ENCONTRAR FORNECEDOR MAIS ATRASADO
-function encontrarFornecedorMaisAntigo(lojasDoCNPJ) {
-  if (!lojasDoCNPJ || lojasDoCNPJ.length === 0) {
-    return { fornecedor: 'N/A', data: 'N/A', evento: 'N/A', dias: 9999 };
-  }
-  
-  console.log("🔍 Buscando fornecedor mais antigo entre", lojasDoCNPJ.length, "lojas");
-  
-  // Filtrar apenas lojas com data válida
-  const lojasComData = lojasDoCNPJ.filter(loja => {
-    if (!loja.ultimo_evento || loja.ultimo_evento === 'N/A') return false;
-    
-    try {
-      const data = new Date(loja.ultimo_evento.split('/').reverse().join('-'));
-      return !isNaN(data.getTime());
-    } catch (error) {
-      return false;
-    }
-  });
-  
-  if (lojasComData.length === 0) {
-    console.log("❌ Nenhuma loja com data válida encontrada");
-    return { fornecedor: 'N/A', data: 'N/A', evento: 'N/A', dias: 9999 };
-  }
-  
-  // Encontrar a loja com evento mais antigo
-  const lojaMaisAntiga = lojasComData.reduce((maisAntiga, atual) => {
-    try {
-      const dataMaisAntiga = new Date(maisAntiga.ultimo_evento.split('/').reverse().join('-'));
-      const dataAtual = new Date(atual.ultimo_evento.split('/').reverse().join('-'));
-      
-      console.log(`📊 Comparando: ${atual.fornecedor} (${dataAtual}) vs ${maisAntiga.fornecedor} (${dataMaisAntiga})`);
-      
-      return dataAtual < dataMaisAntiga ? atual : maisAntiga;
-    } catch (error) {
-      console.log("❌ Erro ao comparar datas:", error);
-      return maisAntiga;
-    }
-  });
-  
-  const diasDefasagem = calcularDiasDefasagem(lojaMaisAntiga.ultimo_evento);
-  
-  console.log("✅ Fornecedor mais antigo encontrado:", {
-    fornecedor: lojaMaisAntiga.fornecedor,
-    data: lojaMaisAntiga.ultimo_evento,
-    evento: lojaMaisAntiga.evento,
-    dias: diasDefasagem
-  });
-  
-  return {
-    fornecedor: lojaMaisAntiga.fornecedor,
-    data: lojaMaisAntiga.ultimo_evento,
-    evento: lojaMaisAntiga.evento,
-    dias: diasDefasagem
-  };
-}
-
-// 🔥 NOVA FUNÇÃO: Calcular defasagem correta por CNPJ (usando o mais antigo)
+// FUNÇÃO CORRIGIDA: Calcular defasagem correta por CNPJ
 function calcularDefasagemPorCNPJ(lojasDoCNPJ) {
   if (!lojasDoCNPJ || lojasDoCNPJ.length === 0) {
-    return { dias: 9999, fornecedor: 'N/A', data: 'N/A', evento: 'N/A' };
+    return { dias: 9999, fornecedor: 'N/A', data: 'N/A', etapa: 'N/A' };
   }
   
-  console.log("🔍 Calculando defasagem para CNPJ com", lojasDoCNPJ.length, "lojas");
+  console.log("🔍 [DOK] Calculando defasagem para CNPJ com", lojasDoCNPJ.length, "lojas");
   
-  // Filtrar apenas lojas com data válida
-  const lojasComData = lojasDoCNPJ.filter(loja => {
-    if (!loja.ultimo_evento || loja.ultimo_evento === 'N/A') return false;
-    
-    try {
-      const data = new Date(loja.ultimo_evento.split('/').reverse().join('-'));
-      return !isNaN(data.getTime());
-    } catch (error) {
-      return false;
-    }
-  });
-  
-  if (lojasComData.length === 0) {
-    console.log("❌ Nenhuma loja com data válida encontrada");
-    return { dias: 9999, fornecedor: 'N/A', data: 'N/A', evento: 'N/A' };
-  }
-  
-  // Encontrar a loja com evento mais antigo
-  const lojaMaisAntiga = lojasComData.reduce((maisAntiga, atual) => {
-    try {
-      const dataMaisAntiga = new Date(maisAntiga.ultimo_evento.split('/').reverse().join('-'));
-      const dataAtual = new Date(atual.ultimo_evento.split('/').reverse().join('-'));
-      
-      console.log(`📊 Comparando: ${atual.fornecedor} (${dataAtual}) vs ${maisAntiga.fornecedor} (${dataMaisAntiga})`);
-      
-      return dataAtual < dataMaisAntiga ? atual : maisAntiga;
-    } catch (error) {
-      console.log("❌ Erro ao comparar datas:", error);
-      return maisAntiga;
-    }
-  });
-  
-  const diasDefasagem = calcularDiasDefasagem(lojaMaisAntiga.ultimo_evento);
-  
-  console.log("✅ Fornecedor mais antigo encontrado:", {
-    fornecedor: lojaMaisAntiga.fornecedor,
-    data: lojaMaisAntiga.ultimo_evento,
-    dias: diasDefasagem
-  });
+  // Usar a mesma lógica da função encontrarFornecedorMaisAntigo
+  const fornecedorMaisAntigo = encontrarFornecedorMaisAntigo(lojasDoCNPJ);
   
   return {
-    dias: diasDefasagem,
-    fornecedor: lojaMaisAntiga.fornecedor,
-    data: lojaMaisAntiga.ultimo_evento,
-    evento: lojaMaisAntiga.evento
+    dias: fornecedorMaisAntigo.dias,
+    fornecedor: fornecedorMaisAntigo.fornecedor,
+    data: fornecedorMaisAntigo.data,
+    etapa: fornecedorMaisAntigo.etapa
   };
 }
 
-// 🔥 FUNÇÕES DE FILTRO
+// NOVA FUNÇÃO: Calcular defasagem para ordenação (considera status)
+function calcularDefasagemParaOrdenacao(lojasDoCNPJ) {
+  if (!lojasDoCNPJ || lojasDoCNPJ.length === 0) {
+    return 0; // Se não tem lojas, defasagem = 0
+  }
+  
+  // VERIFICAR SE TEM ALGUMA LOJA EM ANDAMENTO
+  const temLojaEmAndamento = lojasDoCNPJ.some(loja => 
+    loja.situacao && loja.situacao.toUpperCase() === 'EM ANDAMENTO'
+  );
+  
+  // SE NÃO TEM LOJA EM ANDAMENTO, DEFASAGEM = 0
+  if (!temLojaEmAndamento) {
+    return 0;
+  }
+  
+  // SE TEM LOJA EM ANDAMENTO, CALCULAR A DEFASAGEM REAL
+  const defasagemInfo = calcularDefasagemPorCNPJ(lojasDoCNPJ);
+  
+  console.log("🎯 Defasagem para ordenação:", {
+    cnpj: lojasDoCNPJ[0]?.cnpj,
+    temLojaEmAndamento: temLojaEmAndamento,
+    defasagemDias: defasagemInfo.dias
+  });
+  
+  return defasagemInfo.dias < 9999 ? defasagemInfo.dias : 0;
+}
+
+// FUNÇÕES DE FILTRO
 function aplicarFiltroSituacao(situacao) {
   document.querySelectorAll('.filtro-btn').forEach(btn => {
     btn.classList.remove('active');
@@ -1638,7 +1780,7 @@ function filtrarPesquisa() {
   aplicarTodosFiltros();
 }
 
-// 🔥 APLICAR TODOS OS FILTROS
+// APLICAR TODOS OS FILTROS
 function aplicarTodosFiltros() {
   console.log("🎯 [FILTRO] Aplicando todos os filtros...");
   
@@ -1650,10 +1792,10 @@ function aplicarTodosFiltros() {
     );
   }
   
-  if (filtrosAtivos.eventos && filtrosAtivos.eventos.length > 0) {
+  if (filtrosAtivos.etapas && filtrosAtivos.etapas.length > 0) {
     resultado = resultado.filter(cadastro => 
-      filtrosAtivos.eventos.some(evento => 
-        cadastro.evento && cadastro.evento.toUpperCase().includes(evento)
+      filtrosAtivos.etapas.some(etapa => 
+        cadastro.etapa && cadastro.etapa.toUpperCase().includes(etapa)
       )
     );
   }
@@ -1670,7 +1812,7 @@ function aplicarTodosFiltros() {
       (cadastro.nome_fantasia && cadastro.nome_fantasia.toLowerCase().includes(filtrosAtivos.pesquisa)) ||
       (cadastro.cnpj && cadastro.cnpj.includes(filtrosAtivos.pesquisa)) ||
       (cadastro.fornecedor && cadastro.fornecedor.toLowerCase().includes(filtrosAtivos.pesquisa)) ||
-      (cadastro.evento && cadastro.evento.toLowerCase().includes(filtrosAtivos.pesquisa))
+      (cadastro.etapa && cadastro.etapa.toLowerCase().includes(filtrosAtivos.pesquisa))
     );
   }
   
@@ -1680,93 +1822,101 @@ function aplicarTodosFiltros() {
   exibirTabelaCadastros();
 }
 
-// 🔥 ORDENAÇÃO - CORRIGIDA COM MENSALIDADE E ADESÃO
+// ORDENAÇÃO - CORRIGIDA COM DEFASAGEM POR STATUS
 function ordenarCadastros() {
   const criterio = document.getElementById('ordenacao').value;
   
   console.log("🎯 Ordenando por:", criterio);
   
-  const cadastrosParaOrdenar = [...cadastrosFiltrados];
+  const cadastrosAgrupados = agruparCadastrosPorCNPJ(cadastrosFiltrados);
   
-  cadastrosParaOrdenar.sort((a, b) => {
+  cadastrosAgrupados.sort((a, b) => {
     switch(criterio) {
       case 'razao_social':
-        const razaoA = (a.razao_social || '').toLowerCase();
-        const razaoB = (b.razao_social || '').toLowerCase();
-        return razaoA.localeCompare(razaoB);
-        
+        return (a.razao_social || '').localeCompare(b.razao_social || '');
       case 'razao_social_desc':
-        const razaoADesc = (a.razao_social || '').toLowerCase();
-        const razaoBDesc = (b.razao_social || '').toLowerCase();
-        return razaoBDesc.localeCompare(razaoADesc);
-        
+        return (b.razao_social || '').localeCompare(a.razao_social || '');
       case 'nome_fantasia':
-        const fantasiaA = (a.nome_fantasia || '').toLowerCase();
-        const fantasiaB = (b.nome_fantasia || '').toLowerCase();
-        return fantasiaA.localeCompare(fantasiaB);
-        
+        return (a.nome_fantasia || '').localeCompare(b.nome_fantasia || '');
       case 'nome_fantasia_desc':
-        const fantasiaADesc = (a.nome_fantasia || '').toLowerCase();
-        const fantasiaBDesc = (b.nome_fantasia || '').toLowerCase();
-        return fantasiaBDesc.localeCompare(fantasiaADesc);
-        
+        return (b.nome_fantasia || '').localeCompare(a.nome_fantasia || '');
       case 'situacao':
-        const situacaoA = (a.situacao || '').toLowerCase();
-        const situacaoB = (b.situacao || '').toLowerCase();
+        const situacaoA = a.lojas[0]?.situacao || '';
+        const situacaoB = b.lojas[0]?.situacao || '';
         return situacaoA.localeCompare(situacaoB);
-        
       case 'fornecedor':
-        const fornecedorA = (a.fornecedor || '').toLowerCase();
-        const fornecedorB = (b.fornecedor || '').toLowerCase();
+        const fornecedorA = a.lojas[0]?.fornecedor || '';
+        const fornecedorB = b.lojas[0]?.fornecedor || '';
         return fornecedorA.localeCompare(fornecedorB);
-        
-      case 'mensalidade':
-        const mensalidadeA = parseFloat(a.mensalidade || 0);
-        const mensalidadeB = parseFloat(b.mensalidade || 0);
-        return mensalidadeB - mensalidadeA; // Maior primeiro
-        
-      case 'mensalidade_asc':
-        const mensalidadeAAsc = parseFloat(a.mensalidade || 0);
-        const mensalidadeBAsc = parseFloat(b.mensalidade || 0);
-        return mensalidadeAAsc - mensalidadeBAsc; // Menor primeiro
-        
-      case 'adesao':
-        const adesaoA = a.adesao === 'Isento' || a.adesao === 0 ? 0 : parseFloat(a.adesao || 0);
-        const adesaoB = b.adesao === 'Isento' || b.adesao === 0 ? 0 : parseFloat(b.adesao || 0);
-        return adesaoB - adesaoA; // Maior primeiro
-        
-      case 'adesao_asc':
-        const adesaoAAsc = a.adesao === 'Isento' || a.adesao === 0 ? 0 : parseFloat(a.adesao || 0);
-        const adesaoBAsc = b.adesao === 'Isento' || b.adesao === 0 ? 0 : parseFloat(b.adesao || 0);
-        return adesaoAAsc - adesaoBAsc; // Menor primeiro
-        
       case 'defasagem':
-        const defasagemA = calcularDiasDefasagem(a.ultimo_evento);
-        const defasagemB = calcularDiasDefasagem(b.ultimo_evento);
-        return defasagemB - defasagemA; // Maior primeiro
-        
+        const defasagemA = calcularDefasagemParaOrdenacao(a.lojas);
+        const defasagemB = calcularDefasagemParaOrdenacao(b.lojas);
+        return defasagemB - defasagemA;
       case 'defasagem_asc':
-        const defasagemAAsc = calcularDiasDefasagem(a.ultimo_evento);
-        const defasagemBAsc = calcularDiasDefasagem(b.ultimo_evento);
-        return defasagemAAsc - defasagemBAsc; // Menor primeiro
-        
+        const defasagemAAsc = calcularDefasagemParaOrdenacao(a.lojas);
+        const defasagemBAsc = calcularDefasagemParaOrdenacao(b.lojas);
+        return defasagemAAsc - defasagemBAsc;
+      case 'mensalidade':
+        const mensalidadeA = parseFloat(a.lojas[0]?.mensalidade || 0);
+        const mensalidadeB = parseFloat(b.lojas[0]?.mensalidade || 0);
+        return mensalidadeB - mensalidadeA;
+      case 'mensalidade_asc':
+        const mensalidadeAAsc = parseFloat(a.lojas[0]?.mensalidade || 0);
+        const mensalidadeBAsc = parseFloat(b.lojas[0]?.mensalidade || 0);
+        return mensalidadeAAsc - mensalidadeBAsc;
+      case 'adesao':
+        const adesaoA = a.lojas[0]?.adesao === 'Isento' || a.lojas[0]?.adesao === 0 ? 0 : parseFloat(a.lojas[0]?.adesao || 0);
+        const adesaoB = b.lojas[0]?.adesao === 'Isento' || b.lojas[0]?.adesao === 0 ? 0 : parseFloat(b.lojas[0]?.adesao || 0);
+        return adesaoB - adesaoA;
+      case 'adesao_asc':
+        const adesaoAAsc = a.lojas[0]?.adesao === 'Isento' || a.lojas[0]?.adesao === 0 ? 0 : parseFloat(a.lojas[0]?.adesao || 0);
+        const adesaoBAsc = b.lojas[0]?.adesao === 'Isento' || b.lojas[0]?.adesao === 0 ? 0 : parseFloat(b.lojas[0]?.adesao || 0);
+        return adesaoAAsc - adesaoBAsc;
       default:
         return 0;
     }
   });
   
-  cadastrosFiltrados = cadastrosParaOrdenar;
-  exibirTabelaCadastros();
+  exibirTabelaCadastrosAgrupada(cadastrosAgrupados, 'Cadastros Ordenados');
+}
+
+function exibirTabelaCadastrosAgrupada(cadastrosAgrupados, titulo) {
+  const tabelaBody = document.getElementById('tabelaCadastrosBody');
+  const loading = document.getElementById('loadingCadastros');
+  const tableContainer = document.getElementById('tableContainer');
+
+  tabelaBody.innerHTML = '';
+
+  if (cadastrosAgrupados.length === 0) {
+    tabelaBody.innerHTML = `
+      <tr>
+        <td colspan="9" style="text-align: center; padding: 40px;">
+          <i class="fas fa-search" style="font-size: 3rem; color: var(--gray); margin-bottom: 15px;"></i>
+          <h3>Nenhum resultado encontrado</h3>
+          <p>Tente alterar os filtros de pesquisa.</p>
+        </td>
+      </tr>
+    `;
+  } else {
+    cadastrosAgrupados.forEach(grupo => {
+      const row = criarLinhaTabelaAgrupada(grupo);
+      tabelaBody.appendChild(row);
+    });
+  }
+
+  loading.style.display = 'none';
+  tableContainer.style.display = 'block';
+  atualizarContador();
 }
 
 function limparTodosFiltros() {
   filtrosAtivos = {};
   situacaoAtiva = 'all';
-  eventosSelecionados = [];
+  etapasSelecionados = [];
   fornecedoresSelecionados = [];
   document.getElementById('pesquisaCadastros').value = '';
   document.getElementById('ordenacao').value = 'razao_social';
-  document.getElementById('filtroEvento').value = '';
+  document.getElementById('filtroEtapa').value = '';
   document.getElementById('filtroFornecedor').value = '';
   
   document.querySelectorAll('.filtro-btn').forEach(btn => {
@@ -1774,14 +1924,16 @@ function limparTodosFiltros() {
   });
   document.querySelector('.filtro-btn[data-situacao="all"]').classList.add('active');
   
-  atualizarEventosSelecionados();
+  atualizarEtapasSelecionados();
   atualizarFornecedoresSelecionados();
   
   aplicarTodosFiltros();
 }
 
-// 🔥 FUNÇÕES DOS MODAIS
+// FUNÇÕES DOS MODAIS
 function verTodosFornecedores(cnpj) {
+  showLoadingPopup('Carregando Fornecedores', 'Buscando informações dos fornecedores...');
+  
   const lojasDoCNPJ = todosCadastros.filter(cadastro => cadastro.cnpj === cnpj);
   exibirModalFornecedores(cnpj, lojasDoCNPJ);
 }
@@ -1794,8 +1946,33 @@ function exibirModalFornecedores(cnpj, lojas) {
     
     if (lojas && lojas.length > 0) {
         lojasHTML = lojas.map(loja => {
-            // 🔥 CORRIGIR DATA DO ÚLTIMO EVENTO
-            const ultimoEventoCorrigido = corrigirHoraFrontend(loja.ultimo_evento);
+            // CORRIGIR DATA DA ÚLTIMA ETAPA
+            const ultimaEtapaCorrigida = corrigirHoraFrontend(loja.ultima_etapa);
+            
+            // CORREÇÃO: SÓ MOSTRAR DEFASAGEM SE FOR EM ANDAMENTO
+            const mostrarDefasagem = loja.situacao && loja.situacao.toUpperCase() === 'EM ANDAMENTO';
+            
+            const defasagemHTML = mostrarDefasagem ? `
+            <div style="background: #fff3cd; padding: 8px 12px; border-radius: 6px; margin-bottom: 10px; border-left: 3px solid var(--warning);">
+                <strong>⏰ Defasagem:</strong> 
+                <span style="color: ${calcularDefasagem(loja.ultima_etapa).includes('30') || calcularDefasagem(loja.ultima_etapa).includes('31') ? 'var(--danger)' : 'var(--dark)'}; font-weight: 600;">
+                    ${calcularDefasagem(loja.ultima_etapa)}
+                </span>
+                <div style="font-size: 0.8rem; color: var(--gray); margin-top: 4px;">
+                    Última etapa: ${ultimaEtapaCorrigida}
+                </div>
+            </div>
+            ` : `
+            <div style="background: #e9ecef; padding: 8px 12px; border-radius: 6px; margin-bottom: 10px; border-left: 3px solid #6c757d;">
+                <strong>⏰ Defasagem:</strong> 
+                <span style="color: #6c757d; font-weight: 600;">
+                    Sem defasagem
+                </span>
+                <div style="font-size: 0.8rem; color: var(--gray); margin-top: 4px;">
+                    Última etapa: ${ultimaEtapaCorrigida}
+                </div>
+            </div>
+            `;
             
             return `
             <div class="loja-item" style="border-color: ${getCorBordaSituacao(loja.situacao)};">
@@ -1805,21 +1982,13 @@ function exibirModalFornecedores(cnpj, lojas) {
                 </div>
                 
                 <div style="display: grid; grid-template-columns: 1fr 1fr; gap: 10px; margin-bottom: 10px;">
-                    <div><strong>📅 Evento:</strong> ${loja.evento || 'N/A'}</div>
+                    <div><strong>📅 Etapa:</strong> ${loja.etapa || 'N/A'}</div>
                     <div><strong>💰 Tarifa:</strong> ${loja.tarifa || 'N/A'} ${formatarPercentualCorrigido(loja.percentual_tarifa)}</div>
                     <div><strong>💵 Mensalidade:</strong> ${formatarMoedaParaInput(loja.mensalidade)}</div>
                     <div><strong>🤝 Adesão:</strong> ${loja.adesao === 'Isento' || loja.adesao === 0 ? 'Isento' : formatarMoedaParaInput(loja.adesao)}</div>
                 </div>
                 
-                <div style="background: #f8f9fa; padding: 8px 12px; border-radius: 6px; margin-bottom: 10px; border-left: 3px solid var(--warning);">
-                    <strong>⏰ Defasagem:</strong> 
-                    <span style="color: ${calcularDefasagem(loja.ultimo_evento).includes('30') || calcularDefasagem(loja.ultimo_evento).includes('31') ? 'var(--danger)' : 'var(--dark)'}; font-weight: 600;">
-                        ${calcularDefasagem(loja.ultimo_evento)}
-                    </span>
-                    <div style="font-size: 0.8rem; color: var(--gray); margin-top: 4px;">
-                        Último evento: ${ultimoEventoCorrigido}
-                    </div>
-                </div>
+                ${defasagemHTML}
                 
                 <div style="margin-top: 10px; display: flex; gap: 10px; flex-wrap: wrap;">
                     <button class="btn btn-warning btn-sm" onclick="verDetalhesCadastroModal('${loja.id}'); fecharModalFornecedores();">
@@ -1855,6 +2024,7 @@ function exibirModalFornecedores(cnpj, lojas) {
     `;
     
     modal.style.display = 'flex';
+    hideLoadingPopup();
 }
 
 function fecharModalFornecedores() {
@@ -1865,12 +2035,16 @@ function fecharModalFornecedores() {
 function verDetalhesCadastroModal(id) {
   console.log("👀 Visualizando detalhes ID:", id);
   
+  showLoadingPopup('Carregando Detalhes', 'Buscando informações completas...');
+  
   google.script.run
     .withSuccessHandler(function(dados) {
       console.log("✅ Dados recebidos para detalhes:", dados);
       exibirModalDetalhesCompleto(dados);
+      hideLoadingPopup();
     })
     .withFailureHandler(function(error) {
+      hideLoadingPopup();
       showMessage('error', '❌ Erro ao carregar detalhes: ' + error.message);
     })
     .buscarCadastroPorIDComWaitlabel(id, waitlabelAtual);
@@ -1884,15 +2058,54 @@ function exibirModalDetalhesCompleto(dados) {
     const mensalidadeSimFormatada = formatarMoedaParaInput(dados.mensalidade_sim || 0);
     const adesaoFormatada = dados.adesao === 'Isento' || dados.adesao === 0 ? 'Isento' : formatarMoedaParaInput(dados.adesao);
     
-    // 🔥 CORRIGIR DATAS PARA EXIBIÇÃO
-    const ultimoEventoCorrigido = corrigirHoraFrontend(dados.ultimo_evento);
+    // CORRIGIR DATAS PARA EXIBIÇÃO
+    const ultimaEtapaCorrigida = corrigirHoraFrontend(dados.ultima_etapa);
     const ativacaoCorrigida = dados.ativacao ? corrigirHoraFrontend(dados.ativacao) : 'N/A';
     const contratoEnviadoCorrigido = dados.contrato_enviado ? corrigirHoraFrontend(dados.contrato_enviado) : 'N/A';
     const contratoAssinadoCorrigido = dados.contrato_assinado ? corrigirHoraFrontend(dados.contrato_assinado) : 'N/A';
 
+    // CORREÇÃO: SÓ MOSTRAR DEFASAGEM SE FOR EM ANDAMENTO
+    const mostrarDefasagem = dados.situacao && dados.situacao.toUpperCase() === 'EM ANDAMENTO';
+    const defasagem = calcularDefasagem(ultimaEtapaCorrigida);
+
+    // SEÇÃO DE DEFASAGEM (SÓ SE FOR EM ANDAMENTO)
+    const secaoDefasagem = mostrarDefasagem && defasagem !== 'N/A' && defasagem !== '0 dias' && defasagem !== 'Data inválida' && defasagem !== 'Erro no cálculo' ? `
+    <div class="detalhe-item" style="grid-column: 1 / -1; background: #fff5f5; border-left: 4px solid #dc3545; margin-top: 10px;">
+        <span class="detalhe-label" style="font-size: 1.1em; color: #dc3545;">
+            <i class="fas fa-clock"></i> ⚠️ INFORMAÇÕES DE DEFASAGEM
+        </span>
+    </div>
+    
+    <div class="detalhe-item">
+        <span class="detalhe-label">⏰ Defasagem</span>
+        <div class="detalhe-valor">
+            <span style="display: inline-flex; align-items: center; gap: 5px; background: #dc3545; color: white; padding: 4px 10px; border-radius: 15px; font-size: 0.9rem; font-weight: 600;">
+                <i class="fas fa-clock"></i>
+                ${defasagem}
+            </span>
+        </div>
+    </div>
+    ` : mostrarDefasagem ? '' : `
+    <div class="detalhe-item" style="grid-column: 1 / -1; background: #e9ecef; border-left: 4px solid #6c757d; margin-top: 10px;">
+        <span class="detalhe-label" style="font-size: 1.1em; color: #6c757d;">
+            <i class="fas fa-clock"></i> INFORMAÇÕES DE DEFASAGEM
+        </span>
+    </div>
+    
+    <div class="detalhe-item">
+        <span class="detalhe-label">⏰ Defasagem</span>
+        <div class="detalhe-valor">
+            <span style="display: inline-flex; align-items: center; gap: 5px; background: #e9ecef; color: #6c757d; padding: 4px 10px; border-radius: 15px; font-size: 0.9rem; font-weight: 600;">
+                <i class="fas fa-clock"></i>
+                Sem defasagem
+            </span>
+        </div>
+    </div>
+    `;
+
     content.innerHTML = `
     <div class="detalhes-grid">
-        <!-- 🔥 SEÇÃO: INFORMAÇÕES PRINCIPAIS -->
+        <!-- SEÇÃO: INFORMAÇÕES PRINCIPAIS -->
         <div class="detalhe-item" style="grid-column: 1 / -1; background: #f0f8ff; border-left: 4px solid #7E3E9A;">
             <span class="detalhe-label" style="font-size: 1.1em; color: #7E3E9A;">
                 <i class="fas fa-info-circle"></i> 📋 INFORMAÇÕES PRINCIPAIS
@@ -1919,7 +2132,7 @@ function exibirModalDetalhesCompleto(dados) {
             <div class="detalhe-valor">${dados.fornecedor || 'N/A'}</div>
         </div>
 
-        <!-- 🔥 SEÇÃO: FINANCEIRO -->
+        <!-- SEÇÃO: FINANCEIRO -->
         <div class="detalhe-item" style="grid-column: 1 / -1; background: #f0fff0; border-left: 4px solid #28a745; margin-top: 10px;">
             <span class="detalhe-label" style="font-size: 1.1em; color: #28a745;">
                 <i class="fas fa-chart-line"></i> 💰 INFORMAÇÕES FINANCEIRAS
@@ -1946,7 +2159,7 @@ function exibirModalDetalhesCompleto(dados) {
             <div class="detalhe-valor">${dados.tarifa || 'N/A'} ${formatarPercentualParaExibicao(dados.percentual_tarifa)}</div>
         </div>
 
-        <!-- 🔥 SEÇÃO: CONTRATOS E DATAS -->
+        <!-- SEÇÃO: CONTRATOS E DATAS -->
         <div class="detalhe-item" style="grid-column: 1 / -1; background: #fff8f0; border-left: 4px solid #ff6b35; margin-top: 10px;">
             <span class="detalhe-label" style="font-size: 1.1em; color: #ff6b35;">
                 <i class="fas fa-file-contract"></i> 📄 CONTRATOS E DATAS
@@ -1964,16 +2177,16 @@ function exibirModalDetalhesCompleto(dados) {
         </div>
         
         <div class="detalhe-item">
-            <span class="detalhe-label">🚀 Data Ativação</span>
-            <div class="detalhe-valor">${ativacaoCorrigida}</div>
-        </div>
+    <span class="detalhe-label">🚀 Data Ativação</span>
+    <div class="detalhe-valor">${formatarDataAtivacao(dados.ativacao)}</div>
+</div>
         
         <div class="detalhe-item">
-            <span class="detalhe-label">📅 Último Evento</span>
-            <div class="detalhe-valor">${ultimoEventoCorrigido}</div>
+            <span class="detalhe-label">📅 Última Etapa</span>
+            <div class="detalhe-valor">${ultimaEtapaCorrigida}</div>
         </div>
 
-        <!-- 🔥 SEÇÃO: STATUS E ACOMPANHAMENTO -->
+        <!-- SEÇÃO: STATUS E ACOMPANHAMENTO -->
         <div class="detalhe-item" style="grid-column: 1 / -1; background: #f0f0f8; border-left: 4px solid #6f42c1; margin-top: 10px;">
             <span class="detalhe-label" style="font-size: 1.1em; color: #6f42c1;">
                 <i class="fas fa-tasks"></i> 📊 STATUS E ACOMPANHAMENTO
@@ -1988,11 +2201,11 @@ function exibirModalDetalhesCompleto(dados) {
         </div>
         
         <div class="detalhe-item">
-            <span class="detalhe-label">📅 Evento</span>
-            <div class="detalhe-valor">${dados.evento || 'N/A'}</div>
+            <span class="detalhe-label">📅 Etapa</span>
+            <div class="detalhe-valor">${dados.etapa || 'N/A'}</div>
         </div>
 
-        <!-- 🔥 SEÇÃO: LINKS E OBSERVAÇÕES -->
+        <!-- SEÇÃO: LINKS E OBSERVAÇÕES -->
         <div class="detalhe-item" style="grid-column: 1 / -1; background: #f0f0f0; border-left: 4px solid #6c757d; margin-top: 10px;">
             <span class="detalhe-label" style="font-size: 1.1em; color: #6c757d;">
                 <i class="fas fa-sticky-note"></i> 🔗 LINKS E OBSERVAÇÕES
@@ -2017,6 +2230,9 @@ function exibirModalDetalhesCompleto(dados) {
                 ${dados.observacoes || 'Nenhuma observação registrada'}
             </div>
         </div>
+
+        <!-- SEÇÃO: DEFASAGEM - AGORA CORRETA -->
+        ${secaoDefasagem}
     </div>
     `;
     
@@ -2028,39 +2244,43 @@ function fecharModalDetalhes() {
   modal.style.display = 'none';
 }
 
-// 🔥 CORREÇÃO DEFINITIVA - UTC para GMT-3 (3 horas de diferença)
+
 function corrigirHoraFrontend(dataHoraString) {
     if (!dataHoraString || !dataHoraString.includes('/') || !dataHoraString.includes(':')) {
         return dataHoraString;
     }
+    
+    console.log("🕒 Data recebida do backend:", dataHoraString);
     
     try {
         const [dataPart, horaPart] = dataHoraString.split(' ');
         const [dia, mes, ano] = dataPart.split('/');
         const [hora, minuto, segundo] = horaPart.split(':');
         
-        // 🔥 CORREÇÃO: UTC para GMT-3 = SUBTRAIR 3 HORAS
-        const dataUTC = new Date(Date.UTC(
+        // CORREÇÃO: Criar data e SUBTRAIR 4 HORAS
+        const dataOriginal = new Date(
             parseInt(ano),
             parseInt(mes) - 1,
             parseInt(dia),
             parseInt(hora),
             parseInt(minuto), 
             parseInt(segundo)
-        ));
+        );
         
-        const dataGMT3 = new Date(dataUTC.getTime() - (5 * 60 * 60 * 1000));
+        // Subtrair 4 horas (4 * 60 * 60 * 1000 milissegundos)
+        const dataCorrigida = new Date(dataOriginal.getTime() - (4 * 60 * 60 * 1000));
         
         // Formatar de volta para string
-        const diaCorrigido = String(dataGMT3.getUTCDate()).padStart(2, '0');
-        const mesCorrigido = String(dataGMT3.getUTCMonth() + 1).padStart(2, '0');
-        const anoCorrigido = dataGMT3.getUTCFullYear();
-        const horaCorrigida = String(dataGMT3.getUTCHours()).padStart(2, '0');
-        const minutoCorrigido = String(dataGMT3.getUTCMinutes()).padStart(2, '0');
-        const segundoCorrigido = String(dataGMT3.getUTCSeconds()).padStart(2, '0');
+        const diaCorrigido = String(dataCorrigida.getDate()).padStart(2, '0');
+        const mesCorrigido = String(dataCorrigida.getMonth() + 1).padStart(2, '0');
+        const anoCorrigido = dataCorrigida.getFullYear();
+        const horaCorrigida = String(dataCorrigida.getHours()).padStart(2, '0');
+        const minutoCorrigido = String(dataCorrigida.getMinutes()).padStart(2, '0');
+        const segundoCorrigido = String(dataCorrigida.getSeconds()).padStart(2, '0');
         
         const resultado = `${diaCorrigido}/${mesCorrigido}/${anoCorrigido} ${horaCorrigida}:${minutoCorrigido}:${segundoCorrigido}`;
         
+        console.log("✅ Data corrigida (-4h):", resultado);
         return resultado;
         
     } catch (error) {
@@ -2069,25 +2289,61 @@ function corrigirHoraFrontend(dataHoraString) {
     }
 }
 
-// 🔥 CORREÇÃO DEFINITIVA DA DEFASAGEM
-function calcularDefasagem(dataUltimoEvento) {
-    // 🔥 PRIMEIRO aplicar a correção de UTC para GMT-3
-    const dataCorrigida = corrigirHoraFrontend(dataUltimoEvento);
+// NOVA FUNÇÃO: Formatar data de ativação (sem hora)
+function formatarDataAtivacao(data) {
+    if (!data) return 'N/A';
     
-    // 🔥 AGORA calcular com a data corrigida
+    try {
+        // Se já está no formato brasileiro, retornar como está
+        if (typeof data === 'string' && data.includes('/')) {
+            const partes = data.split('/');
+            if (partes.length === 3) {
+                return `${partes[0]}/${partes[1]}/${partes[2]}`;
+            }
+            return data;
+        }
+        
+        // Se está no formato yyyy-MM-dd (do input date)
+        if (typeof data === 'string' && data.includes('-')) {
+            const [ano, mes, dia] = data.split('-');
+            return `${dia}/${mes}/${ano}`;
+        }
+        
+        // Para outros casos, tentar converter
+        const dateObj = new Date(data);
+        if (!isNaN(dateObj.getTime())) {
+            const dia = String(dateObj.getDate()).padStart(2, '0');
+            const mes = String(dateObj.getMonth() + 1).padStart(2, '0');
+            const ano = dateObj.getFullYear();
+            return `${dia}/${mes}/${ano}`;
+        }
+        
+        return String(data);
+    } catch (error) {
+        console.error("❌ Erro ao formatar data ativação:", error);
+        return String(data || 'N/A');
+    }
+}
+
+// CORREÇÃO DEFINITIVA DA DEFASAGEM
+function calcularDefasagem(dataUltimaEtapa) {
+    // PRIMEIRO aplicar a correção de UTC para GMT-3
+    const dataCorrigida = corrigirHoraFrontend(dataUltimaEtapa);
+    
+    // AGORA calcular com a data corrigida
     if (!dataCorrigida || dataCorrigida === 'N/A' || dataCorrigida === '' || dataCorrigida === 'Data inválida') {
         return 'N/A';
     }
     
     try {
-        let dataEvento;
+        let dataEtapa;
         
         if (dataCorrigida.includes('/') && dataCorrigida.includes(':')) {
             const [dataPart, horaPart] = dataCorrigida.split(' ');
             const [dia, mes, ano] = dataPart.split('/');
             const [hora, minuto, segundo] = horaPart.split(':');
             
-            dataEvento = new Date(
+            dataEtapa = new Date(
                 parseInt(ano), 
                 parseInt(mes) - 1,
                 parseInt(dia),
@@ -2097,20 +2353,20 @@ function calcularDefasagem(dataUltimoEvento) {
             );
             
         } else {
-            dataEvento = new Date(dataCorrigida);
+            dataEtapa = new Date(dataCorrigida);
         }
         
-        if (isNaN(dataEvento.getTime())) {
+        if (isNaN(dataEtapa.getTime())) {
             return 'Data inválida';
         }
         
         const hoje = new Date();
         
-        // 🔥 CORREÇÃO: Zerar horas para comparar apenas datas
+        // CORREÇÃO: Zerar horas para comparar apenas datas
         const hojeZerado = new Date(hoje.getFullYear(), hoje.getMonth(), hoje.getDate());
-        const dataEventoZerada = new Date(dataEvento.getFullYear(), dataEvento.getMonth(), dataEvento.getDate());
+        const dataEtapaZerada = new Date(dataEtapa.getFullYear(), dataEtapa.getMonth(), dataEtapa.getDate());
         
-        const diffTempo = hojeZerado.getTime() - dataEventoZerada.getTime();
+        const diffTempo = hojeZerado.getTime() - dataEtapaZerada.getTime();
         const diffDias = Math.floor(diffTempo / (1000 * 3600 * 24));
         
         if (diffDias === 0) return 'Hoje';
@@ -2125,9 +2381,9 @@ function calcularDefasagem(dataUltimoEvento) {
     }
 }
 
-// 🔥 CORREÇÃO DA FUNÇÃO calcularDiasDefasagem
-function calcularDiasDefasagem(dataUltimoEvento) {
-    const defasagem = calcularDefasagem(dataUltimoEvento);
+// CORREÇÃO DA FUNÇÃO calcularDiasDefasagem
+function calcularDiasDefasagem(dataUltimaEtapa) {
+    const defasagem = calcularDefasagem(dataUltimaEtapa);
     
     if (defasagem === 'N/A' || defasagem === 'Erro' || defasagem === 'Futuro' || defasagem === 'Data inválida' || defasagem === 'Erro no cálculo') {
         return 9999;
@@ -2186,48 +2442,46 @@ function getCorBordaSituacao(situacao) {
   else return 'var(--border)';
 }
 
+// FUNÇÃO 1: Para o modal de fornecedores (agrupado)
 function formatarPercentualCorrigido(percentual) {
     if (!percentual && percentual !== 0) return 'N/A';
     
     try {
-        const numero = typeof percentual === 'string' ? parseFloat(percentual) : percentual;
+        const numero = typeof percentual === 'string' ? 
+            parseFloat(percentual.replace(',', '.')) : percentual;
         
         if (isNaN(numero)) return String(percentual);
         
-        const porcentagem = numero * 100;
-        return porcentagem.toFixed(2).replace('.', ',') + '%';
+        let valorFormatado = numero;
+        if (numero <= 1) {
+            valorFormatado = numero * 100;
+        }
+        
+        const valorString = valorFormatado.toFixed(2);
+        return valorString.replace('.', ',') + '%';
         
     } catch (error) {
         return String(percentual);
     }
 }
 
+// FUNÇÃO 2: Para o modal de detalhes
 function formatarPercentualParaExibicao(percentual) {
     if (!percentual && percentual !== 0) return '';
     
     try {
-        if (typeof percentual === 'string') {
-            if (percentual.match(/^\d*\.?\d+$/)) {
-                const numero = parseFloat(percentual);
-                if (!isNaN(numero)) {
-                    const valorFormatado = numero * 100;
-                    const valorString = valorFormatado.toFixed(2);
-                    return valorString.replace('.', ',') + '%';
-                }
-            }
-            if (percentual.includes('%')) {
-                return percentual;
-            }
-            return percentual + '%';
+        const numero = typeof percentual === 'string' ? 
+            parseFloat(percentual.replace(',', '.')) : percentual;
+        
+        if (isNaN(numero)) return String(percentual || '');
+        
+        let valorFormatado = numero;
+        if (numero <= 1) {
+            valorFormatado = numero * 100;
         }
         
-        if (typeof percentual === 'number') {
-            let valorFormatado = percentual * 100;
-            const valorString = valorFormatado.toFixed(2);
-            return valorString.replace('.', ',') + '%';
-        }
-        
-        return String(percentual);
+        const valorString = valorFormatado.toFixed(2);
+        return valorString.replace('.', ',') + '%';
         
     } catch (error) {
         return String(percentual || '');
@@ -2288,7 +2542,7 @@ function showMessage(type, text) {
   }, 5000);
 }
 
-// 🔥 FECHAR MODAIS COM ESC E CLIQUE FORA
+// FECHAR MODAIS COM ESC E CLIQUE FORA
 document.addEventListener('keydown', function(e) {
   if (e.key === 'Escape') {
     fecharModalDetalhes();
