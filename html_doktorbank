@@ -14,7 +14,7 @@
     }
     
     :root {
-      --primary: #E61B72;
+      --primary: #E61B72; /* ROSA DOK */
       --secondary: #A1CC4C;
       --accent: #FF6B35;
       --dark: #2D3047;
@@ -31,22 +31,23 @@
     body {
       background: var(--background);
       min-height: 100vh;
-      padding: 20px;
+      padding: 15px;
       color: var(--dark);
+      font-size: 14px;
     }
     
     .container {
       max-width: 1800px;
       margin: 0 auto;
       background: var(--light);
-      border-radius: 15px;
-      box-shadow: 0 10px 30px rgba(0, 0, 0, 0.1);
+      border-radius: 12px;
+      box-shadow: 0 8px 25px rgba(0, 0, 0, 0.08);
       overflow: hidden;
     }
     
     .header {
-      background: var(--primary);
-      padding: 25px 40px;
+      background: var(--primary); /* ROSA DOK */
+      padding: 20px 30px;
       color: white;
       text-align: center;
     }
@@ -55,14 +56,15 @@
       display: flex;
       flex-direction: column;
       align-items: center;
-      gap: 15px;
-      margin-bottom: 10px;
+      gap: 12px;
+      margin-bottom: 8px;
     }
 
     .logo-wrapper {
       display: flex;
       align-items: center;
       gap: 15px;
+      justify-content: center;
     }
 
     .logo-doktorbank-wrapper {
@@ -89,31 +91,31 @@
       background: white;
       padding: 10px;
       border-radius: 15px;
-      box-shadow: 0 5px 15px rgba(0, 0, 0, 0.2);
+      box-shadow: 0 4px 12px rgba(0, 0, 0, 0.15);
       object-fit: contain;
     }
     
     h1 {
-      font-size: 2.2rem;
+      font-size: 2rem;
       font-weight: 700;
-      margin-bottom: 10px;
+      margin-bottom: 8px;
     }
     
     .subtitle {
-      font-size: 1.1rem;
+      font-size: 1rem;
       opacity: 0.9;
     }
     
     .content {
-      padding: 30px;
+      padding: 25px;
     }
-
+    
     .card {
       background: var(--light);
-      border-radius: 12px;
-      padding: 25px;
-      margin-bottom: 25px;
-      box-shadow: 0 4px 15px rgba(0, 0, 0, 0.05);
+      border-radius: 10px;
+      padding: 20px;
+      margin-bottom: 20px;
+      box-shadow: 0 3px 12px rgba(0, 0, 0, 0.04);
       border: 1px solid var(--border);
     }
     
@@ -121,44 +123,354 @@
       display: flex;
       align-items: center;
       justify-content: space-between;
-      gap: 15px;
+      gap: 12px;
       margin-bottom: 20px;
-      padding-bottom: 15px;
-      border-bottom: 3px solid var(--primary);
+      padding-bottom: 12px;
+      border-bottom: 2px solid var(--primary); /* ROSA DOK */
     }
     
     .card-header i {
-      color: var(--primary);
-      font-size: 1.8rem;
+      color: var(--primary); /* ROSA DOK */
+      font-size: 1.5rem;
     }
     
     .card-title {
-      font-size: 1.6rem;
+      font-size: 1.3rem;
       font-weight: 600;
-      color: var(--primary);
+      color: var(--primary); /* ROSA DOK */
+    }
+    
+    .btn {
+      display: inline-flex;
+      align-items: center;
+      gap: 8px;
+      padding: 10px 18px;
+      border: none;
+      border-radius: 6px;
+      font-size: 0.9rem;
+      font-weight: 600;
+      cursor: pointer;
+      transition: all 0.3s ease;
+    }
+    
+    .btn-primary {
+      background: var(--primary); /* ROSA DOK */
+      color: white;
+    }
+    
+    .btn-primary:hover {
+      background: #d41667; /* Rosa mais escuro */
+    }
+    
+    .btn-success {
+      background: var(--success);
+      color: white;
+    }
+    
+    .btn-warning {
+      background: var(--warning);
+      color: var(--dark);
+    }
+    
+    .btn-danger {
+      background: var(--danger);
+      color: white;
+    }
+    
+    .btn-info {
+      background: var(--info);
+      color: white;
+    }
+    
+    .btn-outline {
+      background: transparent;
+      border: 2px solid var(--primary); /* ROSA DOK */
+      color: var(--primary); /* ROSA DOK */
+    }
+    
+    .btn-sm {
+      padding: 6px 12px;
+      font-size: 0.8rem;
     }
 
-    /* FILTROS COM ESTILO WHITELABEL */
+    .filtros-container .btn.active {
+      transform: translateY(-2px);
+      box-shadow: 0 4px 12px rgba(230, 27, 114, 0.3); /* ROSA DOK */
+      border: 2px solid var(--primary) !important;
+    }
+
+    .filtros-container .btn.active[onclick*="all"] {
+      background: var(--primary) !important; /* ROSA DOK */
+      color: white !important;
+      border-color: var(--primary) !important;
+    }
+
+    .filtros-container .btn.active:not([onclick*="all"]) {
+      border: 2px solid var(--primary) !important; /* ROSA DOK */
+      box-shadow: 0 0 0 3px rgba(230, 27, 114, 0.2) !important; /* ROSA DOK */
+    }
+    
+    .message {
+      padding: 12px 16px;
+      border-radius: 6px;
+      margin: 12px 0;
+      display: none;
+      align-items: center;
+      gap: 8px;
+      font-size: 0.9rem;
+    }
+    
+    .success {
+      background: #d4edda;
+      color: var(--success);
+      border: 1px solid #c3e6cb;
+    }
+    
+    .error {
+      background: #f8d7da;
+      color: var(--danger);
+      border: 1px solid #f5c6cb;
+    }
+    
+    .info {
+      background: #d1ecf1;
+      color: #0c5460;
+      border: 1px solid #bee5eb;
+    }
+    
+    .loading-container {
+      display: flex;
+      flex-direction: column;
+      align-items: center;
+      justify-content: center;
+      padding: 30px;
+      text-align: center;
+    }
+    
+    .loading-spinner {
+      width: 40px;
+      height: 40px;
+      border: 4px solid #f3f3f3;
+      border-top: 4px solid var(--primary); /* ROSA DOK */
+      border-radius: 50%;
+      animation: spin 1s linear infinite;
+      margin-bottom: 12px;
+    }
+    
+    @keyframes spin {
+      0% { transform: rotate(0deg); }
+      100% { transform: rotate(360deg); }
+    }
+
+    /* POPUP DE CARREGAMENTO */
+    .loading-popup {
+      position: fixed;
+      top: 0;
+      left: 0;
+      width: 100%;
+      height: 100%;
+      background: rgba(0, 0, 0, 0.8);
+      display: none;
+      justify-content: center;
+      align-items: center;
+      z-index: 20000;
+      flex-direction: column;
+    }
+
+    .loading-popup-content {
+      background: white;
+      border-radius: 15px;
+      padding: 30px;
+      max-width: 400px;
+      width: 90%;
+      text-align: center;
+      box-shadow: 0 10px 30px rgba(0, 0, 0, 0.3);
+      border: 3px solid var(--primary); /* ROSA DOK */
+    }
+
+    .loading-popup-spinner {
+      width: 60px;
+      height: 60px;
+      border: 5px solid #f3f3f3;
+      border-top: 5px solid var(--primary); /* ROSA DOK */
+      border-radius: 50%;
+      animation: spin 1s linear infinite;
+      margin: 0 auto 20px;
+    }
+
+    .loading-popup-text {
+      font-size: 1.2rem;
+      font-weight: 600;
+      color: var(--dark);
+      margin-bottom: 10px;
+    }
+
+    .loading-popup-subtext {
+      font-size: 0.9rem;
+      color: var(--gray);
+    }
+    
+    .table-container {
+      margin-top: 15px;
+      overflow: hidden;
+      border-radius: 8px;
+      box-shadow: 0 2px 8px rgba(0, 0, 0, 0.08);
+    }
+    
+    .table-responsive {
+      overflow-x: auto;
+    }
+    
+    .data-table {
+      width: 100%;
+      border-collapse: collapse;
+      background: white;
+      font-size: 0.8rem;
+      table-layout: fixed;
+    }
+    
+    .data-table th {
+      background: var(--primary); /* ROSA DOK */
+      color: white;
+      padding: 12px 6px !important;
+      text-align: center !important;
+      font-weight: 700 !important;
+      position: sticky;
+      top: 0;
+      white-space: nowrap;
+      font-size: 0.85rem !important;
+      letter-spacing: 0.5px;
+      border-bottom: 2px solid rgba(255,255,255,0.2);
+    }
+
+    .data-table th:nth-child(1) {
+      width: 18%;
+      text-align: left !important;
+      padding-left: 12px !important;
+    }
+
+    .data-table th:nth-child(2) { width: 12%; }
+    .data-table th:nth-child(3) { width: 12%; }
+    .data-table th:nth-child(4) { width: 10%; }
+    .data-table th:nth-child(5) { 
+      width: 14%; 
+      text-align: left !important;
+      padding-left: 12px !important;
+    }
+    .data-table th:nth-child(6) { width: 8%; }
+    .data-table th:nth-child(7) { width: 10%; }
+    .data-table th:nth-child(8) { width: 8%; }
+    .data-table th:nth-child(9) { width: 8%; }
+    
+    .data-table td {
+      padding: 12px 6px !important;
+      border-bottom: 1px solid var(--border);
+      word-wrap: break-word;
+      vertical-align: middle !important;
+      height: 100% !important;
+    }
+
+    .data-table td:nth-child(1) {
+      text-align: left !important;
+      vertical-align: top !important;
+    }
+
+    .data-table td:nth-child(2),
+    .data-table td:nth-child(3),
+    .data-table td:nth-child(4),
+    .data-table td:nth-child(6),
+    .data-table td:nth-child(7),
+    .data-table td:nth-child(8),
+    .data-table td:nth-child(9) {
+      text-align: center !important;
+      vertical-align: middle !important;
+    }
+
+    .data-table td:nth-child(5) {
+      text-align: left !important;
+      vertical-align: middle !important;
+    }
+
+    .data-table td:nth-child(7) {
+      font-weight: 600;
+      color: var(--success) !important;
+    }
+
+    .data-table td:nth-child(8) {
+      font-weight: 600;
+      color: var(--info) !important;
+    }
+    
+    .data-table tbody tr {
+      transition: all 0.3s ease;
+      display: table-row;
+      height: auto;
+    }
+    
+    .data-table tbody tr:hover {
+      background: #f8f9fa;
+      transform: translateY(-1px);
+      box-shadow: 0 2px 6px rgba(0, 0, 0, 0.08);
+    }
+    
+    .data-table .btn-sm {
+      padding: 5px 10px;
+      font-size: 0.75rem;
+      margin: 2px;
+    }
+    
+    .status-badge {
+      padding: 6px 12px;
+      border-radius: 12px;
+      font-size: 0.75rem;
+      font-weight: 700;
+      text-align: center;
+      display: inline-block;
+      min-width: 80px;
+      border: 2px solid;
+      box-shadow: 0 2px 6px rgba(0,0,0,0.15);
+      text-transform: uppercase;
+      letter-spacing: 0.5px;
+    }
+    
+    .acoes-cell {
+      display: flex;
+      gap: 4px;
+      justify-content: center;
+      align-items: center;
+      height: 100% !important;
+      min-height: 100% !important;
+      padding: 0 !important;
+      margin: 0 !important;
+    }
+    
+    .action-buttons {
+      display: flex;
+      gap: 12px;
+      margin: 30px 0 15px 0;
+      flex-wrap: wrap;
+    }
+    
     .filtros-container {
       display: flex;
-      gap: 10px;
+      gap: 8px;
       align-items: center;
       flex-wrap: wrap;
-      margin: 20px 0;
-      padding: 15px;
+      margin: 15px 0;
+      padding: 12px;
       background: #f8f9fa;
-      border-radius: 10px;
+      border-radius: 8px;
       border: 1px solid var(--border);
     }
 
     .filtro-btn {
       display: inline-flex;
       align-items: center;
-      gap: 8px;
-      padding: 10px 20px;
+      gap: 6px;
+      padding: 8px 16px;
       border: 2px solid var(--border);
-      border-radius: 25px;
-      font-size: 0.9rem;
+      border-radius: 20px;
+      font-size: 0.85rem;
       font-weight: 600;
       cursor: pointer;
       transition: all 0.3s ease;
@@ -169,19 +481,19 @@
 
     .filtro-btn.active {
       transform: translateY(-2px);
-      box-shadow: 0 4px 15px rgba(0,0,0,0.2);
-      border-width: 3px;
+      box-shadow: 0 3px 10px rgba(0,0,0,0.15);
+      border-width: 2px;
     }
 
     .filtro-btn::before {
       content: '';
-      width: 12px;
-      height: 12px;
+      width: 10px;
+      height: 10px;
       border-radius: 50%;
-      margin-right: 5px;
+      margin-right: 4px;
     }
 
-    .filtro-btn[data-situacao="all"]::before { background: var(--primary); }
+    .filtro-btn[data-situacao="all"]::before { background: var(--primary); } /* ROSA DOK */
     .filtro-btn[data-situacao="NOVO REGISTRO"]::before { background: #bfe1f6; }
     .filtro-btn[data-situacao="CADASTRADO"]::before { background: var(--success); }
     .filtro-btn[data-situacao="EM ANDAMENTO"]::before { background: var(--warning); }
@@ -190,9 +502,9 @@
     .filtro-btn[data-situacao="DESISTIU"]::before { background: #e6cff2; }
 
     .filtro-btn.active[data-situacao="all"] { 
-      background: var(--primary); 
+      background: var(--primary);  /* ROSA DOK */
       color: white; 
-      border-color: var(--primary); 
+      border-color: var(--primary);  /* ROSA DOK */
     }
     .filtro-btn.active[data-situacao="NOVO REGISTRO"] { 
       background: #bfe1f6; 
@@ -225,216 +537,81 @@
       border-color: #e6cff2; 
     }
 
-    .btn {
-      display: inline-flex;
-      align-items: center;
-      gap: 8px;
-      padding: 10px 20px;
-      border: none;
-      border-radius: 8px;
-      font-size: 0.9rem;
-      font-weight: 600;
-      cursor: pointer;
-      transition: all 0.3s ease;
-    }
-    
-    .btn-primary {
-      background: var(--primary);
-      color: white;
-    }
-    
-    .btn-success {
-      background: var(--success);
-      color: white;
-    }
-    
-    .btn-warning {
-      background: var(--warning);
-      color: var(--dark);
-    }
-    
-    .btn-danger {
-      background: var(--danger);
-      color: white;
-    }
-    
-    .btn-info {
-      background: var(--info);
-      color: white;
-    }
-    
-    .btn-outline {
-      background: transparent;
-      border: 2px solid var(--primary);
-      color: var(--primary);
-    }
-    
-    .btn-sm {
-      padding: 8px 16px;
-      font-size: 0.85rem;
-    }
-
-    .btn:hover {
-      transform: translateY(-2px);
-      box-shadow: 0 4px 12px rgba(0,0,0,0.15);
-    }
-
-    /* PESQUISA E FILTROS AVANÇADOS */
-    .search-container {
-      margin: 20px 0;
-    }
-
     .filtros-avancados {
       display: grid;
-      grid-template-columns: repeat(auto-fit, minmax(200px, 1fr));
-      gap: 15px;
-      margin: 20px 0;
-      padding: 20px;
+      grid-template-columns: repeat(auto-fit, minmax(180px, 1fr));
+      gap: 12px;
+      margin: 15px 0;
+      padding: 15px;
       background: #f8f9fa;
-      border-radius: 10px;
+      border-radius: 8px;
       border: 1px solid var(--border);
     }
 
     .filtro-group {
       display: flex;
       flex-direction: column;
-      gap: 8px;
+      gap: 6px;
     }
 
     .filtro-label {
       font-weight: 600;
-      color: var(--primary);
-      font-size: 0.9rem;
+      color: var(--primary); /* ROSA DOK */
+      font-size: 0.85rem;
     }
 
     .form-control {
       width: 100%;
       padding: 10px 12px;
       border: 2px solid var(--border);
-      border-radius: 8px;
+      border-radius: 6px;
       font-size: 0.9rem;
       transition: all 0.3s ease;
     }
     
     .form-control:focus {
       outline: none;
-      border-color: var(--primary);
+      border-color: var(--primary); /* ROSA DOK */
     }
 
     .form-select {
       width: 100%;
-      padding: 10px 12px;
+      padding: 8px 10px;
       border: 2px solid var(--border);
-      border-radius: 8px;
-      font-size: 0.9rem;
+      border-radius: 6px;
+      font-size: 0.85rem;
       background: white;
       cursor: pointer;
     }
 
     .contador-lojas {
-      background: var(--primary);
+      background: var(--primary); /* ROSA DOK */
       color: white;
-      padding: 6px 12px;
-      border-radius: 20px;
-      font-size: 0.9rem;
+      padding: 5px 10px;
+      border-radius: 15px;
+      font-size: 0.85rem;
       font-weight: 600;
     }
 
-    /* TAGS DE FILTROS ATIVOS */
     .filtros-ativos {
       display: flex;
-      gap: 8px;
+      gap: 6px;
       flex-wrap: wrap;
-      margin: 10px 0;
+      margin: 8px 0;
     }
 
     .filtro-chip {
-      background: var(--primary);
-      color: white;
-      padding: 6px 12px;
-      border-radius: 20px;
-      font-size: 0.8rem;
-      display: flex;
-      align-items: center;
-      gap: 6px;
-    }
-
-    .filtro-chip .remover {
-      background: none;
-      border: none;
-      color: white;
-      cursor: pointer;
-      padding: 0;
-      width: 16px;
-      height: 16px;
-      border-radius: 50%;
-      display: flex;
-      align-items: center;
-      justify-content: center;
-      font-size: 10px;
-    }
-
-    /* FILTRO DE ETAPAS E FORNECEDORES COM TAGS */
-    .filtro-multiselect-container {
-      position: relative;
-    }
-
-    .suggestions {
-      position: absolute;
-      top: 100%;
-      left: 0;
-      right: 0;
-      background: white;
-      border: 2px solid var(--primary);
-      border-top: none;
-      border-radius: 0 0 8px 8px;
-      z-index: 1000;
-      max-height: 200px;
-      overflow-y: auto;
-      box-shadow: 0 4px 15px rgba(0,0,0,0.1);
-      display: none;
-    }
-
-    .suggestion-item {
-      padding: 10px 15px;
-      cursor: pointer;
-      border-bottom: 1px solid var(--border);
-      transition: all 0.2s ease;
-      font-size: 0.9rem;
-    }
-
-    .suggestion-item:hover {
-      background: var(--primary);
-      color: white;
-    }
-
-    .suggestion-item:last-child {
-      border-bottom: none;
-    }
-
-    .tags-selecionadas {
-      display: flex;
-      gap: 8px;
-      flex-wrap: wrap;
-      margin-top: 8px;
-    }
-
-    .tag {
-      background: var(--info);
+      background: var(--primary); /* ROSA DOK */
       color: white;
       padding: 4px 10px;
       border-radius: 15px;
-      font-size: 0.8rem;
+      font-size: 0.75rem;
       display: flex;
       align-items: center;
-      gap: 6px;
+      gap: 5px;
     }
 
-    .tag.fornecedor {
-      background: var(--secondary);
-    }
-
-    .tag .remover {
+    .filtro-chip .remover {
       background: none;
       border: none;
       color: white;
@@ -449,78 +626,159 @@
       font-size: 9px;
     }
 
-    .tag .remover:hover {
-      background: rgba(255,255,255,0.3);
+    .filtro-multiselect-container {
+      position: relative;
+      z-index: 100;
     }
 
-    /* TABELA MAIOR */
-    .table-container {
-      margin-top: 20px;
-      overflow: hidden;
-      border-radius: 10px;
-      box-shadow: 0 2px 10px rgba(0, 0, 0, 0.1);
-    }
-    
-    .table-responsive {
-      overflow-x: auto;
-    }
-    
-    .data-table {
-      width: 100%;
-      border-collapse: collapse;
+    .suggestions {
+      position: absolute;
+      top: 100%;
+      left: 0;
+      right: 0;
       background: white;
+      border: 2px solid var(--primary); /* ROSA DOK */
+      border-top: none;
+      border-radius: 0 0 6px 6px;
+      z-index: 1001;
+      max-height: 180px;
+      overflow-y: auto;
+      box-shadow: 0 3px 10px rgba(0,0,0,0.08);
+      display: none;
+      margin-top: -2px;
+    }
+
+    .suggestion-item {
+      padding: 8px 12px;
+      cursor: pointer;
+      border-bottom: 1px solid var(--border);
+      transition: all 0.2s ease;
       font-size: 0.85rem;
     }
-    
-    .data-table th {
-      background: var(--primary);
+
+    .suggestion-item:hover {
+      background: var(--primary); /* ROSA DOK */
       color: white;
-      padding: 12px 8px;
-      text-align: left;
-      font-weight: 600;
-      position: sticky;
-      top: 0;
-      white-space: nowrap;
     }
-    
-    .data-table td {
-      padding: 10px 8px;
-      border-bottom: 1px solid var(--border);
-      word-wrap: break-word;
-      vertical-align: top;
+
+    .suggestion-item:last-child {
+      border-bottom: none;
     }
-    
-    .data-table tbody tr {
-      transition: all 0.3s ease;
+
+    .tags-selecionadas {
+      display: flex;
+      gap: 6px;
+      flex-wrap: wrap;
+      margin-top: 6px;
     }
-    
-    .data-table tbody tr:hover {
-      background: #f8f9fa;
-      transform: translateY(-1px);
-      box-shadow: 0 2px 8px rgba(0, 0, 0, 0.1);
+
+    .tag {
+      background: var(--info);
+      color: white;
+      padding: 3px 8px;
+      border-radius: 12px;
+      font-size: 0.75rem;
+      display: flex;
+      align-items: center;
+      gap: 5px;
+    }
+
+    .tag.fornecedor {
+      background: var(--secondary);
+    }
+
+    .tag .remover {
+      background: none;
+      border: none;
+      color: white;
+      cursor: pointer;
+      padding: 0;
+      width: 12px;
+      height: 12px;
+      border-radius: 50%;
+      display: flex;
+      align-items: center;
+      justify-content: center;
+      font-size: 8px;
+    }
+
+    .tag .remover:hover {
+      background: rgba(255,255,255,0.3);
     }
 
     .btn-visualizar-compact {
       padding: 6px 10px !important;
       font-size: 0.75rem !important;
+      min-width: 90px;
       white-space: nowrap;
       display: inline-flex;
       align-items: center;
       justify-content: center;
       gap: 4px;
+      height: 100% !important;
+      min-height: 35px !important;
+      width: 100%;
+      border-radius: 5px !important;
+      margin: 0 !important;
+    }
+
+    .defasagem-badge {
+      padding: 6px 10px !important;
+      border-radius: 8px !important;
+      font-size: 0.75rem !important;
+      font-weight: 700 !important;
+      min-width: 70px;
+      display: inline-block;
+      text-align: center;
+      box-shadow: 0 2px 4px rgba(0,0,0,0.1);
+    }
+
+    .defasagem-alta {
+      background: #f8d7da;
+      color: #721c24;
+    }
+
+    .defasagem-media {
+      background: #fff3cd;
+      color: #856404;
+    }
+
+    .defasagem-baixa {
+      background: #d1e7dd;
+      color: #0f5132;
+    }
+
+    .sem-defasagem {
+      background: #e9ecef !important;
+      color: #6c757d !important;
+      border: 1px solid #dee2e6 !important;
+    }
+
+    .sem-defasagem-badge {
+      padding: 6px 10px !important;
+      border-radius: 8px !important;
+      font-size: 0.75rem !important;
+      font-weight: 600 !important;
+      background: #e9ecef !important;
+      color: #6c757d !important;
+      border: 1px solid #dee2e6 !important;
+      min-width: 70px;
+      display: inline-block;
+      text-align: center;
+    }
+
+    .search-container {
+      position: relative;
+    }
+
+    .defasagem-container {
+      display: flex !important;
+      justify-content: center !important;
+      align-items: center !important;
+      height: 100% !important;
     }
 
     /* STATUS BADGES */
-    .status-badge {
-      padding: 4px 8px;
-      border-radius: 12px;
-      font-size: 0.7rem;
-      font-weight: 600;
-      text-align: center;
-      display: inline-block;
-      min-width: 70px;
-    }
-    
     .situacao-novo-registro {
       background-color: #bfe1f6 !important;
       color: #0c5aa3 !important;
@@ -553,105 +811,7 @@
       border: 1px solid #d4b5e6 !important;
     }
 
-    .defasagem-badge {
-      padding: 6px 10px;
-      border-radius: 8px;
-      font-size: 0.7rem;
-      font-weight: 600;
-      min-width: 70px;
-      display: inline-block;
-      text-align: center;
-    }
-
-    .defasagem-alta {
-      background: #f8d7da;
-      color: #721c24;
-    }
-
-    .defasagem-media {
-      background: #fff3cd;
-      color: #856404;
-    }
-
-    .defasagem-baixa {
-      background: #d1e7dd;
-      color: #0f5132;
-    }
-
-    /* ESTILO PARA SEM DEFASAGEM */
-    .sem-defasagem {
-      background: #e9ecef !important;
-      color: #6c757d !important;
-      border: 1px solid #dee2e6 !important;
-    }
-
-    .sem-defasagem-badge {
-      padding: 6px 10px !important;
-      border-radius: 8px !important;
-      font-size: 0.75rem !important;
-      font-weight: 600 !important;
-      background: #e9ecef !important;
-      color: #6c757d !important;
-      border: 1px solid #dee2e6 !important;
-      min-width: 70px;
-      display: inline-block;
-      text-align: center;
-    }
-
-    /* LOADING */
-    .loading-container {
-      display: flex;
-      flex-direction: column;
-      align-items: center;
-      justify-content: center;
-      padding: 40px;
-      text-align: center;
-    }
-    
-    .loading-spinner {
-      width: 50px;
-      height: 50px;
-      border: 5px solid #f3f3f3;
-      border-top: 5px solid var(--primary);
-      border-radius: 50%;
-      animation: spin 1s linear infinite;
-      margin-bottom: 15px;
-    }
-    
-    @keyframes spin {
-      0% { transform: rotate(0deg); }
-      100% { transform: rotate(360deg); }
-    }
-
-    /* MENSAGENS */
-    .message {
-      padding: 15px 20px;
-      border-radius: 8px;
-      margin: 15px 0;
-      display: none;
-      align-items: center;
-      gap: 10px;
-    }
-    
-    .success {
-      background: #d4edda;
-      color: var(--success);
-      border: 1px solid #c3e6cb;
-    }
-    
-    .error {
-      background: #f8d7da;
-      color: var(--danger);
-      border: 1px solid #f5c6cb;
-    }
-    
-    .info {
-      background: #d1ecf1;
-      color: #0c5460;
-      border: 1px solid #bee5eb;
-    }
-
-    /* MODAL */
+    /* MODAL STYLES */
     .modal-overlay {
       display: none;
       position: fixed;
@@ -663,19 +823,19 @@
       z-index: 10000;
       justify-content: center;
       align-items: center;
-      padding: 20px;
+      padding: 15px;
     }
 
     .modal-content {
       background: white;
-      border-radius: 15px;
-      padding: 30px;
+      border-radius: 12px;
+      padding: 25px;
       max-width: 900px;
       width: 100%;
       max-height: 80vh;
       overflow-y: auto;
-      box-shadow: 0 20px 60px rgba(0,0,0,0.3);
-      border: 3px solid var(--primary);
+      box-shadow: 0 15px 50px rgba(0,0,0,0.25);
+      border: 3px solid var(--primary); /* ROSA DOK */
       position: relative;
     }
 
@@ -683,28 +843,28 @@
       display: flex;
       justify-content: space-between;
       align-items: center;
-      margin-bottom: 25px;
-      padding-bottom: 15px;
-      border-bottom: 2px solid var(--primary);
+      margin-bottom: 20px;
+      padding-bottom: 0;
+      border-bottom: none;
     }
 
     .modal-title {
-      font-size: 1.5rem;
+      font-size: 1.4rem;
       font-weight: 700;
-      color: var(--primary);
+      color: var(--primary); /* ROSA DOK */
       margin: 0;
     }
 
     .btn-close {
       background: none;
       border: none;
-      font-size: 1.5rem;
+      font-size: 1.3rem;
       cursor: pointer;
       color: var(--gray);
-      padding: 5px;
+      padding: 4px;
       border-radius: 50%;
-      width: 40px;
-      height: 40px;
+      width: 35px;
+      height: 35px;
       display: flex;
       align-items: center;
       justify-content: center;
@@ -718,129 +878,334 @@
 
     .detalhes-grid {
       display: grid;
-      grid-template-columns: repeat(auto-fit, minmax(250px, 1fr));
-      gap: 15px;
-      margin-bottom: 20px;
+      grid-template-columns: repeat(auto-fit, minmax(240px, 1fr));
+      gap: 12px;
+      margin-bottom: 15px;
     }
 
     .detalhe-item {
-      margin-bottom: 12px;
+      margin-bottom: 10px;
     }
 
     .detalhe-label {
       font-weight: 600;
-      color: var(--primary);
-      margin-bottom: 5px;
+      color: var(--primary); /* ROSA DOK */
+      margin-bottom: 4px;
       display: block;
+      font-size: 0.9rem;
     }
 
     .detalhe-valor {
       color: var(--dark);
-      background: #f8f9fa;
-      padding: 8px 12px;
-      border-radius: 8px;
-      border-left: 3px solid var(--primary);
-    }
-
-    /* ESTILOS PARA LOJAS AGRUPADAS */
-    .loja-item {
-      border: 3px solid;
-      border-radius: 8px;
-      padding: 15px;
-      margin-bottom: 10px;
       background: white;
+      padding: 12px 15px;
+      border-radius: 10px;
+      border-left: 4px solid var(--primary); /* ROSA DOK */
+      font-size: 1rem;
       box-shadow: 0 2px 8px rgba(0,0,0,0.1);
+      border: 1px solid var(--border);
     }
 
-    /* POPUP DE CARREGAMENTO */
-    .loading-popup {
-      position: fixed;
+    /* Header Profissional do CNPJ */
+    .modal-cnpj-header-profissional {
+      background: linear-gradient(135deg, #2c3e50 0%, #34495e 100%);
+      color: white;
+      padding: 25px 30px;
+      border-radius: 12px;
+      margin-bottom: 25px;
+      box-shadow: 0 4px 15px rgba(0,0,0,0.1);
+    }
+
+    .cnpj-header-content {
+      display: flex;
+      align-items: center;
+      gap: 20px;
+    }
+
+    .cnpj-icon {
+      background: rgba(255,255,255,0.1);
+      padding: 15px;
+      border-radius: 50%;
+      font-size: 1.5rem;
+    }
+
+    .cnpj-info {
+      flex: 1;
+    }
+
+    .cnpj-title {
+      font-size: 0.9rem;
+      font-weight: 600;
+      opacity: 0.9;
+      margin: 0 0 5px 0;
+      text-transform: uppercase;
+      letter-spacing: 1px;
+    }
+
+    .cnpj-number {
+      font-family: 'Courier New', monospace;
+      font-size: 1.4rem;
+      font-weight: 700;
+      margin: 0 0 5px 0;
+      letter-spacing: 1px;
+    }
+
+    .cnpj-subtitle {
+      font-size: 0.85rem;
+      opacity: 0.8;
+      margin: 0;
+    }
+
+    .cnpj-badge {
+      background: linear-gradient(135deg, var(--primary) 0%, #f14d8f 100%); /* ROSA DOK */
+      padding: 15px 20px;
+      border-radius: 12px;
+      text-align: center;
+      min-width: 90px;
+      border: 2px solid rgba(255,255,255,0.3);
+      box-shadow: 0 4px 15px rgba(230, 27, 114, 0.4); /* ROSA DOK */
+      position: relative;
+      overflow: hidden;
+    }
+
+    .cnpj-badge::before {
+      content: '';
+      position: absolute;
       top: 0;
       left: 0;
-      width: 100%;
-      height: 100%;
-      background: rgba(0, 0, 0, 0.8);
-      display: none;
-      justify-content: center;
+      right: 0;
+      bottom: 0;
+      background: linear-gradient(45deg, rgba(255,255,255,0.1) 0%, rgba(255,255,255,0) 50%);
+    }
+
+    .lojas-count {
+      display: block;
+      font-size: 1.8rem;
+      font-weight: 700;
+      position: relative;
+      z-index: 2;
+    }
+
+    .cnpj-badge small {
+      font-size: 0.75rem;
+      opacity: 0.9;
+      position: relative;
+      z-index: 2;
+    }
+
+    /* Resumo Executivo */
+    .modal-resumo-executivo {
+      background: linear-gradient(135deg, #f8f9fa 0%, #e9ecef 100%);
+      padding: 20px;
+      border-radius: 10px;
+      margin-bottom: 25px;
+      border-left: 4px solid var(--primary); /* ROSA DOK */
+      display: flex;
+      justify-content: space-between;
       align-items: center;
-      z-index: 20000;
-      flex-direction: column;
     }
 
-    .loading-popup-content {
-      background: white;
-      border-radius: 15px;
-      padding: 30px;
-      max-width: 400px;
-      width: 90%;
-      text-align: center;
-      box-shadow: 0 10px 30px rgba(0, 0, 0, 0.3);
-      border: 3px solid var(--primary);
-    }
-
-    .loading-popup-spinner {
-      width: 60px;
-      height: 60px;
-      border: 5px solid #f3f3f3;
-      border-top: 5px solid var(--primary);
-      border-radius: 50%;
-      animation: spin 1s linear infinite;
-      margin: 0 auto 20px;
-    }
-
-    .loading-popup-text {
-      font-size: 1.2rem;
+    .resumo-item {
+      display: flex;
+      align-items: center;
+      gap: 10px;
       font-weight: 600;
       color: var(--dark);
-      margin-bottom: 10px;
+      font-size: 1.1rem;
     }
 
-    .loading-popup-subtext {
+    .resumo-item i {
+      color: var(--primary); /* ROSA DOK */
+      font-size: 1.3rem;
+    }
+
+    .resumo-stats {
+      display: flex;
+      gap: 25px;
+    }
+
+    .stat-item {
+      text-align: center;
+    }
+
+    .stat-number {
+      display: block;
+      font-size: 1.5rem;
+      font-weight: 700;
+      color: var(--primary); /* ROSA DOK */
+    }
+
+    .stat-label {
+      font-size: 0.8rem;
+      color: var(--gray);
+      font-weight: 600;
+    }
+
+    /* Header da Lista */
+    .fornecedores-list-header {
+      margin-bottom: 20px;
+      padding-bottom: 15px;
+      border-bottom: 2px solid var(--border);
+    }
+
+    .fornecedores-list-header h4 {
+      color: var(--dark);
+      margin: 0 0 5px 0;
+      font-size: 1.3rem;
+    }
+
+    .fornecedores-list-header .subtitle {
+      color: var(--gray);
       font-size: 0.9rem;
+    }
+
+    .fornecedor-badge {
+      background: var(--primary); /* ROSA DOK */
+      color: white;
+      padding: 8px 12px;
+      border-radius: 6px;
+      font-weight: 700;
+      font-size: 0.9rem;
+    }
+
+    .fornecedor-indice {
+      display: block;
+      text-align: center;
+    }
+
+    .fornecedor-subinfo {
+      margin-top: 5px;
+    }
+
+    .info-tag {
+      background: rgba(0,0,0,0.05);
+      padding: 3px 8px;
+      border-radius: 12px;
+      font-size: 0.75rem;
       color: var(--gray);
     }
 
-    @media (max-width: 1200px) {
-      .data-table {
-        font-size: 0.8rem;
-      }
-      
-      .data-table th,
-      .data-table td {
-        padding: 8px 6px;
-      }
+    .etapa-destaque {
+      font-weight: 700;
+      color: var(--primary) !important; /* ROSA DOK */
+    }
+
+    .percentual-destaque {
+      background: var(--secondary);
+      color: white;
+      padding: 2px 6px;
+      border-radius: 8px;
+      font-size: 0.8rem;
+      margin-left: 5px;
+    }
+
+    .valor-destaque {
+      font-weight: 700;
+      color: var(--success) !important;
+    }
+
+    /* STATUS BADGES PARA O MODAL */
+    .modal-fornecedor-card .status-badge {
+      padding: 8px 14px;
+      border-radius: 20px;
+      font-size: 0.8rem;
+      font-weight: 700;
+      min-width: 85px;
+      border: 2px solid;
+      box-shadow: 0 3px 8px rgba(0,0,0,0.15);
+      text-transform: uppercase;
+      letter-spacing: 0.5px;
+      text-align: center;
+    }
+
+    .modal-fornecedor-card .situacao-novo-registro {
+      background: #bfe1f6 !important;
+      color: #0c5aa3 !important;
+      border-color: #bfe1f6 !important;
+    }
+
+    .modal-fornecedor-card .situacao-cadastrado {
+      background: #28a745 !important;
+      color: white !important;
+      border-color: #28a745 !important;
+    }
+
+    .modal-fornecedor-card .situacao-andamento {
+      background: #ffc107 !important;
+      color: #000000 !important;
+      border-color: #ffc107 !important;
+    }
+
+    .modal-fornecedor-card .situacao-rejeitado {
+      background: #6c757d !important;
+      color: white !important;
+      border-color: #6c757d !important;
+    }
+
+    .modal-fornecedor-card .situacao-descredenciado {
+      background: #dc3545 !important;
+      color: white !important;
+      border-color: #dc3545 !important;
+    }
+
+    .modal-fornecedor-card .situacao-desistiu {
+      background: #e6cff2 !important;
+      color: #4a1e6b !important;
+      border-color: #e6cff2 !important;
     }
 
     @media (max-width: 768px) {
       .content {
-        padding: 20px;
+        padding: 15px;
       }
       
-      .filtros-container {
+      .btn-group {
         flex-direction: column;
-        align-items: stretch;
       }
-      
-      .filtros-avancados {
-        grid-template-columns: 1fr;
-      }
-      
-      .btn {
-        justify-content: center;
-      }
-      
+
       h1 {
         font-size: 1.8rem;
+      }
+      
+      .logo {
+        width: 60px;
+        height: 60px;
+      }
+      
+      .action-buttons {
+        flex-direction: column;
       }
       
       .card-header {
         flex-direction: column;
         align-items: flex-start;
-        gap: 10px;
       }
       
-      .contador-lojas {
-        align-self: flex-start;
+      .filtros-container {
+        margin-top: 12px;
+      }
+      
+      .data-table {
+        font-size: 0.75rem;
+      }
+      
+      .acoes-cell {
+        flex-direction: column;
+      }
+
+      .modal-content {
+        padding: 20px;
+        margin: 10px;
+        max-width: 95%;
+      }
+      
+      .modal-title {
+        font-size: 1.2rem;
+      }
+
+      .detalhes-grid {
+        grid-template-columns: 1fr;
+        gap: 15px;
       }
     }
   </style>
@@ -865,8 +1230,8 @@
           </div>
         </div>
         <div class="header-content">
-          <h1>Cadastros de Lojas</h1>
-          <div class="subtitle">Visualização de Dados - Somente Leitura</div>
+          <h1>Visualização de Lojas</h1>
+          <div class="subtitle">Sistema de Consulta - Somente Leitura</div>
         </div>
       </div>
     </div>
@@ -893,10 +1258,10 @@
             Todos
           </button>
           <button type="button" class="filtro-btn" data-situacao="NOVO REGISTRO" onclick="aplicarFiltroSituacao('NOVO REGISTRO')">
-            Novos
+            Novo Registro
           </button>
           <button type="button" class="filtro-btn" data-situacao="CADASTRADO" onclick="aplicarFiltroSituacao('CADASTRADO')">
-            Cadastrados
+            Cadastrado
           </button>
           <button type="button" class="filtro-btn" data-situacao="EM ANDAMENTO" onclick="aplicarFiltroSituacao('EM ANDAMENTO')">
             Em Andamento
@@ -905,41 +1270,38 @@
             Rejeitado
           </button>
           <button type="button" class="filtro-btn" data-situacao="DESCREDENCIADO" onclick="aplicarFiltroSituacao('DESCREDENCIADO')">
-            Descredenciados
+            Descredenciado
           </button>
           <button type="button" class="filtro-btn" data-situacao="DESISTIU" onclick="aplicarFiltroSituacao('DESISTIU')">
             Desistiu
           </button>
           
-          <!-- BOTÃO ATUALIZAR -->
-          <button type="button" class="btn btn-info btn-sm" onclick="carregarCadastros()" style="margin-left: auto;">
+          <button type="button" class="btn btn-info btn-sm" onclick="recarregarCadastros()" style="margin-left: auto;">
             <i class="fas fa-sync-alt"></i> Atualizar
           </button>
         </div>
 
         <!-- FILTROS AVANÇADOS -->
-        <div class="filtros-avancados">
-          <!-- FILTRO DE ETAPAS COM TAGS -->
+        <div class="filtros-avancados" id="filtrosAvancadosContainer">
           <div class="filtro-group">
             <label class="filtro-label">📅 Filtrar por Etapa:</label>
             <div class="filtro-multiselect-container">
               <input type="text" id="filtroEtapa" class="form-control" 
                      placeholder="Digite para buscar etapas..." 
                      oninput="filtrarSugestoesEtapa()"
-                     onfocus="mostrarTodasSugestoesEtapa()">
+                     onfocus="mostrarSugestoesEtapaFiltro()">
               <div class="suggestions" id="suggestionsEtapa"></div>
               <div class="tags-selecionadas" id="etapasSelecionados"></div>
             </div>
           </div>
           
-          <!-- FILTRO DE FORNECEDORES COM TAGS -->
           <div class="filtro-group">
             <label class="filtro-label">🚚 Filtrar por Fornecedor:</label>
             <div class="filtro-multiselect-container">
               <input type="text" id="filtroFornecedor" class="form-control" 
                      placeholder="Digite para buscar fornecedores..." 
                      oninput="filtrarSugestoesFornecedor()"
-                     onfocus="mostrarTodasSugestoesFornecedor()">
+                     onfocus="mostrarSugestoesFornecedorFiltro()">
               <div class="suggestions" id="suggestionsFornecedor"></div>
               <div class="tags-selecionadas" id="fornecedoresSelecionados"></div>
             </div>
@@ -947,7 +1309,7 @@
           
           <div class="filtro-group">
             <label class="filtro-label">📊 Ordenar por:</label>
-            <select id="ordenacao" class="form-select" onchange="ordenarCadastros()">
+            <select id="ordenacaoCadastros" class="form-select" onchange="ordenarCadastros()">
               <option value="razao_social">Razão Social (A-Z)</option>
               <option value="razao_social_desc">Razão Social (Z-A)</option>
               <option value="nome_fantasia">Nome Fantasia (A-Z)</option>
@@ -965,7 +1327,7 @@
 
           <div class="filtro-group">
             <label class="filtro-label">🧹 Limpar Filtros:</label>
-            <button type="button" class="btn btn-outline btn-sm" onclick="limparTodosFiltros()" style="margin-top: 8px;">
+            <button type="button" class="btn btn-outline btn-sm" onclick="limparTodosFiltros()" style="margin-top: 6px;">
               <i class="fas fa-broom"></i> Limpar Tudo
             </button>
           </div>
@@ -975,7 +1337,7 @@
         <div class="filtros-ativos" id="filtrosAtivosContainer" style="display: none;"></div>
 
         <!-- LOADING -->
-        <div class="loading-container" id="loadingCadastros">
+        <div class="loading-container" id="loadingCadastros" style="display: none;">
           <div class="loading-spinner"></div>
           <p>Carregando cadastros...</p>
         </div>
@@ -1037,7 +1399,7 @@
         <!-- Conteúdo será preenchido via JavaScript -->
       </div>
 
-      <div style="text-align: center; margin-top: 25px; padding-top: 20px; border-top: 1px solid var(--border);">
+      <div style="text-align: center; margin-top: 20px; padding-top: 15px; border-top: 1px solid var(--border);">
         <button class="btn btn-primary" onclick="fecharModalFornecedores()">
           <i class="fas fa-check"></i> Fechar
         </button>
@@ -1059,7 +1421,7 @@
         <!-- Conteúdo será preenchido via JavaScript -->
       </div>
 
-      <div style="text-align: center; margin-top: 25px; padding-top: 20px; border-top: 1px solid var(--border);">
+      <div style="text-align: center; margin-top: 20px; padding-top: 15px; border-top: 1px solid var(--border);">
         <button class="btn btn-primary" onclick="fecharModalDetalhes()">
           <i class="fas fa-check"></i> Fechar
         </button>
@@ -1163,46 +1525,106 @@ function configurarEventosFiltro() {
   });
 }
 
-// FUNÇÕES DO FILTRO DE ETAPAS - MODIFICADAS
-function mostrarTodasSugestoesEtapa() {
-  const suggestions = document.getElementById('suggestionsEtapa');
-  const etapasUnicos = [...new Set(etapasDisponiveis)];
-  const etapasFiltrados = etapasUnicos.filter(etapa => 
-    !etapasSelecionados.includes(etapa)
-  );
-  
-  if (etapasFiltrados.length === 0) {
-    suggestions.innerHTML = `
-      <div class="suggestion-item" style="color: var(--gray);">
-        <i class="fas fa-check-circle"></i> Todas as etapas já estão selecionadas
-      </div>
-    `;
-  } else {
-    let html = etapasFiltrados.map(etapa => `
-      <div class="suggestion-item" onclick="adicionarEtapa('${etapa}')">
-        <i class="fas fa-calendar-check"></i> ${etapa}
-      </div>
-    `).join('');
+// FUNÇÕES DO FILTRO DE ETAPAS
+function mostrarSugestoesEtapaFiltro() {
+    const input = document.getElementById('filtroEtapa');
+    const suggestions = document.getElementById('suggestionsEtapa');
+    
+    const todasEtapas = [...etapasDisponiveis];
+    
+    let html = '';
+    
+    todasEtapas.forEach(etapa => {
+        const jaSelecionado = etapasSelecionados.includes(etapa);
+        
+        // Determinar ícone e cor
+        let icone = "fas fa-calendar-check";
+        let cor = "#E61B72"; // ROSA DOK
+        
+        if (etapa.includes("FORNECEDOR")) {
+          icone = "fas fa-truck";
+          cor = "#FF6B35";
+        } else if (etapa.includes("SIM")) {
+          icone = "fas fa-building";
+          cor = "#E61B72"; // ROSA DOK
+        } else if (etapa.includes("WL")) {
+          icone = "fas fa-tag";
+          cor = "#A1CC4C";
+        } else if (etapa.includes("CLÍNICA") || etapa.includes("LOJA")) {
+          icone = "fas fa-hospital";
+          cor = "#0682c5";
+        }
+        
+        html += `
+            <div class="suggestion-item ${jaSelecionado ? 'selecionado' : ''}" 
+                 onclick="selecionarEtapaFiltro('${etapa.replace(/'/g, "\\'")}')"
+                 data-etapa="${etapa}">
+                <i class="${icone}" style="color: ${cor}"></i>
+                <span>${etapa}</span>
+                ${jaSelecionado ? '<i class="fas fa-check" style="margin-left: auto; color: var(--success);"></i>' : ''}
+            </div>
+        `;
+    });
     
     suggestions.innerHTML = html;
-  }
-  
-  suggestions.style.display = 'block';
+    suggestions.style.display = 'block';
 }
 
-function mostrarSugestoesEtapa() {
-  const input = document.getElementById('filtroEtapa');
-  if (input.value.trim().length > 0) {
-    filtrarSugestoesEtapa();
-  } else {
-    mostrarTodasSugestoesEtapa();
-  }
+function selecionarEtapaFiltro(etapa) {
+    if (!etapasSelecionados.includes(etapa)) {
+        etapasSelecionados.push(etapa);
+        atualizarEtapasSelecionados();
+        aplicarFiltroEtapas();
+    }
+    
+    document.getElementById('suggestionsEtapa').style.display = 'none';
+    document.getElementById('filtroEtapa').value = '';
+}
+
+function mostrarSugestoesFornecedorFiltro() {
+    const input = document.getElementById('filtroFornecedor');
+    const suggestions = document.getElementById('suggestionsFornecedor');
+    
+    let html = '';
+    
+    fornecedoresDisponiveis.forEach(fornecedor => {
+        const jaSelecionado = fornecedoresSelecionados.includes(fornecedor);
+        
+        html += `
+            <div class="suggestion-item ${jaSelecionado ? 'selecionado' : ''}" 
+                 onclick="selecionarFornecedorFiltro('${fornecedor}')"
+                 data-fornecedor="${fornecedor}">
+                <i class="fas fa-truck" style="color: var(--secondary)"></i>
+                <span>${fornecedor}</span>
+                ${jaSelecionado ? '<i class="fas fa-check" style="margin-left: auto; color: var(--success);"></i>' : ''}
+            </div>
+        `;
+    });
+    
+    suggestions.innerHTML = html;
+    suggestions.style.display = 'block';
+}
+
+function selecionarFornecedorFiltro(fornecedor) {
+    if (!fornecedoresSelecionados.includes(fornecedor)) {
+        fornecedoresSelecionados.push(fornecedor);
+        atualizarFornecedoresSelecionados();
+        aplicarFiltroFornecedores();
+    }
+    
+    document.getElementById('suggestionsFornecedor').style.display = 'none';
+    document.getElementById('filtroFornecedor').value = '';
 }
 
 function filtrarSugestoesEtapa() {
   const input = document.getElementById('filtroEtapa');
   const suggestions = document.getElementById('suggestionsEtapa');
   const termo = input.value.toLowerCase().trim();
+  
+  if (termo.length < 1) {
+    suggestions.style.display = 'none';
+    return;
+  }
   
   const etapasUnicos = [...new Set(etapasDisponiveis)];
   const etapasFiltrados = etapasUnicos.filter(etapa => 
@@ -1217,7 +1639,7 @@ function filtrarSugestoesEtapa() {
     `;
   } else {
     let html = etapasFiltrados.map(etapa => `
-      <div class="suggestion-item" onclick="adicionarEtapa('${etapa}')">
+      <div class="suggestion-item" onclick="adicionarEtapa('${etapa.replace(/'/g, "\\'")}')">
         <i class="fas fa-calendar-check"></i> ${etapa}
       </div>
     `).join('');
@@ -1274,38 +1696,10 @@ function aplicarFiltroEtapas() {
   aplicarTodosFiltros();
 }
 
-// FUNÇÕES DO FILTRO DE FORNECEDORES - MODIFICADAS
-function mostrarTodasSugestoesFornecedor() {
-  const suggestions = document.getElementById('suggestionsFornecedor');
-  const fornecedoresFiltrados = fornecedoresDisponiveis.filter(fornecedor => 
-    !fornecedoresSelecionados.includes(fornecedor)
-  );
-  
-  if (fornecedoresFiltrados.length === 0) {
-    suggestions.innerHTML = `
-      <div class="suggestion-item" style="color: var(--gray);">
-        <i class="fas fa-check-circle"></i> Todos os fornecedores já estão selecionados
-      </div>
-    `;
-  } else {
-    let html = fornecedoresFiltrados.map(fornecedor => `
-      <div class="suggestion-item" onclick="adicionarFornecedor('${fornecedor}')">
-        <i class="fas fa-truck"></i> ${fornecedor}
-      </div>
-    `).join('');
-    
-    suggestions.innerHTML = html;
-  }
-  
-  suggestions.style.display = 'block';
-}
-
 function mostrarSugestoesFornecedor() {
   const input = document.getElementById('filtroFornecedor');
   if (input.value.trim().length > 0) {
     filtrarSugestoesFornecedor();
-  } else {
-    mostrarTodasSugestoesFornecedor();
   }
 }
 
@@ -1313,6 +1707,11 @@ function filtrarSugestoesFornecedor() {
   const input = document.getElementById('filtroFornecedor');
   const suggestions = document.getElementById('suggestionsFornecedor');
   const termo = input.value.toLowerCase().trim();
+  
+  if (termo.length < 1) {
+    suggestions.style.display = 'none';
+    return;
+  }
   
   const fornecedoresFiltrados = fornecedoresDisponiveis.filter(fornecedor => 
     fornecedor.toLowerCase().includes(termo) && !fornecedoresSelecionados.includes(fornecedor)
@@ -1494,25 +1893,18 @@ function encontrarFornecedorMaisAntigo(lojasDoCNPJ) {
     return { fornecedor: 'N/A', data: 'N/A', etapa: 'N/A', dias: 9999 };
   }
   
-  console.log("🔍 [DOK] Buscando fornecedor mais antigo entre", lojasDoCNPJ.length, "lojas");
-  
   // FILTRAR APENAS LOJAS COM DATA VÁLIDA E EM ANDAMENTO
   const lojasComDataValida = lojasDoCNPJ.filter(loja => {
-    // Verificar se tem data válida
     if (!loja.ultima_etapa || loja.ultima_etapa === 'N/A' || loja.ultima_etapa === '') {
-      console.log(`❌ [DOK] Loja ${loja.fornecedor} sem data válida:`, loja.ultima_etapa);
       return false;
     }
     
-    // VERIFICAR SE É DATE OBJECT OU STRING VÁLIDA
     let dataValida = false;
     
     try {
-      // Se já é objeto Date
       if (loja.ultima_etapa instanceof Date) {
         dataValida = !isNaN(loja.ultima_etapa.getTime());
       } 
-      // Se é string no formato brasileiro
       else if (typeof loja.ultima_etapa === 'string' && loja.ultima_etapa.includes('/')) {
         const [dataPart, horaPart] = loja.ultima_etapa.split(' ');
         if (dataPart) {
@@ -1521,24 +1913,18 @@ function encontrarFornecedorMaisAntigo(lojasDoCNPJ) {
           dataValida = !isNaN(dataObj.getTime());
         }
       }
-      // Outros formatos
       else {
         const dataObj = new Date(loja.ultima_etapa);
         dataValida = !isNaN(dataObj.getTime());
       }
     } catch (error) {
-      console.log(`❌ [DOK] Erro ao validar data da loja ${loja.fornecedor}:`, error);
       dataValida = false;
     }
     
-    console.log(`📊 [DOK] Loja ${loja.fornecedor} - Data: ${loja.ultima_etapa} - Válida: ${dataValida}`);
     return dataValida;
   });
   
   if (lojasComDataValida.length === 0) {
-    console.log("❌ [DOK] Nenhuma loja com data válida encontrada");
-    
-    // SE NÃO TEM DATA, PEGA A PRIMEIRA LOJA PARA MOSTRAR INFORMAÇÕES BÁSICAS
     const primeiraLoja = lojasDoCNPJ[0];
     return {
       fornecedor: primeiraLoja?.fornecedor || 'N/A',
@@ -1547,8 +1933,6 @@ function encontrarFornecedorMaisAntigo(lojasDoCNPJ) {
       dias: 9999
     };
   }
-  
-  console.log(`✅ [DOK] ${lojasComDataValida.length} lojas com data válida encontradas`);
   
   // ENCONTRAR A LOJA COM DATA MAIS ANTIGA
   const lojaMaisAntiga = lojasComDataValida.reduce((maisAntiga, atual) => {
@@ -1577,23 +1961,13 @@ function encontrarFornecedorMaisAntigo(lojasDoCNPJ) {
         dataAtual = new Date(atual.ultima_etapa);
       }
       
-      console.log(`📊 [DOK] Comparando: ${atual.fornecedor} (${dataAtual}) vs ${maisAntiga.fornecedor} (${dataMaisAntiga})`);
-      
       return dataAtual < dataMaisAntiga ? atual : maisAntiga;
     } catch (error) {
-      console.log("❌ [DOK] Erro ao comparar datas:", error);
       return maisAntiga;
     }
   });
   
   const diasDefasagem = calcularDiasDefasagem(lojaMaisAntiga.ultima_etapa);
-  
-  console.log("✅ [DOK] Fornecedor mais antigo encontrado:", {
-    fornecedor: lojaMaisAntiga.fornecedor,
-    data: lojaMaisAntiga.ultima_etapa,
-    etapa: lojaMaisAntiga.etapa,
-    dias: diasDefasagem
-  });
   
   return {
     fornecedor: lojaMaisAntiga.fornecedor,
@@ -1603,7 +1977,7 @@ function encontrarFornecedorMaisAntigo(lojasDoCNPJ) {
   };
 }
 
-// FUNÇÃO criarLinhaTabelaAgrupada COMPLETA COM CORREÇÃO
+// FUNÇÃO criarLinhaTabelaAgrupada COMPLETA
 function criarLinhaTabelaAgrupada(grupo) {
   const row = document.createElement('tr');
   
@@ -1615,19 +1989,14 @@ function criarLinhaTabelaAgrupada(grupo) {
                            situacoes.includes('DESISTIU') ? 'DESISTIU' :
                            'CADASTRADO';
 
-  // CORREÇÃO: ENCONTRAR O FORNECEDOR MAIS ATRASADO
   const fornecedorMaisAntigo = encontrarFornecedorMaisAntigo(grupo.lojas);
   
-  console.log("🔍 [DOK] FORNECEDOR MAIS ANTIGO ENCONTRADO:", fornecedorMaisAntigo);
-
-  // CORREÇÃO DEFINITIVA: APLICAR CORREÇÃO DE HORAS APENAS SE HOUVER DATA VÁLIDA
   let dataHoraMaisAntiga = 'N/A';
   let dataHoraCorrigida = 'N/A';
 
   if (fornecedorMaisAntigo.data && fornecedorMaisAntigo.data !== 'N/A') {
     dataHoraMaisAntiga = fornecedorMaisAntigo.data;
     
-    // APLICAR CORREÇÃO APENAS SE FOR STRING COM FORMATO COMPLETO
     if (typeof dataHoraMaisAntiga === 'string' && dataHoraMaisAntiga.includes('/') && dataHoraMaisAntiga.includes(':')) {
       dataHoraCorrigida = corrigirHoraFrontend(dataHoraMaisAntiga);
     } else {
@@ -1746,9 +2115,6 @@ function calcularDefasagemPorCNPJ(lojasDoCNPJ) {
     return { dias: 9999, fornecedor: 'N/A', data: 'N/A', etapa: 'N/A' };
   }
   
-  console.log("🔍 [DOK] Calculando defasagem para CNPJ com", lojasDoCNPJ.length, "lojas");
-  
-  // Usar a mesma lógica da função encontrarFornecedorMaisAntigo
   const fornecedorMaisAntigo = encontrarFornecedorMaisAntigo(lojasDoCNPJ);
   
   return {
@@ -1757,34 +2123,6 @@ function calcularDefasagemPorCNPJ(lojasDoCNPJ) {
     data: fornecedorMaisAntigo.data,
     etapa: fornecedorMaisAntigo.etapa
   };
-}
-
-// NOVA FUNÇÃO: Calcular defasagem para ordenação (considera status)
-function calcularDefasagemParaOrdenacao(lojasDoCNPJ) {
-  if (!lojasDoCNPJ || lojasDoCNPJ.length === 0) {
-    return 0; // Se não tem lojas, defasagem = 0
-  }
-  
-  // VERIFICAR SE TEM ALGUMA LOJA EM ANDAMENTO
-  const temLojaEmAndamento = lojasDoCNPJ.some(loja => 
-    loja.situacao && loja.situacao.toUpperCase() === 'EM ANDAMENTO'
-  );
-  
-  // SE NÃO TEM LOJA EM ANDAMENTO, DEFASAGEM = 0
-  if (!temLojaEmAndamento) {
-    return 0;
-  }
-  
-  // SE TEM LOJA EM ANDAMENTO, CALCULAR A DEFASAGEM REAL
-  const defasagemInfo = calcularDefasagemPorCNPJ(lojasDoCNPJ);
-  
-  console.log("🎯 Defasagem para ordenação:", {
-    cnpj: lojasDoCNPJ[0]?.cnpj,
-    temLojaEmAndamento: temLojaEmAndamento,
-    defasagemDias: defasagemInfo.dias
-  });
-  
-  return defasagemInfo.dias < 9999 ? defasagemInfo.dias : 0;
 }
 
 // FUNÇÕES DE FILTRO
@@ -1867,9 +2205,9 @@ function aplicarTodosFiltros() {
   exibirTabelaCadastros();
 }
 
-// ORDENAÇÃO - CORRIGIDA COM DEFASAGEM POR STATUS
+// ORDENAÇÃO
 function ordenarCadastros() {
-  const criterio = document.getElementById('ordenacao').value;
+  const criterio = document.getElementById('ordenacaoCadastros').value;
   
   console.log("🎯 Ordenando por:", criterio);
   
@@ -1960,7 +2298,7 @@ function limparTodosFiltros() {
   etapasSelecionados = [];
   fornecedoresSelecionados = [];
   document.getElementById('pesquisaCadastros').value = '';
-  document.getElementById('ordenacao').value = 'razao_social';
+  document.getElementById('ordenacaoCadastros').value = 'razao_social';
   document.getElementById('filtroEtapa').value = '';
   document.getElementById('filtroFornecedor').value = '';
   
@@ -1978,7 +2316,6 @@ function limparTodosFiltros() {
 // FUNÇÕES DOS MODAIS
 function verTodosFornecedores(cnpj) {
   showLoadingPopup('Carregando Fornecedores', 'Buscando informações dos fornecedores...');
-  
   const lojasDoCNPJ = todosCadastros.filter(cadastro => cadastro.cnpj === cnpj);
   exibirModalFornecedores(cnpj, lojasDoCNPJ);
 }
@@ -1990,82 +2327,189 @@ function exibirModalFornecedores(cnpj, lojas) {
     let lojasHTML = '';
     
     if (lojas && lojas.length > 0) {
-        lojasHTML = lojas.map(loja => {
-            // CORRIGIR DATA DA ÚLTIMA ETAPA
-            const ultimaEtapaCorrigida = corrigirHoraFrontend(loja.ultima_etapa);
+        lojasHTML = lojas.map((loja, index) => {
+            const ultimaEtapaCorrigida = loja.ultima_etapa ? 
+                corrigirHoraFrontend(loja.ultima_etapa) : 'N/A';
             
-            // CORREÇÃO: SÓ MOSTRAR DEFASAGEM SE FOR EM ANDAMENTO
-            const mostrarDefasagem = loja.situacao && loja.situacao.toUpperCase() === 'EM ANDAMENTO';
-            
-            const defasagemHTML = mostrarDefasagem ? `
-            <div style="background: #fff3cd; padding: 8px 12px; border-radius: 6px; margin-bottom: 10px; border-left: 3px solid var(--warning);">
-                <strong>⏰ Defasagem:</strong> 
-                <span style="color: ${calcularDefasagem(loja.ultima_etapa).includes('30') || calcularDefasagem(loja.ultima_etapa).includes('31') ? 'var(--danger)' : 'var(--dark)'}; font-weight: 600;">
-                    ${calcularDefasagem(loja.ultima_etapa)}
-                </span>
-                <div style="font-size: 0.8rem; color: var(--gray); margin-top: 4px;">
-                    Última etapa: ${ultimaEtapaCorrigida}
-                </div>
-            </div>
-            ` : `
-            <div style="background: #e9ecef; padding: 8px 12px; border-radius: 6px; margin-bottom: 10px; border-left: 3px solid #6c757d;">
-                <strong>⏰ Defasagem:</strong> 
-                <span style="color: #6c757d; font-weight: 600;">
-                    Sem defasagem
-                </span>
-                <div style="font-size: 0.8rem; color: var(--gray); margin-top: 4px;">
-                    Última etapa: ${ultimaEtapaCorrigida}
-                </div>
-            </div>
-            `;
+            const situacaoClass = getSituacaoClass(loja.situacao);
+            const corBorda = getCorBordaSituacao(loja.situacao);
             
             return `
-            <div class="loja-item" style="border-color: ${getCorBordaSituacao(loja.situacao)};">
-                <div style="display: flex; justify-content: space-between; align-items: flex-start; margin-bottom: 10px;">
-                    <h4 style="margin: 0; color: var(--primary);">🏪 ${loja.fornecedor || 'Fornecedor'}</h4>
-                    <span class="status-badge ${getSituacaoClass(loja.situacao)}">${loja.situacao || 'N/A'}</span>
+            <div class="modal-fornecedor-card" style="border-left: 4px solid ${corBorda}; margin-bottom: 20px; padding: 15px; background: white; border-radius: 8px; box-shadow: 0 2px 8px rgba(0,0,0,0.1);">
+              <!-- Header com número e informações principais -->
+              <div class="modal-fornecedor-header" style="display: flex; align-items: center; justify-content: space-between; margin-bottom: 15px;">
+                <div class="fornecedor-badge" style="background: var(--primary); color: white; padding: 8px 12px; border-radius: 6px; font-weight: 700;">
+                  <span class="fornecedor-indice" style="display: block; text-align: center;">#${index + 1}</span>
+                </div>
+                <div class="fornecedor-title" style="display: flex; align-items: center; gap: 10px; flex: 1; margin-left: 15px;">
+                  <i class="fas fa-store" style="color: var(--primary);"></i>
+                  <div>
+                    <h4 class="modal-fornecedor-nome" style="margin: 0; color: var(--dark); font-size: 1.1rem;">${loja.fornecedor || 'Fornecedor'}</h4>
+                    <div class="fornecedor-subinfo">
+                      <span class="info-tag" style="background: rgba(0,0,0,0.05); padding: 3px 8px; border-radius: 12px; font-size: 0.75rem; color: var(--gray);">
+                        <i class="fas fa-info-circle"></i>
+                        ${loja.situacao || 'N/A'}
+                      </span>
+                    </div>
+                  </div>
+                </div>
+                <span class="status-badge ${situacaoClass}" 
+          style="background: ${corBorda}; color: white; border: 2px solid ${corBorda};">
+      ${loja.situacao || 'N/A'}
+    </span>
+              </div>
+              
+              <!-- Grid de informações principais -->
+              <div class="modal-fornecedor-info-grid" style="display: grid; grid-template-columns: 1fr 1fr; gap: 15px; margin-bottom: 15px;">
+                <div class="modal-info-item" style="display: flex; align-items: center; gap: 10px;">
+                  <div class="info-icon" style="font-size: 1.2rem;">📋</div>
+                  <div class="info-content">
+                    <span class="modal-info-label" style="display: block; font-size: 0.8rem; color: var(--gray); margin-bottom: 2px;">Etapa Atual</span>
+                    <span class="modal-info-value etapa-destaque" style="font-weight: 700; color: var(--primary);">${loja.etapa || 'N/A'}</span>
+                  </div>
                 </div>
                 
-                <div style="display: grid; grid-template-columns: 1fr 1fr; gap: 10px; margin-bottom: 10px;">
-                    <div><strong>📅 Etapa:</strong> ${loja.etapa || 'N/A'}</div>
-                    <div><strong>💰 Tarifa:</strong> ${loja.tarifa || 'N/A'} ${formatarPercentualCorrigido(loja.percentual_tarifa)}</div>
-                    <div><strong>💵 Mensalidade:</strong> ${formatarMoedaParaInput(loja.mensalidade)}</div>
-                    <div><strong>🤝 Adesão:</strong> ${loja.adesao === 'Isento' || loja.adesao === 0 ? 'Isento' : formatarMoedaParaInput(loja.adesao)}</div>
+                <div class="modal-info-item" style="display: flex; align-items: center; gap: 10px;">
+                  <div class="info-icon" style="font-size: 1.2rem;">💰</div>
+                  <div class="info-content">
+                    <span class="modal-info-label" style="display: block; font-size: 0.8rem; color: var(--gray); margin-bottom: 2px;">Configuração</span>
+                    <span class="modal-info-value" style="font-weight: 600;">
+                      ${loja.tarifa || 'N/A'} 
+                      <span class="percentual-destaque" style="background: var(--secondary); color: white; padding: 2px 6px; border-radius: 8px; font-size: 0.8rem; margin-left: 5px;">
+                        ${formatarPercentualCorrigido(loja.percentual_tarifa)}
+                      </span>
+                    </span>
+                  </div>
                 </div>
                 
-                ${defasagemHTML}
-                
-                <div style="margin-top: 10px; display: flex; gap: 10px; flex-wrap: wrap;">
-                    <button class="btn btn-warning btn-sm" onclick="verDetalhesCadastroModal('${loja.id}'); fecharModalFornecedores();">
-                        <i class="fas fa-eye"></i> Detalhes
-                    </button>
+                <div class="modal-info-item" style="display: flex; align-items: center; gap: 10px;">
+                  <div class="info-icon" style="font-size: 1.2rem;">💵</div>
+                  <div class="info-content">
+                    <span class="modal-info-label" style="display: block; font-size: 0.8rem; color: var(--gray); margin-bottom: 2px;">Mensalidade</span>
+                    <span class="modal-info-value valor-destaque" style="font-weight: 700; color: var(--success);">${formatarMoedaParaInput(loja.mensalidade)}</span>
+                  </div>
                 </div>
+                
+                <div class="modal-info-item" style="display: flex; align-items: center; gap: 10px;">
+                  <div class="info-icon" style="font-size: 1.2rem;">🤝</div>
+                  <div class="info-content">
+                    <span class="modal-info-label" style="display: block; font-size: 0.8rem; color: var(--gray); margin-bottom: 2px;">Adesão</span>
+                    <span class="modal-info-value valor-destaque" style="font-weight: 700; color: var(--info);">
+                      ${loja.adesao === 'Isento' || loja.adesao === 0 ? 'Isento' : formatarMoedaParaInput(loja.adesao)}
+                    </span>
+                  </div>
+                </div>
+              </div>
+              
+              <!-- Seção de timeline e acompanhamento -->
+              <div class="timeline-section" style="background: #f8f9fa; padding: 12px; border-radius: 6px; margin-bottom: 15px;">
+                <div class="timeline-item" style="display: flex; align-items: center; gap: 10px; margin-bottom: 8px;">
+                  <div class="timeline-icon" style="font-size: 1.1rem;">⏰</div>
+                  <div class="timeline-content">
+                    <span class="timeline-label" style="display: block; font-size: 0.8rem; color: var(--gray); margin-bottom: 2px;">Última Atualização</span>
+                    <span class="timeline-value" style="font-weight: 600; color: var(--dark);">${ultimaEtapaCorrigida}</span>
+                  </div>
+                </div>
+                
+                <div class="timeline-item" style="display: flex; align-items: center; gap: 10px;">
+                  <div class="timeline-icon" style="font-size: 1.1rem;">📊</div>
+                  <div class="timeline-content">
+                    <span class="timeline-label" style="display: block; font-size: 0.8rem; color: var(--gray); margin-bottom: 2px;">Tempo de Processo</span>
+                    <span class="timeline-value ${loja.situacao && loja.situacao.toUpperCase() === 'EM ANDAMENTO' ? 
+                      (calcularDefasagem(loja.ultima_etapa).includes('30') || calcularDefasagem(loja.ultima_etapa).includes('31') ? 
+                      'defasagem-alerta' : 'defasagem-normal') : 'defasagem-inativa'}" 
+                      style="font-weight: 600; ${loja.situacao && loja.situacao.toUpperCase() === 'EM ANDAMENTO' ? 
+                      (calcularDefasagem(loja.ultima_etapa).includes('30') || calcularDefasagem(loja.ultima_etapa).includes('31') ? 
+                      'color: var(--danger);' : 'color: var(--warning);') : 'color: var(--gray);'}">
+                      ${loja.situacao && loja.situacao.toUpperCase() === 'EM ANDAMENTO' ? 
+                        calcularDefasagem(loja.ultima_etapa) : 'Sem acompanhamento'}
+                    </span>
+                  </div>
+                </div>
+              </div>
+              
+              <!-- Ações -->
+              <div class="modal-actions" style="display: flex; gap: 8px; justify-content: flex-end;">
+                <button class="btn btn-warning btn-sm btn-action" 
+                        onclick="verDetalhesCadastroModal('${loja.id}'); fecharModalFornecedores();"
+                        title="Ver detalhes deste fornecedor"
+                        style="padding: 6px 12px; border: none; border-radius: 4px; background: var(--warning); color: var(--dark); cursor: pointer; font-size: 0.8rem;">
+                  <i class="fas fa-eye"></i> Detalhes
+                </button>
+              </div>
             </div>
-            `;
-        }).join('');
+          `}).join('');
     } else {
         lojasHTML = `
-        <div style="text-align: center; padding: 40px; color: var(--gray);">
-            <i class="fas fa-store-slash" style="font-size: 3rem; margin-bottom: 15px;"></i>
-            <h4>Nenhuma loja encontrada</h4>
-            <p>Não há lojas cadastradas para este CNPJ.</p>
+        <div class="empty-state" style="text-align: center; padding: 40px;">
+          <i class="fas fa-store-slash" style="font-size: 4rem; color: #6c757d; margin-bottom: 20px;"></i>
+          <h4 style="color: #6c757d; margin-bottom: 10px;">Nenhuma loja encontrada</h4>
+          <p style="color: #8a8a8a;">Não há lojas cadastradas para este CNPJ.</p>
         </div>
-        `;
+      `;
     }
 
+    // Função auxiliar para formatar CNPJ
+    const formatarCNPJParaModal = (cnpj) => {
+      if (!cnpj) return 'N/A';
+      const cnpjLimpo = cnpj.replace(/\D/g, '');
+      if (cnpjLimpo.length === 14) {
+        return cnpjLimpo.replace(/^(\d{2})(\d{3})(\d{3})(\d{4})(\d{2})/, '$1.$2.$3/$4-$5');
+      }
+      return cnpj;
+    };
+
+    const cnpjFormatado = formatarCNPJParaModal(cnpj);
+
     content.innerHTML = `
-    <div style="margin-bottom: 15px;">
-        <div style="font-family: monospace; background: #f8f9fa; padding: 10px; border-radius: 6px; text-align: center;">
-            <strong>CNPJ:</strong> ${cnpj}
+      <!-- Header Profissional do CNPJ -->
+      <div class="modal-cnpj-header-profissional">
+        <div class="cnpj-header-content">
+          <div class="cnpj-icon">
+            <i class="fas fa-building"></i>
+          </div>
+          <div class="cnpj-info">
+            <h3 class="cnpj-title">Documento Corporativo</h3>
+            <div class="cnpj-number">${cnpjFormatado}</div>
+            <div class="cnpj-subtitle">Identificação da Empresa</div>
+          </div>
+          <div class="cnpj-badge">
+            <span class="lojas-count">${lojas ? lojas.length : 0}</span>
+            <small>Fornecedores</small>
+          </div>
         </div>
-    </div>
-    
-    <div style="max-height: 60vh; overflow-y: auto;">
-        <h4 style="color: var(--primary); margin-bottom: 15px;">
-            📊 ${lojas ? lojas.length : 0} loja(s) encontrada(s)
-        </h4>
+      </div>
+      
+      <!-- Resumo Executivo -->
+      <div class="modal-resumo-executivo">
+        <div class="resumo-item">
+          <i class="fas fa-chart-bar"></i>
+          <span>Visão Geral dos Fornecedores</span>
+        </div>
+        <div class="resumo-stats">
+          <div class="stat-item">
+            <span class="stat-number">${lojas ? lojas.length : 0}</span>
+            <span class="stat-label">Total</span>
+          </div>
+          <div class="stat-item">
+            <span class="stat-number">${lojas ? lojas.filter(l => l.situacao === 'EM ANDAMENTO').length : 0}</span>
+            <span class="stat-label">Em Andamento</span>
+          </div>
+          <div class="stat-item">
+            <span class="stat-number">${lojas ? lojas.filter(l => l.situacao === 'CADASTRADO').length : 0}</span>
+            <span class="stat-label">Cadastrados</span>
+          </div>
+        </div>
+      </div>
+      
+      <!-- Lista de Fornecedores -->
+      <div class="modal-content-scroll">
+        <div class="fornecedores-list-header">
+          <h4><i class="fas fa-list-ul"></i> Fornecedores Vinculados</h4>
+          <span class="subtitle">Lista completa de integrações</span>
+        </div>
         ${lojasHTML}
-    </div>
+      </div>
     `;
     
     modal.style.display = 'flex';
@@ -2104,10 +2548,7 @@ function exibirModalDetalhesCompleto(dados) {
     const adesaoFormatada = dados.adesao === 'Isento' || dados.adesao === 0 ? 'Isento' : formatarMoedaParaInput(dados.adesao);
     
     // CORRIGIR DATAS PARA EXIBIÇÃO
-    const ultimaEtapaCorrigida = corrigirHoraFrontend(dados.ultima_etapa);
-    const ativacaoCorrigida = dados.ativacao ? corrigirHoraFrontend(dados.ativacao) : 'N/A';
-    const contratoEnviadoCorrigido = dados.contrato_enviado ? corrigirHoraFrontend(dados.contrato_enviado) : 'N/A';
-    const contratoAssinadoCorrigido = dados.contrato_assinado ? corrigirHoraFrontend(dados.contrato_assinado) : 'N/A';
+    const ultimaEtapaCorrigida = dados.ultima_etapa ? corrigirHoraFrontend(dados.ultima_etapa) : 'N/A';
 
     // CORREÇÃO: SÓ MOSTRAR DEFASAGEM SE FOR EM ANDAMENTO
     const mostrarDefasagem = dados.situacao && dados.situacao.toUpperCase() === 'EM ANDAMENTO';
@@ -2151,15 +2592,15 @@ function exibirModalDetalhesCompleto(dados) {
     content.innerHTML = `
     <div class="detalhes-grid">
         <!-- SEÇÃO: INFORMAÇÕES PRINCIPAIS -->
-        <div class="detalhe-item" style="grid-column: 1 / -1; background: #f0f8ff; border-left: 4px solid #7E3E9A;">
-            <span class="detalhe-label" style="font-size: 1.1em; color: #7E3E9A;">
+        <div class="detalhe-item" style="grid-column: 1 / -1; background: #f0f8ff; border-left: 4px solid #E61B72;">
+            <span class="detalhe-label" style="font-size: 1.1em; color: #E61B72;">
                 <i class="fas fa-info-circle"></i> 📋 INFORMAÇÕES PRINCIPAIS
             </span>
         </div>
         
         <div class="detalhe-item">
             <span class="detalhe-label">🏢 Razão Social</span>
-            <div class="detalhe-valor" style="font-weight: bold; color: #7E3E9A;">${dados.razao_social || 'N/A'}</div>
+            <div class="detalhe-valor" style="font-weight: bold; color: #E61B72;">${dados.razao_social || 'N/A'}</div>
         </div>
         
         <div class="detalhe-item">
@@ -2213,18 +2654,18 @@ function exibirModalDetalhesCompleto(dados) {
         
         <div class="detalhe-item">
             <span class="detalhe-label">📄 Contrato Enviado</span>
-            <div class="detalhe-valor">${contratoEnviadoCorrigido}</div>
+            <div class="detalhe-valor">${dados.contrato_enviado || 'N/A'}</div>
         </div>
         
         <div class="detalhe-item">
             <span class="detalhe-label">✍️ Contrato Assinado</span>
-            <div class="detalhe-valor">${contratoAssinadoCorrigido}</div>
+            <div class="detalhe-valor">${dados.contrato_assinado || 'N/A'}</div>
         </div>
         
         <div class="detalhe-item">
-    <span class="detalhe-label">🚀 Data Ativação</span>
-    <div class="detalhe-valor">${formatarDataAtivacao(dados.ativacao)}</div>
-</div>
+            <span class="detalhe-label">🚀 Data Ativação</span>
+            <div class="detalhe-valor">${formatarDataAtivacao(dados.ativacao)}</div>
+        </div>
         
         <div class="detalhe-item">
             <span class="detalhe-label">📅 Última Etapa</span>
@@ -2289,19 +2730,17 @@ function fecharModalDetalhes() {
   modal.style.display = 'none';
 }
 
+// FUNÇÕES AUXILIARES
 function corrigirHoraFrontend(dataHoraString) {
     if (!dataHoraString || !dataHoraString.includes('/') || !dataHoraString.includes(':')) {
         return dataHoraString;
     }
-    
-    console.log("🕒 Data recebida do backend:", dataHoraString);
     
     try {
         const [dataPart, horaPart] = dataHoraString.split(' ');
         const [dia, mes, ano] = dataPart.split('/');
         const [hora, minuto, segundo] = horaPart.split(':');
         
-        // CORREÇÃO: Criar data e SUBTRAIR 4 HORAS
         const dataOriginal = new Date(
             parseInt(ano),
             parseInt(mes) - 1,
@@ -2311,10 +2750,8 @@ function corrigirHoraFrontend(dataHoraString) {
             parseInt(segundo)
         );
         
-        // Subtrair 4 horas (4 * 60 * 60 * 1000 milissegundos)
         const dataCorrigida = new Date(dataOriginal.getTime() - (4 * 60 * 60 * 1000));
         
-        // Formatar de volta para string
         const diaCorrigido = String(dataCorrigida.getDate()).padStart(2, '0');
         const mesCorrigido = String(dataCorrigida.getMonth() + 1).padStart(2, '0');
         const anoCorrigido = dataCorrigida.getFullYear();
@@ -2324,21 +2761,17 @@ function corrigirHoraFrontend(dataHoraString) {
         
         const resultado = `${diaCorrigido}/${mesCorrigido}/${anoCorrigido} ${horaCorrigida}:${minutoCorrigido}:${segundoCorrigido}`;
         
-        console.log("✅ Data corrigida (-4h):", resultado);
         return resultado;
         
     } catch (error) {
-        console.error("❌ Erro ao corrigir data:", error);
         return dataHoraString;
     }
 }
 
-// NOVA FUNÇÃO: Formatar data de ativação (sem hora)
 function formatarDataAtivacao(data) {
     if (!data) return 'N/A';
     
     try {
-        // Se já está no formato brasileiro, retornar como está
         if (typeof data === 'string' && data.includes('/')) {
             const partes = data.split('/');
             if (partes.length === 3) {
@@ -2347,13 +2780,11 @@ function formatarDataAtivacao(data) {
             return data;
         }
         
-        // Se está no formato yyyy-MM-dd (do input date)
         if (typeof data === 'string' && data.includes('-')) {
             const [ano, mes, dia] = data.split('-');
             return `${dia}/${mes}/${ano}`;
         }
         
-        // Para outros casos, tentar converter
         const dateObj = new Date(data);
         if (!isNaN(dateObj.getTime())) {
             const dia = String(dateObj.getDate()).padStart(2, '0');
@@ -2364,17 +2795,13 @@ function formatarDataAtivacao(data) {
         
         return String(data);
     } catch (error) {
-        console.error("❌ Erro ao formatar data ativação:", error);
         return String(data || 'N/A');
     }
 }
 
-// CORREÇÃO DEFINITIVA DA DEFASAGEM
 function calcularDefasagem(dataUltimaEtapa) {
-    // PRIMEIRO aplicar a correção de UTC para GMT-3
     const dataCorrigida = corrigirHoraFrontend(dataUltimaEtapa);
     
-    // AGORA calcular com a data corrigida
     if (!dataCorrigida || dataCorrigida === 'N/A' || dataCorrigida === '' || dataCorrigida === 'Data inválida') {
         return 'N/A';
     }
@@ -2405,8 +2832,6 @@ function calcularDefasagem(dataUltimaEtapa) {
         }
         
         const hoje = new Date();
-        
-        // CORREÇÃO: Zerar horas para comparar apenas datas
         const hojeZerado = new Date(hoje.getFullYear(), hoje.getMonth(), hoje.getDate());
         const dataEtapaZerada = new Date(dataEtapa.getFullYear(), dataEtapa.getMonth(), dataEtapa.getDate());
         
@@ -2425,26 +2850,24 @@ function calcularDefasagem(dataUltimaEtapa) {
     }
 }
 
-// CORREÇÃO DA FUNÇÃO calcularDiasDefasagem
 function calcularDiasDefasagem(dataUltimaEtapa) {
-    const defasagem = calcularDefasagem(dataUltimaEtapa);
-    
-    if (defasagem === 'N/A' || defasagem === 'Erro' || defasagem === 'Futuro' || defasagem === 'Data inválida' || defasagem === 'Erro no cálculo') {
-        return 9999;
-    }
-    if (defasagem === 'Hoje') return 0;
-    if (defasagem === '1 dia') return 1;
-    
-    // Extrair número de dias de strings como "5 dias"
-    const match = defasagem.match(/(\d+)\s*dias?/);
-    if (match && match[1]) {
-        return parseInt(match[1]);
-    }
-    
-    const dias = parseInt(defasagem);
-    if (isNaN(dias)) return 9999;
-    
-    return dias;
+  const defasagem = calcularDefasagem(dataUltimaEtapa);
+  
+  if (defasagem === 'N/A' || defasagem === 'Erro' || defasagem === 'Futuro' || defasagem === 'Data inválida' || defasagem === 'Erro no cálculo') {
+    return 9999;
+  }
+  if (defasagem === 'Hoje') return 0;
+  if (defasagem === '1 dia') return 1;
+  
+  const match = defasagem.match(/(\d+)\s*dias?/);
+  if (match && match[1]) {
+    return parseInt(match[1]);
+  }
+  
+  const dias = parseInt(defasagem);
+  if (isNaN(dias)) return 9999;
+  
+  return dias;
 }
 
 function getDefasagemClass(defasagem) {
@@ -2486,7 +2909,6 @@ function getCorBordaSituacao(situacao) {
   else return 'var(--border)';
 }
 
-// FUNÇÃO 1: Para o modal de fornecedores (agrupado)
 function formatarPercentualCorrigido(percentual) {
     if (!percentual && percentual !== 0) return 'N/A';
     
@@ -2509,7 +2931,6 @@ function formatarPercentualCorrigido(percentual) {
     }
 }
 
-// FUNÇÃO 2: Para o modal de detalhes
 function formatarPercentualParaExibicao(percentual) {
     if (!percentual && percentual !== 0) return '';
     
@@ -2536,6 +2957,30 @@ function formatarMoedaParaInput(valor) {
   if (!valor) return 'R$ 0,00';
   const numero = typeof valor === 'number' ? valor : parseFloat(valor);
   return 'R$ ' + numero.toLocaleString('pt-BR', { minimumFractionDigits: 2 });
+}
+
+function calcularDefasagemParaOrdenacao(lojasDoCNPJ) {
+  if (!lojasDoCNPJ || lojasDoCNPJ.length === 0) {
+    return 0;
+  }
+  
+  const temLojaEmAndamento = lojasDoCNPJ.some(loja => 
+    loja.situacao && loja.situacao.toUpperCase() === 'EM ANDAMENTO'
+  );
+  
+  if (!temLojaEmAndamento) {
+    return 0;
+  }
+  
+  const defasagemInfo = calcularDefasagemPorCNPJ(lojasDoCNPJ);
+  
+  return defasagemInfo.dias < 9999 ? defasagemInfo.dias : 0;
+}
+
+function recarregarCadastros() {
+  showLoadingPopup('Atualizando', 'Recarregando dados...');
+  showLoading();
+  carregarCadastros();
 }
 
 function atualizarContador() {
