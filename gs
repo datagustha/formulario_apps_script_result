@@ -509,7 +509,7 @@ function aplicarAlteracoesATodos(cnpj, dados, camposSelecionados) {
         if (!validacaoEtapa.valida) {
           return { 
             success: false, 
-            message: `❌ OPERAÇÃO BLOQUEADA!\n\nPara situações "EM ANDAMENTO" a etapa é obrigatória.\n\nA etapa atual no formulário ("${etapaParaValidar}") não é válida.\n\nCorrija a etapa para uma das opções válidas:\n\n• PENDENTE FORNECEDOR(ES)\n• PENDENTE SIM\n• PENDENTE WL\n• PENDENTE CLÍNICA/LOJA` 
+            message: `❌ OPERAÇÃO BLOQUEADA!\n\nPara situações "EM ANDAMENTO" a etapa é obrigatória.\n\nA etapa atual no formulário ("${etapaParaValidar}") não é válida.\n\nCorrija a etapa para uma das opções válidas:\n\n• PENDENTE FORNECEDOR(ES)\n• PENDENTE SIM\n• PENDENTE RETORNO EXTERNO`
           };
         }
         console.log("✅ Etapa atual do formulário é válida para EM ANDAMENTO");
@@ -561,7 +561,7 @@ function aplicarAlteracoesATodos(cnpj, dados, camposSelecionados) {
     for (const registro of registrosParaAtualizar) {
       const etapaExistente = registro.dadosOriginais[etapaIndex]?.toString().trim() || '';
       if (etapaExistente) {
-        const etapasValidas = ["PENDENTE FORNECEDOR(ES)", "PENDENTE SIM", "PENDENTE WL", "PENDENTE CLÍNICA/LOJA"];
+        const etapasValidas = ["PENDENTE FORNECEDOR(ES)", "PENDENTE SIM", "PENDENTE RETORNO EXTERNO"];
         const etapaNormalizada = normalizarTexto(etapaExistente);
         
         if (!etapasValidas.includes(etapaNormalizada)) {
@@ -681,30 +681,29 @@ function obterValorParaAplicarTodos(campo, dados) {
   }
 }
 
-// 🔥 FUNÇÃO AUXILIAR PARA VALIDAR ETAPAS - VERSÃO COM SITUAÇÃO
 function validarEtapa(etapa, situacao) {
-  // 🔥 SE NÃO FOR "EM ANDAMENTO", ETAPA NÃO É OBRIGATÓRIA
+  // 🔥 AGORA VALIDAR PARA "EM ANDAMENTO" E "NOVO REGISTRO"
   const situacaoNormalizada = normalizarTexto(situacao || '');
-  const naoEhEmAndamento = situacaoNormalizada !== 'EM ANDAMENTO';
+  const precisaValidarEtapa = situacaoNormalizada === 'EM ANDAMENTO' || situacaoNormalizada === 'NOVO REGISTRO';
   
-  if (naoEhEmAndamento) {
-    console.log("✅ Situação não é EM ANDAMENTO - etapa não é obrigatória");
+  if (!precisaValidarEtapa) {
+    console.log("✅ Situação não requer validação de etapa");
     return { valida: true, etapa: etapa ? normalizarTexto(etapa) : '' };
   }
   
-  // 🔥 SE É "EM ANDAMENTO", ENTÃO ETAPA É OBRIGATÓRIA
+  // 🔥 SE É "EM ANDAMENTO" OU "NOVO REGISTRO", ENTÃO ETAPA É OBRIGATÓRIA
   if (!etapa || etapa.trim() === '') {
     return { 
       valida: false, 
-      mensagem: '❌ Para situações "EM ANDAMENTO" o campo Etapa é obrigatório!' 
+      mensagem: `❌ Para situações "${situacao}" o campo Etapa é obrigatório!` 
     };
   }
   
+  // 🔥 NOVAS ETAPAS VÁLIDAS
   const etapasValidas = [
     "PENDENTE FORNECEDOR(ES)",
     "PENDENTE SIM", 
-    "PENDENTE WL",
-    "PENDENTE CLÍNICA/LOJA"
+    "PENDENTE RETORNO EXTERNO"
   ];
   
   const etapaNormalizada = normalizarTexto(etapa);
@@ -713,13 +712,13 @@ function validarEtapa(etapa, situacao) {
   const etapasBloqueadas = ["DESISTIU", "REJEITADO", "CADASTRADO", "NOVO REGISTRO", "EM ANDAMENTO", "DESCREDENCIADO"];
   
   if (etapasBloqueadas.includes(etapaNormalizada)) {
-    const mensagemErro = `❌ ETAPA NÃO PERMITIDA!\n\nA etapa "${etapa}" é uma SITUAÇÃO, não uma etapa do processo.\n\n📋 ETAPAS VÁLIDAS (do processo):\n• PENDENTE FORNECEDOR(ES)\n• PENDENTE SIM\n• PENDENTE WL\n• PENDENTE CLÍNICA/LOJA\n\n💡 Use o campo "Situação" para: ${etapa}`;
+    const mensagemErro = `❌ ETAPA NÃO PERMITIDA!\n\nA etapa "${etapa}" é uma SITUAÇÃO, não uma etapa do processo.\n\n📋 ETAPAS VÁLIDAS (do processo):\n• PENDENTE FORNECEDOR(ES)\n• PENDENTE SIM\n• PENDENTE RETORNO EXTERNO\n\n💡 Use o campo "Situação" para: ${etapa}`;
     
     return { valida: false, mensagem: mensagemErro };
   }
   
   if (!etapasValidas.includes(etapaNormalizada)) {
-    const mensagemErro = `❌ ETAPA INVÁLIDA!\n\nA etapa "${etapa}" não é válida.\n\n📋 ETAPAS VÁLIDAS:\n• PENDENTE FORNECEDOR(ES)\n• PENDENTE SIM\n• PENDENTE WL\n• PENDENTE CLÍNICA/LOJA\n\nSelecione uma das etapas acima para continuar.`;
+    const mensagemErro = `❌ ETAPA INVÁLIDA!\n\nA etapa "${etapa}" não é válida.\n\n📋 ETAPAS VÁLIDAS:\n• PENDENTE FORNECEDOR(ES)\n• PENDENTE SIM\n• PENDENTE RETORNO EXTERNO\n\nSelecione uma das etapas acima para continuar.`;
     
     return { valida: false, mensagem: mensagemErro };
   }
