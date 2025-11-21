@@ -427,8 +427,6 @@
       text-align: center;
       display: inline-block;
       min-width: 80px;
-      border: 2px solid;
-      box-shadow: 0 2px 6px rgba(0,0,0,0.15);
       text-transform: uppercase;
       letter-spacing: 0.5px;
     }
@@ -778,40 +776,38 @@
       height: 100% !important;
     }
 
-    /* STATUS BADGES */
+    /* STATUS BADGES - REMOVIDAS BORDAS */
     .situacao-novo-registro {
       background-color: #bfe1f6 !important;
       color: #0c5aa3 !important;
-      border: 1px solid #8bc9f0 !important;
     }
     
     .situacao-cadastrado {
-      background: #D1E7DD;
-      color: #0F5132;
+      background: #D1E7DD !important;
+      color: #0F5132 !important;
     }
 
     .situacao-andamento {
-      background: #FFF3CD;
-      color: #856404;
+      background: #FFF3CD !important;
+      color: #856404 !important;
     }
     
     .situacao-rejeitado {
-      background: #E2E3E5;
-      color: #383D41;
+      background: #E2E3E5 !important;
+      color: #383D41 !important;
     }
     
     .situacao-descredenciado {
-      background: #F8D7DA;
-      color: #721C24;
+      background: #F8D7DA !important;
+      color: #721C24 !important;
     }
 
     .situacao-desistiu {
       background: #e6cff2 !important;
       color: #4a1e6b !important;
-      border: 1px solid #d4b5e6 !important;
     }
 
-    /* MODAL STYLES */
+    /* MODAL STYLES - REMOVIDAS BORDAS */
     .modal-overlay {
       display: none;
       position: fixed;
@@ -835,7 +831,7 @@
       max-height: 80vh;
       overflow-y: auto;
       box-shadow: 0 15px 50px rgba(0,0,0,0.25);
-      border: 3px solid var(--primary); /* VERDE RESULT */
+      /* REMOVIDA BORDA: border: 3px solid var(--primary); */
       position: relative;
     }
 
@@ -1104,15 +1100,13 @@
       color: var(--success) !important;
     }
 
-    /* STATUS BADGES PARA O MODAL */
+    /* STATUS BADGES PARA O MODAL - REMOVIDAS BORDAS */
     .modal-fornecedor-card .status-badge {
       padding: 8px 14px;
       border-radius: 20px;
       font-size: 0.8rem;
       font-weight: 700;
       min-width: 85px;
-      border: 2px solid;
-      box-shadow: 0 3px 8px rgba(0,0,0,0.15);
       text-transform: uppercase;
       letter-spacing: 0.5px;
       text-align: center;
@@ -1121,37 +1115,31 @@
     .modal-fornecedor-card .situacao-novo-registro {
       background: #bfe1f6 !important;
       color: #0c5aa3 !important;
-      border-color: #bfe1f6 !important;
     }
 
     .modal-fornecedor-card .situacao-cadastrado {
       background: #28a745 !important;
       color: white !important;
-      border-color: #28a745 !important;
     }
 
     .modal-fornecedor-card .situacao-andamento {
       background: #ffc107 !important;
       color: #000000 !important;
-      border-color: #ffc107 !important;
     }
 
     .modal-fornecedor-card .situacao-rejeitado {
       background: #6c757d !important;
       color: white !important;
-      border-color: #6c757d !important;
     }
 
     .modal-fornecedor-card .situacao-descredenciado {
       background: #dc3545 !important;
       color: white !important;
-      border-color: #dc3545 !important;
     }
 
     .modal-fornecedor-card .situacao-desistiu {
       background: #e6cff2 !important;
       color: #4a1e6b !important;
-      border-color: #e6cff2 !important;
     }
 
     @media (max-width: 768px) {
@@ -1449,10 +1437,21 @@ const fornecedoresDisponiveis = [
   "AGIL", "BC", "PARCELEX", "AGORACRED", "AFINZ"
 ].sort();
 
-// INICIALIZAÇÃO
+// INICIALIZAÇÃO - CARREGAR FILTROS SALVOS SE EXISTIREM
 document.addEventListener('DOMContentLoaded', function() {
   console.log('Sistema de Visualização - Carregando dados...');
   showLoadingPopup('Carregando Lojas', 'Aguarde enquanto buscamos os dados...');
+  
+  // VERIFICAR SE EXISTEM FILTROS SALVOS
+  try {
+    const filtrosSalvos = JSON.parse(localStorage.getItem('filtrosSalvos'));
+    if (filtrosSalvos) {
+      console.log("📁 Filtros salvos encontrados, restaurando...");
+    }
+  } catch (e) {
+    console.log("📁 Nenhum filtro salvo encontrado");
+  }
+  
   carregarCadastros();
   configurarEventosFiltro();
 });
@@ -1469,9 +1468,19 @@ function showLoadingPopup(texto, subtexto) {
   popup.style.display = 'flex';
 }
 
+
 function hideLoadingPopup() {
   const popup = document.getElementById('loadingPopup');
+  console.log("🔒 Fechando popup de loading...");
   popup.style.display = 'none';
+  
+  // FORÇAR FECHAMENTO CASO PRECISE
+  setTimeout(() => {
+    if (popup.style.display !== 'none') {
+      popup.style.display = 'none';
+      console.log("🔒 Popup forçado a fechar");
+    }
+  }, 1000);
 }
 
 // CONFIGURAR EVENTOS DOS FILTROS
@@ -1779,14 +1788,24 @@ function aplicarFiltroFornecedores() {
   aplicarTodosFiltros();
 }
 
-// CARREGAR CADASTROS
 function carregarCadastros() {
   console.log("🎯 Carregando cadastros...");
   
   showLoading();
-  document.getElementById('filtrosContainer').style.display = 'none';
   document.getElementById('tableContainer').style.display = 'none';
-  limparTodosFiltros();
+
+  // SALVAR FILTROS ATUAIS ANTES DE RECARREGAR
+  const filtrosSalvos = {
+    situacaoAtiva: situacaoAtiva,
+    filtrosAtivos: {...filtrosAtivos},
+    etapasSelecionados: [...etapasSelecionados],
+    fornecedoresSelecionados: [...fornecedoresSelecionados],
+    pesquisa: document.getElementById('pesquisaCadastros').value,
+    ordenacao: document.getElementById('ordenacaoCadastros').value
+  };
+
+  // SALVAR NO localStorage PARA GARANTIR PERSISTÊNCIA
+  localStorage.setItem('filtrosSalvos', JSON.stringify(filtrosSalvos));
 
   google.script.run
     .withSuccessHandler(function(cadastros) {
@@ -1805,7 +1824,10 @@ function carregarCadastros() {
         todosCadastros = cadastrosOrdenados;
         cadastrosFiltrados = [...cadastrosOrdenados];
         
-        exibirTabelaCadastros();
+        // RESTAURAR FILTROS APÓS CARREGAR
+        setTimeout(() => {
+          restaurarFiltros(filtrosSalvos);
+        }, 100);
         
         document.getElementById('filtrosContainer').style.display = 'flex';
         
@@ -1829,8 +1851,76 @@ function carregarCadastros() {
       hideLoadingPopup();
       console.error("❌ Erro ao carregar cadastros:", error);
       showMessage('error', '❌ Erro ao carregar cadastros: ' + error.message);
+      
+      // TENTAR RESTAURAR FILTROS MESMO COM ERRO
+      try {
+        const filtrosSalvos = JSON.parse(localStorage.getItem('filtrosSalvos') || '{}');
+        restaurarFiltros(filtrosSalvos);
+      } catch (e) {
+        console.error("Erro ao restaurar filtros:", e);
+      }
     })
     .buscarTodosCadastrosComWaitlabel(waitlabelAtual);
+}
+
+function restaurarFiltros(filtrosSalvos) {
+  if (!filtrosSalvos) {
+    // TENTAR RECUPERAR DO localStorage SE NÃO FOR PASSADO
+    try {
+      filtrosSalvos = JSON.parse(localStorage.getItem('filtrosSalvos') || '{}');
+    } catch (e) {
+      console.error("Erro ao recuperar filtros do localStorage:", e);
+      return;
+    }
+  }
+  
+  console.log("🔄 Restaurando filtros:", filtrosSalvos);
+  
+  // Restaurar variáveis globais
+  situacaoAtiva = filtrosSalvos.situacaoAtiva || 'all';
+  filtrosAtivos = {...(filtrosSalvos.filtrosAtivos || {})};
+  etapasSelecionados = [...(filtrosSalvos.etapasSelecionados || [])];
+  fornecedoresSelecionados = [...(filtrosSalvos.fornecedoresSelecionados || [])];
+  
+  // Restaurar elementos da interface
+  if (document.getElementById('pesquisaCadastros')) {
+    document.getElementById('pesquisaCadastros').value = filtrosSalvos.pesquisa || '';
+  }
+  
+  if (document.getElementById('ordenacaoCadastros')) {
+    document.getElementById('ordenacaoCadastros').value = filtrosSalvos.ordenacao || 'razao_social';
+  }
+  
+  // Atualizar botões de situação
+  document.querySelectorAll('.filtro-btn').forEach(btn => {
+    btn.classList.remove('active');
+  });
+  
+  const btnAtivo = document.querySelector(`.filtro-btn[data-situacao="${situacaoAtiva}"]`);
+  if (btnAtivo) {
+    btnAtivo.classList.add('active');
+  } else {
+    // Fallback para "Todos"
+    const btnTodos = document.querySelector('.filtro-btn[data-situacao="all"]');
+    if (btnTodos) {
+      btnTodos.classList.add('active');
+      situacaoAtiva = 'all';
+    }
+  }
+  
+  // Atualizar tags selecionadas
+  atualizarEtapasSelecionados();
+  atualizarFornecedoresSelecionados();
+  
+  // Reaplicar os filtros
+  aplicarTodosFiltros();
+  
+  // Reordenar se necessário
+  if (filtrosSalvos.ordenacao) {
+    setTimeout(() => {
+      ordenarCadastros();
+    }, 150);
+  }
 }
 
 // EXIBIR TABELA AGRUPADA
@@ -2310,13 +2400,15 @@ function limparTodosFiltros() {
   aplicarTodosFiltros();
 }
 
-// FUNÇÕES DOS MODAIS
 function verTodosFornecedores(cnpj) {
   showLoadingPopup('Carregando Fornecedores', 'Buscando informações dos fornecedores...');
-  const lojasDoCNPJ = todosCadastros.filter(cadastro => cadastro.cnpj === cnpj);
-  exibirModalFornecedores(cnpj, lojasDoCNPJ);
+  
+  setTimeout(() => {
+    const lojasDoCNPJ = todosCadastros.filter(cadastro => cadastro.cnpj === cnpj);
+    exibirModalFornecedores(cnpj, lojasDoCNPJ);
+    hideLoadingPopup();
+  }, 500);
 }
-
 function exibirModalFornecedores(cnpj, lojas) {
     const modal = document.getElementById('modalFornecedores');
     const content = document.getElementById('modalFornecedoresContent');
@@ -2351,7 +2443,7 @@ function exibirModalFornecedores(cnpj, lojas) {
                   </div>
                 </div>
                 <span class="status-badge ${situacaoClass}" 
-          style="background: ${corBorda}; color: white; border: 2px solid ${corBorda};">
+          style="background: ${corBorda}; color: white;">
       ${loja.situacao || 'N/A'}
     </span>
               </div>
@@ -2424,6 +2516,21 @@ function exibirModalFornecedores(cnpj, lojas) {
                   </div>
                 </div>
               </div>
+
+              <!-- SEÇÃO DE OBSERVAÇÕES NO FINAL CORRETO - DEPOIS DO TEMPO DE PROCESSO -->
+              ${loja.observacoes ? `
+              <div class="observacoes-section" style="background: #fff3cd; border-left: 4px solid #ffc107; padding: 12px; border-radius: 6px; margin-bottom: 15px;">
+                <div class="observacao-item" style="display: flex; align-items: flex-start; gap: 10px;">
+                  <div class="observacao-icon" style="font-size: 1.1rem; color: #856404;">📝</div>
+                  <div class="observacao-content" style="flex: 1;">
+                    <span class="observacao-label" style="display: block; font-size: 0.8rem; color: #856404; font-weight: 600; margin-bottom: 4px;">Observações</span>
+                    <span class="observacao-value" style="font-size: 0.85rem; color: #856404; line-height: 1.4;">
+                      ${loja.observacoes}
+                    </span>
+                  </div>
+                </div>
+              </div>
+              ` : ''}
               
               <!-- Ações -->
               <div class="modal-actions" style="display: flex; gap: 8px; justify-content: flex-end;">
@@ -2457,6 +2564,8 @@ function exibirModalFornecedores(cnpj, lojas) {
     };
 
     const cnpjFormatado = formatarCNPJParaModal(cnpj);
+    const primeiraLoja = lojas && lojas.length > 0 ? lojas[0] : null;
+    const razaoSocial = primeiraLoja ? primeiraLoja.razao_social : 'N/A';
 
     content.innerHTML = `
       <!-- Header Profissional do CNPJ -->
@@ -2466,9 +2575,9 @@ function exibirModalFornecedores(cnpj, lojas) {
             <i class="fas fa-building"></i>
           </div>
           <div class="cnpj-info">
-            <h3 class="cnpj-title">Documento Corporativo</h3>
+            <h3 class="cnpj-title">CNPJ</h3>
             <div class="cnpj-number">${cnpjFormatado}</div>
-            <div class="cnpj-subtitle">Identificação da Empresa</div>
+            <div class="cnpj-subtitle">${razaoSocial}</div>
           </div>
           <div class="cnpj-badge">
             <span class="lojas-count">${lojas ? lojas.length : 0}</span>
@@ -2477,27 +2586,7 @@ function exibirModalFornecedores(cnpj, lojas) {
         </div>
       </div>
       
-      <!-- Resumo Executivo -->
-      <div class="modal-resumo-executivo">
-        <div class="resumo-item">
-          <i class="fas fa-chart-bar"></i>
-          <span>Visão Geral dos Fornecedores</span>
-        </div>
-        <div class="resumo-stats">
-          <div class="stat-item">
-            <span class="stat-number">${lojas ? lojas.length : 0}</span>
-            <span class="stat-label">Total</span>
-          </div>
-          <div class="stat-item">
-            <span class="stat-number">${lojas ? lojas.filter(l => l.situacao === 'EM ANDAMENTO').length : 0}</span>
-            <span class="stat-label">Em Andamento</span>
-          </div>
-          <div class="stat-item">
-            <span class="stat-number">${lojas ? lojas.filter(l => l.situacao === 'CADASTRADO').length : 0}</span>
-            <span class="stat-label">Cadastrados</span>
-          </div>
-        </div>
-      </div>
+
       
       <!-- Lista de Fornecedores -->
       <div class="modal-content-scroll">
@@ -2974,10 +3063,57 @@ function calcularDefasagemParaOrdenacao(lojasDoCNPJ) {
   return defasagemInfo.dias < 9999 ? defasagemInfo.dias : 0;
 }
 
+
 function recarregarCadastros() {
-  showLoadingPopup('Atualizando', 'Recarregando dados...');
+  console.log("🔄 Recarregando cadastros mantendo filtros...");
+  showLoadingPopup('Atualizando Dados', 'Recarregando informações...');
   showLoading();
-  carregarCadastros();
+  
+  // SALVAR FILTROS ATUAIS ANTES DE RECARREGAR
+  const filtrosSalvos = {
+    situacaoAtiva: situacaoAtiva,
+    filtrosAtivos: {...filtrosAtivos},
+    etapasSelecionados: [...etapasSelecionados],
+    fornecedoresSelecionados: [...fornecedoresSelecionados],
+    pesquisa: document.getElementById('pesquisaCadastros').value,
+    ordenacao: document.getElementById('ordenacaoCadastros').value
+  };
+  
+  localStorage.setItem('filtrosSalvos', JSON.stringify(filtrosSalvos));
+  
+  google.script.run
+    .withSuccessHandler(function(cadastros) {
+      hideLoading();
+      hideLoadingPopup();
+      
+      if (cadastros && cadastros.length > 0) {
+        todosCadastros = cadastros;
+        cadastrosFiltrados = [...cadastros];
+        
+        // RESTAURAR FILTROS APÓS CARREGAR
+        setTimeout(() => {
+          restaurarFiltros(filtrosSalvos);
+        }, 100);
+        
+        showMessage('success', `✅ Dados atualizados! ${cadastros.length} cadastros carregados.`);
+      } else {
+        showMessage('info', '📝 Nenhum cadastro encontrado após atualização.');
+      }
+    })
+    .withFailureHandler(function(error) {
+      hideLoading();
+      hideLoadingPopup();
+      console.error("❌ Erro ao recarregar:", error);
+      showMessage('error', '❌ Erro ao atualizar: ' + error.message);
+      
+      // TENTAR RESTAURAR FILTROS MESMO COM ERRO
+      try {
+        restaurarFiltros(filtrosSalvos);
+      } catch (e) {
+        console.error("Erro ao restaurar filtros:", e);
+      }
+    })
+    .buscarTodosCadastrosComWaitlabel(waitlabelAtual);
 }
 
 function atualizarContador() {
