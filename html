@@ -389,18 +389,18 @@
     }
     
     .status-badge {
-      padding: 6px 12px;
-      border-radius: 12px;
-      font-size: 0.75rem;
-      font-weight: 700;
-      text-align: center;
-      display: inline-block;
-      min-width: 80px;
-      border: 2px solid;
-      box-shadow: 0 2px 6px rgba(0,0,0,0.15);
-      text-transform: uppercase;
-      letter-spacing: 0.5px;
-    }
+  padding: 6px 12px;
+  border-radius: 12px;
+  font-size: 0.75rem;
+  font-weight: 700;
+  text-align: center;
+  display: inline-block;
+  min-width: 80px;
+  /* REMOVER ESTA LINHA: border: 2px solid; */
+  /* REMOVER ESTA LINHA: box-shadow: 0 2px 6px rgba(0,0,0,0.15); */
+  text-transform: uppercase;
+  letter-spacing: 0.5px;
+}
     
     .acoes-cell {
       display: flex;
@@ -469,37 +469,37 @@
       font-weight: 600;
     }
     
-    .situacao-cadastrado {
-      background: #D1E7DD;
-      color: #0F5132;
-    }
-
     .situacao-novo-registro {
-      background-color: #bfe1f6 !important;
-      color: #0c5aa3 !important;
-      border: 1px solid #8bc9f0 !important;
-    }
-    
-    .situacao-andamento {
-      background: #FFF3CD;
-      color: #856404;
-    }
-    
-    .situacao-rejeitado {
-      background: #E2E3E5;
-      color: #383D41;
-    }
-    
-    .situacao-descredenciado {
-      background: #F8D7DA;
-      color: #721C24;
-    }
+  background: #bfe1f6 !important;
+  color: #0c5aa3 !important;
+  /* REMOVER: border: 1px solid #8bc9f0 !important; */
+}
 
-    .situacao-desistiu {
-      background: #e6cff2 !important;
-      color: #4a1e6b !important;
-      border: 1px solid #d4b5e6 !important;
-    }
+.situacao-cadastrado {
+  background: #D1E7DD !important;
+  color: #0F5132 !important;
+}
+
+.situacao-andamento {
+  background: #FFF3CD !important;
+  color: #856404 !important;
+}
+
+.situacao-rejeitado {
+  background: #E2E3E5 !important;
+  color: #383D41 !important;
+}
+
+.situacao-descredenciado {
+  background: #F8D7DA !important;
+  color: #721C24 !important;
+}
+
+.situacao-desistiu {
+  background: #e6cff2 !important;
+  color: #4a1e6b !important;
+  /* REMOVER: border: 1px solid #d4b5e6 !important; */
+}
     
     .cadastro-info {
       margin-bottom: 6px;
@@ -1297,20 +1297,18 @@
       height: 100% !important;
     }
 
-    /* STATUS BADGES PARA O MODAL - IGUAL AOS FILTROS */
     .modal-fornecedor-card .status-badge {
-      padding: 8px 14px;
-      border-radius: 20px;
-      font-size: 0.8rem;
-      font-weight: 700;
-      min-width: 85px;
-      border: 2px solid;
-      box-shadow: 0 3px 8px rgba(0,0,0,0.15);
-      text-transform: uppercase;
-      letter-spacing: 0.5px;
-      text-align: center;
-    }
-
+  padding: 8px 14px;
+  border-radius: 20px;
+  font-size: 0.8rem;
+  font-weight: 700;
+  min-width: 85px;
+  /* REMOVER: border: 2px solid; */
+  /* REMOVER: box-shadow: 0 3px 8px rgba(0,0,0,0.15); */
+  text-transform: uppercase;
+  letter-spacing: 0.5px;
+  text-align: center;
+}
     .modal-fornecedor-card .situacao-novo-registro {
       background: #bfe1f6 !important;
       color: #0c5aa3 !important;
@@ -1614,6 +1612,54 @@
 .valor-destaque {
   font-weight: 700;
   color: var(--success) !important;
+}
+
+/* NOVOS POPUPS DE CARREGAMENTO */
+.popup-carregamento {
+  display: none;
+  position: fixed;
+  top: 0;
+  left: 0;
+  width: 100%;
+  height: 100%;
+  background: rgba(0,0,0,0.7);
+  z-index: 9999;
+  justify-content: center;
+  align-items: center;
+  flex-direction: column;
+}
+
+.popup-conteudo {
+  background: white;
+  padding: 30px;
+  border-radius: 12px;
+  text-align: center;
+  box-shadow: 0 8px 25px rgba(0,0,0,0.25);
+  min-width: 300px;
+  border: 2px solid var(--primary);
+}
+
+.popup-spinner {
+  border: 4px solid #f3f3f3;
+  border-top: 4px solid var(--primary);
+  border-radius: 50%;
+  width: 50px;
+  height: 50px;
+  animation: spin 1s linear infinite;
+  margin: 0 auto 15px;
+}
+
+.popup-texto {
+  margin: 0;
+  color: var(--dark);
+  font-weight: bold;
+  font-size: 16px;
+}
+
+.popup-subtexto {
+  margin: 6px 0 0 0;
+  color: var(--gray);
+  font-size: 13px;
 }
 </style>
 </head>
@@ -2792,10 +2838,20 @@ function formatarCNPJ(input) {
     input.value = value;
 }
 
+
 function verTodosFornecedores(cnpj) {
+  mostrarPopupCarregandoModal(); // 👈🏼 NOVO POPUP AQUI
+  
   const lojasDoCNPJ = todosCadastros.filter(cadastro => cadastro.cnpj === cnpj);
-  exibirModalFornecedores(cnpj, lojasDoCNPJ);
+  
+  // Pequeno delay para garantir que o popup seja mostrado
+  setTimeout(() => {
+    esconderPopupCarregandoModal(); // 👈🏼 ESCONDER POPUP AQUI
+    exibirModalFornecedores(cnpj, lojasDoCNPJ);
+  }, 500);
 }
+
+
 
 function exibirModalFornecedores(cnpj, lojas) {
   const modal = document.getElementById('modalFornecedores');
@@ -2817,6 +2873,9 @@ function exibirModalFornecedores(cnpj, lojas) {
     let lojasHTML = '';
     
     if (lojas && lojas.length > 0) {
+      // Encontrar o nome da empresa (pegar da primeira loja que tiver razão social)
+      const nomeEmpresa = lojas[0]?.razao_social || 'Nome não disponível';
+      
       // Formatar CNPJ para exibição profissional
       const cnpjFormatado = formatarCNPJParaModal(cnpj);
       
@@ -2921,6 +2980,19 @@ function exibirModalFornecedores(cnpj, lojas) {
               </div>
             </div>
           </div>
+
+          <!-- OBSERVAÇÃO - NOVA SEÇÃO ADICIONADA -->
+          ${loja.observacoes ? `
+          <div class="observacoes-section" style="background: #fff8e1; padding: 12px; border-radius: 6px; margin-bottom: 15px; border-left: 3px solid #ffc107;">
+            <div class="observacoes-header" style="display: flex; align-items: center; gap: 8px; margin-bottom: 8px;">
+              <i class="fas fa-sticky-note" style="color: #ff9800;"></i>
+              <span style="font-weight: 600; color: #e65100; font-size: 0.9rem;">Observações</span>
+            </div>
+            <div class="observacoes-content" style="color: #5d4037; font-size: 0.85rem; line-height: 1.4;">
+              ${loja.observacoes}
+            </div>
+          </div>
+          ` : ''}
           
           <!-- Ações -->
           <div class="modal-actions" style="display: flex; gap: 8px; justify-content: flex-end;">
@@ -2955,17 +3027,20 @@ function exibirModalFornecedores(cnpj, lojas) {
       `;
     }
 
+    // MOVER A DEFINIÇÃO DA nomeEmpresa PARA FORA DO IF, PARA EVITAR O ERRO
+    const nomeEmpresa = (lojas && lojas.length > 0) ? lojas[0]?.razao_social || 'Nome não disponível' : 'Nome não disponível';
+
     content.innerHTML = `
-      <!-- Header Profissional do CNPJ -->
+      <!-- Header Profissional do CNPJ - TEXTO ALTERADO -->
       <div class="modal-cnpj-header-profissional">
         <div class="cnpj-header-content">
           <div class="cnpj-icon">
             <i class="fas fa-building"></i>
           </div>
           <div class="cnpj-info">
-            <h3 class="cnpj-title">Documento Corporativo</h3>
+            <h3 class="cnpj-title">CNPJ</h3>
             <div class="cnpj-number">${formatarCNPJParaModal(cnpj)}</div>
-            <div class="cnpj-subtitle">Identificação da Empresa</div>
+            <div class="cnpj-subtitle">${nomeEmpresa}</div>
           </div>
           <div class="cnpj-badge">
             <span class="lojas-count">${lojas ? lojas.length : 0}</span>
@@ -2974,27 +3049,6 @@ function exibirModalFornecedores(cnpj, lojas) {
         </div>
       </div>
       
-      <!-- Resumo Executivo -->
-      <div class="modal-resumo-executivo">
-        <div class="resumo-item">
-          <i class="fas fa-chart-bar"></i>
-          <span>Visão Geral dos Fornecedores</span>
-        </div>
-        <div class="resumo-stats">
-          <div class="stat-item">
-            <span class="stat-number">${lojas ? lojas.length : 0}</span>
-            <span class="stat-label">Total</span>
-          </div>
-          <div class="stat-item">
-            <span class="stat-number">${lojas ? lojas.filter(l => l.situacao === 'EM ANDAMENTO').length : 0}</span>
-            <span class="stat-label">Em Andamento</span>
-          </div>
-          <div class="stat-item">
-            <span class="stat-number">${lojas ? lojas.filter(l => l.situacao === 'CADASTRADO').length : 0}</span>
-            <span class="stat-label">Cadastrados</span>
-          </div>
-        </div>
-      </div>
       
       <!-- Lista de Fornecedores -->
       <div class="modal-content-scroll">
@@ -3093,18 +3147,20 @@ function formatarPercentualCorrigido(percentual) {
 }
 
 function verDetalhesCadastroModal(id) {
-  showLoading("Carregando detalhes...", "Buscando informações completas");
+  mostrarPopupCarregandoModal(); // 👈 NOVO POPUP AQUI
   
   cadastroAtualModalId = id;
   
   google.script.run
     .withSuccessHandler(function(dados) {
+      esconderPopupCarregandoModal(); // 👈 ESCONDER POPUP AQUI
       hideLoading();
       
       dados.waitlabel = waitlabelAtual;
       exibirModalDetalhesCompleto(dados);
     })
     .withFailureHandler(function(error) {
+      esconderPopupCarregandoModal(); // 👈 ESCONDER POPUP AQUI EM CASO DE ERRO
       hideLoading();
       showMessage('error', '❌ Erro ao carregar detalhes: ' + error.message);
     })
@@ -3485,9 +3541,63 @@ function calcularDefasagemParaOrdenacao(lojasDoCNPJ) {
 }
 
 function recarregarCadastros() {
-  showLoading("Atualizando dados...", "Sincronizando informações mais recentes");
-  
-  mostrarTodosCadastros();
+  // SALVAR OS FILTROS ATUAIS ANTES DE RECARREGAR
+  const filtrosSalvos = {
+    situacaoAtiva: situacaoAtiva,
+    filtrosAtivos: {...filtrosAtivos},
+    etapasSelecionados: [...etapasSelecionados],
+    fornecedoresSelecionados: [...fornecedoresSelecionados],
+    pesquisa: document.getElementById('pesquisaCadastros').value,
+    ordenacao: document.getElementById('ordenacaoCadastros').value
+  };
+
+  mostrarPopupCarregandoLojas(); // 👈🏼 NOVO POPUP AQUI
+
+  const loading = document.getElementById('loadingCadastros');
+  const tableContainer = document.getElementById('tableContainer');
+
+  // NÃO ESCONDER OS FILTROS - APENAS A TABELA E LOADING
+  loading.style.display = 'flex';
+  tableContainer.style.display = 'none';
+
+  google.script.run
+    .withSuccessHandler(function(cadastros) {
+      esconderPopupCarregandoLojas(); // 👈🏼 ESCONDER POPUP AQUI (sucesso)
+      hideLoading();
+      
+      if (cadastros && cadastros.length > 0) {
+        todosCadastros = cadastros;
+        cadastrosFiltrados = [...cadastros];
+        
+        // RESTAURAR OS FILTROS APÓS CARREGAR OS DADOS
+        restaurarFiltros(filtrosSalvos);
+        
+        showMessage('success', `✅ ${cadastros.length} cadastros atualizados do ${formatarNomeWaitlabel(waitlabelAtual)}!`);
+      } else {
+        esconderPopupCarregandoLojas(); // 👈🏼 ESCONDER POPUP AQUI (sem dados)
+        loading.style.display = 'none';
+        tableContainer.style.display = 'block';
+        document.getElementById('tabelaCadastrosBody').innerHTML = `
+          <tr>
+            <td colspan="9" style="text-align: center; padding: 30px;">
+              <i class="fas fa-inbox" style="font-size: 2.5rem; color: var(--gray); margin-bottom: 12px;"></i>
+              <h3>Nenhum cadastro encontrado</h3>
+              <p>Não há cadastros no waitlabel ${formatarNomeWaitlabel(waitlabelAtual)}.</p>
+            </td>
+          </tr>
+        `;
+        showMessage('info', `📝 Nenhum cadastro encontrado no ${formatarNomeWaitlabel(waitlabelAtual)}.`);
+      }
+    })
+    .withFailureHandler(function(error) {
+      esconderPopupCarregandoLojas(); // 👈🏼 ESCONDER POPUP AQUI (erro)
+      hideLoading();
+      
+      loading.style.display = 'none';
+      tableContainer.style.display = 'block';
+      showMessage('error', '❌ Erro ao carregar cadastros: ' + error.message);
+    })
+    .buscarTodosCadastrosComWaitlabel(waitlabelAtual);
 }
 
 function atualizarContador() {
@@ -3896,6 +4006,16 @@ function toggleCampoParaTodos(campoId) {
 }
 
 async function aplicarAlteracoesATodos() {
+  // SALVAR FILTROS ANTES DE APLICAR
+  const filtrosSalvos = {
+    situacaoAtiva: situacaoAtiva,
+    filtrosAtivos: {...filtrosAtivos},
+    etapasSelecionados: [...etapasSelecionados],
+    fornecedoresSelecionados: [...fornecedoresSelecionados],
+    pesquisa: document.getElementById('pesquisaCadastros').value,
+    ordenacao: document.getElementById('ordenacaoCadastros').value
+  };
+
   const btnAplicar = document.getElementById('btnAplicarATodos');
   if (btnAplicar && btnAplicar.disabled) {
     return;
@@ -3962,10 +4082,11 @@ async function aplicarAlteracoesATodos() {
     return;
   }
   
-  mostrarPopupAplicarTodosMelhorado(cnpjCorreto, camposSelecionados, dadosAtuais);
+  mostrarPopupAplicarTodosMelhorado(cnpjCorreto, camposSelecionados, dadosAtuais, filtrosSalvos);
 }
 
-function mostrarPopupAplicarTodosMelhorado(cnpj, camposSelecionados, dados) {
+
+function mostrarPopupAplicarTodosMelhorado(cnpj, camposSelecionados, dados, filtrosSalvos) {
     const formatarValorParaPopup = (campo, valor) => {
         if (campo === 'ativacao' && valor && valor !== 'Não preenchido') {
             if (valor.includes('-')) {
@@ -4071,7 +4192,7 @@ function mostrarPopupAplicarTodosMelhorado(cnpj, camposSelecionados, dados) {
                     <button onclick="fecharPopupAplicarTodos(false)" style="padding:10px 20px; border:2px solid #6c757d; background:white; color:#6c757d; border-radius:6px; cursor:pointer; font-weight:600; transition:all 0.3s; display:flex; align-items:center; gap:6px; min-width:100px; justify-content:center;">
                         <i class="fas fa-times"></i> Cancelar
                     </button>
-                    <button onclick="processarAplicarATodosComDelay()" style="padding:10px 20px; background:linear-gradient(135deg, #28a745 0%, #20c997 100%); color:white; border:none; border-radius:6px; cursor:pointer; font-weight:600; transition:all 0.3s; display:flex; align-items:center; gap:6px; min-width:120px; justify-content:center; box-shadow:0 3px 10px rgba(40, 167, 69, 0.25);">
+                    <button onclick="processarAplicarATodosComDelay(${JSON.stringify(filtrosSalvos).replace(/"/g, '&quot;')})" style="padding:10px 20px; background:linear-gradient(135deg, #28a745 0%, #20c997 100%); color:white; border:none; border-radius:6px; cursor:pointer; font-weight:600; transition:all 0.3s; display:flex; align-items:center; gap:6px; min-width:120px; justify-content:center; box-shadow:0 3px 10px rgba(40, 167, 69, 0.25);">
                         <i class="fas fa-play"></i> Iniciar
                     </button>
                 </div>
@@ -4088,7 +4209,7 @@ function mostrarPopupAplicarTodosMelhorado(cnpj, camposSelecionados, dados) {
     };
 }
 
-async function processarAplicarATodosComDelay() {
+async function processarAplicarATodosComDelay(filtrosSalvos) {
     const modal = document.getElementById('modalAplicarTodos');
     if (modal) modal.remove();
     
@@ -4115,9 +4236,8 @@ async function processarAplicarATodosComDelay() {
                     limparSelecaoAplicarATodos();
                     
                     if (document.getElementById('secaoCadastros').style.display === 'block') {
-                        setTimeout(() => {
-                            mostrarTodosCadastros();
-                        }, 1000);
+                        // RESTAURAR FILTROS APÓS APLICAR A TODOS
+                        restaurarFiltros(filtrosSalvos);
                     }
                 } else {
                     const inputEtapa = document.getElementById('inputEtapaSearch');
@@ -4164,6 +4284,7 @@ async function processarAplicarATodosComDelay() {
         showMessage('error', '❌ Erro crítico: ' + error.message);
     }
 }
+
 
 function fecharPopupAplicarTodos(confirmado) {
     const modal = document.getElementById('modalAplicarTodos');
@@ -4457,27 +4578,43 @@ function cadastrar() {
     })
     .processarCadastroComWaitlabel(dadosBase, waitlabelAtual);
 }
-
 function atualizar() {
+  // SALVAR O ESTADO ATUAL DOS FILTROS ANTES DE ATUALIZAR
+  const filtrosSalvos = {
+    situacaoAtiva: situacaoAtiva,
+    filtrosAtivos: {...filtrosAtivos},
+    etapasSelecionados: [...etapasSelecionados],
+    fornecedoresSelecionados: [...fornecedoresSelecionados],
+    pesquisa: document.getElementById('pesquisaCadastros').value,
+    ordenacao: document.getElementById('ordenacaoCadastros').value
+  };
+
+  // 👇🏼 NOVO POPUP AQUI
+  mostrarPopupAtualizando();
+
   if (!cadastroAtualId) {
+    esconderPopupAtualizando(); // 👈🏼 Esconder popup em caso de erro
     showMessage('error', '❌ Nenhum cadastro selecionado para atualizar!');
     return;
   }
 
   const camposInvalidos = validarCamposObrigatorios();
   if (camposInvalidos.length > 0) {
+    esconderPopupAtualizando(); // 👈🏼 Esconder popup em caso de erro
     showMessage('error', `❌ Preencha os campos obrigatórios: ${camposInvalidos.join(', ')}`);
     return;
   }
 
-  const fornecedoresSelecionados = document.querySelectorAll('input[name="fornecedor"]:checked');
-  if (fornecedoresSelecionados.length === 0) {
+  const fornecedoresSelecionadosForm = document.querySelectorAll('input[name="fornecedor"]:checked');
+  if (fornecedoresSelecionadosForm.length === 0) {
+    esconderPopupAtualizando(); // 👈🏼 Esconder popup em caso de erro
     showMessage('error', '❌ Selecione pelo menos um fornecedor!');
     return;
   }
 
   const dados = coletarDadosFormulario();
   if (!dados) {
+    esconderPopupAtualizando(); // 👈🏼 Esconder popup em caso de erro
     showMessage('error', '❌ Erro ao coletar dados do formulário');
     return;
   }
@@ -4490,6 +4627,7 @@ function atualizar() {
 
   if (precisaValidarEtapa) {
     if (!etapaSelecionada) {
+      esconderPopupAtualizando(); // 👈🏼 Esconder popup em caso de erro
       showMessage('error', `❌ Para situações "${situacaoSelecionada}" o campo Etapa é obrigatório!`);
       
       const inputEtapa = document.getElementById('inputEtapaSearch');
@@ -4516,6 +4654,7 @@ function atualizar() {
     const etapaUpper = etapaSelecionada.toUpperCase().trim();
     
     if (situacoesInvalidasComoEtapa.includes(etapaUpper)) {
+      esconderPopupAtualizando(); // 👈🏼 Esconder popup em caso de erro
       const mensagemErro = `❌ ETAPA INVÁLIDA!\n\nA etapa "${etapaSelecionada}" é uma SITUAÇÃO, não uma etapa do processo.\n\n📋 ETAPAS VÁLIDAS:\n• PENDENTE FORNECEDOR(ES)\n• PENDENTE SIM\n• PENDENTE RETORNO EXTERNO`;
       
       showMessage('error', mensagemErro);
@@ -4537,6 +4676,7 @@ function atualizar() {
     }
     
     if (!etapasValidas.includes(etapaUpper)) {
+      esconderPopupAtualizando(); // 👈🏼 Esconder popup em caso de erro
       const mensagemErro = `❌ ETAPA INVÁLIDA!\n\nA etapa "${etapaSelecionada}" não é válida.\n\n📋 ETAPAS VÁLIDAS:\n• PENDENTE FORNECEDOR(ES)\n• PENDENTE SIM\n• PENDENTE RETORNO EXTERNO`;
       
       showMessage('error', mensagemErro);
@@ -4570,6 +4710,7 @@ function atualizar() {
 
   google.script.run
     .withSuccessHandler(function(res) {
+      esconderPopupAtualizando(); // 👈🏼 ESCONDER POPUP AQUI (sucesso)
       hideLoading();
       
       btnAtualizar.innerHTML = btnOriginalHTML;
@@ -4579,7 +4720,8 @@ function atualizar() {
         showMessage('success', '✅ ' + res.message);
         
         if (document.getElementById('secaoCadastros').style.display === 'block') {
-          mostrarTodosCadastros();
+          // RESTAURAR OS FILTROS APÓS ATUALIZAR
+          restaurarFiltros(filtrosSalvos);
         }
         
         limparFormulario();
@@ -4588,6 +4730,7 @@ function atualizar() {
       }
     })
     .withFailureHandler(function(error) {
+      esconderPopupAtualizando(); // 👈🏼 ESCONDER POPUP AQUI (erro)
       hideLoading();
       
       btnAtualizar.innerHTML = btnOriginalHTML;
@@ -4597,8 +4740,58 @@ function atualizar() {
     .processarCadastroComWaitlabel(dados, waitlabelAtual);
 }
 
+function restaurarFiltros(filtrosSalvos) {
+  if (!filtrosSalvos) return;
+  
+  // Restaurar variáveis globais
+  situacaoAtiva = filtrosSalvos.situacaoAtiva || 'all';
+  filtrosAtivos = {...filtrosSalvos.filtrosAtivos};
+  etapasSelecionados = [...filtrosSalvos.etapasSelecionados];
+  fornecedoresSelecionados = [...filtrosSalvos.fornecedoresSelecionados];
+  
+  // Restaurar elementos da interface
+  if (document.getElementById('pesquisaCadastros')) {
+    document.getElementById('pesquisaCadastros').value = filtrosSalvos.pesquisa || '';
+  }
+  
+  if (document.getElementById('ordenacaoCadastros')) {
+    document.getElementById('ordenacaoCadastros').value = filtrosSalvos.ordenacao || 'razao_social';
+  }
+  
+  // GARANTIR QUE OS FILTROS ESTEJAM VISÍVEIS
+  const filtrosContainer = document.getElementById('filtrosContainer');
+  const filtrosAvancados = document.getElementById('filtrosAvancadosContainer');
+  
+  if (filtrosContainer) filtrosContainer.style.display = 'flex';
+  if (filtrosAvancados) filtrosAvancados.style.display = 'grid';
+  
+  // Atualizar botões de situação
+  document.querySelectorAll('.filtro-btn').forEach(btn => {
+    btn.classList.remove('active');
+  });
+  
+  const btnAtivo = document.querySelector(`.filtro-btn[data-situacao="${situacaoAtiva}"]`);
+  if (btnAtivo) {
+    btnAtivo.classList.add('active');
+  }
+  
+  // Atualizar tags selecionadas
+  atualizarEtapasSelecionados();
+  atualizarFornecedoresSelecionados();
+  
+  // Reaplicar os filtros
+  aplicarTodosFiltros();
+  
+  // Reordenar se necessário
+  if (filtrosSalvos.ordenacao) {
+    setTimeout(() => {
+      ordenarCadastros();
+    }, 100);
+  }
+}
+
 function mostrarTodosCadastros() {
-  showLoading(`Carregando dados da loja ${formatarNomeWaitlabel(waitlabelAtual)}...`, "Buscando todos os cadastros");
+  mostrarPopupCarregandoLojas(); // 👈🏼 NOVO POPUP AQUI
   
   const loading = document.getElementById('loadingCadastros');
   const tableContainer = document.getElementById('tableContainer');
@@ -4610,24 +4803,21 @@ function mostrarTodosCadastros() {
   filtrosContainer.style.display = 'none';
   secao.style.display = 'block';
 
-  limparTodosFiltros();
-
   google.script.run
     .withSuccessHandler(function(cadastros) {
+      esconderPopupCarregandoLojas(); // 👈🏼 ESCONDER POPUP AQUI
       hideLoading();
       
       if (cadastros && cadastros.length > 0) {
         todosCadastros = cadastros;
         cadastrosFiltrados = [...cadastros];
         
-        document.getElementById('ordenacaoCadastros').value = 'razao_social';
-        
-        ordenarCadastros();
-        
+        aplicarTodosFiltros();
         document.getElementById('filtrosContainer').style.display = 'flex';
         
         showMessage('success', `✅ ${cadastros.length} cadastros carregados do ${formatarNomeWaitlabel(waitlabelAtual)}!`);
       } else {
+        esconderPopupCarregandoLojas(); // 👈🏼 ESCONDER POPUP AQUI
         loading.style.display = 'none';
         tableContainer.style.display = 'block';
         document.getElementById('tabelaCadastrosBody').innerHTML = `
@@ -4643,6 +4833,7 @@ function mostrarTodosCadastros() {
       }
     })
     .withFailureHandler(function(error) {
+      esconderPopupCarregandoLojas(); // 👈🏼 ESCONDER POPUP AQUI EM CASO DE ERRO
       hideLoading();
       
       loading.style.display = 'none';
@@ -5800,6 +5991,58 @@ function fecharModalDetalhes() {
   const modal = document.getElementById('modalDetalhes');
   modal.style.display = 'none';
 }
+
+// FUNÇÕES PARA OS POPUPS
+function mostrarPopupCarregandoLojas() {
+  document.getElementById('popupCarregandoLojas').style.display = 'flex';
+}
+
+function esconderPopupCarregandoLojas() {
+  document.getElementById('popupCarregandoLojas').style.display = 'none';
+}
+
+function mostrarPopupCarregandoModal() {
+  document.getElementById('popupCarregandoModal').style.display = 'flex';
+}
+
+function esconderPopupCarregandoModal() {
+  document.getElementById('popupCarregandoModal').style.display = 'none';
+}
+
+function mostrarPopupAtualizando() {
+  document.getElementById('popupAtualizando').style.display = 'flex';
+}
+
+function esconderPopupAtualizando() {
+  document.getElementById('popupAtualizando').style.display = 'none';
+}
+
   </script>
+  <!-- POPUP Carregando Lojas -->
+<div id="popupCarregandoLojas" class="popup-carregamento">
+  <div class="popup-conteudo">
+    <div class="popup-spinner"></div>
+    <p class="popup-texto">Carregando Lojas</p>
+    <p class="popup-subtexto">Buscando informações no sistema...</p>
+  </div>
+</div>
+
+<!-- POPUP Carregando Modal -->
+<div id="popupCarregandoModal" class="popup-carregamento">
+  <div class="popup-conteudo">
+    <div class="popup-spinner"></div>
+    <p class="popup-texto">Abrindo Detalhes</p>
+    <p class="popup-subtexto">Carregando informações completas...</p>
+  </div>
+</div>
+
+<!-- POPUP Atualizando -->
+<div id="popupAtualizando" class="popup-carregamento">
+  <div class="popup-conteudo">
+    <div class="popup-spinner"></div>
+    <p class="popup-texto">Atualizando Dados</p>
+    <p class="popup-subtexto">Salvando alterações...</p>
+  </div>
+</div>
 </body>
 </html>
