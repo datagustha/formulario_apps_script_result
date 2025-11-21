@@ -310,6 +310,127 @@ function buscarCadastroPorIDComWaitlabel(id, waitlabel) {
   }
 }
 
+// 🔥🔥🔥 FUNÇÃO PARA OBTER FILTROS - ATUALIZADA COM AS NOVAS ETAPAS
+function obterFiltrosDisponiveis() {
+  try {
+    const waitlabelAtual = CONFIG_FILHA.WAITLABEL_FILHA;
+    const cadastros = buscarTodosCadastrosComWaitlabel(waitlabelAtual);
+    
+    // 🔥🔥🔥 ETAPAS VÁLIDAS ATUALIZADAS (SEM CLÍNICA E WL, COM RETORNO EXTERNO)
+    const etapasValidas = [
+      "PENDENTE FORNECEDOR(ES)",
+      "PENDENTE SIM", 
+      "PENDENTE RETORNO EXTERNO"
+    ];
+    
+    const situacoesValidas = [
+      "NOVO REGISTRO",
+      "EM ANDAMENTO", 
+      "DESISTIU",
+      "REJEITADO",
+      "CADASTRADO",
+      "DESCREDENCIADO"
+    ];
+    
+    // Coletar dados únicos dos cadastros
+    const etapasEncontradas = new Set();
+    const situacoesEncontradas = new Set();
+    const fornecedoresEncontrados = new Set();
+    
+    cadastros.forEach(cadastro => {
+      if (cadastro.etapa && cadastro.etapa.trim() !== '') {
+        // 🔥 FILTRAR APENAS ETAPAS VÁLIDAS
+        const etapaNormalizada = normalizarTexto(cadastro.etapa);
+        if (etapasValidas.includes(etapaNormalizada)) {
+          etapasEncontradas.add(cadastro.etapa);
+        }
+      }
+      
+      if (cadastro.situacao && cadastro.situacao.trim() !== '') {
+        situacoesEncontradas.add(cadastro.situacao);
+      }
+      
+      if (cadastro.fornecedor && cadastro.fornecedor.trim() !== '') {
+        fornecedoresEncontrados.add(cadastro.fornecedor);
+      }
+    });
+    
+    // Ordenar os resultados
+    const etapasOrdenadas = Array.from(etapasEncontradas).sort();
+    const situacoesOrdenadas = Array.from(situacoesEncontradas).sort();
+    const fornecedoresOrdenados = Array.from(fornecedoresEncontrados).sort();
+    
+    console.log("🎯 [DOKTORBANK] Filtros disponíveis - Etapas:", etapasOrdenadas);
+    console.log("🎯 [DOKTORBANK] Filtros disponíveis - Situações:", situacoesOrdenadas);
+    console.log("🎯 [DOKTORBANK] Filtros disponíveis - Fornecedores:", fornecedoresOrdenados.length);
+    
+    return {
+      etapas: etapasOrdenadas,
+      situacoes: situacoesOrdenadas,
+      fornecedores: fornecedoresOrdenados,
+      // 🔥 ADICIONAR LISTA DE ETAPAS VÁLIDAS PARA VALIDAÇÃO
+      etapasValidas: etapasValidas,
+      situacoesValidas: situacoesValidas
+    };
+    
+  } catch (error) {
+    console.error("❌ [DOKTORBANK] Erro em obterFiltrosDisponiveis:", error);
+    return {
+      etapas: [],
+      situacoes: [],
+      fornecedores: [],
+      etapasValidas: [],
+      situacoesValidas: []
+    };
+  }
+}
+
+// 🔥🔥🔥 FUNÇÃO DE VALIDAÇÃO DE ETAPA - ATUALIZADA
+function validarEtapaVisualizacao(etapa, situacao) {
+  // 🔥 VALIDAR APENAS PARA "EM ANDAMENTO" E "NOVO REGISTRO"
+  const situacaoNormalizada = normalizarTexto(situacao || '');
+  const precisaValidarEtapa = situacaoNormalizada === 'EM ANDAMENTO' || situacaoNormalizada === 'NOVO REGISTRO';
+  
+  if (!precisaValidarEtapa) {
+    console.log("✅ [DOKTORBANK] Situação não requer validação de etapa");
+    return { valida: true, etapa: etapa ? normalizarTexto(etapa) : '' };
+  }
+  
+  // 🔥 SE É "EM ANDAMENTO" OU "NOVO REGISTRO", ENTÃO ETAPA É OBRIGATÓRIA
+  if (!etapa || etapa.trim() === '') {
+    return { 
+      valida: false, 
+      mensagem: `❌ Para situações "${situacao}" o campo Etapa é obrigatório!` 
+    };
+  }
+  
+  // 🔥 NOVAS ETAPAS VÁLIDAS (SEM CLÍNICA E WL, COM RETORNO EXTERNO)
+  const etapasValidas = [
+    "PENDENTE FORNECEDOR(ES)",
+    "PENDENTE SIM", 
+    "PENDENTE RETORNO EXTERNO"
+  ];
+  
+  const etapaNormalizada = normalizarTexto(etapa);
+  
+  // 🔥 BLOQUEAR EXPLICITAMENTE "DESISTIU" E OUTRAS ETAPAS INVÁLIDAS
+  const etapasBloqueadas = ["DESISTIU", "REJEITADO", "CADASTRADO", "NOVO REGISTRO", "EM ANDAMENTO", "DESCREDENCIADO"];
+  
+  if (etapasBloqueadas.includes(etapaNormalizada)) {
+    const mensagemErro = `❌ ETAPA NÃO PERMITIDA!\n\nA etapa "${etapa}" é uma SITUAÇÃO, não uma etapa do processo.\n\n📋 ETAPAS VÁLIDAS (do processo):\n• PENDENTE FORNECEDOR(ES)\n• PENDENTE SIM\n• PENDENTE RETORNO EXTERNO\n\n💡 Use o campo "Situação" para: ${etapa}`;
+    
+    return { valida: false, mensagem: mensagemErro };
+  }
+  
+  if (!etapasValidas.includes(etapaNormalizada)) {
+    const mensagemErro = `❌ ETAPA INVÁLIDA!\n\nA etapa "${etapa}" não é válida.\n\n📋 ETAPAS VÁLIDAS:\n• PENDENTE FORNECEDOR(ES)\n• PENDENTE SIM\n• PENDENTE RETORNO EXTERNO\n\nSelecione uma das etapas acima para continuar.`;
+    
+    return { valida: false, mensagem: mensagemErro };
+  }
+  
+  return { valida: true, etapa: etapaNormalizada };
+}
+
 // 🔥🔥🔥 FUNÇÃO DE TESTE ATUALIZADA PARA ETAPAS
 function testarDatasVisualizacao() {
   try {
@@ -374,7 +495,7 @@ function testarDatasVisualizacao() {
   }
 }
 
-// 🔥 FUNÇÕES AUXILIARES (MANTIDAS)
+// 🔥🔥🔥 FUNÇÕES AUXILIARES (MANTIDAS E ATUALIZADAS)
 function formatarCNPJNoSheets(cnpj) {
   if (!cnpj) return '';
   if (cnpj.toString().includes('.') || cnpj.toString().includes('/') || cnpj.toString().includes('-')) {
@@ -387,10 +508,21 @@ function formatarCNPJNoSheets(cnpj) {
   return cnpj;
 }
 
-// 🔥 FUNÇÃO DE TESTE ATUALIZADA
+// 🔥🔥🔥 FUNÇÃO DE NORMALIZAÇÃO DE TEXTO
+function normalizarTexto(texto) {
+  if (!texto || typeof texto !== 'string') return texto;
+  return texto
+    .normalize('NFD')
+    .replace(/[\u0300-\u036f]/g, '')
+    .toUpperCase()
+    .trim();
+}
+
+// 🔥🔥🔥 FUNÇÃO DE TESTE ATUALIZADA
 function testar() {
   const totalCadastros = buscarTodosCadastrosComWaitlabel(CONFIG_FILHA.WAITLABEL_FILHA).length;
   const testeDatas = testarDatasVisualizacao();
+  const filtros = obterFiltrosDisponiveis();
   
   return { 
     success: true, 
@@ -398,6 +530,8 @@ function testar() {
     modo: "Somente leitura - CORRIGIDO PARA ETAPAS",
     waitlabel: CONFIG_FILHA.WAITLABEL_FILHA,
     totalCadastros: totalCadastros,
+    etapas_validas: filtros.etapasValidas, // 🔥 NOVO: mostrar etapas válidas
+    situacoes_validas: filtros.situacoesValidas, // 🔥 NOVO: mostrar situações válidas
     teste_datas: testeDatas,
     timestamp: new Date().toISOString()
   };
