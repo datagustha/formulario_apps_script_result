@@ -2852,173 +2852,150 @@ function verTodosFornecedores(cnpj) {
 }
 
 
-
 function exibirModalFornecedores(cnpj, lojas) {
-  const modal = document.getElementById('modalFornecedores');
-  const content = document.getElementById('modalFornecedoresContent');
-  
-  showLoading("Carregando fornecedores...", "Organizando informações das lojas");
-
-  // Função auxiliar para formatar CNPJ
-  const formatarCNPJParaModal = (cnpj) => {
-    if (!cnpj) return 'N/A';
-    const cnpjLimpo = cnpj.replace(/\D/g, '');
-    if (cnpjLimpo.length === 14) {
-      return cnpjLimpo.replace(/^(\d{2})(\d{3})(\d{3})(\d{4})(\d{2})/, '$1.$2.$3/$4-$5');
-    }
-    return cnpj;
-  };
-
-  setTimeout(() => {
+    const modal = document.getElementById('modalFornecedores');
+    const content = document.getElementById('modalFornecedoresContent');
+    
     let lojasHTML = '';
     
     if (lojas && lojas.length > 0) {
-      // Encontrar o nome da empresa (pegar da primeira loja que tiver razão social)
-      const nomeEmpresa = lojas[0]?.razao_social || 'Nome não disponível';
-      
-      // Formatar CNPJ para exibição profissional
-      const cnpjFormatado = formatarCNPJParaModal(cnpj);
-      
-      lojasHTML = lojas.map((loja, index) => {
-        const ultimaEtapaCorrigido = loja.ultima_etapa ? 
-            corrigirHoraFrontend(loja.ultima_etapa) : 'N/A';
-        
-        // Determinar a classe da situação
-        const situacaoClass = getSituacaoClass(loja.situacao);
-        const corBorda = getCorBordaSituacao(loja.situacao);
-        
-        return `
-        <div class="modal-fornecedor-card" style="border-left: 4px solid ${corBorda}; margin-bottom: 20px; padding: 15px; background: white; border-radius: 8px; box-shadow: 0 2px 8px rgba(0,0,0,0.1);">
-          <!-- Header com número e informações principais -->
-          <div class="modal-fornecedor-header" style="display: flex; align-items: center; justify-content: space-between; margin-bottom: 15px;">
-            <div class="fornecedor-badge" style="background: var(--primary); color: white; padding: 8px 12px; border-radius: 6px; font-weight: 700;">
-              <span class="fornecedor-indice" style="display: block; text-align: center;">#${index + 1}</span>
-            </div>
-            <div class="fornecedor-title" style="display: flex; align-items: center; gap: 10px; flex: 1; margin-left: 15px;">
-              <i class="fas fa-store" style="color: var(--primary);"></i>
-              <div>
-                <h4 class="modal-fornecedor-nome" style="margin: 0; color: var(--dark); font-size: 1.1rem;">${loja.fornecedor || 'Fornecedor'}</h4>
-                <div class="fornecedor-subinfo">
-                  <span class="info-tag" style="background: rgba(0,0,0,0.05); padding: 3px 8px; border-radius: 12px; font-size: 0.75rem; color: var(--gray);">
-                    <i class="fas fa-info-circle"></i>
-                    ${loja.situacao || 'N/A'}
-                  </span>
+        lojasHTML = lojas.map((loja, index) => {
+            const ultimaEtapaCorrigida = loja.ultima_etapa ? 
+                corrigirHoraFrontend(loja.ultima_etapa) : 'N/A';
+            
+            const situacaoClass = getSituacaoClass(loja.situacao);
+            const corBorda = getCorBordaSituacao(loja.situacao);
+            
+            return `
+            <div class="modal-fornecedor-card" style="border-left: 4px solid ${corBorda}; margin-bottom: 20px; padding: 15px; background: white; border-radius: 8px; box-shadow: 0 2px 8px rgba(0,0,0,0.1);">
+              <!-- Header com número e informações principais -->
+              <div class="modal-fornecedor-header" style="display: flex; align-items: center; justify-content: space-between; margin-bottom: 15px;">
+                <div class="fornecedor-badge" style="background: var(--primary); color: white; padding: 8px 12px; border-radius: 6px; font-weight: 700;">
+                  <span class="fornecedor-indice" style="display: block; text-align: center;">#${index + 1}</span>
+                </div>
+                <div class="fornecedor-title" style="display: flex; align-items: center; gap: 10px; flex: 1; margin-left: 15px;">
+                  <i class="fas fa-store" style="color: var(--primary);"></i>
+                  <div>
+                    <h4 class="modal-fornecedor-nome" style="margin: 0; color: var(--dark); font-size: 1.1rem;">${loja.fornecedor || 'Fornecedor'}</h4>
+                    <div class="fornecedor-subinfo">
+                      <span class="info-tag" style="background: rgba(0,0,0,0.05); padding: 3px 8px; border-radius: 12px; font-size: 0.75rem; color: var(--gray);">
+                        <i class="fas fa-info-circle"></i>
+                        ${loja.situacao || 'N/A'}
+                      </span>
+                    </div>
+                  </div>
+                </div>
+                <span class="status-badge ${situacaoClass}" 
+          style="background: ${corBorda}; color: white;">
+      ${loja.situacao || 'N/A'}
+    </span>
+              </div>
+              
+              <!-- Grid de informações principais -->
+              <div class="modal-fornecedor-info-grid" style="display: grid; grid-template-columns: 1fr 1fr; gap: 15px; margin-bottom: 15px;">
+                <div class="modal-info-item" style="display: flex; align-items: center; gap: 10px;">
+                  <div class="info-icon" style="font-size: 1.2rem;">📋</div>
+                  <div class="info-content">
+                    <span class="modal-info-label" style="display: block; font-size: 0.8rem; color: var(--gray); margin-bottom: 2px;">Etapa Atual</span>
+                    <span class="modal-info-value etapa-destaque" style="font-weight: 700; color: var(--primary);">${loja.etapa || 'N/A'}</span>
+                  </div>
+                </div>
+                
+                <div class="modal-info-item" style="display: flex; align-items: center; gap: 10px;">
+                  <div class="info-icon" style="font-size: 1.2rem;">💰</div>
+                  <div class="info-content">
+                    <span class="modal-info-label" style="display: block; font-size: 0.8rem; color: var(--gray); margin-bottom: 2px;">Configuração</span>
+                    <span class="modal-info-value" style="font-weight: 600;">
+                      ${loja.tarifa || 'N/A'} 
+                      <span class="percentual-destaque" style="background: var(--secondary); color: white; padding: 2px 6px; border-radius: 8px; font-size: 0.8rem; margin-left: 5px;">
+                        ${formatarPercentualCorrigido(loja.percentual_tarifa)}
+                      </span>
+                    </span>
+                  </div>
+                </div>
+                
+                <div class="modal-info-item" style="display: flex; align-items: center; gap: 10px;">
+                  <div class="info-icon" style="font-size: 1.2rem;">💵</div>
+                  <div class="info-content">
+                    <span class="modal-info-label" style="display: block; font-size: 0.8rem; color: var(--gray); margin-bottom: 2px;">Mensalidade</span>
+                    <span class="modal-info-value valor-destaque" style="font-weight: 700; color: var(--success);">${formatarMoedaParaInput(loja.mensalidade)}</span>
+                  </div>
+                </div>
+                
+                <div class="modal-info-item" style="display: flex; align-items: center; gap: 10px;">
+                  <div class="info-icon" style="font-size: 1.2rem;">🤝</div>
+                  <div class="info-content">
+                    <span class="modal-info-label" style="display: block; font-size: 0.8rem; color: var(--gray); margin-bottom: 2px;">Adesão</span>
+                    <span class="modal-info-value valor-destaque" style="font-weight: 700; color: var(--info);">
+                      ${loja.adesao === 'Isento' || loja.adesao === 0 ? 'Isento' : formatarMoedaParaInput(loja.adesao)}
+                    </span>
+                  </div>
                 </div>
               </div>
-            </div>
-            <span class="status-badge ${situacaoClass}" 
-      style="background: ${corBorda}; color: white; border: 2px solid ${corBorda};">
-  ${loja.situacao || 'N/A'}
-</span>
-          </div>
-          
-          <!-- Grid de informações principais -->
-          <div class="modal-fornecedor-info-grid" style="display: grid; grid-template-columns: 1fr 1fr; gap: 15px; margin-bottom: 15px;">
-            <div class="modal-info-item" style="display: flex; align-items: center; gap: 10px;">
-              <div class="info-icon" style="font-size: 1.2rem;">📋</div>
-              <div class="info-content">
-                <span class="modal-info-label" style="display: block; font-size: 0.8rem; color: var(--gray); margin-bottom: 2px;">Etapa Atual</span>
-                <span class="modal-info-value etapa-destaque" style="font-weight: 700; color: var(--primary);">${loja.etapa || 'N/A'}</span>
+              
+              <!-- Seção de timeline e acompanhamento -->
+              <div class="timeline-section" style="background: #f8f9fa; padding: 12px; border-radius: 6px; margin-bottom: 15px;">
+                <div class="timeline-item" style="display: flex; align-items: center; gap: 10px; margin-bottom: 8px;">
+                  <div class="timeline-icon" style="font-size: 1.1rem;">⏰</div>
+                  <div class="timeline-content">
+                    <span class="timeline-label" style="display: block; font-size: 0.8rem; color: var(--gray); margin-bottom: 2px;">Última Atualização</span>
+                    <span class="timeline-value" style="font-weight: 600; color: var(--dark);">${ultimaEtapaCorrigida}</span>
+                  </div>
+                </div>
+                
+                <div class="timeline-item" style="display: flex; align-items: center; gap: 10px;">
+                  <div class="timeline-icon" style="font-size: 1.1rem;">📊</div>
+                  <div class="timeline-content">
+                    <span class="timeline-label" style="display: block; font-size: 0.8rem; color: var(--gray); margin-bottom: 2px;">Tempo de Processo</span>
+                    <span class="timeline-value ${loja.situacao && loja.situacao.toUpperCase() === 'EM ANDAMENTO' ? 
+                      (calcularDefasagem(loja.ultima_etapa).includes('30') || calcularDefasagem(loja.ultima_etapa).includes('31') ? 
+                      'defasagem-alerta' : 'defasagem-normal') : 'defasagem-inativa'}" 
+                      style="font-weight: 600; ${loja.situacao && loja.situacao.toUpperCase() === 'EM ANDAMENTO' ? 
+                      (calcularDefasagem(loja.ultima_etapa).includes('30') || calcularDefasagem(loja.ultima_etapa).includes('31') ? 
+                      'color: var(--danger);' : 'color: var(--warning);') : 'color: var(--gray);'}">
+                      ${loja.situacao && loja.situacao.toUpperCase() === 'EM ANDAMENTO' ? 
+                        calcularDefasagem(loja.ultima_etapa) : 'Sem acompanhamento'}
+                    </span>
+                  </div>
+                </div>
+              </div>
+              
+              <!-- SEÇÃO DE OBSERVAÇÕES NO FINAL -->
+              ${loja.observacoes ? `
+              <div class="observacoes-section" style="background: #fff3cd; border-left: 4px solid #ffc107; padding: 12px; border-radius: 6px; margin-bottom: 15px;">
+                <div class="observacao-item" style="display: flex; align-items: flex-start; gap: 10px;">
+                  <div class="observacao-icon" style="font-size: 1.1rem; color: #856404;">📝</div>
+                  <div class="observacao-content" style="flex: 1;">
+                    <span class="observacao-label" style="display: block; font-size: 0.8rem; color: #856404; font-weight: 600; margin-bottom: 4px;">Observações</span>
+                    <span class="observacao-value" style="font-size: 0.85rem; color: #856404; line-height: 1.4;">
+                      ${loja.observacoes}
+                    </span>
+                  </div>
+                </div>
+              </div>
+              ` : ''}
+              
+              <!-- Ações - CORREÇÃO AQUI: ADICIONAR BOTÃO EDITAR -->
+              <div class="modal-actions" style="display: flex; gap: 8px; justify-content: flex-end;">
+                <button class="btn btn-warning btn-sm btn-action" 
+                        onclick="verDetalhesCadastroModal('${loja.id}'); fecharModalFornecedores();"
+                        title="Ver detalhes deste fornecedor"
+                        style="padding: 6px 12px; border: none; border-radius: 4px; background: var(--warning); color: var(--dark); cursor: pointer; font-size: 0.8rem;">
+                  <i class="fas fa-eye"></i> Detalhes
+                </button>
+                
+                <!-- BOTÃO EDITAR ADICIONADO -->
+                <button class="btn btn-primary btn-sm btn-action" 
+                        onclick="editarCadastroModal('${loja.id}'); fecharModalFornecedores();"
+                        title="Editar este fornecedor"
+                        style="padding: 6px 12px; border: none; border-radius: 4px; background: var(--primary); color: white; cursor: pointer; font-size: 0.8rem;">
+                  <i class="fas fa-edit"></i> Editar
+                </button>
               </div>
             </div>
-            
-            <div class="modal-info-item" style="display: flex; align-items: center; gap: 10px;">
-              <div class="info-icon" style="font-size: 1.2rem;">💰</div>
-              <div class="info-content">
-                <span class="modal-info-label" style="display: block; font-size: 0.8rem; color: var(--gray); margin-bottom: 2px;">Configuração</span>
-                <span class="modal-info-value" style="font-weight: 600;">
-                  ${loja.tarifa || 'N/A'} 
-                  <span class="percentual-destaque" style="background: var(--secondary); color: white; padding: 2px 6px; border-radius: 8px; font-size: 0.8rem; margin-left: 5px;">
-                    ${formatarPercentualCorrigido(loja.percentual_tarifa)}
-                  </span>
-                </span>
-              </div>
-            </div>
-            
-            <div class="modal-info-item" style="display: flex; align-items: center; gap: 10px;">
-              <div class="info-icon" style="font-size: 1.2rem;">💵</div>
-              <div class="info-content">
-                <span class="modal-info-label" style="display: block; font-size: 0.8rem; color: var(--gray); margin-bottom: 2px;">Mensalidade</span>
-                <span class="modal-info-value valor-destaque" style="font-weight: 700; color: var(--success);">${formatarMoedaParaInput(loja.mensalidade)}</span>
-              </div>
-            </div>
-            
-            <div class="modal-info-item" style="display: flex; align-items: center; gap: 10px;">
-              <div class="info-icon" style="font-size: 1.2rem;">🤝</div>
-              <div class="info-content">
-                <span class="modal-info-label" style="display: block; font-size: 0.8rem; color: var(--gray); margin-bottom: 2px;">Adesão</span>
-                <span class="modal-info-value valor-destaque" style="font-weight: 700; color: var(--info);">
-                  ${loja.adesao === 'Isento' || loja.adesao === 0 ? 'Isento' : formatarMoedaParaInput(loja.adesao)}
-                </span>
-              </div>
-            </div>
-          </div>
-          
-          <!-- Seção de timeline e acompanhamento -->
-          <div class="timeline-section" style="background: #f8f9fa; padding: 12px; border-radius: 6px; margin-bottom: 15px;">
-            <div class="timeline-item" style="display: flex; align-items: center; gap: 10px; margin-bottom: 8px;">
-              <div class="timeline-icon" style="font-size: 1.1rem;">⏰</div>
-              <div class="timeline-content">
-                <span class="timeline-label" style="display: block; font-size: 0.8rem; color: var(--gray); margin-bottom: 2px;">Última Atualização</span>
-                <span class="timeline-value" style="font-weight: 600; color: var(--dark);">${ultimaEtapaCorrigido}</span>
-              </div>
-            </div>
-            
-            <div class="timeline-item" style="display: flex; align-items: center; gap: 10px;">
-              <div class="timeline-icon" style="font-size: 1.1rem;">📊</div>
-              <div class="timeline-content">
-                <span class="timeline-label" style="display: block; font-size: 0.8rem; color: var(--gray); margin-bottom: 2px;">Tempo de Processo</span>
-                <span class="timeline-value ${loja.situacao && loja.situacao.toUpperCase() === 'EM ANDAMENTO' ? 
-                  (calcularDefasagem(loja.ultima_etapa).includes('30') || calcularDefasagem(loja.ultima_etapa).includes('31') ? 
-                  'defasagem-alerta' : 'defasagem-normal') : 'defasagem-inativa'}" 
-                  style="font-weight: 600; ${loja.situacao && loja.situacao.toUpperCase() === 'EM ANDAMENTO' ? 
-                  (calcularDefasagem(loja.ultima_etapa).includes('30') || calcularDefasagem(loja.ultima_etapa).includes('31') ? 
-                  'color: var(--danger);' : 'color: var(--warning);') : 'color: var(--gray);'}">
-                  ${loja.situacao && loja.situacao.toUpperCase() === 'EM ANDAMENTO' ? 
-                    calcularDefasagem(loja.ultima_etapa) : 'Sem acompanhamento'}
-                </span>
-              </div>
-            </div>
-          </div>
-
-          <!-- OBSERVAÇÃO - NOVA SEÇÃO ADICIONADA -->
-          ${loja.observacoes ? `
-          <div class="observacoes-section" style="background: #fff8e1; padding: 12px; border-radius: 6px; margin-bottom: 15px; border-left: 3px solid #ffc107;">
-            <div class="observacoes-header" style="display: flex; align-items: center; gap: 8px; margin-bottom: 8px;">
-              <i class="fas fa-sticky-note" style="color: #ff9800;"></i>
-              <span style="font-weight: 600; color: #e65100; font-size: 0.9rem;">Observações</span>
-            </div>
-            <div class="observacoes-content" style="color: #5d4037; font-size: 0.85rem; line-height: 1.4;">
-              ${loja.observacoes}
-            </div>
-          </div>
-          ` : ''}
-          
-          <!-- Ações -->
-          <div class="modal-actions" style="display: flex; gap: 8px; justify-content: flex-end;">
-            <button class="btn btn-warning btn-sm btn-action" 
-                    onclick="editarCadastroModal('${loja.id}'); fecharModalFornecedores();"
-                    title="Editar este fornecedor"
-                    style="padding: 6px 12px; border: none; border-radius: 4px; background: var(--warning); color: var(--dark); cursor: pointer; font-size: 0.8rem;">
-              <i class="fas fa-edit"></i> Editar
-            </button>
-            <button class="btn btn-info btn-sm btn-action" 
-                    onclick="verDetalhesCadastroModal('${loja.id}'); fecharModalFornecedores();"
-                    title="Ver detalhes completos"
-                    style="padding: 6px 12px; border: none; border-radius: 4px; background: var(--info); color: white; cursor: pointer; font-size: 0.8rem;">
-              <i class="fas fa-eye"></i> Detalhes
-            </button>
-            <button class="btn btn-primary btn-sm btn-action" 
-                    onclick="configurarAplicarATodos('${loja.cnpj}', '${loja.id}'); fecharModalFornecedores();"
-                    title="Aplicar configurações a todos"
-                    style="padding: 6px 12px; border: none; border-radius: 4px; background: var(--primary); color: white; cursor: pointer; font-size: 0.8rem;">
-              <i class="fas fa-copy"></i> Aplicar a Todos
-            </button>
-          </div>
-        </div>
-      `}).join('');
+          `}).join('');
     } else {
-      lojasHTML = `
+        lojasHTML = `
         <div class="empty-state" style="text-align: center; padding: 40px;">
           <i class="fas fa-store-slash" style="font-size: 4rem; color: #6c757d; margin-bottom: 20px;"></i>
           <h4 style="color: #6c757d; margin-bottom: 10px;">Nenhuma loja encontrada</h4>
@@ -3027,11 +3004,22 @@ function exibirModalFornecedores(cnpj, lojas) {
       `;
     }
 
-    // MOVER A DEFINIÇÃO DA nomeEmpresa PARA FORA DO IF, PARA EVITAR O ERRO
-    const nomeEmpresa = (lojas && lojas.length > 0) ? lojas[0]?.razao_social || 'Nome não disponível' : 'Nome não disponível';
+    // Restante do código permanece igual...
+    const formatarCNPJParaModal = (cnpj) => {
+      if (!cnpj) return 'N/A';
+      const cnpjLimpo = cnpj.replace(/\D/g, '');
+      if (cnpjLimpo.length === 14) {
+        return cnpjLimpo.replace(/^(\d{2})(\d{3})(\d{3})(\d{4})(\d{2})/, '$1.$2.$3/$4-$5');
+      }
+      return cnpj;
+    };
+
+    const cnpjFormatado = formatarCNPJParaModal(cnpj);
+    const primeiraLoja = lojas && lojas.length > 0 ? lojas[0] : null;
+    const razaoSocial = primeiraLoja ? primeiraLoja.razao_social : 'N/A';
 
     content.innerHTML = `
-      <!-- Header Profissional do CNPJ - TEXTO ALTERADO -->
+      <!-- Header Profissional do CNPJ -->
       <div class="modal-cnpj-header-profissional">
         <div class="cnpj-header-content">
           <div class="cnpj-icon">
@@ -3039,8 +3027,8 @@ function exibirModalFornecedores(cnpj, lojas) {
           </div>
           <div class="cnpj-info">
             <h3 class="cnpj-title">CNPJ</h3>
-            <div class="cnpj-number">${formatarCNPJParaModal(cnpj)}</div>
-            <div class="cnpj-subtitle">${nomeEmpresa}</div>
+            <div class="cnpj-number">${cnpjFormatado}</div>
+            <div class="cnpj-subtitle">${razaoSocial}</div>
           </div>
           <div class="cnpj-badge">
             <span class="lojas-count">${lojas ? lojas.length : 0}</span>
@@ -3060,9 +3048,8 @@ function exibirModalFornecedores(cnpj, lojas) {
       </div>
     `;
     
-    hideLoading();
     modal.style.display = 'flex';
-  }, 500);
+    hideLoadingPopup();
 }
 
 // ADICIONE ESTA FUNÇÃO NO FINAL DO SEU CÓDIGO (antes do fechamento da tag script)
@@ -3263,44 +3250,85 @@ function criarLinhaTabelaAgrupada(grupo) {
   const etapaMaisAntigo = fornecedorMaisAntigo.etapa || 'N/A';
   const nomeFornecedorAntigo = fornecedorMaisAntigo.fornecedor || 'N/A';
 
+  // VERIFICAR SE DEVE MOSTRAR HORA E FORNECEDOR
+  const mostrarHoraFornecedor = situacaoPrincipal === 'EM ANDAMENTO' || situacaoPrincipal === 'NOVO REGISTRO';
+
   let ultimaEtapaInfo = '';
+  
   if (dataHoraCorrigida !== 'N/A') {
     if (dataHoraCorrigida.includes('/') && dataHoraCorrigida.includes(':')) {
       const [dataPart, horaPart] = dataHoraCorrigida.split(' ');
+      
+      if (mostrarHoraFornecedor) {
+        // MOSTRAR ETAPA, HORA E FORNECEDOR (EM ANDAMENTO e NOVO REGISTRO)
+        ultimaEtapaInfo = `
+          <div style="font-size: 0.75rem;">
+            <div style="font-weight: 500; margin-bottom: 2px;">${etapaMaisAntigo}</div>
+            <div style="color: var(--gray); font-size: 0.65rem;">
+              ${dataPart} ${horaPart}
+            </div>
+            <div style="color: var(--danger); font-size: 0.6rem; margin-top: 2px;">
+              ⚠️ ${nomeFornecedorAntigo}
+            </div>
+          </div>
+        `;
+      } else {
+        // MOSTRAR APENAS A ETAPA (outras situações)
+        ultimaEtapaInfo = `
+          <div style="font-size: 0.75rem;">
+            <div style="font-weight: 500; margin-bottom: 2px;">${etapaMaisAntigo}</div>
+            <div style="color: var(--gray); font-size: 0.65rem;">
+              Finalizado
+            </div>
+          </div>
+        `;
+      }
+    } else {
+      if (mostrarHoraFornecedor) {
+        // MOSTRAR ETAPA E FORNECEDOR (sem hora válida)
+        ultimaEtapaInfo = `
+          <div style="font-size: 0.75rem;">
+            <div style="font-weight: 500; margin-bottom: 2px;">${etapaMaisAntigo}</div>
+            <div style="color: var(--gray); font-size: 0.65rem;">${dataHoraCorrigida}</div>
+            <div style="color: var(--danger); font-size: 0.6rem; margin-top: 2px;">
+              ⚠️ ${nomeFornecedorAntigo}
+            </div>
+          </div>
+        `;
+      } else {
+        // MOSTRAR APENAS A ETAPA
+        ultimaEtapaInfo = `
+          <div style="font-size: 0.75rem;">
+            <div style="font-weight: 500; margin-bottom: 2px;">${etapaMaisAntigo}</div>
+            <div style="color: var(--gray); font-size: 0.65rem;">Etapa registrada</div>
+          </div>
+        `;
+      }
+    }
+  } else {
+    if (mostrarHoraFornecedor) {
+      // MOSTRAR ETAPA E FORNECEDOR (sem data)
       ultimaEtapaInfo = `
         <div style="font-size: 0.75rem;">
           <div style="font-weight: 500; margin-bottom: 2px;">${etapaMaisAntigo}</div>
-          <div style="color: var(--gray); font-size: 0.65rem;">
-            ${dataPart} ${horaPart}
-          </div>
+          <div style="color: var(--gray); font-size: 0.65rem;">N/A</div>
           <div style="color: var(--danger); font-size: 0.6rem; margin-top: 2px;">
             ⚠️ ${nomeFornecedorAntigo}
           </div>
         </div>
       `;
     } else {
+      // MOSTRAR APENAS A ETAPA
       ultimaEtapaInfo = `
         <div style="font-size: 0.75rem;">
           <div style="font-weight: 500; margin-bottom: 2px;">${etapaMaisAntigo}</div>
-          <div style="color: var(--gray); font-size: 0.65rem;">${dataHoraCorrigida}</div>
-          <div style="color: var(--danger); font-size: 0.6rem; margin-top: 2px;">
-            ⚠️ ${nomeFornecedorAntigo}
-          </div>
+          <div style="color: var(--gray); font-size: 0.65rem;">Sem informações</div>
         </div>
       `;
     }
-  } else {
-    ultimaEtapaInfo = `
-      <div style="font-size: 0.75rem;">
-        <div style="font-weight: 500; margin-bottom: 2px;">${etapaMaisAntigo}</div>
-        <div style="color: var(--gray); font-size: 0.65rem;">N/A</div>
-        <div style="color: var(--danger); font-size: 0.6rem; margin-top: 2px;">
-          ⚠️ ${nomeFornecedorAntigo}
-        </div>
-      </div>
-    `;
   }
 
+  // Restante do código permanece igual...
   const temLojaEmAndamento = grupo.lojas.some(loja => 
     loja.situacao && loja.situacao.toUpperCase() === 'EM ANDAMENTO'
   );
@@ -3380,6 +3408,7 @@ function encontrarFornecedorMaisAntigo(lojasDoCNPJ) {
     return { fornecedor: 'N/A', data: 'N/A', etapa: 'N/A', dias: 9999 };
   }
   
+  // Primeiro, tente encontrar uma loja com data válida
   const lojasComData = lojasDoCNPJ.filter(loja => {
     if (!loja.ultima_etapa || loja.ultima_etapa === 'N/A') return false;
     
@@ -3391,28 +3420,45 @@ function encontrarFornecedorMaisAntigo(lojasDoCNPJ) {
     }
   });
   
-  if (lojasComData.length === 0) {
-    return { fornecedor: 'N/A', data: 'N/A', etapa: 'N/A', dias: 9999 };
+  if (lojasComData.length > 0) {
+    const lojaMaisAntiga = lojasComData.reduce((maisAntiga, atual) => {
+      try {
+        const dataMaisAntiga = new Date(maisAntiga.ultima_etapa.split('/').reverse().join('-'));
+        const dataAtual = new Date(atual.ultima_etapa.split('/').reverse().join('-'));
+        
+        return dataAtual < dataMaisAntiga ? atual : maisAntiga;
+      } catch (error) {
+        return maisAntiga;
+      }
+    });
+    
+    const diasDefasagem = calcularDiasDefasagem(lojaMaisAntiga.ultima_etapa);
+    
+    return {
+      fornecedor: lojaMaisAntiga.fornecedor,
+      data: lojaMaisAntiga.ultima_etapa,
+      etapa: lojaMaisAntiga.etapa,
+      dias: diasDefasagem
+    };
   }
   
-  const lojaMaisAntiga = lojasComData.reduce((maisAntiga, atual) => {
-    try {
-      const dataMaisAntiga = new Date(maisAntiga.ultima_etapa.split('/').reverse().join('-'));
-      const dataAtual = new Date(atual.ultima_etapa.split('/').reverse().join('-'));
-      
-      return dataAtual < dataMaisAntiga ? atual : maisAntiga;
-    } catch (error) {
-      return maisAntiga;
-    }
-  });
+  // Se não encontrar lojas com data, retorne a primeira loja que tenha etapa
+  const lojaComEtapa = lojasDoCNPJ.find(loja => loja.etapa && loja.etapa !== 'N/A');
+  if (lojaComEtapa) {
+    return {
+      fornecedor: lojaComEtapa.fornecedor,
+      data: 'N/A',
+      etapa: lojaComEtapa.etapa,
+      dias: 9999
+    };
+  }
   
-  const diasDefasagem = calcularDiasDefasagem(lojaMaisAntiga.ultima_etapa);
-  
+  // Último recurso: retorne a primeira loja
   return {
-    fornecedor: lojaMaisAntiga.fornecedor,
-    data: lojaMaisAntiga.ultima_etapa,
-    etapa: lojaMaisAntiga.etapa,
-    dias: diasDefasagem
+    fornecedor: lojasDoCNPJ[0].fornecedor,
+    data: 'N/A',
+    etapa: lojasDoCNPJ[0].etapa || 'N/A',
+    dias: 9999
   };
 }
 
