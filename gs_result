@@ -63,7 +63,7 @@ function doGet() {
   return htmlOutput;
 }
 
-// 🔥🔥🔥 BUSCAR TODOS OS CADASTROS - VERSÃO CORRIGIDA PARA USAR ETAPAS
+// 🔥🔥🔥 BUSCAR TODOS OS CADASTROS - VERSÃO CORRIGIDA COM FUSO HORÁRIO
 function buscarTodosCadastrosComWaitlabel(waitlabel) {
   try {
     console.log("🔍 [VISUALIZAÇÃO] Buscando dados no waitlabel:", waitlabel);
@@ -92,12 +92,15 @@ function buscarTodosCadastrosComWaitlabel(waitlabel) {
       
       if (!linha || !linha[0] || linha[0].toString().trim() === '') continue;
 
-      // 🔥🔥🔥 CORREÇÃO CRÍTICA: Processamento SIMPLIFICADO de datas
+      // 🔥🔥🔥 CORREÇÃO CRÍTICA: Processamento CORRETO de datas COM FUSO HORÁRIO
       let ultimaEtapaFormatada = linha[4] ? linha[4].toString() : '';
       
-      // Se é Date, formatar corretamente
+      // Se é Date, formatar corretamente SUBTRAINDO 5 HORAS
       if (linha[4] instanceof Date) {
-        ultimaEtapaFormatada = Utilities.formatDate(linha[4], CONFIG_FILHA.TIMEZONE, "dd/MM/yyyy HH:mm:ss");
+        // 🔥 CORREÇÃO DO FUSO: Subtrair 5 horas para UTC → Brasília
+        const dataUTC = linha[4];
+        const dataBrasilia = new Date(dataUTC.getTime() - (5 * 60 * 60 * 1000));
+        ultimaEtapaFormatada = Utilities.formatDate(dataBrasilia, CONFIG_FILHA.TIMEZONE, "dd/MM/yyyy HH:mm:ss");
       }
       
       let ativacaoFormatada = linha[9] ? linha[9].toString() : '';
@@ -181,7 +184,7 @@ function buscarTodosCadastrosComWaitlabel(waitlabel) {
   }
 }
 
-// 🔥🔥🔥 BUSCAR CADASTRO POR ID - VERSÃO CORRIGIDA PARA USAR ETAPAS
+// 🔥🔥🔥 BUSCAR CADASTRO POR ID - VERSÃO CORRIGIDA COM FUSO HORÁRIO
 function buscarCadastroPorIDComWaitlabel(id, waitlabel) {
   try {
     console.log("🔍 [VISUALIZAÇÃO] Buscando cadastro por ID:", id, "no waitlabel:", waitlabel);
@@ -203,12 +206,15 @@ function buscarCadastroPorIDComWaitlabel(id, waitlabel) {
     console.log("🔍 Coluna E [4] - Última etapa:", linha[4], "Tipo:", typeof linha[4]);
     console.log("🔍 Coluna J [9] - Ativação:", linha[9], "Tipo:", typeof linha[9]);
 
-    // 🔥🔥🔥 CORREÇÃO CRÍTICA: Processamento DIRETO das datas
+    // 🔥🔥🔥 CORREÇÃO CRÍTICA: Processamento CORRETO das datas COM FUSO HORÁRIO
     let ultimaEtapaFormatada = linha[4] ? linha[4].toString() : '';
     
-    // Se é Date, formatar mantendo o formato brasileiro
+    // Se é Date, formatar SUBTRAINDO 5 HORAS para correção do fuso
     if (linha[4] instanceof Date) {
-      ultimaEtapaFormatada = Utilities.formatDate(linha[4], CONFIG_FILHA.TIMEZONE, "dd/MM/yyyy HH:mm:ss");
+      // 🔥 CORREÇÃO DO FUSO: Subtrair 5 horas para UTC → Brasília
+      const dataUTC = linha[4];
+      const dataBrasilia = new Date(dataUTC.getTime() - (5 * 60 * 60 * 1000));
+      ultimaEtapaFormatada = Utilities.formatDate(dataBrasilia, CONFIG_FILHA.TIMEZONE, "dd/MM/yyyy HH:mm:ss");
     }
     
     let ativacaoFormatada = '';
@@ -453,10 +459,13 @@ function testarDatasVisualizacao() {
       const ultimaEtapaOriginal = linha[4]; // 🔥 MUDOU: ultima_etapa
       const ativacaoOriginal = linha[9];
       
-      // Processar como na função corrigida
+      // Processar como na função corrigida COM FUSO HORÁRIO
       let ultimaEtapaFormatada = ultimaEtapaOriginal ? ultimaEtapaOriginal.toString() : '';
       if (ultimaEtapaOriginal instanceof Date) {
-        ultimaEtapaFormatada = Utilities.formatDate(ultimaEtapaOriginal, CONFIG_FILHA.TIMEZONE, "dd/MM/yyyy HH:mm:ss");
+        // 🔥 CORREÇÃO DO FUSO: Subtrair 5 horas para UTC → Brasília
+        const dataUTC = ultimaEtapaOriginal;
+        const dataBrasilia = new Date(dataUTC.getTime() - (5 * 60 * 60 * 1000));
+        ultimaEtapaFormatada = Utilities.formatDate(dataBrasilia, CONFIG_FILHA.TIMEZONE, "dd/MM/yyyy HH:mm:ss");
       }
       
       let ativacaoFormatada = '';
@@ -525,7 +534,7 @@ function testar() {
   return { 
     success: true, 
     message: "✅ Sistema de VISUALIZAÇÃO funcionando!",
-    modo: "Somente leitura - CORRIGIDO PARA ETAPAS",
+    modo: "Somente leitura - CORRIGIDO PARA ETAPAS E FUSO HORÁRIO",
     waitlabel: CONFIG_FILHA.WAITLABEL_FILHA,
     totalCadastros: totalCadastros,
     etapas_validas: filtros.etapasValidas, // 🔥 NOVO: mostrar etapas válidas
@@ -533,4 +542,26 @@ function testar() {
     teste_datas: testeDatas,
     timestamp: new Date().toISOString()
   };
+}
+
+// 🔥🔥🔥 FUNÇÃO PARA BUSCAR POR CNPJ - ADICIONADA PARA COMPLETAR
+function buscarTodosCadastrosPorCNPJComWaitlabel(cnpj, waitlabel) {
+  try {
+    const cadastros = buscarTodosCadastrosComWaitlabel(waitlabel);
+    const cnpjBuscado = cnpj.toString().replace(/\D/g, '');
+    const cadastrosEncontrados = [];
+    
+    for (const cadastro of cadastros) {
+      const cnpjCadastro = cadastro.cnpj?.toString().replace(/\D/g, '') || '';
+      if (cnpjCadastro === cnpjBuscado) {
+        cadastrosEncontrados.push(cadastro);
+      }
+    }
+    
+    return cadastrosEncontrados;
+    
+  } catch (error) {
+    console.error("❌ Erro em buscarTodosCadastrosPorCNPJComWaitlabel:", error);
+    return [];
+  }
 }
