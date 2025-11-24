@@ -2899,42 +2899,13 @@ function fecharModalDetalhes() {
   modal.style.display = 'none';
 }
 
-// FUNÇÕES AUXILIARES
 function corrigirHoraFrontend(dataHoraString) {
     if (!dataHoraString || !dataHoraString.includes('/') || !dataHoraString.includes(':')) {
         return dataHoraString;
     }
     
-    try {
-        const [dataPart, horaPart] = dataHoraString.split(' ');
-        const [dia, mes, ano] = dataPart.split('/');
-        const [hora, minuto, segundo] = horaPart.split(':');
-        
-        const dataOriginal = new Date(
-            parseInt(ano),
-            parseInt(mes) - 1,
-            parseInt(dia),
-            parseInt(hora),
-            parseInt(minuto), 
-            parseInt(segundo)
-        );
-        
-        const dataCorrigida = new Date(dataOriginal.getTime() - (4 * 60 * 60 * 1000));
-        
-        const diaCorrigido = String(dataCorrigida.getDate()).padStart(2, '0');
-        const mesCorrigido = String(dataCorrigida.getMonth() + 1).padStart(2, '0');
-        const anoCorrigido = dataCorrigida.getFullYear();
-        const horaCorrigida = String(dataCorrigida.getHours()).padStart(2, '0');
-        const minutoCorrigido = String(dataCorrigida.getMinutes()).padStart(2, '0');
-        const segundoCorrigido = String(dataCorrigida.getSeconds()).padStart(2, '0');
-        
-        const resultado = `${diaCorrigido}/${mesCorrigido}/${anoCorrigido} ${horaCorrigida}:${minutoCorrigido}:${segundoCorrigido}`;
-        
-        return resultado;
-        
-    } catch (error) {
-        return dataHoraString;
-    }
+    // 🔥 CORREÇÃO: NÃO FAZER NADA - AS DATAS JÁ VÊM CORRETAS DO BACKEND
+    return dataHoraString;
 }
 
 function formatarDataAtivacao(data) {
