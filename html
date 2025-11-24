@@ -2763,7 +2763,18 @@ function aplicarTodosFiltros() {
   }
   
   cadastrosFiltrados = resultado;
-  exibirTabelaCadastrosAgrupada(agruparCadastrosPorCNPJ(cadastrosFiltrados), 'Cadastros Filtrados');
+  
+  // SEMPRE ORDENAR POR RAZÃO SOCIAL (A-Z) APÓS APLICAR FILTROS
+  const cadastrosAgrupados = agruparCadastrosPorCNPJ(cadastrosFiltrados);
+  
+  // Ordenar por Razão Social (A-Z)
+  cadastrosAgrupados.sort((a, b) => {
+    const razaoA = a.razao_social || '';
+    const razaoB = b.razao_social || '';
+    return razaoA.localeCompare(razaoB, 'pt-BR', { sensitivity: 'base' });
+  });
+  
+  exibirTabelaCadastrosAgrupada(cadastrosAgrupados, 'Cadastros Filtrados');
 }
 
 function aplicarFiltroSituacao(situacao) {
@@ -2790,6 +2801,9 @@ function aplicarFiltroSituacao(situacao) {
   } else {
     filtrosAtivos.situacao = situacaoAtiva;
   }
+  
+  // GARANTIR QUE SEMPRE ORDENE POR RAZÃO SOCIAL AO FILTRAR
+  document.getElementById('ordenacaoCadastros').value = 'razao_social';
   aplicarTodosFiltros();
 }
 
@@ -2800,6 +2814,7 @@ function limparTodosFiltros() {
   fornecedoresSelecionados = [];
   document.getElementById('pesquisaCadastros').value = '';
   
+  // SEMPRE VOLTAR PARA ORDENAÇÃO POR RAZÃO SOCIAL
   document.getElementById('ordenacaoCadastros').value = 'razao_social';
   
   document.getElementById('filtroEtapa').value = '';
@@ -2814,10 +2829,6 @@ function limparTodosFiltros() {
   atualizarFornecedoresSelecionados();
   
   aplicarTodosFiltros();
-  
-  setTimeout(() => {
-    ordenarCadastros();
-  }, 100);
 }
 
 function formatarCNPJ(input) {
@@ -3549,6 +3560,9 @@ function filtrarPesquisa() {
   } else {
     delete filtrosAtivos.pesquisa;
   }
+  
+  // GARANTIR ORDENAÇÃO POR RAZÃO SOCIAL NA PESQUISA
+  document.getElementById('ordenacaoCadastros').value = 'razao_social';
   aplicarTodosFiltros();
 }
 
@@ -3560,29 +3574,21 @@ function ordenarCadastros() {
   cadastrosAgrupados.sort((a, b) => {
     switch(criterio) {
       case 'razao_social':
-        return (a.razao_social || '').localeCompare(b.razao_social || '');
+        return (a.razao_social || '').localeCompare(b.razao_social || '', 'pt-BR', { sensitivity: 'base' });
       case 'razao_social_desc':
-        return (b.razao_social || '').localeCompare(a.razao_social || '');
+        return (b.razao_social || '').localeCompare(a.razao_social || '', 'pt-BR', { sensitivity: 'base' });
       case 'nome_fantasia':
-        return (a.nome_fantasia || '').localeCompare(b.nome_fantasia || '');
+        return (a.nome_fantasia || '').localeCompare(b.nome_fantasia || '', 'pt-BR', { sensitivity: 'base' });
       case 'nome_fantasia_desc':
-        return (b.nome_fantasia || '').localeCompare(a.nome_fantasia || '');
+        return (b.nome_fantasia || '').localeCompare(a.nome_fantasia || '', 'pt-BR', { sensitivity: 'base' });
       case 'situacao':
         const situacaoA = a.lojas[0]?.situacao || '';
         const situacaoB = b.lojas[0]?.situacao || '';
-        return situacaoA.localeCompare(situacaoB);
+        return situacaoA.localeCompare(situacaoB, 'pt-BR', { sensitivity: 'base' });
       case 'fornecedor':
         const fornecedorA = a.lojas[0]?.fornecedor || '';
         const fornecedorB = b.lojas[0]?.fornecedor || '';
-        return fornecedorA.localeCompare(fornecedorB);
-      case 'defasagem':
-        const defasagemA = calcularDefasagemParaOrdenacao(a.lojas);
-        const defasagemB = calcularDefasagemParaOrdenacao(b.lojas);
-        return defasagemB - defasagemA;
-      case 'defasagem_asc':
-        const defasagemAAsc = calcularDefasagemParaOrdenacao(a.lojas);
-        const defasagemBAsc = calcularDefasagemParaOrdenacao(b.lojas);
-        return defasagemAAsc - defasagemBAsc;
+        return fornecedorA.localeCompare(fornecedorB, 'pt-BR', { sensitivity: 'base' });
       case 'mensalidade':
         const mensalidadeA = parseFloat(a.lojas[0]?.mensalidade || 0);
         const mensalidadeB = parseFloat(b.lojas[0]?.mensalidade || 0);
@@ -3599,6 +3605,14 @@ function ordenarCadastros() {
         const adesaoAAsc = a.lojas[0]?.adesao === 'Isento' || a.lojas[0]?.adesao === 0 ? 0 : parseFloat(a.lojas[0]?.adesao || 0);
         const adesaoBAsc = b.lojas[0]?.adesao === 'Isento' || b.lojas[0]?.adesao === 0 ? 0 : parseFloat(b.lojas[0]?.adesao || 0);
         return adesaoAAsc - adesaoBAsc;
+      case 'defasagem':
+        const defasagemA = calcularDefasagemParaOrdenacao(a.lojas);
+        const defasagemB = calcularDefasagemParaOrdenacao(b.lojas);
+        return defasagemB - defasagemA;
+      case 'defasagem_asc':
+        const defasagemAAsc = calcularDefasagemParaOrdenacao(a.lojas);
+        const defasagemBAsc = calcularDefasagemParaOrdenacao(b.lojas);
+        return defasagemAAsc - defasagemBAsc;
       default:
         return 0;
     }
@@ -4877,6 +4891,7 @@ function restaurarFiltros(filtrosSalvos) {
     }, 100);
   }
 }
+
 function mostrarTodosCadastros() {
   mostrarPopupCarregandoLojas();
   
@@ -4899,12 +4914,21 @@ function mostrarTodosCadastros() {
         todosCadastros = cadastros;
         cadastrosFiltrados = [...cadastros];
         
-        // ORDENAR POR RAZÃO SOCIAL (A-Z) AO CARREGAR
-        document.getElementById('ordenacaoCadastros').value = 'razao_social';
-        ordenarCadastros(); // 👈🏼 ADICIONE ESTA LINHA
+        // ORDENAR POR RAZÃO SOCIAL (A-Z) AO CARREGAR - CORREÇÃO AQUI
+        const cadastrosAgrupados = agruparCadastrosPorCNPJ(cadastrosFiltrados);
         
-        aplicarTodosFiltros();
+        // Ordenar por Razão Social (A-Z)
+        cadastrosAgrupados.sort((a, b) => {
+          const razaoA = a.razao_social || '';
+          const razaoB = b.razao_social || '';
+          return razaoA.localeCompare(razaoB, 'pt-BR', { sensitivity: 'base' });
+        });
+        
+        // Exibir os dados ordenados
+        exibirTabelaCadastrosAgrupada(cadastrosAgrupados, 'Todos os Cadastros');
+        
         document.getElementById('filtrosContainer').style.display = 'flex';
+        document.getElementById('ordenacaoCadastros').value = 'razao_social';
         
         showMessage('success', `✅ ${cadastros.length} cadastros carregados do ${formatarNomeWaitlabel(waitlabelAtual)}!`);
       } else {
