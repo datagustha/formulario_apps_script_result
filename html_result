@@ -2064,7 +2064,7 @@ function encontrarFornecedorMaisAntigo(lojasDoCNPJ) {
   };
 }
 
-// FUNÇÃO criarLinhaTabelaAgrupada COMPLETA
+// FUNÇÃO criarLinhaTabelaAgrupada COMPLETA - COM A LÓGICA CORRIGIDA
 function criarLinhaTabelaAgrupada(grupo) {
   const row = document.createElement('tr');
   
@@ -2093,6 +2093,85 @@ function criarLinhaTabelaAgrupada(grupo) {
 
   const etapaMaisAntiga = fornecedorMaisAntigo.etapa || 'N/A';
   const nomeFornecedorAntigo = fornecedorMaisAntigo.fornecedor || 'N/A';
+
+  // VERIFICAR SE DEVE MOSTRAR HORA E FORNECEDOR
+  const mostrarHoraFornecedor = situacaoPrincipal === 'EM ANDAMENTO' || situacaoPrincipal === 'NOVO REGISTRO';
+
+  // LÓGICA PARA ÚLTIMA ETAPA - MOSTRAR HORA/FORNECEDOR APENAS PARA EM ANDAMENTO E NOVO REGISTRO
+  let ultimaEtapaInfo = '';
+  
+  if (dataHoraCorrigida !== 'N/A' && etapaMaisAntiga !== 'N/A') {
+    if (dataHoraCorrigida.includes('/') && dataHoraCorrigida.includes(':')) {
+      const [dataPart, horaPart] = dataHoraCorrigida.split(' ');
+      
+      if (mostrarHoraFornecedor) {
+        // MOSTRAR ETAPA, HORA E FORNECEDOR (EM ANDAMENTO e NOVO REGISTRO)
+        ultimaEtapaInfo = `
+          <div style="font-size: 0.75rem;">
+            <div style="font-weight: 500; margin-bottom: 2px;">${etapaMaisAntiga}</div>
+            <div style="color: var(--gray); font-size: 0.65rem;">
+              ${dataPart} ${horaPart || ''}
+            </div>
+            <div style="color: var(--danger); font-size: 0.6rem; margin-top: 2px;">
+              ⚠️ ${nomeFornecedorAntigo}
+            </div>
+          </div>
+        `;
+      } else {
+        // MOSTRAR APENAS A ETAPA (outras situações)
+        ultimaEtapaInfo = `
+          <div style="font-size: 0.75rem;">
+            <div style="font-weight: 500; margin-bottom: 2px;">${etapaMaisAntiga}</div>
+            <div style="color: var(--gray); font-size: 0.65rem;">
+              Finalizado
+            </div>
+          </div>
+        `;
+      }
+    } else {
+      if (mostrarHoraFornecedor) {
+        // MOSTRAR ETAPA E FORNECEDOR (sem hora válida)
+        ultimaEtapaInfo = `
+          <div style="font-size: 0.75rem;">
+            <div style="font-weight: 500; margin-bottom: 2px;">${etapaMaisAntiga}</div>
+            <div style="color: var(--gray); font-size: 0.65rem;">${dataHoraCorrigida}</div>
+            <div style="color: var(--danger); font-size: 0.6rem; margin-top: 2px;">
+              ⚠️ ${nomeFornecedorAntigo}
+            </div>
+          </div>
+        `;
+      } else {
+        // MOSTRAR APENAS A ETAPA
+        ultimaEtapaInfo = `
+          <div style="font-size: 0.75rem;">
+            <div style="font-weight: 500; margin-bottom: 2px;">${etapaMaisAntiga}</div>
+            <div style="color: var(--gray); font-size: 0.65rem;">Etapa registrada</div>
+          </div>
+        `;
+      }
+    }
+  } else {
+    if (mostrarHoraFornecedor) {
+      // MOSTRAR ETAPA E FORNECEDOR (sem data)
+      ultimaEtapaInfo = `
+        <div style="font-size: 0.75rem;">
+          <div style="font-weight: 500; margin-bottom: 2px;">${etapaMaisAntiga}</div>
+          <div style="color: var(--gray); font-size: 0.65rem;">N/A</div>
+          <div style="color: var(--danger); font-size: 0.6rem; margin-top: 2px;">
+            ⚠️ ${nomeFornecedorAntigo}
+          </div>
+        </div>
+      `;
+    } else {
+      // MOSTRAR APENAS A ETAPA
+      ultimaEtapaInfo = `
+        <div style="font-size: 0.75rem;">
+          <div style="font-weight: 500; margin-bottom: 2px;">${etapaMaisAntiga}</div>
+          <div style="color: var(--gray); font-size: 0.65rem;">Sem informações</div>
+        </div>
+      `;
+    }
+  }
 
   // CORREÇÃO: SÓ MOSTRAR DEFASAGEM SE HOUVER LOJA EM ANDAMENTO
   const temLojaEmAndamento = grupo.lojas.some(loja => 
@@ -2125,33 +2204,6 @@ function criarLinhaTabelaAgrupada(grupo) {
           </span>
         </div>
       </td>
-    `;
-  }
-
-  // AGORA MOSTRA DATA E HORA CORRIGIDA OU INFORMAÇÃO BÁSICA
-  let ultimaEtapaInfo = '';
-  if (dataHoraCorrigida !== 'N/A' && etapaMaisAntiga !== 'N/A') {
-    const [dataPart, horaPart] = dataHoraCorrigida.split(' ');
-    ultimaEtapaInfo = `
-      <div style="font-size: 0.75rem;">
-        <div style="font-weight: 500; margin-bottom: 2px;">${etapaMaisAntiga}</div>
-        <div style="color: var(--gray); font-size: 0.65rem;">
-          ${dataPart} ${horaPart || ''}
-        </div>
-        <div style="color: var(--danger); font-size: 0.6rem; margin-top: 2px;">
-          ⚠️ ${nomeFornecedorAntigo}
-        </div>
-      </div>
-    `;
-  } else {
-    ultimaEtapaInfo = `
-      <div style="font-size: 0.75rem;">
-        <div style="font-weight: 500; margin-bottom: 2px;">${etapaMaisAntiga}</div>
-        <div style="color: var(--gray); font-size: 0.65rem;">Sem data registrada</div>
-        <div style="color: var(--info); font-size: 0.6rem; margin-top: 2px;">
-          📝 ${nomeFornecedorAntigo}
-        </div>
-      </div>
     `;
   }
 
@@ -2195,6 +2247,7 @@ function criarLinhaTabelaAgrupada(grupo) {
 
   return row;
 }
+
 
 // FUNÇÃO CORRIGIDA: Calcular defasagem correta por CNPJ
 function calcularDefasagemPorCNPJ(lojasDoCNPJ) {
