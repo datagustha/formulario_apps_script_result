@@ -1298,7 +1298,7 @@
           <div class="filtro-group">
             <label class="filtro-label">📊 Ordenar por:</label>
             <select id="ordenacaoCadastros" class="form-select" onchange="ordenarCadastros()">
-              <option value="razao_social">Razão Social (A-Z)</option>
+              <option value="razao_social" selected>Razão Social (A-Z)</option>
               <option value="razao_social_desc">Razão Social (Z-A)</option>
               <option value="nome_fantasia">Nome Fantasia (A-Z)</option>
               <option value="nome_fantasia_desc">Nome Fantasia (Z-A)</option>
@@ -1467,7 +1467,6 @@ function showLoadingPopup(texto, subtexto) {
   
   popup.style.display = 'flex';
 }
-
 
 function hideLoadingPopup() {
   const popup = document.getElementById('loadingPopup');
@@ -1788,6 +1787,135 @@ function aplicarFiltroFornecedores() {
   aplicarTodosFiltros();
 }
 
+// FUNÇÃO CORRIGIDA: ENCONTRAR FORNECEDOR MAIS ATRASADO COM PRIORIDADE
+function encontrarFornecedorMaisAntigo(lojasDoCNPJ) {
+  if (!lojasDoCNPJ || lojasDoCNPJ.length === 0) {
+    return { fornecedor: 'N/A', data: 'N/A', etapa: 'N/A', dias: 9999 };
+  }
+  
+  // Primeiro, verificar se há alguma loja com situação prioritária
+  const situacoesPrioritarias = ['EM ANDAMENTO', 'NOVO REGISTRO'];
+  
+  // Buscar por situações prioritárias
+  for (const situacao of situacoesPrioritarias) {
+    const lojasPrioritarias = lojasDoCNPJ.filter(loja => 
+      loja.situacao && loja.situacao.toUpperCase() === situacao
+    );
+    
+    if (lojasPrioritarias.length > 0) {
+      // Entre as prioritárias, pegar a mais antiga
+      const lojasComData = lojasPrioritarias.filter(loja => {
+        if (!loja.ultima_etapa || loja.ultima_etapa === 'N/A') return false;
+        try {
+          const data = new Date(loja.ultima_etapa.split('/').reverse().join('-'));
+          return !isNaN(data.getTime());
+        } catch (error) {
+          return false;
+        }
+      });
+      
+      if (lojasComData.length > 0) {
+        const lojaMaisAntiga = lojasComData.reduce((maisAntiga, atual) => {
+          try {
+            const dataMaisAntiga = new Date(maisAntiga.ultima_etapa.split('/').reverse().join('-'));
+            const dataAtual = new Date(atual.ultima_etapa.split('/').reverse().join('-'));
+            return dataAtual < dataMaisAntiga ? atual : maisAntiga;
+          } catch (error) {
+            return maisAntiga;
+          }
+        });
+        
+        const diasDefasagem = calcularDiasDefasagem(lojaMaisAntiga.ultima_etapa);
+        return {
+          fornecedor: lojaMaisAntiga.fornecedor,
+          data: lojaMaisAntiga.ultima_etapa,
+          etapa: lojaMaisAntiga.etapa,
+          dias: diasDefasagem,
+          situacao: lojaMaisAntiga.situacao
+        };
+      } else if (lojasPrioritarias.length > 0) {
+        // Se não tem data válida, retorna a primeira prioritária
+        return {
+          fornecedor: lojasPrioritarias[0].fornecedor,
+          data: 'N/A',
+          etapa: lojasPrioritarias[0].etapa || 'N/A',
+          dias: 9999,
+          situacao: lojasPrioritarias[0].situacao
+        };
+      }
+    }
+  }
+  
+  // Se não há situações prioritárias, usar a lógica original (mais antiga)
+  const lojasComData = lojasDoCNPJ.filter(loja => {
+    if (!loja.ultima_etapa || loja.ultima_etapa === 'N/A') return false;
+    try {
+      const data = new Date(loja.ultima_etapa.split('/').reverse().join('-'));
+      return !isNaN(data.getTime());
+    } catch (error) {
+      return false;
+    }
+  });
+  
+  if (lojasComData.length > 0) {
+    const lojaMaisAntiga = lojasComData.reduce((maisAntiga, atual) => {
+      try {
+        const dataMaisAntiga = new Date(maisAntiga.ultima_etapa.split('/').reverse().join('-'));
+        const dataAtual = new Date(atual.ultima_etapa.split('/').reverse().join('-'));
+        return dataAtual < dataMaisAntiga ? atual : maisAntiga;
+      } catch (error) {
+        return maisAntiga;
+      }
+    });
+    
+    const diasDefasagem = calcularDiasDefasagem(lojaMaisAntiga.ultima_etapa);
+    return {
+      fornecedor: lojaMaisAntiga.fornecedor,
+      data: lojaMaisAntiga.ultima_etapa,
+      etapa: lojaMaisAntiga.etapa,
+      dias: diasDefasagem,
+      situacao: lojaMaisAntiga.situacao
+    };
+  }
+  
+  // Se não encontrar lojas com data, retorne a primeira loja que tenha etapa
+  const lojaComEtapa = lojasDoCNPJ.find(loja => loja.etapa && loja.etapa !== 'N/A');
+  if (lojaComEtapa) {
+    return {
+      fornecedor: lojaComEtapa.fornecedor,
+      data: 'N/A',
+      etapa: lojaComEtapa.etapa,
+      dias: 9999,
+      situacao: lojaComEtapa.situacao
+    };
+  }
+  
+  // Último recurso: retorne a primeira loja
+  return {
+    fornecedor: lojasDoCNPJ[0].fornecedor,
+    data: 'N/A',
+    etapa: lojasDoCNPJ[0].etapa || 'N/A',
+    dias: 9999,
+    situacao: lojasDoCNPJ[0].situacao
+  };
+}
+
+// FUNÇÃO CORRIGIDA: Calcular defasagem correta por CNPJ
+function calcularDefasagemPorCNPJ(lojasDoCNPJ) {
+  if (!lojasDoCNPJ || lojasDoCNPJ.length === 0) {
+    return { dias: 9999, fornecedor: 'N/A', data: 'N/A', etapa: 'N/A' };
+  }
+  
+  const fornecedorMaisAntigo = encontrarFornecedorMaisAntigo(lojasDoCNPJ);
+  
+  return {
+    dias: fornecedorMaisAntigo.dias,
+    fornecedor: fornecedorMaisAntigo.fornecedor,
+    data: fornecedorMaisAntigo.data,
+    etapa: fornecedorMaisAntigo.etapa
+  };
+}
+
 function carregarCadastros() {
   console.log("🎯 Carregando cadastros...");
   
@@ -1815,6 +1943,7 @@ function carregarCadastros() {
       console.log("✅ Cadastros recebidos:", cadastros);
       
       if (cadastros && cadastros.length > 0) {
+        // ORDENAR POR RAZÃO SOCIAL (A-Z) AO CARREGAR
         const cadastrosOrdenados = cadastros.sort((a, b) => {
           const nomeA = (a.razao_social || '').toLowerCase();
           const nomeB = (b.razao_social || '').toLowerCase();
@@ -1923,37 +2052,6 @@ function restaurarFiltros(filtrosSalvos) {
   }
 }
 
-// EXIBIR TABELA AGRUPADA
-function exibirTabelaCadastros() {
-  const tabelaBody = document.getElementById('tabelaCadastrosBody');
-  const loading = document.getElementById('loadingCadastros');
-  const tableContainer = document.getElementById('tableContainer');
-
-  tabelaBody.innerHTML = '';
-
-  if (cadastrosFiltrados.length === 0) {
-    tabelaBody.innerHTML = `
-      <tr>
-        <td colspan="9" style="text-align: center; padding: 40px;">
-          <i class="fas fa-search" style="font-size: 3rem; color: var(--gray); margin-bottom: 15px;"></i>
-          <h3>Nenhum resultado encontrado</h3>
-          <p>Tente alterar os filtros de pesquisa.</p>
-        </td>
-      </tr>
-    `;
-  } else {
-    const cadastrosAgrupados = agruparCadastrosPorCNPJ(cadastrosFiltrados);
-    cadastrosAgrupados.forEach(grupo => {
-      const row = criarLinhaTabelaAgrupada(grupo);
-      tabelaBody.appendChild(row);
-    });
-  }
-
-  loading.style.display = 'none';
-  tableContainer.style.display = 'block';
-  atualizarContador();
-}
-
 // AGRUPAR CADASTROS POR CNPJ
 function agruparCadastrosPorCNPJ(cadastros) {
   const agrupados = {};
@@ -1974,108 +2072,28 @@ function agruparCadastrosPorCNPJ(cadastros) {
   return Object.values(agrupados);
 }
 
-// FUNÇÃO CORRIGIDA: ENCONTRAR FORNECEDOR MAIS ATRASADO
-function encontrarFornecedorMaisAntigo(lojasDoCNPJ) {
-  if (!lojasDoCNPJ || lojasDoCNPJ.length === 0) {
-    return { fornecedor: 'N/A', data: 'N/A', etapa: 'N/A', dias: 9999 };
-  }
-  
-  // FILTRAR APENAS LOJAS COM DATA VÁLIDA E EM ANDAMENTO
-  const lojasComDataValida = lojasDoCNPJ.filter(loja => {
-    if (!loja.ultima_etapa || loja.ultima_etapa === 'N/A' || loja.ultima_etapa === '') {
-      return false;
-    }
-    
-    let dataValida = false;
-    
-    try {
-      if (loja.ultima_etapa instanceof Date) {
-        dataValida = !isNaN(loja.ultima_etapa.getTime());
-      } 
-      else if (typeof loja.ultima_etapa === 'string' && loja.ultima_etapa.includes('/')) {
-        const [dataPart, horaPart] = loja.ultima_etapa.split(' ');
-        if (dataPart) {
-          const [dia, mes, ano] = dataPart.split('/');
-          const dataObj = new Date(parseInt(ano), parseInt(mes) - 1, parseInt(dia));
-          dataValida = !isNaN(dataObj.getTime());
-        }
-      }
-      else {
-        const dataObj = new Date(loja.ultima_etapa);
-        dataValida = !isNaN(dataObj.getTime());
-      }
-    } catch (error) {
-      dataValida = false;
-    }
-    
-    return dataValida;
-  });
-  
-  if (lojasComDataValida.length === 0) {
-    const primeiraLoja = lojasDoCNPJ[0];
-    return {
-      fornecedor: primeiraLoja?.fornecedor || 'N/A',
-      data: 'N/A',
-      etapa: primeiraLoja?.etapa || 'N/A',
-      dias: 9999
-    };
-  }
-  
-  // ENCONTRAR A LOJA COM DATA MAIS ANTIGA
-  const lojaMaisAntiga = lojasComDataValida.reduce((maisAntiga, atual) => {
-    try {
-      let dataMaisAntiga, dataAtual;
-      
-      // Converter data da mais antiga
-      if (maisAntiga.ultima_etapa instanceof Date) {
-        dataMaisAntiga = maisAntiga.ultima_etapa;
-      } else if (typeof maisAntiga.ultima_etapa === 'string' && maisAntiga.ultima_etapa.includes('/')) {
-        const [dataPart, horaPart] = maisAntiga.ultima_etapa.split(' ');
-        const [dia, mes, ano] = dataPart.split('/');
-        dataMaisAntiga = new Date(parseInt(ano), parseInt(mes) - 1, parseInt(dia));
-      } else {
-        dataMaisAntiga = new Date(maisAntiga.ultima_etapa);
-      }
-      
-      // Converter data da atual
-      if (atual.ultima_etapa instanceof Date) {
-        dataAtual = atual.ultima_etapa;
-      } else if (typeof atual.ultima_etapa === 'string' && atual.ultima_etapa.includes('/')) {
-        const [dataPart, horaPart] = atual.ultima_etapa.split(' ');
-        const [dia, mes, ano] = dataPart.split('/');
-        dataAtual = new Date(parseInt(ano), parseInt(mes) - 1, parseInt(dia));
-      } else {
-        dataAtual = new Date(atual.ultima_etapa);
-      }
-      
-      return dataAtual < dataMaisAntiga ? atual : maisAntiga;
-    } catch (error) {
-      return maisAntiga;
-    }
-  });
-  
-  const diasDefasagem = calcularDiasDefasagem(lojaMaisAntiga.ultima_etapa);
-  
-  return {
-    fornecedor: lojaMaisAntiga.fornecedor,
-    data: lojaMaisAntiga.ultima_etapa,
-    etapa: lojaMaisAntiga.etapa,
-    dias: diasDefasagem
-  };
-}
-
 // FUNÇÃO criarLinhaTabelaAgrupada COMPLETA - COM A LÓGICA CORRIGIDA
 function criarLinhaTabelaAgrupada(grupo) {
   const row = document.createElement('tr');
   
+  // NOVA LÓGICA: Priorizar situações
   const situacoes = grupo.lojas.map(l => l.situacao);
-  const situacaoPrincipal = situacoes.includes('DESCREDENCIADO') ? 'DESCREDENCIADO' :
-                           situacoes.includes('REJEITADO') ? 'REJEITADO' :
-                           situacoes.includes('EM ANDAMENTO') ? 'EM ANDAMENTO' :
-                           situacoes.includes('NOVO REGISTRO') ? 'NOVO REGISTRO' :
-                           situacoes.includes('DESISTIU') ? 'DESISTIU' :
-                           'CADASTRADO';
-
+  
+  // Ordem de prioridade
+  let situacaoPrincipal = 'CADASTRADO'; // padrão
+  
+  if (situacoes.includes('EM ANDAMENTO')) {
+    situacaoPrincipal = 'EM ANDAMENTO';
+  } else if (situacoes.includes('NOVO REGISTRO')) {
+    situacaoPrincipal = 'NOVO REGISTRO';
+  } else if (situacoes.includes('DESCREDENCIADO')) {
+    situacaoPrincipal = 'DESCREDENCIADO';
+  } else if (situacoes.includes('REJEITADO')) {
+    situacaoPrincipal = 'REJEITADO';
+  } else if (situacoes.includes('DESISTIU')) {
+    situacaoPrincipal = 'DESISTIU';
+  }
+  
   const fornecedorMaisAntigo = encontrarFornecedorMaisAntigo(grupo.lojas);
   
   let dataHoraMaisAntiga = 'N/A';
@@ -2248,21 +2266,35 @@ function criarLinhaTabelaAgrupada(grupo) {
   return row;
 }
 
+// EXIBIR TABELA AGRUPADA
+function exibirTabelaCadastros() {
+  const tabelaBody = document.getElementById('tabelaCadastrosBody');
+  const loading = document.getElementById('loadingCadastros');
+  const tableContainer = document.getElementById('tableContainer');
 
-// FUNÇÃO CORRIGIDA: Calcular defasagem correta por CNPJ
-function calcularDefasagemPorCNPJ(lojasDoCNPJ) {
-  if (!lojasDoCNPJ || lojasDoCNPJ.length === 0) {
-    return { dias: 9999, fornecedor: 'N/A', data: 'N/A', etapa: 'N/A' };
+  tabelaBody.innerHTML = '';
+
+  if (cadastrosFiltrados.length === 0) {
+    tabelaBody.innerHTML = `
+      <tr>
+        <td colspan="9" style="text-align: center; padding: 40px;">
+          <i class="fas fa-search" style="font-size: 3rem; color: var(--gray); margin-bottom: 15px;"></i>
+          <h3>Nenhum resultado encontrado</h3>
+          <p>Tente alterar os filtros de pesquisa.</p>
+        </td>
+      </tr>
+    `;
+  } else {
+    const cadastrosAgrupados = agruparCadastrosPorCNPJ(cadastrosFiltrados);
+    cadastrosAgrupados.forEach(grupo => {
+      const row = criarLinhaTabelaAgrupada(grupo);
+      tabelaBody.appendChild(row);
+    });
   }
-  
-  const fornecedorMaisAntigo = encontrarFornecedorMaisAntigo(lojasDoCNPJ);
-  
-  return {
-    dias: fornecedorMaisAntigo.dias,
-    fornecedor: fornecedorMaisAntigo.fornecedor,
-    data: fornecedorMaisAntigo.data,
-    etapa: fornecedorMaisAntigo.etapa
-  };
+
+  loading.style.display = 'none';
+  tableContainer.style.display = 'block';
+  atualizarContador();
 }
 
 // FUNÇÕES DE FILTRO
@@ -2462,6 +2494,7 @@ function verTodosFornecedores(cnpj) {
     hideLoadingPopup();
   }, 500);
 }
+
 function exibirModalFornecedores(cnpj, lojas) {
     const modal = document.getElementById('modalFornecedores');
     const content = document.getElementById('modalFornecedoresContent');
@@ -2638,8 +2671,6 @@ function exibirModalFornecedores(cnpj, lojas) {
           </div>
         </div>
       </div>
-      
-
       
       <!-- Lista de Fornecedores -->
       <div class="modal-content-scroll">
@@ -3116,7 +3147,6 @@ function calcularDefasagemParaOrdenacao(lojasDoCNPJ) {
   return defasagemInfo.dias < 9999 ? defasagemInfo.dias : 0;
 }
 
-
 function recarregarCadastros() {
   console.log("🔄 Recarregando cadastros mantendo filtros...");
   showLoadingPopup('Atualizando Dados', 'Recarregando informações...');
@@ -3140,8 +3170,15 @@ function recarregarCadastros() {
       hideLoadingPopup();
       
       if (cadastros && cadastros.length > 0) {
-        todosCadastros = cadastros;
-        cadastrosFiltrados = [...cadastros];
+        // ORDENAR POR RAZÃO SOCIAL (A-Z) AO CARREGAR
+        const cadastrosOrdenados = cadastros.sort((a, b) => {
+          const nomeA = (a.razao_social || '').toLowerCase();
+          const nomeB = (b.razao_social || '').toLowerCase();
+          return nomeA.localeCompare(nomeB);
+        });
+        
+        todosCadastros = cadastrosOrdenados;
+        cadastrosFiltrados = [...cadastrosOrdenados];
         
         // RESTAURAR FILTROS APÓS CARREGAR
         setTimeout(() => {
