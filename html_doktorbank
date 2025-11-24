@@ -3,7 +3,7 @@
 <head>
   <meta charset="UTF-8">
   <meta name="viewport" content="width=device-width, initial-scale=1.0">
-  <title>Sistema Doktorbank - VISUALIZAÇÃO</title>
+  <title>Sistema de Visualização - Doktorbank</title>
   <link href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.0.0/css/all.min.css" rel="stylesheet">
   <style>
     * {
@@ -14,7 +14,7 @@
     }
     
     :root {
-      --primary: #E61B72; /* ROSA DOK */
+      --primary: #E91E63; /* ROSA DOKTORBANK */
       --secondary: #A1CC4C;
       --accent: #FF6B35;
       --dark: #2D3047;
@@ -41,12 +41,12 @@
       margin: 0 auto;
       background: var(--light);
       border-radius: 12px;
-      box-shadow: 0 8px 25px rgba(0, 0, 0, 0.08);
+      box-shadow: 0 8px 25px rgba(233, 30, 99, 0.08);
       overflow: hidden;
     }
     
     .header {
-      background: var(--primary); /* ROSA DOK */
+      background: var(--primary); /* ROSA DOKTORBANK */
       padding: 20px 30px;
       color: white;
       text-align: center;
@@ -67,7 +67,7 @@
       justify-content: center;
     }
 
-    .logo-doktorbank-wrapper {
+    .logo-dok-wrapper {
       background: white;
       padding: 10px;
       border-radius: 15px;
@@ -79,7 +79,7 @@
       justify-content: center;
     }
 
-    .logo-doktorbank {
+    .logo-dok {
       width: 70px;
       height: 70px;
       object-fit: contain;
@@ -115,7 +115,7 @@
       border-radius: 10px;
       padding: 20px;
       margin-bottom: 20px;
-      box-shadow: 0 3px 12px rgba(0, 0, 0, 0.04);
+      box-shadow: 0 3px 12px rgba(233, 30, 99, 0.04);
       border: 1px solid var(--border);
     }
     
@@ -126,18 +126,18 @@
       gap: 12px;
       margin-bottom: 20px;
       padding-bottom: 12px;
-      border-bottom: 2px solid var(--primary); /* ROSA DOK */
+      border-bottom: 2px solid var(--primary); /* ROSA DOKTORBANK */
     }
     
     .card-header i {
-      color: var(--primary); /* ROSA DOK */
+      color: var(--primary); /* ROSA DOKTORBANK */
       font-size: 1.5rem;
     }
     
     .card-title {
       font-size: 1.3rem;
       font-weight: 600;
-      color: var(--primary); /* ROSA DOK */
+      color: var(--primary); /* ROSA DOKTORBANK */
     }
     
     .btn {
@@ -154,12 +154,12 @@
     }
     
     .btn-primary {
-      background: var(--primary); /* ROSA DOK */
+      background: var(--primary); /* ROSA DOKTORBANK */
       color: white;
     }
     
     .btn-primary:hover {
-      background: #d41667; /* Rosa mais escuro */
+      background: #d81b60; /* Rosa mais escuro */
     }
     
     .btn-success {
@@ -184,8 +184,8 @@
     
     .btn-outline {
       background: transparent;
-      border: 2px solid var(--primary); /* ROSA DOK */
-      color: var(--primary); /* ROSA DOK */
+      border: 2px solid var(--primary); /* ROSA DOKTORBANK */
+      color: var(--primary); /* ROSA DOKTORBANK */
     }
     
     .btn-sm {
@@ -195,19 +195,19 @@
 
     .filtros-container .btn.active {
       transform: translateY(-2px);
-      box-shadow: 0 4px 12px rgba(230, 27, 114, 0.3); /* ROSA DOK */
+      box-shadow: 0 4px 12px rgba(233, 30, 99, 0.3); /* ROSA DOKTORBANK */
       border: 2px solid var(--primary) !important;
     }
 
     .filtros-container .btn.active[onclick*="all"] {
-      background: var(--primary) !important; /* ROSA DOK */
+      background: var(--primary) !important; /* ROSA DOKTORBANK */
       color: white !important;
       border-color: var(--primary) !important;
     }
 
     .filtros-container .btn.active:not([onclick*="all"]) {
-      border: 2px solid var(--primary) !important; /* ROSA DOK */
-      box-shadow: 0 0 0 3px rgba(230, 27, 114, 0.2) !important; /* ROSA DOK */
+      border: 2px solid var(--primary) !important; /* ROSA DOKTORBANK */
+      box-shadow: 0 0 0 3px rgba(233, 30, 99, 0.2) !important; /* ROSA DOKTORBANK */
     }
     
     .message {
@@ -251,7 +251,7 @@
       width: 40px;
       height: 40px;
       border: 4px solid #f3f3f3;
-      border-top: 4px solid var(--primary); /* ROSA DOK */
+      border-top: 4px solid var(--primary); /* ROSA DOKTORBANK */
       border-radius: 50%;
       animation: spin 1s linear infinite;
       margin-bottom: 12px;
@@ -285,14 +285,14 @@
       width: 90%;
       text-align: center;
       box-shadow: 0 10px 30px rgba(0, 0, 0, 0.3);
-      border: 3px solid var(--primary); /* ROSA DOK */
+      border: 3px solid var(--primary); /* ROSA DOKTORBANK */
     }
 
     .loading-popup-spinner {
       width: 60px;
       height: 60px;
       border: 5px solid #f3f3f3;
-      border-top: 5px solid var(--primary); /* ROSA DOK */
+      border-top: 5px solid var(--primary); /* ROSA DOKTORBANK */
       border-radius: 50%;
       animation: spin 1s linear infinite;
       margin: 0 auto 20px;
@@ -314,7 +314,7 @@
       margin-top: 15px;
       overflow: hidden;
       border-radius: 8px;
-      box-shadow: 0 2px 8px rgba(0, 0, 0, 0.08);
+      box-shadow: 0 2px 8px rgba(233, 30, 99, 0.08);
     }
     
     .table-responsive {
@@ -330,7 +330,7 @@
     }
     
     .data-table th {
-      background: var(--primary); /* ROSA DOK */
+      background: var(--primary); /* ROSA DOKTORBANK */
       color: white;
       padding: 12px 6px !important;
       text-align: center !important;
@@ -410,7 +410,7 @@
     .data-table tbody tr:hover {
       background: #f8f9fa;
       transform: translateY(-1px);
-      box-shadow: 0 2px 6px rgba(0, 0, 0, 0.08);
+      box-shadow: 0 2px 6px rgba(233, 30, 99, 0.08);
     }
     
     .data-table .btn-sm {
@@ -427,8 +427,6 @@
       text-align: center;
       display: inline-block;
       min-width: 80px;
-      border: 2px solid;
-      box-shadow: 0 2px 6px rgba(0,0,0,0.15);
       text-transform: uppercase;
       letter-spacing: 0.5px;
     }
@@ -493,7 +491,7 @@
       margin-right: 4px;
     }
 
-    .filtro-btn[data-situacao="all"]::before { background: var(--primary); } /* ROSA DOK */
+    .filtro-btn[data-situacao="all"]::before { background: var(--primary); } /* ROSA DOKTORBANK */
     .filtro-btn[data-situacao="NOVO REGISTRO"]::before { background: #bfe1f6; }
     .filtro-btn[data-situacao="CADASTRADO"]::before { background: var(--success); }
     .filtro-btn[data-situacao="EM ANDAMENTO"]::before { background: var(--warning); }
@@ -502,9 +500,9 @@
     .filtro-btn[data-situacao="DESISTIU"]::before { background: #e6cff2; }
 
     .filtro-btn.active[data-situacao="all"] { 
-      background: var(--primary);  /* ROSA DOK */
+      background: var(--primary);  /* ROSA DOKTORBANK */
       color: white; 
-      border-color: var(--primary);  /* ROSA DOK */
+      border-color: var(--primary);  /* ROSA DOKTORBANK */
     }
     .filtro-btn.active[data-situacao="NOVO REGISTRO"] { 
       background: #bfe1f6; 
@@ -556,7 +554,7 @@
 
     .filtro-label {
       font-weight: 600;
-      color: var(--primary); /* ROSA DOK */
+      color: var(--primary); /* ROSA DOKTORBANK */
       font-size: 0.85rem;
     }
 
@@ -571,7 +569,7 @@
     
     .form-control:focus {
       outline: none;
-      border-color: var(--primary); /* ROSA DOK */
+      border-color: var(--primary); /* ROSA DOKTORBANK */
     }
 
     .form-select {
@@ -585,7 +583,7 @@
     }
 
     .contador-lojas {
-      background: var(--primary); /* ROSA DOK */
+      background: var(--primary); /* ROSA DOKTORBANK */
       color: white;
       padding: 5px 10px;
       border-radius: 15px;
@@ -601,7 +599,7 @@
     }
 
     .filtro-chip {
-      background: var(--primary); /* ROSA DOK */
+      background: var(--primary); /* ROSA DOKTORBANK */
       color: white;
       padding: 4px 10px;
       border-radius: 15px;
@@ -637,7 +635,7 @@
       left: 0;
       right: 0;
       background: white;
-      border: 2px solid var(--primary); /* ROSA DOK */
+      border: 2px solid var(--primary); /* ROSA DOKTORBANK */
       border-top: none;
       border-radius: 0 0 6px 6px;
       z-index: 1001;
@@ -657,7 +655,7 @@
     }
 
     .suggestion-item:hover {
-      background: var(--primary); /* ROSA DOK */
+      background: var(--primary); /* ROSA DOKTORBANK */
       color: white;
     }
 
@@ -782,33 +780,31 @@
     .situacao-novo-registro {
       background-color: #bfe1f6 !important;
       color: #0c5aa3 !important;
-      border: 1px solid #8bc9f0 !important;
     }
     
     .situacao-cadastrado {
-      background: #D1E7DD;
-      color: #0F5132;
+      background: #D1E7DD !important;
+      color: #0F5132 !important;
     }
 
     .situacao-andamento {
-      background: #FFF3CD;
-      color: #856404;
+      background: #FFF3CD !important;
+      color: #856404 !important;
     }
     
     .situacao-rejeitado {
-      background: #E2E3E5;
-      color: #383D41;
+      background: #E2E3E5 !important;
+      color: #383D41 !important;
     }
     
     .situacao-descredenciado {
-      background: #F8D7DA;
-      color: #721C24;
+      background: #F8D7DA !important;
+      color: #721C24 !important;
     }
 
     .situacao-desistiu {
       background: #e6cff2 !important;
       color: #4a1e6b !important;
-      border: 1px solid #d4b5e6 !important;
     }
 
     /* MODAL STYLES */
@@ -835,7 +831,6 @@
       max-height: 80vh;
       overflow-y: auto;
       box-shadow: 0 15px 50px rgba(0,0,0,0.25);
-      border: 3px solid var(--primary); /* ROSA DOK */
       position: relative;
     }
 
@@ -851,7 +846,7 @@
     .modal-title {
       font-size: 1.4rem;
       font-weight: 700;
-      color: var(--primary); /* ROSA DOK */
+      color: var(--primary); /* ROSA DOKTORBANK */
       margin: 0;
     }
 
@@ -889,7 +884,7 @@
 
     .detalhe-label {
       font-weight: 600;
-      color: var(--primary); /* ROSA DOK */
+      color: var(--primary); /* ROSA DOKTORBANK */
       margin-bottom: 4px;
       display: block;
       font-size: 0.9rem;
@@ -900,20 +895,20 @@
       background: white;
       padding: 12px 15px;
       border-radius: 10px;
-      border-left: 4px solid var(--primary); /* ROSA DOK */
+      border-left: 4px solid var(--primary); /* ROSA DOKTORBANK */
       font-size: 1rem;
       box-shadow: 0 2px 8px rgba(0,0,0,0.1);
       border: 1px solid var(--border);
     }
 
-    /* Header Profissional do CNPJ */
+    /* Header Profissional do CNPJ - COM ROSA */
     .modal-cnpj-header-profissional {
-      background: linear-gradient(135deg, #2c3e50 0%, #34495e 100%);
+      background: linear-gradient(135deg, var(--primary) 0%, #f06292 100%); /* ROSA DOKTORBANK */
       color: white;
       padding: 25px 30px;
       border-radius: 12px;
       margin-bottom: 25px;
-      box-shadow: 0 4px 15px rgba(0,0,0,0.1);
+      box-shadow: 0 4px 15px rgba(233, 30, 99, 0.2);
     }
 
     .cnpj-header-content {
@@ -957,13 +952,13 @@
     }
 
     .cnpj-badge {
-      background: linear-gradient(135deg, var(--primary) 0%, #f14d8f 100%); /* ROSA DOK */
+      background: linear-gradient(135deg, var(--primary) 0%, #f06292 100%); /* ROSA DOKTORBANK */
       padding: 15px 20px;
       border-radius: 12px;
       text-align: center;
       min-width: 90px;
       border: 2px solid rgba(255,255,255,0.3);
-      box-shadow: 0 4px 15px rgba(230, 27, 114, 0.4); /* ROSA DOK */
+      box-shadow: 0 4px 15px rgba(233, 30, 99, 0.4); /* ROSA DOKTORBANK */
       position: relative;
       overflow: hidden;
     }
@@ -993,13 +988,13 @@
       z-index: 2;
     }
 
-    /* Resumo Executivo */
+    /* Resumo Executivo - COM ROSA */
     .modal-resumo-executivo {
-      background: linear-gradient(135deg, #f8f9fa 0%, #e9ecef 100%);
+      background: linear-gradient(135deg, #fce4ec 0%, #f8bbd9 100%); /* ROSA CLARO DOKTORBANK */
       padding: 20px;
       border-radius: 10px;
       margin-bottom: 25px;
-      border-left: 4px solid var(--primary); /* ROSA DOK */
+      border-left: 4px solid var(--primary); /* ROSA DOKTORBANK */
       display: flex;
       justify-content: space-between;
       align-items: center;
@@ -1015,7 +1010,7 @@
     }
 
     .resumo-item i {
-      color: var(--primary); /* ROSA DOK */
+      color: var(--primary); /* ROSA DOKTORBANK */
       font-size: 1.3rem;
     }
 
@@ -1032,7 +1027,7 @@
       display: block;
       font-size: 1.5rem;
       font-weight: 700;
-      color: var(--primary); /* ROSA DOK */
+      color: var(--primary); /* ROSA DOKTORBANK */
     }
 
     .stat-label {
@@ -1060,7 +1055,7 @@
     }
 
     .fornecedor-badge {
-      background: var(--primary); /* ROSA DOK */
+      background: var(--primary); /* ROSA DOKTORBANK */
       color: white;
       padding: 8px 12px;
       border-radius: 6px;
@@ -1087,7 +1082,7 @@
 
     .etapa-destaque {
       font-weight: 700;
-      color: var(--primary) !important; /* ROSA DOK */
+      color: var(--primary) !important; /* ROSA DOKTORBANK */
     }
 
     .percentual-destaque {
@@ -1111,8 +1106,6 @@
       font-size: 0.8rem;
       font-weight: 700;
       min-width: 85px;
-      border: 2px solid;
-      box-shadow: 0 3px 8px rgba(0,0,0,0.15);
       text-transform: uppercase;
       letter-spacing: 0.5px;
       text-align: center;
@@ -1121,37 +1114,31 @@
     .modal-fornecedor-card .situacao-novo-registro {
       background: #bfe1f6 !important;
       color: #0c5aa3 !important;
-      border-color: #bfe1f6 !important;
     }
 
     .modal-fornecedor-card .situacao-cadastrado {
       background: #28a745 !important;
       color: white !important;
-      border-color: #28a745 !important;
     }
 
     .modal-fornecedor-card .situacao-andamento {
       background: #ffc107 !important;
       color: #000000 !important;
-      border-color: #ffc107 !important;
     }
 
     .modal-fornecedor-card .situacao-rejeitado {
       background: #6c757d !important;
       color: white !important;
-      border-color: #6c757d !important;
     }
 
     .modal-fornecedor-card .situacao-descredenciado {
       background: #dc3545 !important;
       color: white !important;
-      border-color: #dc3545 !important;
     }
 
     .modal-fornecedor-card .situacao-desistiu {
       background: #e6cff2 !important;
       color: #4a1e6b !important;
-      border-color: #e6cff2 !important;
     }
 
     @media (max-width: 768px) {
@@ -1225,12 +1212,12 @@
       <div class="logo-container">
         <div class="logo-wrapper">
           <img src="https://i.ibb.co/B2r5xtbS/sim-cred-5.png" class="logo" alt="SIM CRED">
-          <div class="logo-doktorbank-wrapper">
-            <img src="https://i.ibb.co/bgFkW7gG/download-removebg-preview.png" class="logo-doktorbank" alt="doktorbank">
+          <div class="logo-dok-wrapper">
+            <img src="https://i.ibb.co/PvznTM8v/1739824422909-Result-Pay-Powered-by-Sim-2-removebg-preview.png" class="logo-dok" alt="Doktorbank">
           </div>
         </div>
         <div class="header-content">
-          <h1>Visualização de Lojas</h1>
+          <h1>Visualização de Lojas - Doktorbank</h1>
           <div class="subtitle">Sistema de Consulta - Somente Leitura</div>
         </div>
       </div>
@@ -1241,7 +1228,7 @@
       <div class="card">
         <div class="card-header">
           <i class="fas fa-store"></i>
-          <h2 class="card-title" id="tituloCadastros">Todos os Cadastros</h2>
+          <h2 class="card-title" id="tituloCadastros">Todos os Cadastros - Doktorbank</h2>
           <span class="contador-lojas" id="contadorCadastros">0 cadastros</span>
         </div>
 
@@ -1310,7 +1297,7 @@
           <div class="filtro-group">
             <label class="filtro-label">📊 Ordenar por:</label>
             <select id="ordenacaoCadastros" class="form-select" onchange="ordenarCadastros()">
-              <option value="razao_social">Razão Social (A-Z)</option>
+              <option value="razao_social" selected>Razão Social (A-Z)</option>
               <option value="razao_social_desc">Razão Social (Z-A)</option>
               <option value="nome_fantasia">Nome Fantasia (A-Z)</option>
               <option value="nome_fantasia_desc">Nome Fantasia (Z-A)</option>
@@ -1339,7 +1326,7 @@
         <!-- LOADING -->
         <div class="loading-container" id="loadingCadastros" style="display: none;">
           <div class="loading-spinner"></div>
-          <p>Carregando cadastros...</p>
+          <p>Carregando cadastros Doktorbank...</p>
         </div>
         
         <!-- TABELA MAIOR COM MAIS INFORMAÇÕES -->
@@ -1389,7 +1376,7 @@
   <div id="modalFornecedores" class="modal-overlay">
     <div class="modal-content">
       <div class="modal-header">
-        <h3 class="modal-title">🏪 Todos os Fornecedores</h3>
+        <h3 class="modal-title">🏪 Todos os Fornecedores - Doktorbank</h3>
         <button class="btn-close" onclick="fecharModalFornecedores()">
           <i class="fas fa-times"></i>
         </button>
@@ -1411,7 +1398,7 @@
   <div id="modalDetalhes" class="modal-overlay">
     <div class="modal-content">
       <div class="modal-header">
-        <h3 class="modal-title">📋 Detalhes do Cadastro</h3>
+        <h3 class="modal-title">📋 Detalhes do Cadastro - Doktorbank</h3>
         <button class="btn-close" onclick="fecharModalDetalhes()">
           <i class="fas fa-times"></i>
         </button>
@@ -1441,7 +1428,7 @@ const waitlabelAtual = 'Doktorbank';
 
 // ETAPAS PARA FILTRO
 const etapasDisponiveis = [
-  "PENDENTE FORNECEDOR(ES)", "PENDENTE SIM", "PENDENTE WL", "PENDENTE CLÍNICA/LOJA"
+  "PENDENTE FORNECEDOR(ES)", "PENDENTE SIM", "PENDENTE RETORNO EXTERNO"
 ].sort();
 
 // FORNECEDORES DISPONÍVEIS
@@ -1449,10 +1436,21 @@ const fornecedoresDisponiveis = [
   "AGIL", "BC", "PARCELEX", "AGORACRED", "AFINZ"
 ].sort();
 
-// INICIALIZAÇÃO
+// INICIALIZAÇÃO - CARREGAR FILTROS SALVOS SE EXISTIREM
 document.addEventListener('DOMContentLoaded', function() {
-  console.log('Sistema de Visualização - Carregando dados...');
-  showLoadingPopup('Carregando Lojas', 'Aguarde enquanto buscamos os dados...');
+  console.log('Sistema de Visualização Doktorbank - Carregando dados...');
+  showLoadingPopup('Carregando Lojas Doktorbank', 'Aguarde enquanto buscamos os dados...');
+  
+  // VERIFICAR SE EXISTEM FILTROS SALVOS
+  try {
+    const filtrosSalvos = JSON.parse(localStorage.getItem('filtrosSalvos'));
+    if (filtrosSalvos) {
+      console.log("📁 Filtros salvos encontrados, restaurando...");
+    }
+  } catch (e) {
+    console.log("📁 Nenhum filtro salvo encontrado");
+  }
+  
   carregarCadastros();
   configurarEventosFiltro();
 });
@@ -1471,7 +1469,16 @@ function showLoadingPopup(texto, subtexto) {
 
 function hideLoadingPopup() {
   const popup = document.getElementById('loadingPopup');
+  console.log("🔒 Fechando popup de loading...");
   popup.style.display = 'none';
+  
+  // FORÇAR FECHAMENTO CASO PRECISE
+  setTimeout(() => {
+    if (popup.style.display !== 'none') {
+      popup.style.display = 'none';
+      console.log("🔒 Popup forçado a fechar");
+    }
+  }, 1000);
 }
 
 // CONFIGURAR EVENTOS DOS FILTROS
@@ -1539,19 +1546,16 @@ function mostrarSugestoesEtapaFiltro() {
         
         // Determinar ícone e cor
         let icone = "fas fa-calendar-check";
-        let cor = "#E61B72"; // ROSA DOK
+        let cor = "#E91E63"; // ROSA DOKTORBANK
         
         if (etapa.includes("FORNECEDOR")) {
           icone = "fas fa-truck";
           cor = "#FF6B35";
         } else if (etapa.includes("SIM")) {
           icone = "fas fa-building";
-          cor = "#E61B72"; // ROSA DOK
-        } else if (etapa.includes("WL")) {
-          icone = "fas fa-tag";
-          cor = "#A1CC4C";
-        } else if (etapa.includes("CLÍNICA") || etapa.includes("LOJA")) {
-          icone = "fas fa-hospital";
+          cor = "#E91E63"; // ROSA DOKTORBANK
+        } else if (etapa.includes("RETORNO")) {
+          icone = "fas fa-undo-alt";
           cor = "#0682c5";
         }
         
@@ -1782,23 +1786,163 @@ function aplicarFiltroFornecedores() {
   aplicarTodosFiltros();
 }
 
-// CARREGAR CADASTROS
+// FUNÇÃO CORRIGIDA: ENCONTRAR FORNECEDOR MAIS ATRASADO COM PRIORIDADE
+function encontrarFornecedorMaisAntigo(lojasDoCNPJ) {
+  if (!lojasDoCNPJ || lojasDoCNPJ.length === 0) {
+    return { fornecedor: 'N/A', data: 'N/A', etapa: 'N/A', dias: 9999 };
+  }
+  
+  // Primeiro, verificar se há alguma loja com situação prioritária
+  const situacoesPrioritarias = ['EM ANDAMENTO', 'NOVO REGISTRO'];
+  
+  // Buscar por situações prioritárias
+  for (const situacao of situacoesPrioritarias) {
+    const lojasPrioritarias = lojasDoCNPJ.filter(loja => 
+      loja.situacao && loja.situacao.toUpperCase() === situacao
+    );
+    
+    if (lojasPrioritarias.length > 0) {
+      // Entre as prioritárias, pegar a mais antiga
+      const lojasComData = lojasPrioritarias.filter(loja => {
+        if (!loja.ultima_etapa || loja.ultima_etapa === 'N/A') return false;
+        try {
+          const data = new Date(loja.ultima_etapa.split('/').reverse().join('-'));
+          return !isNaN(data.getTime());
+        } catch (error) {
+          return false;
+        }
+      });
+      
+      if (lojasComData.length > 0) {
+        const lojaMaisAntiga = lojasComData.reduce((maisAntiga, atual) => {
+          try {
+            const dataMaisAntiga = new Date(maisAntiga.ultima_etapa.split('/').reverse().join('-'));
+            const dataAtual = new Date(atual.ultima_etapa.split('/').reverse().join('-'));
+            return dataAtual < dataMaisAntiga ? atual : maisAntiga;
+          } catch (error) {
+            return maisAntiga;
+          }
+        });
+        
+        const diasDefasagem = calcularDiasDefasagem(lojaMaisAntiga.ultima_etapa);
+        return {
+          fornecedor: lojaMaisAntiga.fornecedor,
+          data: lojaMaisAntiga.ultima_etapa,
+          etapa: lojaMaisAntiga.etapa,
+          dias: diasDefasagem,
+          situacao: lojaMaisAntiga.situacao
+        };
+      } else if (lojasPrioritarias.length > 0) {
+        // Se não tem data válida, retorna a primeira prioritária
+        return {
+          fornecedor: lojasPrioritarias[0].fornecedor,
+          data: 'N/A',
+          etapa: lojasPrioritarias[0].etapa || 'N/A',
+          dias: 9999,
+          situacao: lojasPrioritarias[0].situacao
+        };
+      }
+    }
+  }
+  
+  // Se não há situações prioritárias, usar a lógica original (mais antiga)
+  const lojasComData = lojasDoCNPJ.filter(loja => {
+    if (!loja.ultima_etapa || loja.ultima_etapa === 'N/A') return false;
+    try {
+      const data = new Date(loja.ultima_etapa.split('/').reverse().join('-'));
+      return !isNaN(data.getTime());
+    } catch (error) {
+      return false;
+    }
+  });
+  
+  if (lojasComData.length > 0) {
+    const lojaMaisAntiga = lojasComData.reduce((maisAntiga, atual) => {
+      try {
+        const dataMaisAntiga = new Date(maisAntiga.ultima_etapa.split('/').reverse().join('-'));
+        const dataAtual = new Date(atual.ultima_etapa.split('/').reverse().join('-'));
+        return dataAtual < dataMaisAntiga ? atual : maisAntiga;
+      } catch (error) {
+        return maisAntiga;
+      }
+    });
+    
+    const diasDefasagem = calcularDiasDefasagem(lojaMaisAntiga.ultima_etapa);
+    return {
+      fornecedor: lojaMaisAntiga.fornecedor,
+      data: lojaMaisAntiga.ultima_etapa,
+      etapa: lojaMaisAntiga.etapa,
+      dias: diasDefasagem,
+      situacao: lojaMaisAntiga.situacao
+    };
+  }
+  
+  // Se não encontrar lojas com data, retorne a primeira loja que tenha etapa
+  const lojaComEtapa = lojasDoCNPJ.find(loja => loja.etapa && loja.etapa !== 'N/A');
+  if (lojaComEtapa) {
+    return {
+      fornecedor: lojaComEtapa.fornecedor,
+      data: 'N/A',
+      etapa: lojaComEtapa.etapa,
+      dias: 9999,
+      situacao: lojaComEtapa.situacao
+    };
+  }
+  
+  // Último recurso: retorne a primeira loja
+  return {
+    fornecedor: lojasDoCNPJ[0].fornecedor,
+    data: 'N/A',
+    etapa: lojasDoCNPJ[0].etapa || 'N/A',
+    dias: 9999,
+    situacao: lojasDoCNPJ[0].situacao
+  };
+}
+
+// FUNÇÃO CORRIGIDA: Calcular defasagem correta por CNPJ
+function calcularDefasagemPorCNPJ(lojasDoCNPJ) {
+  if (!lojasDoCNPJ || lojasDoCNPJ.length === 0) {
+    return { dias: 9999, fornecedor: 'N/A', data: 'N/A', etapa: 'N/A' };
+  }
+  
+  const fornecedorMaisAntigo = encontrarFornecedorMaisAntigo(lojasDoCNPJ);
+  
+  return {
+    dias: fornecedorMaisAntigo.dias,
+    fornecedor: fornecedorMaisAntigo.fornecedor,
+    data: fornecedorMaisAntigo.data,
+    etapa: fornecedorMaisAntigo.etapa
+  };
+}
+
 function carregarCadastros() {
-  console.log("🎯 Carregando cadastros...");
+  console.log("🎯 Carregando cadastros Doktorbank...");
   
   showLoading();
-  document.getElementById('filtrosContainer').style.display = 'none';
   document.getElementById('tableContainer').style.display = 'none';
-  limparTodosFiltros();
+
+  // SALVAR FILTROS ATUAIS ANTES DE RECARREGAR
+  const filtrosSalvos = {
+    situacaoAtiva: situacaoAtiva,
+    filtrosAtivos: {...filtrosAtivos},
+    etapasSelecionados: [...etapasSelecionados],
+    fornecedoresSelecionados: [...fornecedoresSelecionados],
+    pesquisa: document.getElementById('pesquisaCadastros').value,
+    ordenacao: document.getElementById('ordenacaoCadastros').value
+  };
+
+  // SALVAR NO localStorage PARA GARANTIR PERSISTÊNCIA
+  localStorage.setItem('filtrosSalvos', JSON.stringify(filtrosSalvos));
 
   google.script.run
     .withSuccessHandler(function(cadastros) {
       hideLoading();
       hideLoadingPopup();
       
-      console.log("✅ Cadastros recebidos:", cadastros);
+      console.log("✅ Cadastros Doktorbank recebidos:", cadastros);
       
       if (cadastros && cadastros.length > 0) {
+        // ORDENAR POR RAZÃO SOCIAL (A-Z) AO CARREGAR
         const cadastrosOrdenados = cadastros.sort((a, b) => {
           const nomeA = (a.razao_social || '').toLowerCase();
           const nomeB = (b.razao_social || '').toLowerCase();
@@ -1808,63 +1952,103 @@ function carregarCadastros() {
         todosCadastros = cadastrosOrdenados;
         cadastrosFiltrados = [...cadastrosOrdenados];
         
-        exibirTabelaCadastros();
+        // RESTAURAR FILTROS APÓS CARREGAR
+        setTimeout(() => {
+          restaurarFiltros(filtrosSalvos);
+        }, 100);
         
         document.getElementById('filtrosContainer').style.display = 'flex';
         
-        showMessage('success', `✅ ${cadastros.length} cadastros carregados!`);
+        showMessage('success', `✅ ${cadastros.length} cadastros Doktorbank carregados!`);
       } else {
         document.getElementById('tabelaCadastrosBody').innerHTML = `
           <tr>
             <td colspan="9" style="text-align: center; padding: 40px;">
               <i class="fas fa-inbox" style="font-size: 3rem; color: var(--gray); margin-bottom: 15px;"></i>
               <h3>Nenhum cadastro encontrado</h3>
-              <p>Não há cadastros no sistema.</p>
+              <p>Não há cadastros no sistema Doktorbank.</p>
             </td>
           </tr>
         `;
         document.getElementById('tableContainer').style.display = 'block';
-        showMessage('info', '📝 Nenhum cadastro encontrado.');
+        showMessage('info', '📝 Nenhum cadastro Doktorbank encontrado.');
       }
     })
     .withFailureHandler(function(error) {
       hideLoading();
       hideLoadingPopup();
-      console.error("❌ Erro ao carregar cadastros:", error);
-      showMessage('error', '❌ Erro ao carregar cadastros: ' + error.message);
+      console.error("❌ Erro ao carregar cadastros Doktorbank:", error);
+      showMessage('error', '❌ Erro ao carregar cadastros Doktorbank: ' + error.message);
+      
+      // TENTAR RESTAURAR FILTROS MESMO COM ERRO
+      try {
+        const filtrosSalvos = JSON.parse(localStorage.getItem('filtrosSalvos') || '{}');
+        restaurarFiltros(filtrosSalvos);
+      } catch (e) {
+        console.error("Erro ao restaurar filtros:", e);
+      }
     })
     .buscarTodosCadastrosComWaitlabel(waitlabelAtual);
 }
 
-// EXIBIR TABELA AGRUPADA
-function exibirTabelaCadastros() {
-  const tabelaBody = document.getElementById('tabelaCadastrosBody');
-  const loading = document.getElementById('loadingCadastros');
-  const tableContainer = document.getElementById('tableContainer');
-
-  tabelaBody.innerHTML = '';
-
-  if (cadastrosFiltrados.length === 0) {
-    tabelaBody.innerHTML = `
-      <tr>
-        <td colspan="9" style="text-align: center; padding: 40px;">
-          <i class="fas fa-search" style="font-size: 3rem; color: var(--gray); margin-bottom: 15px;"></i>
-          <h3>Nenhum resultado encontrado</h3>
-          <p>Tente alterar os filtros de pesquisa.</p>
-        </td>
-      </tr>
-    `;
-  } else {
-    const cadastrosAgrupados = agruparCadastrosPorCNPJ(cadastrosFiltrados);
-    cadastrosAgrupados.forEach(grupo => {
-      const row = criarLinhaTabelaAgrupada(grupo);
-      tabelaBody.appendChild(row);
-    });
+function restaurarFiltros(filtrosSalvos) {
+  if (!filtrosSalvos) {
+    // TENTAR RECUPERAR DO localStorage SE NÃO FOR PASSADO
+    try {
+      filtrosSalvos = JSON.parse(localStorage.getItem('filtrosSalvos') || '{}');
+    } catch (e) {
+      console.error("Erro ao recuperar filtros do localStorage:", e);
+      return;
+    }
   }
-
-  loading.style.display = 'none';
-  tableContainer.style.display = 'block';
-  atualizarContador();
+  
+  console.log("🔄 Restaurando filtros:", filtrosSalvos);
+  
+  // Restaurar variáveis globais
+  situacaoAtiva = filtrosSalvos.situacaoAtiva || 'all';
+  filtrosAtivos = {...(filtrosSalvos.filtrosAtivos || {})};
+  etapasSelecionados = [...(filtrosSalvos.etapasSelecionados || [])];
+  fornecedoresSelecionados = [...(filtrosSalvos.fornecedoresSelecionados || [])];
+  
+  // Restaurar elementos da interface
+  if (document.getElementById('pesquisaCadastros')) {
+    document.getElementById('pesquisaCadastros').value = filtrosSalvos.pesquisa || '';
+  }
+  
+  if (document.getElementById('ordenacaoCadastros')) {
+    document.getElementById('ordenacaoCadastros').value = filtrosSalvos.ordenacao || 'razao_social';
+  }
+  
+  // Atualizar botões de situação
+  document.querySelectorAll('.filtro-btn').forEach(btn => {
+    btn.classList.remove('active');
+  });
+  
+  const btnAtivo = document.querySelector(`.filtro-btn[data-situacao="${situacaoAtiva}"]`);
+  if (btnAtivo) {
+    btnAtivo.classList.add('active');
+  } else {
+    // Fallback para "Todos"
+    const btnTodos = document.querySelector('.filtro-btn[data-situacao="all"]');
+    if (btnTodos) {
+      btnTodos.classList.add('active');
+      situacaoAtiva = 'all';
+    }
+  }
+  
+  // Atualizar tags selecionadas
+  atualizarEtapasSelecionados();
+  atualizarFornecedoresSelecionados();
+  
+  // Reaplicar os filtros
+  aplicarTodosFiltros();
+  
+  // Reordenar se necessário
+  if (filtrosSalvos.ordenacao) {
+    setTimeout(() => {
+      ordenarCadastros();
+    }, 150);
+  }
 }
 
 // AGRUPAR CADASTROS POR CNPJ
@@ -1887,108 +2071,28 @@ function agruparCadastrosPorCNPJ(cadastros) {
   return Object.values(agrupados);
 }
 
-// FUNÇÃO CORRIGIDA: ENCONTRAR FORNECEDOR MAIS ATRASADO
-function encontrarFornecedorMaisAntigo(lojasDoCNPJ) {
-  if (!lojasDoCNPJ || lojasDoCNPJ.length === 0) {
-    return { fornecedor: 'N/A', data: 'N/A', etapa: 'N/A', dias: 9999 };
-  }
-  
-  // FILTRAR APENAS LOJAS COM DATA VÁLIDA E EM ANDAMENTO
-  const lojasComDataValida = lojasDoCNPJ.filter(loja => {
-    if (!loja.ultima_etapa || loja.ultima_etapa === 'N/A' || loja.ultima_etapa === '') {
-      return false;
-    }
-    
-    let dataValida = false;
-    
-    try {
-      if (loja.ultima_etapa instanceof Date) {
-        dataValida = !isNaN(loja.ultima_etapa.getTime());
-      } 
-      else if (typeof loja.ultima_etapa === 'string' && loja.ultima_etapa.includes('/')) {
-        const [dataPart, horaPart] = loja.ultima_etapa.split(' ');
-        if (dataPart) {
-          const [dia, mes, ano] = dataPart.split('/');
-          const dataObj = new Date(parseInt(ano), parseInt(mes) - 1, parseInt(dia));
-          dataValida = !isNaN(dataObj.getTime());
-        }
-      }
-      else {
-        const dataObj = new Date(loja.ultima_etapa);
-        dataValida = !isNaN(dataObj.getTime());
-      }
-    } catch (error) {
-      dataValida = false;
-    }
-    
-    return dataValida;
-  });
-  
-  if (lojasComDataValida.length === 0) {
-    const primeiraLoja = lojasDoCNPJ[0];
-    return {
-      fornecedor: primeiraLoja?.fornecedor || 'N/A',
-      data: 'N/A',
-      etapa: primeiraLoja?.etapa || 'N/A',
-      dias: 9999
-    };
-  }
-  
-  // ENCONTRAR A LOJA COM DATA MAIS ANTIGA
-  const lojaMaisAntiga = lojasComDataValida.reduce((maisAntiga, atual) => {
-    try {
-      let dataMaisAntiga, dataAtual;
-      
-      // Converter data da mais antiga
-      if (maisAntiga.ultima_etapa instanceof Date) {
-        dataMaisAntiga = maisAntiga.ultima_etapa;
-      } else if (typeof maisAntiga.ultima_etapa === 'string' && maisAntiga.ultima_etapa.includes('/')) {
-        const [dataPart, horaPart] = maisAntiga.ultima_etapa.split(' ');
-        const [dia, mes, ano] = dataPart.split('/');
-        dataMaisAntiga = new Date(parseInt(ano), parseInt(mes) - 1, parseInt(dia));
-      } else {
-        dataMaisAntiga = new Date(maisAntiga.ultima_etapa);
-      }
-      
-      // Converter data da atual
-      if (atual.ultima_etapa instanceof Date) {
-        dataAtual = atual.ultima_etapa;
-      } else if (typeof atual.ultima_etapa === 'string' && atual.ultima_etapa.includes('/')) {
-        const [dataPart, horaPart] = atual.ultima_etapa.split(' ');
-        const [dia, mes, ano] = dataPart.split('/');
-        dataAtual = new Date(parseInt(ano), parseInt(mes) - 1, parseInt(dia));
-      } else {
-        dataAtual = new Date(atual.ultima_etapa);
-      }
-      
-      return dataAtual < dataMaisAntiga ? atual : maisAntiga;
-    } catch (error) {
-      return maisAntiga;
-    }
-  });
-  
-  const diasDefasagem = calcularDiasDefasagem(lojaMaisAntiga.ultima_etapa);
-  
-  return {
-    fornecedor: lojaMaisAntiga.fornecedor,
-    data: lojaMaisAntiga.ultima_etapa,
-    etapa: lojaMaisAntiga.etapa,
-    dias: diasDefasagem
-  };
-}
-
-// FUNÇÃO criarLinhaTabelaAgrupada COMPLETA
+// FUNÇÃO criarLinhaTabelaAgrupada COMPLETA - COM A LÓGICA CORRIGIDA
 function criarLinhaTabelaAgrupada(grupo) {
   const row = document.createElement('tr');
   
+  // NOVA LÓGICA: Priorizar situações
   const situacoes = grupo.lojas.map(l => l.situacao);
-  const situacaoPrincipal = situacoes.includes('DESCREDENCIADO') ? 'DESCREDENCIADO' :
-                           situacoes.includes('REJEITADO') ? 'REJEITADO' :
-                           situacoes.includes('EM ANDAMENTO') ? 'EM ANDAMENTO' :
-                           situacoes.includes('NOVO REGISTRO') ? 'NOVO REGISTRO' :
-                           situacoes.includes('DESISTIU') ? 'DESISTIU' :
-                           'CADASTRADO';
-
+  
+  // Ordem de prioridade
+  let situacaoPrincipal = 'CADASTRADO'; // padrão
+  
+  if (situacoes.includes('EM ANDAMENTO')) {
+    situacaoPrincipal = 'EM ANDAMENTO';
+  } else if (situacoes.includes('NOVO REGISTRO')) {
+    situacaoPrincipal = 'NOVO REGISTRO';
+  } else if (situacoes.includes('DESCREDENCIADO')) {
+    situacaoPrincipal = 'DESCREDENCIADO';
+  } else if (situacoes.includes('REJEITADO')) {
+    situacaoPrincipal = 'REJEITADO';
+  } else if (situacoes.includes('DESISTIU')) {
+    situacaoPrincipal = 'DESISTIU';
+  }
+  
   const fornecedorMaisAntigo = encontrarFornecedorMaisAntigo(grupo.lojas);
   
   let dataHoraMaisAntiga = 'N/A';
@@ -2006,6 +2110,85 @@ function criarLinhaTabelaAgrupada(grupo) {
 
   const etapaMaisAntiga = fornecedorMaisAntigo.etapa || 'N/A';
   const nomeFornecedorAntigo = fornecedorMaisAntigo.fornecedor || 'N/A';
+
+  // VERIFICAR SE DEVE MOSTRAR HORA E FORNECEDOR
+  const mostrarHoraFornecedor = situacaoPrincipal === 'EM ANDAMENTO' || situacaoPrincipal === 'NOVO REGISTRO';
+
+  // LÓGICA PARA ÚLTIMA ETAPA - MOSTRAR HORA/FORNECEDOR APENAS PARA EM ANDAMENTO E NOVO REGISTRO
+  let ultimaEtapaInfo = '';
+  
+  if (dataHoraCorrigida !== 'N/A' && etapaMaisAntiga !== 'N/A') {
+    if (dataHoraCorrigida.includes('/') && dataHoraCorrigida.includes(':')) {
+      const [dataPart, horaPart] = dataHoraCorrigida.split(' ');
+      
+      if (mostrarHoraFornecedor) {
+        // MOSTRAR ETAPA, HORA E FORNECEDOR (EM ANDAMENTO e NOVO REGISTRO)
+        ultimaEtapaInfo = `
+          <div style="font-size: 0.75rem;">
+            <div style="font-weight: 500; margin-bottom: 2px;">${etapaMaisAntiga}</div>
+            <div style="color: var(--gray); font-size: 0.65rem;">
+              ${dataPart} ${horaPart || ''}
+            </div>
+            <div style="color: var(--danger); font-size: 0.6rem; margin-top: 2px;">
+              ⚠️ ${nomeFornecedorAntigo}
+            </div>
+          </div>
+        `;
+      } else {
+        // MOSTRAR APENAS A ETAPA (outras situações)
+        ultimaEtapaInfo = `
+          <div style="font-size: 0.75rem;">
+            <div style="font-weight: 500; margin-bottom: 2px;">${etapaMaisAntiga}</div>
+            <div style="color: var(--gray); font-size: 0.65rem;">
+              Finalizado
+            </div>
+          </div>
+        `;
+      }
+    } else {
+      if (mostrarHoraFornecedor) {
+        // MOSTRAR ETAPA E FORNECEDOR (sem hora válida)
+        ultimaEtapaInfo = `
+          <div style="font-size: 0.75rem;">
+            <div style="font-weight: 500; margin-bottom: 2px;">${etapaMaisAntiga}</div>
+            <div style="color: var(--gray); font-size: 0.65rem;">${dataHoraCorrigida}</div>
+            <div style="color: var(--danger); font-size: 0.6rem; margin-top: 2px;">
+              ⚠️ ${nomeFornecedorAntigo}
+            </div>
+          </div>
+        `;
+      } else {
+        // MOSTRAR APENAS A ETAPA
+        ultimaEtapaInfo = `
+          <div style="font-size: 0.75rem;">
+            <div style="font-weight: 500; margin-bottom: 2px;">${etapaMaisAntiga}</div>
+            <div style="color: var(--gray); font-size: 0.65rem;">Etapa registrada</div>
+          </div>
+        `;
+      }
+    }
+  } else {
+    if (mostrarHoraFornecedor) {
+      // MOSTRAR ETAPA E FORNECEDOR (sem data)
+      ultimaEtapaInfo = `
+        <div style="font-size: 0.75rem;">
+          <div style="font-weight: 500; margin-bottom: 2px;">${etapaMaisAntiga}</div>
+          <div style="color: var(--gray); font-size: 0.65rem;">N/A</div>
+          <div style="color: var(--danger); font-size: 0.6rem; margin-top: 2px;">
+            ⚠️ ${nomeFornecedorAntigo}
+          </div>
+        </div>
+      `;
+    } else {
+      // MOSTRAR APENAS A ETAPA
+      ultimaEtapaInfo = `
+        <div style="font-size: 0.75rem;">
+          <div style="font-weight: 500; margin-bottom: 2px;">${etapaMaisAntiga}</div>
+          <div style="color: var(--gray); font-size: 0.65rem;">Sem informações</div>
+        </div>
+      `;
+    }
+  }
 
   // CORREÇÃO: SÓ MOSTRAR DEFASAGEM SE HOUVER LOJA EM ANDAMENTO
   const temLojaEmAndamento = grupo.lojas.some(loja => 
@@ -2038,33 +2221,6 @@ function criarLinhaTabelaAgrupada(grupo) {
           </span>
         </div>
       </td>
-    `;
-  }
-
-  // AGORA MOSTRA DATA E HORA CORRIGIDA OU INFORMAÇÃO BÁSICA
-  let ultimaEtapaInfo = '';
-  if (dataHoraCorrigida !== 'N/A' && etapaMaisAntiga !== 'N/A') {
-    const [dataPart, horaPart] = dataHoraCorrigida.split(' ');
-    ultimaEtapaInfo = `
-      <div style="font-size: 0.75rem;">
-        <div style="font-weight: 500; margin-bottom: 2px;">${etapaMaisAntiga}</div>
-        <div style="color: var(--gray); font-size: 0.65rem;">
-          ${dataPart} ${horaPart || ''}
-        </div>
-        <div style="color: var(--danger); font-size: 0.6rem; margin-top: 2px;">
-          ⚠️ ${nomeFornecedorAntigo}
-        </div>
-      </div>
-    `;
-  } else {
-    ultimaEtapaInfo = `
-      <div style="font-size: 0.75rem;">
-        <div style="font-weight: 500; margin-bottom: 2px;">${etapaMaisAntiga}</div>
-        <div style="color: var(--gray); font-size: 0.65rem;">Sem data registrada</div>
-        <div style="color: var(--info); font-size: 0.6rem; margin-top: 2px;">
-          📝 ${nomeFornecedorAntigo}
-        </div>
-      </div>
     `;
   }
 
@@ -2109,20 +2265,35 @@ function criarLinhaTabelaAgrupada(grupo) {
   return row;
 }
 
-// FUNÇÃO CORRIGIDA: Calcular defasagem correta por CNPJ
-function calcularDefasagemPorCNPJ(lojasDoCNPJ) {
-  if (!lojasDoCNPJ || lojasDoCNPJ.length === 0) {
-    return { dias: 9999, fornecedor: 'N/A', data: 'N/A', etapa: 'N/A' };
+// EXIBIR TABELA AGRUPADA
+function exibirTabelaCadastros() {
+  const tabelaBody = document.getElementById('tabelaCadastrosBody');
+  const loading = document.getElementById('loadingCadastros');
+  const tableContainer = document.getElementById('tableContainer');
+
+  tabelaBody.innerHTML = '';
+
+  if (cadastrosFiltrados.length === 0) {
+    tabelaBody.innerHTML = `
+      <tr>
+        <td colspan="9" style="text-align: center; padding: 40px;">
+          <i class="fas fa-search" style="font-size: 3rem; color: var(--gray); margin-bottom: 15px;"></i>
+          <h3>Nenhum resultado encontrado</h3>
+          <p>Tente alterar os filtros de pesquisa.</p>
+        </td>
+      </tr>
+    `;
+  } else {
+    const cadastrosAgrupados = agruparCadastrosPorCNPJ(cadastrosFiltrados);
+    cadastrosAgrupados.forEach(grupo => {
+      const row = criarLinhaTabelaAgrupada(grupo);
+      tabelaBody.appendChild(row);
+    });
   }
-  
-  const fornecedorMaisAntigo = encontrarFornecedorMaisAntigo(lojasDoCNPJ);
-  
-  return {
-    dias: fornecedorMaisAntigo.dias,
-    fornecedor: fornecedorMaisAntigo.fornecedor,
-    data: fornecedorMaisAntigo.data,
-    etapa: fornecedorMaisAntigo.etapa
-  };
+
+  loading.style.display = 'none';
+  tableContainer.style.display = 'block';
+  atualizarContador();
 }
 
 // FUNÇÕES DE FILTRO
@@ -2313,11 +2484,14 @@ function limparTodosFiltros() {
   aplicarTodosFiltros();
 }
 
-// FUNÇÕES DOS MODAIS
 function verTodosFornecedores(cnpj) {
-  showLoadingPopup('Carregando Fornecedores', 'Buscando informações dos fornecedores...');
-  const lojasDoCNPJ = todosCadastros.filter(cadastro => cadastro.cnpj === cnpj);
-  exibirModalFornecedores(cnpj, lojasDoCNPJ);
+  showLoadingPopup('Carregando Fornecedores Doktorbank', 'Buscando informações dos fornecedores...');
+  
+  setTimeout(() => {
+    const lojasDoCNPJ = todosCadastros.filter(cadastro => cadastro.cnpj === cnpj);
+    exibirModalFornecedores(cnpj, lojasDoCNPJ);
+    hideLoadingPopup();
+  }, 500);
 }
 
 function exibirModalFornecedores(cnpj, lojas) {
@@ -2354,7 +2528,7 @@ function exibirModalFornecedores(cnpj, lojas) {
                   </div>
                 </div>
                 <span class="status-badge ${situacaoClass}" 
-          style="background: ${corBorda}; color: white; border: 2px solid ${corBorda};">
+          style="background: ${corBorda}; color: white;">
       ${loja.situacao || 'N/A'}
     </span>
               </div>
@@ -2427,6 +2601,21 @@ function exibirModalFornecedores(cnpj, lojas) {
                   </div>
                 </div>
               </div>
+
+              <!-- SEÇÃO DE OBSERVAÇÕES NO FINAL CORRETO - DEPOIS DO TEMPO DE PROCESSO -->
+              ${loja.observacoes ? `
+              <div class="observacoes-section" style="background: #fff3cd; border-left: 4px solid #ffc107; padding: 12px; border-radius: 6px; margin-bottom: 15px;">
+                <div class="observacao-item" style="display: flex; align-items: flex-start; gap: 10px;">
+                  <div class="observacao-icon" style="font-size: 1.1rem; color: #856404;">📝</div>
+                  <div class="observacao-content" style="flex: 1;">
+                    <span class="observacao-label" style="display: block; font-size: 0.8rem; color: #856404; font-weight: 600; margin-bottom: 4px;">Observações</span>
+                    <span class="observacao-value" style="font-size: 0.85rem; color: #856404; line-height: 1.4;">
+                      ${loja.observacoes}
+                    </span>
+                  </div>
+                </div>
+              </div>
+              ` : ''}
               
               <!-- Ações -->
               <div class="modal-actions" style="display: flex; gap: 8px; justify-content: flex-end;">
@@ -2460,6 +2649,8 @@ function exibirModalFornecedores(cnpj, lojas) {
     };
 
     const cnpjFormatado = formatarCNPJParaModal(cnpj);
+    const primeiraLoja = lojas && lojas.length > 0 ? lojas[0] : null;
+    const razaoSocial = primeiraLoja ? primeiraLoja.razao_social : 'N/A';
 
     content.innerHTML = `
       <!-- Header Profissional do CNPJ -->
@@ -2469,35 +2660,13 @@ function exibirModalFornecedores(cnpj, lojas) {
             <i class="fas fa-building"></i>
           </div>
           <div class="cnpj-info">
-            <h3 class="cnpj-title">Documento Corporativo</h3>
+            <h3 class="cnpj-title">CNPJ</h3>
             <div class="cnpj-number">${cnpjFormatado}</div>
-            <div class="cnpj-subtitle">Identificação da Empresa</div>
+            <div class="cnpj-subtitle">${razaoSocial}</div>
           </div>
           <div class="cnpj-badge">
             <span class="lojas-count">${lojas ? lojas.length : 0}</span>
             <small>Fornecedores</small>
-          </div>
-        </div>
-      </div>
-      
-      <!-- Resumo Executivo -->
-      <div class="modal-resumo-executivo">
-        <div class="resumo-item">
-          <i class="fas fa-chart-bar"></i>
-          <span>Visão Geral dos Fornecedores</span>
-        </div>
-        <div class="resumo-stats">
-          <div class="stat-item">
-            <span class="stat-number">${lojas ? lojas.length : 0}</span>
-            <span class="stat-label">Total</span>
-          </div>
-          <div class="stat-item">
-            <span class="stat-number">${lojas ? lojas.filter(l => l.situacao === 'EM ANDAMENTO').length : 0}</span>
-            <span class="stat-label">Em Andamento</span>
-          </div>
-          <div class="stat-item">
-            <span class="stat-number">${lojas ? lojas.filter(l => l.situacao === 'CADASTRADO').length : 0}</span>
-            <span class="stat-label">Cadastrados</span>
           </div>
         </div>
       </div>
@@ -2524,7 +2693,7 @@ function fecharModalFornecedores() {
 function verDetalhesCadastroModal(id) {
   console.log("👀 Visualizando detalhes ID:", id);
   
-  showLoadingPopup('Carregando Detalhes', 'Buscando informações completas...');
+  showLoadingPopup('Carregando Detalhes Doktorbank', 'Buscando informações completas...');
   
   google.script.run
     .withSuccessHandler(function(dados) {
@@ -2592,15 +2761,15 @@ function exibirModalDetalhesCompleto(dados) {
     content.innerHTML = `
     <div class="detalhes-grid">
         <!-- SEÇÃO: INFORMAÇÕES PRINCIPAIS -->
-        <div class="detalhe-item" style="grid-column: 1 / -1; background: #f0f8ff; border-left: 4px solid #E61B72;">
-            <span class="detalhe-label" style="font-size: 1.1em; color: #E61B72;">
+        <div class="detalhe-item" style="grid-column: 1 / -1; background: #fce4ec; border-left: 4px solid var(--primary);">
+            <span class="detalhe-label" style="font-size: 1.1em; color: var(--primary);">
                 <i class="fas fa-info-circle"></i> 📋 INFORMAÇÕES PRINCIPAIS
             </span>
         </div>
         
         <div class="detalhe-item">
             <span class="detalhe-label">🏢 Razão Social</span>
-            <div class="detalhe-valor" style="font-weight: bold; color: #E61B72;">${dados.razao_social || 'N/A'}</div>
+            <div class="detalhe-valor" style="font-weight: bold; color: var(--primary);">${dados.razao_social || 'N/A'}</div>
         </div>
         
         <div class="detalhe-item">
@@ -2631,7 +2800,7 @@ function exibirModalDetalhesCompleto(dados) {
         </div>
 
         <div class="detalhe-item">
-            <span class="detalhe-label" style="color: var(--primary); font-weight: 700;">💜 Mensalidade SIM</span>
+            <span class="detalhe-label" style="color: var(--primary); font-weight: 700;">💖 Mensalidade SIM</span>
             <div class="detalhe-valor" style="color: var(--primary); font-weight: 600;">${mensalidadeSimFormatada}</div>
         </div>
         
@@ -2978,9 +3147,62 @@ function calcularDefasagemParaOrdenacao(lojasDoCNPJ) {
 }
 
 function recarregarCadastros() {
-  showLoadingPopup('Atualizando', 'Recarregando dados...');
+  console.log("🔄 Recarregando cadastros Doktorbank mantendo filtros...");
+  showLoadingPopup('Atualizando Dados Doktorbank', 'Recarregando informações...');
   showLoading();
-  carregarCadastros();
+  
+  // SALVAR FILTROS ATUAIS ANTES DE RECARREGAR
+  const filtrosSalvos = {
+    situacaoAtiva: situacaoAtiva,
+    filtrosAtivos: {...filtrosAtivos},
+    etapasSelecionados: [...etapasSelecionados],
+    fornecedoresSelecionados: [...fornecedoresSelecionados],
+    pesquisa: document.getElementById('pesquisaCadastros').value,
+    ordenacao: document.getElementById('ordenacaoCadastros').value
+  };
+  
+  localStorage.setItem('filtrosSalvos', JSON.stringify(filtrosSalvos));
+  
+  google.script.run
+    .withSuccessHandler(function(cadastros) {
+      hideLoading();
+      hideLoadingPopup();
+      
+      if (cadastros && cadastros.length > 0) {
+        // ORDENAR POR RAZÃO SOCIAL (A-Z) AO CARREGAR
+        const cadastrosOrdenados = cadastros.sort((a, b) => {
+          const nomeA = (a.razao_social || '').toLowerCase();
+          const nomeB = (b.razao_social || '').toLowerCase();
+          return nomeA.localeCompare(nomeB);
+        });
+        
+        todosCadastros = cadastrosOrdenados;
+        cadastrosFiltrados = [...cadastrosOrdenados];
+        
+        // RESTAURAR FILTROS APÓS CARREGAR
+        setTimeout(() => {
+          restaurarFiltros(filtrosSalvos);
+        }, 100);
+        
+        showMessage('success', `✅ Dados Doktorbank atualizados! ${cadastros.length} cadastros carregados.`);
+      } else {
+        showMessage('info', '📝 Nenhum cadastro Doktorbank encontrado após atualização.');
+      }
+    })
+    .withFailureHandler(function(error) {
+      hideLoading();
+      hideLoadingPopup();
+      console.error("❌ Erro ao recarregar:", error);
+      showMessage('error', '❌ Erro ao atualizar: ' + error.message);
+      
+      // TENTAR RESTAURAR FILTROS MESMO COM ERRO
+      try {
+        restaurarFiltros(filtrosSalvos);
+      } catch (e) {
+        console.error("Erro ao restaurar filtros:", e);
+      }
+    })
+    .buscarTodosCadastrosComWaitlabel(waitlabelAtual);
 }
 
 function atualizarContador() {
