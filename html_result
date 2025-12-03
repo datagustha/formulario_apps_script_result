@@ -23,6 +23,7 @@
       --warning: #FFC107;
       --danger: #DC3545;
       --info: #17A2B8;
+      --sim: #7f3d97; /* ROXO PARA MENSALIDADE SIM */
       --gray: #6C757D;
       --border: #E0E0E0;
       --background: #F8F9FA;
@@ -361,6 +362,7 @@
     .data-table th:nth-child(7) { width: 10%; }
     .data-table th:nth-child(8) { width: 8%; }
     .data-table th:nth-child(9) { width: 8%; }
+    .data-table th:nth-child(10) { width: 8%; }
     
     .data-table td {
       padding: 12px 6px !important;
@@ -381,7 +383,8 @@
     .data-table td:nth-child(6),
     .data-table td:nth-child(7),
     .data-table td:nth-child(8),
-    .data-table td:nth-child(9) {
+    .data-table td:nth-child(9),
+    .data-table td:nth-child(10) {
       text-align: center !important;
       vertical-align: middle !important;
     }
@@ -397,6 +400,11 @@
     }
 
     .data-table td:nth-child(8) {
+      font-weight: 600;
+      color: var(--sim) !important;
+    }
+
+    .data-table td:nth-child(9) {
       font-weight: 600;
       color: var(--info) !important;
     }
@@ -831,7 +839,6 @@
       max-height: 80vh;
       overflow-y: auto;
       box-shadow: 0 15px 50px rgba(0,0,0,0.25);
-      /* REMOVIDA BORDA: border: 3px solid var(--primary); */
       position: relative;
     }
 
@@ -989,50 +996,68 @@
       z-index: 2;
     }
 
-    /* Resumo Executivo */
-    .modal-resumo-executivo {
-      background: linear-gradient(135deg, #f8f9fa 0%, #e9ecef 100%);
+    /* NOVO: QUADRADO DE INFORMAÇÕES FINANCEIRAS DO CNPJ */
+    .cnpj-financeiro-card {
+      background: linear-gradient(135deg, #f0fff0 0%, #e0ffe0 100%);
       padding: 20px;
       border-radius: 10px;
       margin-bottom: 25px;
       border-left: 4px solid var(--primary); /* VERDE RESULT */
+      border: 2px solid var(--primary);
       display: flex;
       justify-content: space-between;
       align-items: center;
+      box-shadow: 0 4px 15px rgba(46, 190, 118, 0.2);
     }
 
-    .resumo-item {
+    .financeiro-title {
+      font-size: 1rem;
+      font-weight: 700;
+      color: var(--primary);
+      margin-bottom: 10px;
       display: flex;
       align-items: center;
-      gap: 10px;
-      font-weight: 600;
-      color: var(--dark);
-      font-size: 1.1rem;
+      gap: 8px;
     }
 
-    .resumo-item i {
-      color: var(--primary); /* VERDE RESULT */
-      font-size: 1.3rem;
+    .financeiro-grid {
+      display: grid;
+      grid-template-columns: repeat(3, 1fr);
+      gap: 20px;
+      width: 100%;
     }
 
-    .resumo-stats {
-      display: flex;
-      gap: 25px;
-    }
-
-    .stat-item {
+    .financeiro-item {
       text-align: center;
+      padding: 15px;
+      background: white;
+      border-radius: 8px;
+      border: 1px solid var(--border);
+      box-shadow: 0 2px 5px rgba(0,0,0,0.05);
     }
 
-    .stat-number {
+    .financeiro-valor {
       display: block;
-      font-size: 1.5rem;
+      font-size: 1.4rem;
       font-weight: 700;
-      color: var(--primary); /* VERDE RESULT */
+      color: var(--primary);
+      margin-bottom: 5px;
     }
 
-    .stat-label {
-      font-size: 0.8rem;
+    .financeiro-valor.mensalidade {
+      color: var(--success);
+    }
+
+    .financeiro-valor.mensalidade-sim {
+      color: var(--sim);
+    }
+
+    .financeiro-valor.adesao {
+      color: var(--info);
+    }
+
+    .financeiro-label {
+      font-size: 0.85rem;
       color: var(--gray);
       font-weight: 600;
     }
@@ -1195,6 +1220,17 @@
         grid-template-columns: 1fr;
         gap: 15px;
       }
+
+      .financeiro-grid {
+        grid-template-columns: 1fr;
+        gap: 10px;
+      }
+
+      .cnpj-financeiro-card {
+        flex-direction: column;
+        align-items: stretch;
+        padding: 15px;
+      }
     }
   </style>
 </head>
@@ -1306,6 +1342,8 @@
               <option value="fornecedor">Fornecedor</option>
               <option value="mensalidade">Mensalidade (Maior)</option>
               <option value="mensalidade_asc">Mensalidade (Menor)</option>
+              <option value="mensalidade_sim">Mensalidade SIM (Maior)</option>
+              <option value="mensalidade_sim_asc">Mensalidade SIM (Menor)</option>
               <option value="adesao">Adesão (Maior)</option>
               <option value="adesao_asc">Adesão (Menor)</option>
               <option value="defasagem">Defasagem (Maior)</option>
@@ -1343,6 +1381,7 @@
                   <th width="14%">Última Etapa</th>
                   <th width="8%">Defasagem</th>
                   <th width="10%">Mensalidade</th>
+                  <th width="8%">Mensalidade SIM</th>
                   <th width="8%">Adesão</th>
                   <th width="8%">Ações</th>
                 </tr>
@@ -1964,7 +2003,7 @@ function carregarCadastros() {
       } else {
         document.getElementById('tabelaCadastrosBody').innerHTML = `
           <tr>
-            <td colspan="9" style="text-align: center; padding: 40px;">
+            <td colspan="10" style="text-align: center; padding: 40px;">
               <i class="fas fa-inbox" style="font-size: 3rem; color: var(--gray); margin-bottom: 15px;"></i>
               <h3>Nenhum cadastro encontrado</h3>
               <p>Não há cadastros no sistema.</p>
@@ -2052,7 +2091,7 @@ function restaurarFiltros(filtrosSalvos) {
   }
 }
 
-// AGRUPAR CADASTROS POR CNPJ
+// AGRUPAR CADASTROS POR CNPJ - AGORA CONTANDO APENAS CNPJs ÚNICOS
 function agruparCadastrosPorCNPJ(cadastros) {
   const agrupados = {};
   
@@ -2225,6 +2264,34 @@ function criarLinhaTabelaAgrupada(grupo) {
     `;
   }
 
+  // NOVO: PEGAR AS INFORMAÇÕES FINANCEIRAS DO CNPJ (HERDANDO VALORES DE OUTROS FORNECEDORES)
+  let mensalidadeCNPJ = 'R$ 0,00';
+  let mensalidadeSimCNPJ = 'R$ 0,00';
+  let adesaoCNPJ = 'Isento';
+  
+  // Buscar valores de TODAS as lojas do CNPJ, herdando valores de outros fornecedores
+  for (const loja of grupo.lojas) {
+    // MENSALIDADE: Pega o primeiro valor não-zero que encontrar
+    if (mensalidadeCNPJ === 'R$ 0,00' && loja.mensalidade && loja.mensalidade !== 'R$ 0,00' && loja.mensalidade !== 0) {
+      mensalidadeCNPJ = formatarMoedaParaInput(loja.mensalidade);
+    }
+    
+    // MENSALIDADE SIM: Pega o primeiro valor não-zero que encontrar (HERANÇA)
+    if (mensalidadeSimCNPJ === 'R$ 0,00' && loja.mensalidade_sim && loja.mensalidade_sim !== 'R$ 0,00' && loja.mensalidade_sim !== 0) {
+      mensalidadeSimCNPJ = formatarMoedaParaInput(loja.mensalidade_sim);
+    }
+    
+    // ADESÃO: Pega o primeiro valor não-zero que encontrar (HERANÇA)
+    if (adesaoCNPJ === 'Isento' && loja.adesao && loja.adesao !== 'Isento' && loja.adesao !== 0) {
+      adesaoCNPJ = formatarMoedaParaInput(loja.adesao);
+    }
+    
+    // Se já encontrou todos os valores, pode parar
+    if (mensalidadeCNPJ !== 'R$ 0,00' && mensalidadeSimCNPJ !== 'R$ 0,00' && adesaoCNPJ !== 'Isento') {
+      break;
+    }
+  }
+
   row.innerHTML = `
     <td>
       <div style="font-weight: 600; color: var(--primary); margin-bottom: 2px;">${grupo.razao_social || 'N/A'}</div>
@@ -2251,10 +2318,13 @@ function criarLinhaTabelaAgrupada(grupo) {
     </td>
     ${defasagemHTML}
     <td style="font-weight: 600; color: var(--success); text-align: center;">
-      ${formatarMoedaParaInput(grupo.lojas[0]?.mensalidade)}
+      ${mensalidadeCNPJ}
+    </td>
+    <td style="font-weight: 600; color: var(--sim); text-align: center;">
+      ${mensalidadeSimCNPJ}
     </td>
     <td style="font-weight: 600; color: var(--info); text-align: center;">
-      ${grupo.lojas[0]?.adesao === 'Isento' || grupo.lojas[0]?.adesao === 0 ? 'Isento' : formatarMoedaParaInput(grupo.lojas[0]?.adesao)}
+      ${adesaoCNPJ}
     </td>
     <td style="text-align: center;">
       <button class="btn btn-info btn-sm btn-visualizar-compact" onclick="verTodosFornecedores('${grupo.cnpj}')" title="Visualizar Todos">
@@ -2277,7 +2347,7 @@ function exibirTabelaCadastros() {
   if (cadastrosFiltrados.length === 0) {
     tabelaBody.innerHTML = `
       <tr>
-        <td colspan="9" style="text-align: center; padding: 40px;">
+        <td colspan="10" style="text-align: center; padding: 40px;">
           <i class="fas fa-search" style="font-size: 3rem; color: var(--gray); margin-bottom: 15px;"></i>
           <h3>Nenhum resultado encontrado</h3>
           <p>Tente alterar os filtros de pesquisa.</p>
@@ -2286,6 +2356,10 @@ function exibirTabelaCadastros() {
     `;
   } else {
     const cadastrosAgrupados = agruparCadastrosPorCNPJ(cadastrosFiltrados);
+    
+    // ATUALIZAR CONTADOR - AGORA CONTA CNPJs ÚNICOS
+    atualizarContadorCNPJs(cadastrosAgrupados.length);
+    
     cadastrosAgrupados.forEach(grupo => {
       const row = criarLinhaTabelaAgrupada(grupo);
       tabelaBody.appendChild(row);
@@ -2294,7 +2368,6 @@ function exibirTabelaCadastros() {
 
   loading.style.display = 'none';
   tableContainer.style.display = 'block';
-  atualizarContador();
 }
 
 // FUNÇÕES DE FILTRO
@@ -2419,6 +2492,14 @@ function ordenarCadastros() {
         const mensalidadeAAsc = parseFloat(a.lojas[0]?.mensalidade || 0);
         const mensalidadeBAsc = parseFloat(b.lojas[0]?.mensalidade || 0);
         return mensalidadeAAsc - mensalidadeBAsc;
+      case 'mensalidade_sim':
+        const mensalidadeSimA = parseFloat(getMensalidadeSimParaOrdenacao(a.lojas));
+        const mensalidadeSimB = parseFloat(getMensalidadeSimParaOrdenacao(b.lojas));
+        return mensalidadeSimB - mensalidadeSimA;
+      case 'mensalidade_sim_asc':
+        const mensalidadeSimAAsc = parseFloat(getMensalidadeSimParaOrdenacao(a.lojas));
+        const mensalidadeSimBAsc = parseFloat(getMensalidadeSimParaOrdenacao(b.lojas));
+        return mensalidadeSimAAsc - mensalidadeSimBAsc;
       case 'adesao':
         const adesaoA = a.lojas[0]?.adesao === 'Isento' || a.lojas[0]?.adesao === 0 ? 0 : parseFloat(a.lojas[0]?.adesao || 0);
         const adesaoB = b.lojas[0]?.adesao === 'Isento' || b.lojas[0]?.adesao === 0 ? 0 : parseFloat(b.lojas[0]?.adesao || 0);
@@ -2435,6 +2516,18 @@ function ordenarCadastros() {
   exibirTabelaCadastrosAgrupada(cadastrosAgrupados, 'Cadastros Ordenados');
 }
 
+function getMensalidadeSimParaOrdenacao(lojas) {
+  for (const loja of lojas) {
+    if (loja.mensalidade_sim && loja.mensalidade_sim !== 'R$ 0,00' && loja.mensalidade_sim !== 0) {
+      if (typeof loja.mensalidade_sim === 'string') {
+        return loja.mensalidade_sim.replace('R$', '').replace('.', '').replace(',', '.').trim();
+      }
+      return loja.mensalidade_sim;
+    }
+  }
+  return 0;
+}
+
 function exibirTabelaCadastrosAgrupada(cadastrosAgrupados, titulo) {
   const tabelaBody = document.getElementById('tabelaCadastrosBody');
   const loading = document.getElementById('loadingCadastros');
@@ -2445,7 +2538,7 @@ function exibirTabelaCadastrosAgrupada(cadastrosAgrupados, titulo) {
   if (cadastrosAgrupados.length === 0) {
     tabelaBody.innerHTML = `
       <tr>
-        <td colspan="9" style="text-align: center; padding: 40px;">
+        <td colspan="10" style="text-align: center; padding: 40px;">
           <i class="fas fa-search" style="font-size: 3rem; color: var(--gray); margin-bottom: 15px;"></i>
           <h3>Nenhum resultado encontrado</h3>
           <p>Tente alterar os filtros de pesquisa.</p>
@@ -2461,7 +2554,6 @@ function exibirTabelaCadastrosAgrupada(cadastrosAgrupados, titulo) {
 
   loading.style.display = 'none';
   tableContainer.style.display = 'block';
-  atualizarContador();
 }
 
 function limparTodosFiltros() {
@@ -2501,7 +2593,36 @@ function exibirModalFornecedores(cnpj, lojas) {
     
     let lojasHTML = '';
     
+    // VARIÁVEIS DEFINIDAS FORA DO BLOCO IF - AGORA SÃO SEMPRE DEFINIDAS
+    let mensalidadeCNPJ = 'R$ 0,00';
+    let mensalidadeSimCNPJ = 'R$ 0,00';
+    let adesaoCNPJ = 'Isento';
+    
     if (lojas && lojas.length > 0) {
+        // ENCONTRAR INFORMAÇÕES FINANCEIRAS DO CNPJ (COM HERANÇA)
+        // Buscar valores de TODAS as lojas do CNPJ, herdando valores de outros fornecedores
+        for (const loja of lojas) {
+            // MENSALIDADE: Pega o primeiro valor não-zero que encontrar
+            if (mensalidadeCNPJ === 'R$ 0,00' && loja.mensalidade && loja.mensalidade !== 'R$ 0,00' && loja.mensalidade !== 0) {
+                mensalidadeCNPJ = formatarMoedaParaInput(loja.mensalidade);
+            }
+            
+            // MENSALIDADE SIM: Pega o primeiro valor não-zero que encontrar (HERANÇA)
+            if (mensalidadeSimCNPJ === 'R$ 0,00' && loja.mensalidade_sim && loja.mensalidade_sim !== 'R$ 0,00' && loja.mensalidade_sim !== 0) {
+                mensalidadeSimCNPJ = formatarMoedaParaInput(loja.mensalidade_sim);
+            }
+            
+            // ADESÃO: Pega o primeiro valor não-zero que encontrar (HERANÇA)
+            if (adesaoCNPJ === 'Isento' && loja.adesao && loja.adesao !== 'Isento' && loja.adesao !== 0) {
+                adesaoCNPJ = formatarMoedaParaInput(loja.adesao);
+            }
+            
+            // Se já encontrou todos os valores, pode parar
+            if (mensalidadeCNPJ !== 'R$ 0,00' && mensalidadeSimCNPJ !== 'R$ 0,00' && adesaoCNPJ !== 'Isento') {
+                break;
+            }
+        }
+        
         lojasHTML = lojas.map((loja, index) => {
             const ultimaEtapaCorrigida = loja.ultima_etapa ? 
                 corrigirHoraFrontend(loja.ultima_etapa) : 'N/A';
@@ -2534,7 +2655,7 @@ function exibirModalFornecedores(cnpj, lojas) {
     </span>
               </div>
               
-              <!-- Grid de informações principais -->
+              <!-- Grid de informações principais - ADICIONADAS INFORMAÇÕES DE CONTRATO E ATIVAÇÃO -->
               <div class="modal-fornecedor-info-grid" style="display: grid; grid-template-columns: 1fr 1fr; gap: 15px; margin-bottom: 15px;">
                 <div class="modal-info-item" style="display: flex; align-items: center; gap: 10px;">
                   <div class="info-icon" style="font-size: 1.2rem;">📋</div>
@@ -2545,6 +2666,33 @@ function exibirModalFornecedores(cnpj, lojas) {
                 </div>
                 
                 <div class="modal-info-item" style="display: flex; align-items: center; gap: 10px;">
+                  <div class="info-icon" style="font-size: 1.2rem;">📅</div>
+                  <div class="info-content">
+                    <span class="modal-info-label" style="display: block; font-size: 0.8rem; color: var(--gray); margin-bottom: 2px;">Data Ativação</span>
+                    <span class="modal-info-value" style="font-weight: 600; color: var(--success);">${formatarDataAtivacao(loja.ativacao) || 'N/A'}</span>
+                  </div>
+                </div>
+                
+                <div class="modal-info-item" style="display: flex; align-items: center; gap: 10px;">
+                  <div class="info-icon" style="font-size: 1.2rem;">📄</div>
+                  <div class="info-content">
+                    <span class="modal-info-label" style="display: block; font-size: 0.8rem; color: var(--gray); margin-bottom: 2px;">Contrato Enviado</span>
+                    <span class="modal-info-value" style="font-weight: 600;">${loja.contrato_enviado || 'N/A'}</span>
+                  </div>
+                </div>
+                
+                <div class="modal-info-item" style="display: flex; align-items: center; gap: 10px;">
+                  <div class="info-icon" style="font-size: 1.2rem;">✍️</div>
+                  <div class="info-content">
+                    <span class="modal-info-label" style="display: block; font-size: 0.8rem; color: var(--gray); margin-bottom: 2px;">Contrato Assinado</span>
+                    <span class="modal-info-value" style="font-weight: 600;">${loja.contrato_assinado || 'N/A'}</span>
+                  </div>
+                </div>
+              </div>
+              
+              <!-- Configurações do Fornecedor -->
+              <div class="modal-fornecedor-info-grid" style="display: grid; grid-template-columns: 1fr 1fr; gap: 15px; margin-bottom: 15px;">
+                <div class="modal-info-item" style="display: flex; align-items: center; gap: 10px;">
                   <div class="info-icon" style="font-size: 1.2rem;">💰</div>
                   <div class="info-content">
                     <span class="modal-info-label" style="display: block; font-size: 0.8rem; color: var(--gray); margin-bottom: 2px;">Configuração</span>
@@ -2553,24 +2701,6 @@ function exibirModalFornecedores(cnpj, lojas) {
                       <span class="percentual-destaque" style="background: var(--secondary); color: white; padding: 2px 6px; border-radius: 8px; font-size: 0.8rem; margin-left: 5px;">
                         ${formatarPercentualCorrigido(loja.percentual_tarifa)}
                       </span>
-                    </span>
-                  </div>
-                </div>
-                
-                <div class="modal-info-item" style="display: flex; align-items: center; gap: 10px;">
-                  <div class="info-icon" style="font-size: 1.2rem;">💵</div>
-                  <div class="info-content">
-                    <span class="modal-info-label" style="display: block; font-size: 0.8rem; color: var(--gray); margin-bottom: 2px;">Mensalidade</span>
-                    <span class="modal-info-value valor-destaque" style="font-weight: 700; color: var(--success);">${formatarMoedaParaInput(loja.mensalidade)}</span>
-                  </div>
-                </div>
-                
-                <div class="modal-info-item" style="display: flex; align-items: center; gap: 10px;">
-                  <div class="info-icon" style="font-size: 1.2rem;">🤝</div>
-                  <div class="info-content">
-                    <span class="modal-info-label" style="display: block; font-size: 0.8rem; color: var(--gray); margin-bottom: 2px;">Adesão</span>
-                    <span class="modal-info-value valor-destaque" style="font-weight: 700; color: var(--info);">
-                      ${loja.adesao === 'Isento' || loja.adesao === 0 ? 'Isento' : formatarMoedaParaInput(loja.adesao)}
                     </span>
                   </div>
                 </div>
@@ -2628,7 +2758,8 @@ function exibirModalFornecedores(cnpj, lojas) {
                 </button>
               </div>
             </div>
-          `}).join('');
+          `;
+        }).join('');
     } else {
         lojasHTML = `
         <div class="empty-state" style="text-align: center; padding: 40px;">
@@ -2653,6 +2784,7 @@ function exibirModalFornecedores(cnpj, lojas) {
     const primeiraLoja = lojas && lojas.length > 0 ? lojas[0] : null;
     const razaoSocial = primeiraLoja ? primeiraLoja.razao_social : 'N/A';
 
+    // AGORA AS VARIÁVEIS JÁ ESTÃO SEMPRE DEFINIDAS (mesmo que não haja lojas)
     content.innerHTML = `
       <!-- Header Profissional do CNPJ -->
       <div class="modal-cnpj-header-profissional">
@@ -2668,6 +2800,29 @@ function exibirModalFornecedores(cnpj, lojas) {
           <div class="cnpj-badge">
             <span class="lojas-count">${lojas ? lojas.length : 0}</span>
             <small>Fornecedores</small>
+          </div>
+        </div>
+      </div>
+      
+      <!-- NOVO: QUADRADO DE INFORMAÇÕES FINANCEIRAS DO CNPJ -->
+      <div class="cnpj-financeiro-card">
+        <div style="flex: 1;">
+          <div class="financeiro-title">
+            <i class="fas fa-chart-line"></i> INFORMAÇÕES FINANCEIRAS DO CNPJ
+          </div>
+          <div class="financeiro-grid">
+            <div class="financeiro-item">
+              <span class="financeiro-valor mensalidade">${mensalidadeCNPJ}</span>
+              <span class="financeiro-label">Mensalidade</span>
+            </div>
+            <div class="financeiro-item">
+              <span class="financeiro-valor mensalidade-sim">${mensalidadeSimCNPJ}</span>
+              <span class="financeiro-label">Mensalidade SIM</span>
+            </div>
+            <div class="financeiro-item">
+              <span class="financeiro-valor adesao">${adesaoCNPJ}</span>
+              <span class="financeiro-label">Adesão</span>
+            </div>
           </div>
         </div>
       </div>
@@ -2782,16 +2937,11 @@ function exibirModalDetalhesCompleto(dados) {
             <span class="detalhe-label">🔢 CNPJ</span>
             <div class="detalhe-valor" style="font-family: monospace;">${dados.cnpj || 'N/A'}</div>
         </div>
-        
-        <div class="detalhe-item">
-            <span class="detalhe-label">🚚 Fornecedor</span>
-            <div class="detalhe-valor">${dados.fornecedor || 'N/A'}</div>
-        </div>
 
         <!-- SEÇÃO: FINANCEIRO -->
         <div class="detalhe-item" style="grid-column: 1 / -1; background: #f0fff0; border-left: 4px solid #28a745; margin-top: 10px;">
             <span class="detalhe-label" style="font-size: 1.1em; color: #28a745;">
-                <i class="fas fa-chart-line"></i> 💰 INFORMAÇÕES FINANCEIRAS
+                <i class="fas fa-chart-line"></i> 💰 INFORMAÇÕES FINANCEIRAS DO CNPJ
             </span>
         </div>
         
@@ -2801,18 +2951,15 @@ function exibirModalDetalhesCompleto(dados) {
         </div>
 
         <div class="detalhe-item">
-            <span class="detalhe-label" style="color: var(--primary); font-weight: 700;">💚 Mensalidade SIM</span>
-            <div class="detalhe-valor" style="color: var(--primary); font-weight: 600;">${mensalidadeSimFormatada}</div>
+            <span class="detalhe-label" style="color: var(--sim); font-weight: 700;">
+                <i class="fas fa-heart" style="color: var(--sim);"></i> Mensalidade SIM
+            </span>
+            <div class="detalhe-valor" style="color: var(--sim); font-weight: 600;">${mensalidadeSimFormatada}</div>
         </div>
         
         <div class="detalhe-item">
             <span class="detalhe-label">🤝 Adesão</span>
             <div class="detalhe-valor" style="color: var(--info); font-weight: 600;">${adesaoFormatada}</div>
-        </div>
-        
-        <div class="detalhe-item">
-            <span class="detalhe-label">💰 Tarifa</span>
-            <div class="detalhe-valor">${dados.tarifa || 'N/A'} ${formatarPercentualParaExibicao(dados.percentual_tarifa)}</div>
         </div>
 
         <!-- SEÇÃO: CONTRATOS E DATAS -->
@@ -2841,6 +2988,16 @@ function exibirModalDetalhesCompleto(dados) {
             <span class="detalhe-label">📅 Última Etapa</span>
             <div class="detalhe-valor">${ultimaEtapaCorrigida}</div>
         </div>
+        
+        <div class="detalhe-item">
+            <span class="detalhe-label">🚚 Fornecedor</span>
+            <div class="detalhe-valor">${dados.fornecedor || 'N/A'}</div>
+        </div>
+        
+        <div class="detalhe-item">
+            <span class="detalhe-label">💰 Tarifa</span>
+            <div class="detalhe-valor">${dados.tarifa || 'N/A'} ${formatarPercentualParaExibicao(dados.percentual_tarifa)}</div>
+        </div>
 
         <!-- SEÇÃO: STATUS E ACOMPANHAMENTO -->
         <div class="detalhe-item" style="grid-column: 1 / -1; background: #f0f0f8; border-left: 4px solid #6f42c1; margin-top: 10px;">
@@ -2857,13 +3014,13 @@ function exibirModalDetalhesCompleto(dados) {
         </div>
         
         <div class="detalhe-item">
-            <span class="detalhe-label">📅 Etapa</span>
-            <div class="detalhe-valor">${dados.etapa || 'N/A'}</div>
+            <span class="detalhe-label">📅 Etapa (data/hora)</span>
+            <div class="detalhe-valor">${dados.etapa || 'N/A'} ${ultimaEtapaCorrigida !== 'N/A' ? `- ${ultimaEtapaCorrigida}` : ''}</div>
         </div>
 
         <!-- SEÇÃO: LINKS E OBSERVAÇÕES -->
-        <div class="detalhe-item" style="grid-column: 1 / -1; background: #f0f0f0; border-left: 4px solid #6c757d; margin-top: 10px;">
-            <span class="detalhe-label" style="font-size: 1.1em; color: #6c757d;">
+        <div class="detalhe-item" style="grid-column: 1 / -1; background: #fff5f5; border-left: 4px solid #e83e8c; margin-top: 10px;">
+            <span class="detalhe-label" style="font-size: 1.1em; color: #e83e8c;">
                 <i class="fas fa-sticky-note"></i> 🔗 LINKS E OBSERVAÇÕES
             </span>
         </div>
@@ -3095,8 +3252,19 @@ function formatarPercentualParaExibicao(percentual) {
 }
 
 function formatarMoedaParaInput(valor) {
-  if (!valor) return 'R$ 0,00';
+  if (!valor && valor !== 0) return 'R$ 0,00';
+  
+  // Se já estiver formatado, retorna como está
+  if (typeof valor === 'string' && valor.includes('R$')) {
+    return valor;
+  }
+  
   const numero = typeof valor === 'number' ? valor : parseFloat(valor);
+  
+  if (isNaN(numero)) {
+    return 'R$ 0,00';
+  }
+  
   return 'R$ ' + numero.toLocaleString('pt-BR', { minimumFractionDigits: 2 });
 }
 
@@ -3177,16 +3345,25 @@ function recarregarCadastros() {
     .buscarTodosCadastrosComWaitlabel(waitlabelAtual);
 }
 
-function atualizarContador() {
+// NOVA FUNÇÃO: Atualizar contador para mostrar CNPJs únicos
+function atualizarContadorCNPJs(cnpjCount) {
   const contador = document.getElementById('contadorCadastros');
-  const cadastrosVisiveis = cadastrosFiltrados.length;
   const totalCadastros = todosCadastros.length;
   
-  if (cadastrosVisiveis === totalCadastros) {
-    contador.textContent = `${totalCadastros} cadastro${totalCadastros !== 1 ? 's' : ''}`;
+  // Calcular CNPJs únicos no total
+  const cnpjUnicosTotal = [...new Set(todosCadastros.map(c => c.cnpj))].length;
+  
+  if (cnpjCount === cnpjUnicosTotal) {
+    contador.textContent = `${cnpjUnicosTotal} CNPJ${cnpjUnicosTotal !== 1 ? 's' : ''}`;
   } else {
-    contador.textContent = `${cadastrosVisiveis} de ${totalCadastros} cadastros`;
+    contador.textContent = `${cnpjCount} de ${cnpjUnicosTotal} CNPJ${cnpjUnicosTotal !== 1 ? 's' : ''}`;
   }
+}
+
+// FUNÇÃO EXISTENTE: Atualizar contador (mantida para compatibilidade)
+function atualizarContador() {
+  const cadastrosAgrupados = agruparCadastrosPorCNPJ(cadastrosFiltrados);
+  atualizarContadorCNPJs(cadastrosAgrupados.length);
 }
 
 function showLoading() {
