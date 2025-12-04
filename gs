@@ -5,25 +5,26 @@ const CONFIG = {
   TIMEZONE: "America/Sao_Paulo"
 };
 
-// 🔥 ESTRUTURA DAS COLUNAS - ATUALIZADA COM SEUS NOMES
-const ESTRUTURA_COLUNAS = {
-  RAZAO_SOCIAL: 'Razão Social',
-  NOME_FANTASIA: 'Nome Fantasia', 
-  CNPJ: 'CNPJ',
-  FORNECEDOR: 'Fornecedor',
-  ULTIMA_ETAPA: 'Ultima etapa',
-  ETAPA: 'Etapa',
-  OBSERVACAO: 'Observação',
-  CONTRATO_ENVIADO: 'Contrato Enviado',
-  CONTRATO_ASSINADO: 'Contrato Assinado',
-  ATIVACAO: 'Ativação',
-  LINK: 'Link',
-  MENSALIDADE: 'Mensalidade',
-  MENSALIDADE_SIM: 'Mensalidade SIM',
-  TARIFA: 'Tarifa',
-  PERCENTUAL_TARIFA: '% Tarifa',
-  ADESAO: 'Adesão',
-  SITUACAO: 'Situação'
+// 🔥 ESTRUTURA DAS COLUNAS - CONFORME SUA PLANILHA ATUALIZADA
+const COLUNAS = {
+  RAZAO_SOCIAL: 0,
+  NOME_FANTASIA: 1,
+  CNPJ: 2,
+  FORNECEDOR: 3,
+  ULTIMA_ETAPA: 4,
+  ETAPA: 5,
+  OBSERVACAO: 6,
+  CONTRATO_ENVIADO: 7,
+  CONTRATO_ASSINADO: 8,
+  ATIVACAO: 9,
+  LINK: 10,
+  MENSALIDADE: 11,
+  MENSALIDADE_SIM: 12,
+  MDR: 13,
+  TIS: 14,
+  REBATE: 15,
+  ADESAO: 16,
+  SITUACAO: 17
 };
 
 // 🔥 CONFIGURAÇÕES DOS WAITLABELS
@@ -32,92 +33,296 @@ const WAITLABELS_CONFIG = {
   WAITLABEL_PADRAO: 'Sim_Facilita',
   CORES: {
     'Sim_Facilita': '#7E3E9A',
-    'Result': '#2EBE76', 
+    'Result': '#2EBE76',
     'Set_9': '#0682c5',
     'Doktorbank': '#E61B72',
     'Dr_Parcela': '#696969'
   }
 };
 
-// 🔥🔥🔥 FUNÇÃO CORRIGIDA PARA HORÁRIO BRASIL - COM FUSO CORRETO
-function formatarDataBrasil(data) {
-  if (!data) return '';
+function corrigirDadosExistentes() {
+  const waitlabel = 'Sim_Facilita';
+  const sheet = getSheetByName(waitlabel);
+  const ultimaLinha = sheet.getLastRow();
+  
+  console.log("🔄 Corrigindo dados existentes...");
+  
+  if (ultimaLinha < 2) return { success: false, message: "Nenhum dado" };
+  
+  let correcoes = 0;
+  
+  for (let linha = 2; linha <= ultimaLinha; linha++) {
+    const valorMDR = sheet.getRange(linha, COLUNAS.MDR + 1).getValue();
+    const valorTIS = sheet.getRange(linha, COLUNAS.TIS + 1).getValue();
+    const valorRebate = sheet.getRange(linha, COLUNAS.REBATE + 1).getValue();
+    
+    // 🔥 CORREÇÃO: Se o valor foi dividido por 100 (está decimal), multiplica de volta
+    if (typeof valorMDR === 'number') {
+      // Se for menor que 1 (ex: 0.98), mantém porque é 0,98%
+      // Se for entre 0.01 e 0.99, está correto (é decimal percentual)
+      // Não faz nada - mantém como está
+    }
+    
+    if (typeof valorTIS === 'number') {
+      // Mantém como está
+    }
+    
+    if (typeof valorRebate === 'number') {
+      // Mantém como está
+    }
+  }
+  
+  sheet.getRange(2, COLUNAS.MDR + 1, ultimaLinha - 1, 3).setNumberFormat('0.00"%"');
+  SpreadsheetApp.flush();
+  
+  return { success: true, message: `✅ Formato corrigido para 2 casas decimais!`, correcoes: correcoes };
+}
+
+function formatarPercentualParaExibicao(valor) {
+  if (valor === null || valor === undefined || valor === '') {
+    return '';
+  }
+  
+  console.log("🔧 GS->Front: formatarPercentualParaExibicao recebeu:", valor, "tipo:", typeof valor);
   
   try {
-    // Se já é string no formato brasileiro, retornar COMO ESTÁ
-    if (typeof data === 'string' && data.includes('/') && data.includes(':')) {
-      return data;
+    if (typeof valor === 'string' && valor.includes('%')) {
+      return valor;
     }
     
-    // Se é objeto Date, formatar CORRETAMENTE com fuso do Brasil
-    if (data instanceof Date) {
-      // 🔥 CORREÇÃO: Usar o fuso horário de Brasília corretamente
-      const dataBrasil = Utilities.formatDate(data, CONFIG.TIMEZONE, "dd/MM/yyyy HH:mm:ss");
-      console.log("✅ Date convertido:", data.toString(), "→", dataBrasil);
-      return dataBrasil;
+    if (typeof valor === 'number') {
+      // 🔥 CORREÇÃO: NÃO multiplica por 100 - usa o valor direto
+      // Se é 0.98, mostra 0,98%
+      const formatado = valor.toFixed(2).replace('.', ',') + '%';
+      console.log("✅ GS->Front: Número formatado:", valor, "→", formatado);
+      return formatado;
     }
     
-    // Para outros casos, tentar converter
-    try {
-      const dataObj = new Date(data);
-      if (!isNaN(dataObj.getTime())) {
-        const dataBrasil = Utilities.formatDate(dataObj, CONFIG.TIMEZONE, "dd/MM/yyyy HH:mm:ss");
-        return dataBrasil;
-      }
-    } catch (e) {
-      return data.toString();
-    }
-    
-    return data.toString();
+    return String(valor || '');
     
   } catch (error) {
-    console.error("❌ Erro em formatarDataBrasil:", error);
-    return data ? data.toString() : '';
+    console.error("❌ GS->Front: Erro em formatarPercentualParaExibicao:", error);
+    return String(valor || '');
   }
 }
 
-// 🔥🔥🔥 FUNÇÃO SIMPLES - SEM COMPENSAR FUSO HORÁRIO
-function formatarDataBrasilCorrigida(data) {
-  if (!data) return '';
+function corrigirParaDuasCasasDecimais() {
+  const waitlabel = 'Sim_Facilita';
+  const sheet = getSheetByName(waitlabel);
+  const ultimaLinha = sheet.getLastRow();
   
-  try {
-    // Se já está no formato correto, retornar como está
-    if (typeof data === 'string' && data.includes('/') && data.includes(':')) {
-      return data;
+  console.log("🔧 CORRIGINDO PARA 2 CASAS DECIMAIS...");
+  
+  if (ultimaLinha < 2) return { success: false, message: "Nenhum dado" };
+  
+  let correcoes = 0;
+  
+  for (let linha = 2; linha <= ultimaLinha; linha++) {
+    // Obtém o valor que APARECE na célula
+    const mdrDisplay = sheet.getRange(linha, COLUNAS.MDR + 1).getDisplayValue();
+    const tisDisplay = sheet.getRange(linha, COLUNAS.TIS + 1).getDisplayValue();
+    const rebateDisplay = sheet.getRange(linha, COLUNAS.REBATE + 1).getDisplayValue();
+    
+    console.log(`Linha ${linha} ANTES: MDR=${mdrDisplay}, TIS=${tisDisplay}, Rebate=${rebateDisplay}`);
+    
+    // Função para converter mantendo 2 casas decimais
+    const converterParaDuasCasas = (displayValue) => {
+      if (!displayValue || displayValue.trim() === '' || displayValue === '0,00%') {
+        return '';
+      }
+      
+      // Remove o % e troca vírgula por ponto
+      const limpo = displayValue.replace('%', '').replace(',', '.');
+      const numero = parseFloat(limpo);
+      
+      if (isNaN(numero)) {
+        return '';
+      }
+      
+      // Arredonda para 2 casas decimais
+      return parseFloat(numero.toFixed(2));
+    };
+    
+    // Converte cada valor
+    const mdrCorrigido = converterParaDuasCasas(mdrDisplay);
+    const tisCorrigido = converterParaDuasCasas(tisDisplay);
+    const rebateCorrigido = converterParaDuasCasas(rebateDisplay);
+    
+    // Atualiza as células se houve alteração
+    if (mdrCorrigido !== '') {
+      sheet.getRange(linha, COLUNAS.MDR + 1).setValue(mdrCorrigido);
+      correcoes++;
+      console.log(`  MDR: ${mdrDisplay} → ${mdrCorrigido}`);
     }
     
-    let dataObj;
+    if (tisCorrigido !== '') {
+      sheet.getRange(linha, COLUNAS.TIS + 1).setValue(tisCorrigido);
+      correcoes++;
+      console.log(`  TIS: ${tisDisplay} → ${tisCorrigido}`);
+    }
     
-    // Se já é Date, usar direto
-    if (data instanceof Date) {
-      dataObj = data;
-    } else {
-      // Tentar converter para Date
-      dataObj = new Date(data);
-      if (isNaN(dataObj.getTime())) {
-        return data.toString();
+    if (rebateCorrigido !== '') {
+      sheet.getRange(linha, COLUNAS.REBATE + 1).setValue(rebateCorrigido);
+      correcoes++;
+      console.log(`  Rebate: ${rebateDisplay} → ${rebateCorrigido}`);
+    }
+  }
+  
+  // 🔥 FORMATO CRÍTICO: Use este formato EXATO
+  // #,##0.00 - mostra número com 2 casas decimais
+  // "%" - adiciona o símbolo de percentual
+  sheet.getRange(2, COLUNAS.MDR + 1, ultimaLinha - 1, 3).setNumberFormat('#,##0.00"%"');
+  
+  SpreadsheetApp.flush();
+  
+  return { 
+    success: true, 
+    message: `✅ ${correcoes} valores corrigidos para 2 casas decimais!`,
+    correcoes: correcoes
+  };
+}
+
+function verificarValoresAtuais() {
+  const waitlabel = 'Sim_Facilita';
+  const sheet = getSheetByName(waitlabel);
+  const ultimaLinha = Math.min(10, sheet.getLastRow()); // Verifica só as primeiras 10 linhas
+  
+  console.log("🔍 VERIFICANDO VALORES ATUAIS (primeiras 10 linhas):");
+  console.log("=================================================");
+  
+  for (let linha = 2; linha <= ultimaLinha; linha++) {
+    const mdrValor = sheet.getRange(linha, COLUNAS.MDR + 1).getValue();
+    const mdrDisplay = sheet.getRange(linha, COLUNAS.MDR + 1).getDisplayValue();
+    const mdrFormula = sheet.getRange(linha, COLUNAS.MDR + 1).getFormula();
+    
+    const tisValor = sheet.getRange(linha, COLUNAS.TIS + 1).getValue();
+    const tisDisplay = sheet.getRange(linha, COLUNAS.TIS + 1).getDisplayValue();
+    
+    const rebateValor = sheet.getRange(linha, COLUNAS.REBATE + 1).getValue();
+    const rebateDisplay = sheet.getRange(linha, COLUNAS.REBATE + 1).getDisplayValue();
+    
+    console.log(`Linha ${linha}:`);
+    console.log(`  MDR - Valor: ${mdrValor}, Display: ${mdrDisplay}, Fórmula: ${mdrFormula || 'Nenhuma'}`);
+    console.log(`  TIS - Valor: ${tisValor}, Display: ${tisDisplay}`);
+    console.log(`  Rebate - Valor: ${rebateValor}, Display: ${rebateDisplay}`);
+    console.log("---");
+  }
+  
+  // Verifica também o formato atual
+  const formatoMDR = sheet.getRange(2, COLUNAS.MDR + 1).getNumberFormat();
+  console.log(`📋 Formato atual da coluna MDR: ${formatoMDR}`);
+  
+  return { success: true };
+}
+
+function formatarPercentualParaSalvar(percentual) {
+  if (!percentual && percentual !== 0) {
+    return '';
+  }
+  
+  console.log("💾 Front->GS: formatarPercentualParaSalvar recebeu:", percentual, "tipo:", typeof percentual);
+  
+  try {
+    if (typeof percentual === 'string') {
+      const limpo = percentual.trim();
+      const numeroStr = limpo.replace('%', '').replace(',', '.');
+      const numero = parseFloat(numeroStr);
+      
+      if (!isNaN(numero)) {
+        // 🔥 CORREÇÃO: NÃO divide por 100 - salva o valor direto
+        return parseFloat(numero.toFixed(4));
       }
     }
     
-    // 🔥🔥🔥 MÉTODO SIMPLES: Usar Utilities.formatDate sem compensações
-    // Isso deve pegar automaticamente o fuso horário de Brasília
-    const dataFormatada = Utilities.formatDate(dataObj, CONFIG.TIMEZONE, "dd/MM/yyyy HH:mm:ss");
+    if (typeof percentual === 'number') {
+      // 🔥 CORREÇÃO: NÃO divide por 100
+      return parseFloat(percentual.toFixed(4));
+    }
     
-    console.log("🔥 DATA SIMPLES:", dataFormatada);
-    
-    return dataFormatada;
+    return '';
     
   } catch (error) {
-    console.error("❌ Erro em formatarDataBrasilCorrigida:", error);
-    return data ? data.toString() : '';
+    console.error("❌ Front->GS: Erro em formatarPercentualParaSalvar:", error);
+    return '';
   }
 }
 
-// 🔥🔥🔥 VERSÃO MAIS SIMPLES - APENAS USANDO HORÁRIO LOCAL DO USUÁRIO
+function resetarValoresPercentuais() {
+  const waitlabel = 'Sim_Facilita';
+  const sheet = getSheetByName(waitlabel);
+  const ultimaLinha = sheet.getLastRow();
+  
+  console.log("🔄 RESETANDO VALORES PERCENTUAIS...");
+  
+  if (ultimaLinha < 2) return { success: false, message: "Nenhum dado" };
+  
+  const dados = sheet.getRange(2, 1, ultimaLinha - 1, 18).getValues();
+  let correcoes = 0;
+  
+  for (let i = 0; i < dados.length; i++) {
+    const linha = dados[i];
+    if (!linha[0]) continue;
+    
+    const linhaReal = i + 2;
+    
+    const mdrExibido = sheet.getRange(linhaReal, COLUNAS.MDR + 1).getDisplayValue();
+    const tisExibido = sheet.getRange(linhaReal, COLUNAS.TIS + 1).getDisplayValue();
+    const rebateExibido = sheet.getRange(linhaReal, COLUNAS.REBATE + 1).getDisplayValue();
+    
+    if (mdrExibido && mdrExibido !== '') {
+      const mdrLimpo = mdrExibido.replace('%', '').replace(',', '.');
+      const mdrNumero = parseFloat(mdrLimpo);
+      if (!isNaN(mdrNumero)) {
+        // 🔥 CORREÇÃO: Salva o valor direto, sem dividir por 100
+        sheet.getRange(linhaReal, COLUNAS.MDR + 1).setValue(mdrNumero);
+        correcoes++;
+      }
+    }
+    
+    if (tisExibido && tisExibido !== '') {
+      const tisLimpo = tisExibido.replace('%', '').replace(',', '.');
+      const tisNumero = parseFloat(tisLimpo);
+      if (!isNaN(tisNumero)) {
+        sheet.getRange(linhaReal, COLUNAS.TIS + 1).setValue(tisNumero);
+        correcoes++;
+      }
+    }
+    
+    if (rebateExibido && rebateExibido !== '') {
+      const rebateLimpo = rebateExibido.replace('%', '').replace(',', '.');
+      const rebateNumero = parseFloat(rebateLimpo);
+      if (!isNaN(rebateNumero)) {
+        sheet.getRange(linhaReal, COLUNAS.REBATE + 1).setValue(rebateNumero);
+        correcoes++;
+      }
+    }
+  }
+  
+  sheet.getRange(2, COLUNAS.MDR + 1, ultimaLinha - 1, 3).setNumberFormat('0.00"%"');
+  SpreadsheetApp.flush();
+  
+  return { success: true, message: `✅ ${correcoes} valores resetados!`, correcoes: correcoes };
+}
+
+function getSheetByName(nome) {
+  try {
+    const ss = SpreadsheetApp.openById(CONFIG.ID_PLANILHA);
+    const sheet = ss.getSheetByName(nome);
+    
+    if (!sheet) {
+      throw new Error('Planilha "' + nome + '" não encontrada!');
+    }
+    
+    return sheet;
+  } catch (error) {
+    console.error("❌ Erro em getSheetByName:", error);
+    throw error;
+  }
+}
+
 function formatarDataBrasilSimples() {
   const agora = new Date();
   
-  // Usar métodos locais do JavaScript que pegam o fuso do usuário
   const dia = String(agora.getDate()).padStart(2, '0');
   const mes = String(agora.getMonth() + 1).padStart(2, '0');
   const ano = agora.getFullYear();
@@ -127,821 +332,38 @@ function formatarDataBrasilSimples() {
   
   const dataFormatada = `${dia}/${mes}/${ano} ${horas}:${minutos}:${segundos}`;
   
-  console.log("🔥 DATA SIMPLES (Local):", dataFormatada);
-  
   return dataFormatada;
 }
 
-
-
-// 🔥 FUNÇÕES DE GERENCIAMENTO DE WAITLABELS
-function getWaitlabelAtual() {
-  const cache = CacheService.getScriptCache();
-  const waitlabelAtual = cache.get('waitlabel_atual');
-  return waitlabelAtual || WAITLABELS_CONFIG.WAITLABEL_PADRAO;
+function normalizarTexto(texto) {
+  if (!texto || typeof texto !== 'string') return texto;
+  return texto
+    .normalize('NFD')
+    .replace(/[\u0300-\u036f]/g, '')
+    .toUpperCase()
+    .trim();
 }
 
-function setWaitlabelAtual(waitlabel) {
-  if (WAITLABELS_CONFIG.WAITLABELS.includes(waitlabel)) {
-    const cache = CacheService.getScriptCache();
-    cache.put('waitlabel_atual', waitlabel, 21600);
-    return { success: true, message: `Waitlabel alterado para: ${waitlabel}` };
-  }
-  return { success: false, message: 'Waitlabel inválido' };
-}
-
-function getCoresWaitlabels() {
-  return WAITLABELS_CONFIG.CORES;
-}
-
-function getWaitlabels() {
-  return WAITLABELS_CONFIG.WAITLABELS;
-}
-
-// 🔥 FUNÇÃO PRINCIPAL
-function doGet() {
-  return HtmlService.createTemplateFromFile('Index')
-    .evaluate()
-    .setTitle('Sistema - Gestão de Cadastros')
-    .setXFrameOptionsMode(HtmlService.XFrameOptionsMode.ALLOWALL);
-}
-
-function include(filename) {
-  return HtmlService.createHtmlOutputFromFile(filename).getContent();
-}
-
-// 🔥 FUNÇÕES PRINCIPAIS COM WAITLABEL
-function processarCadastroComWaitlabel(dados, waitlabel) {
+function converterMoedaParaNumero(valorMoeda) {
+  if (!valorMoeda) return 0;
   try {
-    console.log("🎯 PROCESSAR CADASTRO COM WAITLABEL - Dados:", dados, "Waitlabel:", waitlabel);
-    
-    const ss = SpreadsheetApp.openById(CONFIG.ID_PLANILHA);
-    let aba = ss.getSheetByName(waitlabel);
-
-    if (!aba) {
-      console.log("📝 Criando nova aba para waitlabel:", waitlabel);
-      aba = ss.insertSheet(waitlabel);
-      const cabecalho = [
-        'Razão Social', 'Nome Fantasia', 'CNPJ', 'Fornecedor', 
-        'Ultima etapa', 'Etapa',
-        'Observação', 'Contrato Enviado', 'Contrato Assinado',
-        'Ativação', 'Link', 'Mensalidade', 'Mensalidade SIM', 'Tarifa', '% Tarifa', 'Adesão', 'Situação'
-      ];
-      aba.getRange('A1:Q1').setValues([cabecalho]);
-      aba.getRange(1, 1, 1, cabecalho.length)
-        .setBackground(WAITLABELS_CONFIG.CORES[waitlabel] || "#7E3E9A")
-        .setFontColor("white")
-        .setFontWeight("bold");
-      aba.setFrozenRows(1);
+    if (typeof valorMoeda === 'number') return valorMoeda;
+    if (typeof valorMoeda === 'string') {
+      const valorLimpo = valorMoeda
+        .replace('R$', '')
+        .replace(/\./g, '')
+        .replace(',', '.')
+        .trim();
+      const numero = parseFloat(valorLimpo);
+      return isNaN(numero) ? 0 : numero;
     }
-
-    if (dados.acao === 'cadastrar') {
-      return cadastrarNovoComWaitlabel(aba, dados, waitlabel);
-    } else if (dados.acao === 'atualizar') {
-      return atualizarCadastroComWaitlabel(aba, dados, waitlabel);
-    } else {
-      return { success: false, message: "Ação não reconhecida" };
-    }
-
+    return parseFloat(valorMoeda) || 0;
   } catch (error) {
-    console.error("❌ Erro em processarCadastroComWaitlabel:", error);
-    return { success: false, message: "Erro: " + error.message };
+    console.error("❌ Erro ao converter moeda:", valorMoeda, error);
+    return 0;
   }
 }
 
-function cadastrarNovoComWaitlabel(aba, dados, waitlabel) {
-  try {
-    console.log("🆕 CADASTRAR NOVO COM WAITLABEL - INICIANDO");
-    
-    // 🔥🔥🔥 VALIDAÇÃO DA ETAPA - USANDO FUNÇÃO AUXILIAR COM SITUAÇÃO
-    console.log("🎯 Validando etapa selecionada no cadastro...");
-    const validacaoEtapa = validarEtapa(dados.etapa, dados.situacao);
-    if (!validacaoEtapa.valida) {
-      return { success: false, message: validacaoEtapa.mensagem };
-    }
-    const etapaValidada = validacaoEtapa.etapa;
-    
-    // Verificar duplicatas
-    const fornecedoresParaCadastrar = dados.fornecedores || [];
-    const fornecedoresDuplicados = [];
-    const cadastrosExistentes = buscarTodosCadastrosPorCNPJComWaitlabel(dados.cnpj, waitlabel);
-    
-    for (let fornecedor of fornecedoresParaCadastrar) {
-      const nomeFornecedor = fornecedor.nome || fornecedor;
-      const jaExiste = cadastrosExistentes.some(cad => cad.fornecedor === nomeFornecedor);
-      if (jaExiste) {
-        fornecedoresDuplicados.push(nomeFornecedor);
-      }
-    }
-    
-    if (fornecedoresDuplicados.length > 0) {
-      return { 
-        success: false, 
-        message: `❌ Este CNPJ já possui cadastro no ${waitlabel} para: ${fornecedoresDuplicados.join(', ')}` 
-      };
-    }
-
-    const ultimaLinha = aba.getLastRow();
-    let linhaInserir = Math.max(2, ultimaLinha + 1);
-    const resultados = [];
-    let registrosCriados = 0;
-
-    let situacaoParaSalvar = normalizarTexto(dados.situacao) || 'NOVO REGISTRO';
-    if (situacaoParaSalvar === 'Novo registro') {
-      situacaoParaSalvar = 'Novo Registro';
-    }
-
-    for (let i = 0; i < dados.fornecedores.length; i++) {
-      const fornecedorObj = dados.fornecedores[i];
-      
-      let nomeFornecedor = '';
-      let tarifaFornecedor = '';
-      let percentualTarifaFornecedor = '0%';
-      
-      if (typeof fornecedorObj === 'object' && fornecedorObj !== null) {
-        nomeFornecedor = fornecedorObj.nome || '';
-        tarifaFornecedor = fornecedorObj.tarifa || '';
-        percentualTarifaFornecedor = fornecedorObj.percentual_tarifa || '0%';
-      }
-
-      if (!nomeFornecedor || nomeFornecedor.trim() === '') {
-        resultados.push(`❌ Fornecedor sem nome - pulado`);
-        continue;
-      }
-
-      let mensalidadeNumero = parseFloat(dados.mensalidade) || 0;
-      let adesaoNumero = processarAdesaoParaSalvar(dados.adesao);
-
-      // 🔥🔥🔥 CORREÇÃO: USAR A MESMA FUNÇÃO SIMPLES
-      const dataUltimaEtapa = formatarDataBrasilSimples();
-
-      let dataAtivacaoParaSalvar = '';
-      if (dados.ativacao && dados.ativacao.trim() !== '') {
-        try {
-          const dataUsuario = new Date(dados.ativacao);
-          dataUsuario.setDate(dataUsuario.getDate() + 1);
-          dataAtivacaoParaSalvar = Utilities.formatDate(dataUsuario, CONFIG.TIMEZONE, "dd/MM/yyyy");
-        } catch (e) {
-          console.error("❌ Erro ao processar data do usuário:", e);
-          dataAtivacaoParaSalvar = '';
-        }
-      }
-
-      const linhaDados = [
-        normalizarTexto(dados.razao_social) || '',
-        normalizarTexto(dados.nome_fantasia) || '',
-        dados.cnpj ? dados.cnpj.toString() : '',
-        normalizarTexto(nomeFornecedor),
-        dataUltimaEtapa, // 🔥 AGORA COM HORÁRIO CORRETO
-        etapaValidada, // 🔥 USANDO A ETAPA JÁ VALIDADA
-        normalizarTexto(dados.observacoes) || '',
-        normalizarTexto(dados.contrato_enviado) || '',
-        normalizarTexto(dados.contrato_assinado) || '',
-        dataAtivacaoParaSalvar,
-        dados.link || '',
-        mensalidadeNumero,                    
-        converterMoedaParaNumero(dados.mensalidade_sim) || 0,
-        tarifaFornecedor || '',               
-        percentualTarifaFornecedor,           
-        adesaoNumero,                         
-        normalizarTexto(situacaoParaSalvar)   
-      ];
-
-      try {
-        const range = aba.getRange(linhaInserir, 1, 1, linhaDados.length);
-        range.setValues([linhaDados]);
-        
-        // Formatar colunas
-        aba.getRange(linhaInserir, 12).setNumberFormat('"R$"#,##0.00');
-        aba.getRange(linhaInserir, 13).setNumberFormat('"R$"#,##0.00');
-        aba.getRange(linhaInserir, 15).setNumberFormat('0.00%');
-        aba.getRange(linhaInserir, 16).setNumberFormat('"R$"#,##0.00');
-        aba.getRange(linhaInserir, 14).setNumberFormat('@');
-        aba.getRange(linhaInserir, 10).setNumberFormat('dd/MM/yyyy');
-        
-        SpreadsheetApp.flush();
-        
-        linhaInserir++;
-        registrosCriados++;
-        resultados.push(`✅ ${nomeFornecedor} - ${tarifaFornecedor} ${percentualTarifaFornecedor}`);
-        
-      } catch (erroInsercao) {
-        console.error(`❌ Erro ao salvar:`, erroInsercao);
-        resultados.push(`❌ ${nomeFornecedor} - ERRO: ${erroInsercao.message}`);
-      }
-    }
-
-    const sucessos = resultados.filter(r => r.includes('✅')).length;
-    const erros = resultados.filter(r => r.includes('❌')).length;
-    
-    let mensagem = '';
-    if (erros === 0) {
-      mensagem = `✅ "${dados.razao_social}" cadastrado com sucesso no ${waitlabel} para ${sucessos} fornecedor(es)!`;
-    } else if (sucessos === 0) {
-      mensagem = `❌ Erro ao cadastrar "${dados.razao_social}" no ${waitlabel} para todos os fornecedores!`;
-    } else {
-      mensagem = `⚠️ "${dados.razao_social}" cadastrado parcialmente no ${waitlabel}: ${sucessos} sucesso(s), ${erros} erro(s)`;
-    }
-
-    return { 
-      success: erros === 0,
-      message: mensagem,
-      registrosCriados: registrosCriados,
-      detalhes: resultados
-    };
-
-  } catch (error) {
-    console.error("❌ Erro geral:", error);
-    return { 
-      success: false, 
-      message: "Erro ao cadastrar: " + error.message 
-    };
-  }
-}
-
-function atualizarCadastroComWaitlabel(aba, dados, waitlabel) {
-  try {
-    console.log("✏️ ATUALIZAR CADASTRO COM WAITLABEL - INICIANDO");
-    
-    const linhaAtualizar = parseInt(dados.id);
-
-    if (linhaAtualizar < 2 || linhaAtualizar > aba.getLastRow()) {
-      return { success: false, message: "Registro não encontrado" };
-    }
-
-    // 🔥🔥🔥 VALIDAÇÃO DA ETAPA - USANDO FUNÇÃO AUXILIAR COM SITUAÇÃO
-    console.log("🎯 Validando etapa selecionada...");
-    const validacaoEtapa = validarEtapa(dados.etapa, dados.situacao);
-    if (!validacaoEtapa.valida) {
-      return { success: false, message: validacaoEtapa.mensagem };
-    }
-    const etapaNova = validacaoEtapa.etapa;
-
-    const dadosAtuais = aba.getRange(linhaAtualizar, 1, 1, 17).getValues()[0];
-    const dataAtivacaoOriginal = dadosAtuais[9];
-    const etapaAtual = dadosAtuais[5]?.toString().trim() || '';
-    const situacaoAtual = dadosAtuais[16]?.toString().trim() || '';
-    const dataUltimaEtapaAtual = dadosAtuais[4];
-    
-    let fornecedorParaAtualizar = '';
-    let tarifaParaAtualizar = dados.tarifa || '';
-    let percentualParaAtualizar = dados.percentual_tarifa || '0%';
-
-    if (Array.isArray(dados.fornecedores) && dados.fornecedores.length > 0) {
-      const primeiroFornecedor = dados.fornecedores[0];
-      fornecedorParaAtualizar = primeiroFornecedor.nome || primeiroFornecedor;
-      tarifaParaAtualizar = primeiroFornecedor.tarifa || tarifaParaAtualizar;
-      percentualParaAtualizar = primeiroFornecedor.percentual_tarifa || percentualParaAtualizar;
-    } else if (typeof dados.fornecedores === 'string') {
-      fornecedorParaAtualizar = dados.fornecedores;
-    } else {
-      fornecedorParaAtualizar = dados.fornecedor || '';
-    }
-
-    let mensalidadeNumero = converterMoedaParaNumero(dados.mensalidade);
-    let adesaoNumero = processarAdesaoParaSalvar(dados.adesao);
-
-    const situacaoValida = (dados.situacao && dados.situacao.trim() !== '') ? dados.situacao : 'Novo registro';
-
-    let dataAtivacaoParaSalvar = dataAtivacaoOriginal;
-    if (dados.ativacao && dados.ativacao.trim() !== '') {
-      try {
-        const dataUsuario = new Date(dados.ativacao);
-        dataUsuario.setDate(dataUsuario.getDate() + 1);
-        dataAtivacaoParaSalvar = Utilities.formatDate(dataUsuario, CONFIG.TIMEZONE, "dd/MM/yyyy");
-      } catch (e) {
-        console.error("❌ Erro ao processar data:", e);
-        dataAtivacaoParaSalvar = dataAtivacaoOriginal;
-      }
-    } else {
-      if (dataAtivacaoOriginal instanceof Date) {
-        dataAtivacaoParaSalvar = Utilities.formatDate(dataAtivacaoOriginal, CONFIG.TIMEZONE, "dd/MM/yyyy");
-      }
-    }
-
-    const situacaoNova = normalizarTexto(situacaoValida);
-    
-    const mudouEtapa = etapaAtual !== etapaNova;
-    const mudouSituacao = situacaoAtual !== situacaoNova;
-    
-    let dataUltimaEtapaParaSalvar = dataUltimaEtapaAtual;
-    
-    // 🔥🔥🔥 CORREÇÃO: USAR A MESMA FUNÇÃO DO "APLICAR A TODOS"
-    if (mudouEtapa || mudouSituacao) {
-      const dataAtual = new Date();
-      
-      // 🔥 USAR A MESMA FUNÇÃO SIMPLES QUE O "APLICAR A TODOS" USA
-      dataUltimaEtapaParaSalvar = formatarDataBrasilSimples();
-      
-      console.log("🔄 ETAPA OU SITUAÇÃO MUDOU - ATUALIZANDO DATA DA ÚLTIMA ETAPA");
-      console.log("📅 NOVA DATA (HORÁRIO BRASIL):", dataUltimaEtapaParaSalvar);
-    }
-
-    const novosDados = [
-      normalizarTexto(dados.razao_social) || '',
-      normalizarTexto(dados.nome_fantasia) || '',
-      dados.cnpj ? dados.cnpj.toString() : '',
-      normalizarTexto(fornecedorParaAtualizar),
-      dataUltimaEtapaParaSalvar, // 🔥 AGORA COM HORÁRIO CORRETO
-      etapaNova, // 🔥 USANDO A ETAPA JÁ VALIDADA
-      normalizarTexto(dados.observacoes) || '',
-      normalizarTexto(dados.contrato_enviado) || '',
-      normalizarTexto(dados.contrato_assinado) || '',
-      dataAtivacaoParaSalvar,
-      dados.link || '',
-      mensalidadeNumero,                                    
-      converterMoedaParaNumero(dados.mensalidade_sim) || 0, 
-      tarifaParaAtualizar || '',                            
-      percentualParaAtualizar,                              
-      adesaoNumero,                                         
-      normalizarTexto(situacaoValida)                       
-    ];
-
-    aba.getRange(linhaAtualizar, 1, 1, novosDados.length).setValues([novosDados]);
-    
-    // Aplicar formatação
-    aba.getRange(linhaAtualizar, 12).setNumberFormat('"R$"#,##0.00');
-    aba.getRange(linhaAtualizar, 13).setNumberFormat('"R$"#,##0.00');
-    aba.getRange(linhaAtualizar, 15).setNumberFormat('0.00%');
-    aba.getRange(linhaAtualizar, 16).setNumberFormat('"R$"#,##0.00');
-    aba.getRange(linhaAtualizar, 14).setNumberFormat('@');
-    aba.getRange(linhaAtualizar, 10).setNumberFormat('dd/MM/yyyy');
-
-    SpreadsheetApp.flush();
-
-    return { 
-      success: true, 
-      message: `✅ "${dados.razao_social}" atualizado com sucesso no ${waitlabel}!` + 
-               (mudouEtapa || mudouSituacao ? ' (Data da última etapa atualizada)' : '')
-    };
-
-  } catch (error) {
-    console.error("❌ Erro em atualizarCadastroComWaitlabel:", error);
-    return { success: false, message: "Erro ao atualizar: " + error.message };
-  }
-}
-
-function aplicarAlteracoesATodos(cnpj, dados, camposSelecionados) {
-  console.log("🎯 APLICAR A TODOS - VERSÃO COM VALIDAÇÃO INTELIGENTE");
-  
-  try {
-    // 🔥🔥🔥 VALIDAÇÃO DA ETAPA - CONSIDERANDO A SITUAÇÃO
-    console.log("🎯 Validando etapa no Aplicar a Todos...");
-    const etapaParaValidar = dados.etapa;
-    const situacaoParaValidar = dados.situacao || '';
-    
-    // Se está tentando aplicar uma nova etapa, validar ela
-    if (camposSelecionados.includes('etapa') || camposSelecionados.includes('inputEtapaSearch')) {
-      console.log("🔍 Validando NOVA etapa...");
-      const validacaoEtapa = validarEtapa(etapaParaValidar, situacaoParaValidar);
-      if (!validacaoEtapa.valida) {
-        return { success: false, message: validacaoEtapa.mensagem };
-      }
-      console.log("✅ Nova etapa válida");
-    } else {
-      // 🔥🔥🔥 VALIDAÇÃO INTELIGENTE: Só validar etapa se a situação for EM ANDAMENTO
-      const situacaoNormalizada = normalizarTexto(situacaoParaValidar);
-      const ehEmAndamento = situacaoNormalizada === 'EM ANDAMENTO';
-      
-      if (ehEmAndamento) {
-        console.log("🔍 Situação é EM ANDAMENTO - validando etapa atual do formulário...");
-        const validacaoEtapa = validarEtapa(etapaParaValidar, situacaoParaValidar);
-        if (!validacaoEtapa.valida) {
-          return { 
-            success: false, 
-            message: `❌ OPERAÇÃO BLOQUEADA!\n\nPara situações "EM ANDAMENTO" a etapa é obrigatória.\n\nA etapa atual no formulário ("${etapaParaValidar}") não é válida.\n\nCorrija a etapa para uma das opções válidas:\n\n• PENDENTE FORNECEDOR(ES)\n• PENDENTE SIM\n• PENDENTE RETORNO EXTERNO`
-          };
-        }
-        console.log("✅ Etapa atual do formulário é válida para EM ANDAMENTO");
-      } else {
-        console.log("✅ Situação não é EM ANDAMENTO - etapa não precisa ser validada");
-      }
-    }
-
-    const waitlabelAtual = getWaitlabelAtual();
-    const ss = SpreadsheetApp.openById(CONFIG.ID_PLANILHA);
-    const aba = ss.getSheetByName(waitlabelAtual);
-    
-    if (!aba) {
-      return { success: false, message: "❌ Planilha não encontrada" };
-    }
-    
-    const dadosCompletos = aba.getDataRange().getValues();
-    const cabecalhos = dadosCompletos[0];
-    
-    const cnpjIndex = cabecalhos.indexOf("CNPJ");
-    const ultimaEtapaIndex = cabecalhos.indexOf("Ultima etapa");
-    const etapaIndex = cabecalhos.indexOf("Etapa");
-    const situacaoIndex = cabecalhos.indexOf("Situação");
-    
-    console.log("🎯 Índices: UltimaEtapa=" + ultimaEtapaIndex);
-    
-    // BUSCAR REGISTROS
-    const cnpjBuscado = cnpj.toString().replace(/\D/g, '');
-    const registrosParaAtualizar = [];
-    
-    for (let i = 1; i < dadosCompletos.length; i++) {
-      const linha = dadosCompletos[i];
-      if (!linha[0] || linha[0].toString().trim() === '') continue;
-      
-      const cnpjLinha = linha[cnpjIndex]?.toString().replace(/\D/g, '') || '';
-      
-      if (cnpjLinha === cnpjBuscado) {
-        registrosParaAtualizar.push({
-          linhaNumero: i + 1,
-          dadosOriginais: linha
-        });
-      }
-    }
-    
-    console.log(`🔍 Encontrados ${registrosParaAtualizar.length} registros`);
-    
-    // 🔥🔥🔥 VALIDAÇÃO ADICIONAL: Verificar se algum registro atual tem etapa inválida
-    console.log("🔍 Verificando etapas existentes nos registros...");
-    for (const registro of registrosParaAtualizar) {
-      const etapaExistente = registro.dadosOriginais[etapaIndex]?.toString().trim() || '';
-      if (etapaExistente) {
-        const etapasValidas = ["PENDENTE FORNECEDOR(ES)", "PENDENTE SIM", "PENDENTE RETORNO EXTERNO"];
-        const etapaNormalizada = normalizarTexto(etapaExistente);
-        
-        if (!etapasValidas.includes(etapaNormalizada)) {
-          console.log(`⚠️ Registro linha ${registro.linhaNumero} tem etapa inválida: "${etapaExistente}"`);
-        }
-      }
-    }
-    
-    const mudouEtapa = camposSelecionados.includes('etapa') || camposSelecionados.includes('inputEtapaSearch');
-    const mudouSituacao = camposSelecionados.includes('situacao');
-    
-    console.log("🔄 Mudanças: Etapa=" + mudouEtapa + ", Situacao=" + mudouSituacao);
-    
-    let registrosAtualizados = 0;
-    let atualizouDataUltimaEtapa = false;
-    
-    for (const registro of registrosParaAtualizar) {
-      console.log(`🔄 Atualizando linha ${registro.linhaNumero}...`);
-      
-      const novosDados = [...registro.dadosOriginais];
-      
-      // APLICAR ALTERAÇÕES
-      for (const campo of camposSelecionados) {
-        const valor = obterValorParaAplicarTodos(campo, dados);
-        
-        switch(campo) {
-          case 'razao_social': novosDados[0] = valor; break;
-          case 'nome_fantasia': novosDados[1] = valor; break;
-          case 'cnpj_cadastro': novosDados[2] = valor; break;
-          case 'etapa':
-          case 'inputEtapaSearch': 
-            novosDados[etapaIndex] = valor; 
-            break;
-          case 'situacao':
-            novosDados[situacaoIndex] = valor;
-            break;
-          case 'observacoes': novosDados[6] = valor; break;
-          case 'contrato_enviado': novosDados[7] = valor; break;
-          case 'contrato_assinado': novosDados[8] = valor; break;
-          case 'ativacao': novosDados[9] = valor; break;
-          case 'link': novosDados[10] = valor; break;
-          case 'mensalidade': novosDados[11] = valor; break;
-          case 'mensalidade_sim': novosDados[12] = valor; break;
-          case 'adesao': novosDados[15] = valor; break;
-        }
-      }
-      
-      // 🔥🔥🔥 ATUALIZAR DATA DA ÚLTIMA ETAPA SE MUDOU ETAPA/SITUAÇÃO
-      if (ultimaEtapaIndex !== -1 && (mudouEtapa || mudouSituacao)) {
-        const dataAtual = new Date();
-        
-        // 🔥 USAR A FORMATAÇÃO CORRIGIDA PARA HORÁRIO BRASIL
-        const dataFormatada = formatarDataBrasilSimples();
-        novosDados[ultimaEtapaIndex] = dataFormatada; // 🔥 AGORA COM HORÁRIO CORRETO
-        
-        atualizouDataUltimaEtapa = true;
-        console.log(`   📅📅📅 DATA ATUALIZADA (HORÁRIO BRASIL): ${dataFormatada}`);
-      }
-      
-      // SALVAR
-      aba.getRange(registro.linhaNumero, 1, 1, novosDados.length).setValues([novosDados]);
-      registrosAtualizados++;
-    }
-    
-    SpreadsheetApp.flush();
-    
-    return {
-      success: true,
-      registrosAtualizados: registrosAtualizados,
-      message: `✅ ${registrosAtualizados} registro(s) atualizado(s) com sucesso!` +
-               (atualizouDataUltimaEtapa ? ' (Data da última etapa atualizada)' : '')
-    };
-    
-  } catch (error) {
-    console.error("❌ ERRO:", error);
-    return { success: false, message: "❌ Erro: " + error.toString() };
-  }
-}
-
-function obterValorParaAplicarTodos(campo, dados) {
-  switch(campo) {
-    case 'razao_social':
-      return normalizarTexto(dados.razao_social) || '';
-    case 'nome_fantasia':
-      return normalizarTexto(dados.nome_fantasia) || '';
-    case 'cnpj_cadastro':
-      return dados.cnpj ? dados.cnpj.toString() : '';
-    case 'etapa':
-    case 'inputEtapaSearch':
-      // 🔥 GARANTIR QUE A ETAPA SEJA NORMALIZADA CORRETAMENTE
-      let etapa = normalizarTexto(dados.etapa) || '';
-      // Se estiver vazia, não aplicar
-      if (!etapa) return '';
-      return etapa;
-    case 'observacoes':
-      return normalizarTexto(dados.observacoes) || '';
-    case 'contrato_enviado':
-      return normalizarTexto(dados.contrato_enviado) || '';
-    case 'contrato_assinado':
-      return normalizarTexto(dados.contrato_assinado) || '';
-    case 'ativacao':
-      return dados.ativacao || '';
-    case 'link':
-      return dados.link || '';
-    case 'mensalidade':
-      return converterMoedaParaNumero(dados.mensalidade) || 0;
-    case 'mensalidade_sim':
-      return converterMoedaParaNumero(dados.mensalidade_sim) || 0;
-    case 'adesao':
-      return processarAdesaoParaSalvar(dados.adesao);
-    case 'situacao':
-      let situacao = normalizarTexto(dados.situacao) || 'NOVO REGISTRO';
-      if (situacao === 'NOVO REGISTRO') situacao = 'Novo Registro';
-      return situacao;
-    default:
-      return '';
-  }
-}
-
-function validarEtapa(etapa, situacao) {
-  // 🔥 AGORA VALIDAR PARA "EM ANDAMENTO" E "NOVO REGISTRO"
-  const situacaoNormalizada = normalizarTexto(situacao || '');
-  const precisaValidarEtapa = situacaoNormalizada === 'EM ANDAMENTO' || situacaoNormalizada === 'NOVO REGISTRO';
-  
-  if (!precisaValidarEtapa) {
-    console.log("✅ Situação não requer validação de etapa");
-    return { valida: true, etapa: etapa ? normalizarTexto(etapa) : '' };
-  }
-  
-  // 🔥 SE É "EM ANDAMENTO" OU "NOVO REGISTRO", ENTÃO ETAPA É OBRIGATÓRIA
-  if (!etapa || etapa.trim() === '') {
-    return { 
-      valida: false, 
-      mensagem: `❌ Para situações "${situacao}" o campo Etapa é obrigatório!` 
-    };
-  }
-  
-  // 🔥 NOVAS ETAPAS VÁLIDAS
-  const etapasValidas = [
-    "PENDENTE FORNECEDOR(ES)",
-    "PENDENTE SIM", 
-    "PENDENTE RETORNO EXTERNO"
-  ];
-  
-  const etapaNormalizada = normalizarTexto(etapa);
-  
-  // 🔥 BLOQUEAR EXPLICITAMENTE "DESISTIU" E OUTRAS ETAPAS INVÁLIDAS
-  const etapasBloqueadas = ["DESISTIU", "REJEITADO", "CADASTRADO", "NOVO REGISTRO", "EM ANDAMENTO", "DESCREDENCIADO"];
-  
-  if (etapasBloqueadas.includes(etapaNormalizada)) {
-    const mensagemErro = `❌ ETAPA NÃO PERMITIDA!\n\nA etapa "${etapa}" é uma SITUAÇÃO, não uma etapa do processo.\n\n📋 ETAPAS VÁLIDAS (do processo):\n• PENDENTE FORNECEDOR(ES)\n• PENDENTE SIM\n• PENDENTE RETORNO EXTERNO\n\n💡 Use o campo "Situação" para: ${etapa}`;
-    
-    return { valida: false, mensagem: mensagemErro };
-  }
-  
-  if (!etapasValidas.includes(etapaNormalizada)) {
-    const mensagemErro = `❌ ETAPA INVÁLIDA!\n\nA etapa "${etapa}" não é válida.\n\n📋 ETAPAS VÁLIDAS:\n• PENDENTE FORNECEDOR(ES)\n• PENDENTE SIM\n• PENDENTE RETORNO EXTERNO\n\nSelecione uma das etapas acima para continuar.`;
-    
-    return { valida: false, mensagem: mensagemErro };
-  }
-  
-  return { valida: true, etapa: etapaNormalizada };
-}
-
-// 🔥 FUNÇÕES DE BUSCA
-function buscarTodosCadastrosComWaitlabel(waitlabel) {
-  try {
-    const ss = SpreadsheetApp.openById(CONFIG.ID_PLANILHA);
-    const aba = ss.getSheetByName(waitlabel);
-    if (!aba) return [];
-    
-    const ultimaLinha = aba.getLastRow();
-    if (ultimaLinha < 2) return [];
-    
-    const dados = aba.getRange(2, 1, ultimaLinha - 1, 17).getValues();
-    const cadastros = [];
-    
-    for (let i = 0; i < dados.length; i++) {
-      const linha = dados[i];
-      if (!linha[0] || linha[0].toString().trim() === '') continue;
-
-      let ultimaEtapaFormatada = '';
-      if (linha[4] && linha[4] instanceof Date) {
-        ultimaEtapaFormatada = formatarDataBrasil(linha[4]);
-      } else if (linha[4]) {
-        ultimaEtapaFormatada = linha[4].toString();
-      }
-      
-      let ativacaoFormatada = '';
-      if (linha[9] && linha[9] instanceof Date) {
-        ativacaoFormatada = Utilities.formatDate(linha[9], CONFIG.TIMEZONE, "dd/MM/yyyy");
-      } else if (linha[9]) {
-        ativacaoFormatada = linha[9].toString();
-      }
-      
-      const cadastro = {
-        id: i + 2,
-        razao_social: linha[0]?.toString().trim() || '',
-        nome_fantasia: linha[1]?.toString().trim() || '',
-        cnpj: formatarCNPJNoSheets(linha[2]?.toString().trim() || ''),
-        fornecedor: linha[3]?.toString().trim() || '',
-        ultima_etapa: ultimaEtapaFormatada,
-        etapa: linha[5]?.toString().trim() || '',
-        observacoes: linha[6]?.toString().trim() || '',
-        contrato_enviado: linha[7]?.toString().trim() || '',
-        contrato_assinado: linha[8]?.toString().trim() || '',
-        ativacao: ativacaoFormatada,
-        link: linha[10]?.toString().trim() || '',
-        mensalidade: parseFloat(linha[11]) || 0,
-        mensalidade_sim: parseFloat(linha[12]) || 0,
-        tarifa: linha[13]?.toString().trim() || '',
-        percentual_tarifa: linha[14]?.toString().trim() || '',
-        adesao: processarAdesao(linha[15]),
-        situacao: (linha[16]?.toString().trim() || 'Novo registro'),
-        waitlabel: waitlabel
-      };
-      
-      cadastros.push(cadastro);
-    }
-    
-    return cadastros;
-    
-  } catch (error) {
-    console.error("❌ Erro em buscarTodosCadastrosComWaitlabel:", error);
-    return [];
-  }
-}
-
-function buscarTodosCadastrosPorCNPJComWaitlabel(cnpj, waitlabel) {
-  try {
-    const ss = SpreadsheetApp.openById(CONFIG.ID_PLANILHA);
-    const aba = ss.getSheetByName(waitlabel);
-    if (!aba) return [];
-    
-    const ultimaLinha = aba.getLastRow();
-    if (ultimaLinha < 2) return [];
-    
-    const dados = aba.getRange(2, 1, ultimaLinha - 1, 17).getValues();
-    const cnpjBuscado = cnpj.toString().replace(/\D/g, '');
-    const cadastrosEncontrados = [];
-    
-    for (let i = 0; i < dados.length; i++) {
-      const linha = dados[i];
-      if (!linha[0] || linha[0].toString().trim() === '') continue;
-      
-      const cnpjCadastro = linha[2]?.toString().replace(/\D/g, '') || '';
-      
-      if (cnpjCadastro === cnpjBuscado) {
-        let ultimaEtapaFormatada = '';
-        if (linha[4] && linha[4] instanceof Date) {
-          ultimaEtapaFormatada = formatarDataBrasil(linha[4]);
-        } else if (linha[4]) {
-          ultimaEtapaFormatada = linha[4].toString();
-        }
-        
-        let ativacaoFormatada = '';
-        if (linha[9] && linha[9] instanceof Date) {
-          ativacaoFormatada = Utilities.formatDate(linha[9], CONFIG.TIMEZONE, "dd/MM/yyyy");
-        } else if (linha[9]) {
-          ativacaoFormatada = linha[9].toString();
-        }
-        
-        const cadastro = {
-          id: i + 2,
-          razao_social: linha[0]?.toString().trim() || '',
-          nome_fantasia: linha[1]?.toString().trim() || '',
-          cnpj: formatarCNPJNoSheets(linha[2]?.toString().trim() || ''),
-          fornecedor: linha[3]?.toString().trim() || '',
-          ultima_etapa: ultimaEtapaFormatada,
-          etapa: linha[5]?.toString().trim() || '',
-          observacoes: linha[6]?.toString().trim() || '',
-          contrato_enviado: linha[7]?.toString().trim() || '',
-          contrato_assinado: linha[8]?.toString().trim() || '',
-          ativacao: ativacaoFormatada,
-          link: linha[10]?.toString().trim() || '',
-          mensalidade: parseFloat(linha[11]) || 0,
-          mensalidade_sim: parseFloat(linha[12]) || 0,
-          tarifa: linha[13]?.toString().trim() || '',
-          percentual_tarifa: linha[14]?.toString().trim() || '',
-          adesao: processarAdesao(linha[15]),
-          situacao: (linha[16]?.toString().trim() || 'Novo registro'),
-          waitlabel: waitlabel
-        };
-        
-        cadastrosEncontrados.push(cadastro);
-      }
-    }
-    
-    return cadastrosEncontrados;
-    
-  } catch (error) {
-    console.error("❌ Erro em buscarTodosCadastrosPorCNPJComWaitlabel:", error);
-    return [];
-  }
-}
-
-function buscarCadastroPorIDComWaitlabel(id, waitlabel) {
-  try {
-    const ss = SpreadsheetApp.openById(CONFIG.ID_PLANILHA);
-    const aba = ss.getSheetByName(waitlabel);
-    if (!aba) return { encontrado: false, mensagem: "Waitlabel não encontrado" };
-    
-    const ultimaLinha = aba.getLastRow();
-    if (ultimaLinha < id) return { encontrado: false, mensagem: "Registro não encontrado" };
-    
-    const linha = aba.getRange(id, 1, 1, 17).getValues()[0];
-    
-    if (!linha[0] || linha[0].toString().trim() === '') {
-      return { encontrado: false, mensagem: "Registro vazio ou não encontrado" };
-    }
-
-    let ultimaEtapaFormatada = '';
-    if (linha[4] && linha[4] instanceof Date) {
-      ultimaEtapaFormatada = formatarDataBrasil(linha[4]);
-    } else if (linha[4]) {
-      ultimaEtapaFormatada = linha[4].toString();
-    }
-    
-    let ativacaoFormatada = '';
-    if (linha[9] && linha[9] instanceof Date) {
-      ativacaoFormatada = Utilities.formatDate(linha[9], CONFIG.TIMEZONE, "yyyy-MM-dd");
-    } else if (linha[9]) {
-      if (linha[9].includes('/')) {
-        const partes = linha[9].split('/');
-        ativacaoFormatada = `${partes[2]}-${partes[1]}-${partes[0]}`;
-      } else {
-        ativacaoFormatada = linha[9].toString();
-      }
-    }
-
-    let tarifa = linha[13]?.toString().trim() || '';
-    let percentualTarifa = '0%';
-    if (linha[14] !== null && linha[14] !== undefined && linha[14] !== '') {
-      const valor = parseFloat(linha[14]);
-      if (!isNaN(valor)) {
-        percentualTarifa = (valor * 100).toFixed(2) + '%';
-      } else {
-        percentualTarifa = linha[14]?.toString().trim() || '0%';
-      }
-    }
-
-    const fornecedorParaFormulario = {
-      nome: linha[3]?.toString().trim() || '',
-      tarifa: tarifa,
-      percentual_tarifa: percentualTarifa
-    };
-    
-    const resultado = {
-      encontrado: true,
-      id: id,
-      razao_social: linha[0]?.toString().trim() || '',
-      nome_fantasia: linha[1]?.toString().trim() || '',
-      cnpj: formatarCNPJNoSheets(linha[2]?.toString().trim() || ''),
-      fornecedor: linha[3]?.toString().trim() || '',
-      fornecedores: [fornecedorParaFormulario],
-      ultima_etapa: ultimaEtapaFormatada,
-      etapa: linha[5]?.toString().trim() || '',
-      observacoes: linha[6]?.toString().trim() || '',
-      contrato_enviado: linha[7]?.toString().trim() || '',
-      contrato_assinado: linha[8]?.toString().trim() || '',
-      ativacao: ativacaoFormatada,
-      link: linha[10]?.toString().trim() || '',
-      mensalidade: parseFloat(linha[11]) || 0,
-      mensalidade_sim: parseFloat(linha[12]) || 0,
-      tarifa: tarifa,
-      percentual_tarifa: percentualTarifa,
-      adesao: processarAdesao(linha[15]),
-      situacao: (linha[16]?.toString().trim() || 'Novo registro'),
-      waitlabel: waitlabel
-    };
-
-    return resultado;
-    
-  } catch (error) {
-    console.error("❌ Erro em buscarCadastroPorIDComWaitlabel:", error);
-    return { encontrado: false, mensagem: "Erro: " + error.message };
-  }
-}
-
-// 🔥 FUNÇÕES AUXILIARES
 function processarAdesao(valorAdesao) {
   if (!valorAdesao && valorAdesao !== 0) return 'Isento';
   const valorStr = valorAdesao.toString().trim();
@@ -980,35 +402,6 @@ function processarAdesaoParaSalvar(valorAdesao) {
   }
 }
 
-function converterMoedaParaNumero(valorMoeda) {
-  if (!valorMoeda) return 0;
-  try {
-    if (typeof valorMoeda === 'number') return valorMoeda;
-    if (typeof valorMoeda === 'string') {
-      const valorLimpo = valorMoeda
-        .replace('R$', '')
-        .replace(/\./g, '')
-        .replace(',', '.')
-        .trim();
-      const numero = parseFloat(valorLimpo);
-      return isNaN(numero) ? 0 : numero;
-    }
-    return parseFloat(valorMoeda) || 0;
-  } catch (error) {
-    console.error("❌ Erro ao converter moeda:", valorMoeda, error);
-    return 0;
-  }
-}
-
-function normalizarTexto(texto) {
-  if (!texto || typeof texto !== 'string') return texto;
-  return texto
-    .normalize('NFD')
-    .replace(/[\u0300-\u036f]/g, '')
-    .toUpperCase()
-    .trim();
-}
-
 function formatarCNPJNoSheets(cnpj) {
   if (!cnpj) return '';
   if (cnpj.toString().includes('.') || cnpj.toString().includes('/') || cnpj.toString().includes('-')) {
@@ -1021,90 +414,636 @@ function formatarCNPJNoSheets(cnpj) {
   return cnpj;
 }
 
-// 🔥 FUNÇÕES DE EXCLUSÃO
-function excluirTodosFornecedoresCNPJ(cnpj) {
-  try {
-    const waitlabelAtual = getWaitlabelAtual();
-    const ss = SpreadsheetApp.openById(CONFIG.ID_PLANILHA);
-    const aba = ss.getSheetByName(waitlabelAtual);
-    
-    if (!aba) {
-      return { success: false, message: "Waitlabel não encontrado" };
-    }
-    
-    const ultimaLinha = aba.getLastRow();
-    if (ultimaLinha < 2) {
-      return { success: false, message: "Nenhum cadastro encontrado" };
-    }
-    
-    const dados = aba.getRange(2, 1, ultimaLinha - 1, 17).getValues();
-    const cnpjBuscado = cnpj.toString().replace(/\D/g, '');
-    
-    const linhasParaExcluir = [];
-    
-    for (let i = dados.length - 1; i >= 0; i--) {
-      const linha = dados[i];
-      const cnpjCadastro = linha[2]?.toString().replace(/\D/g, '') || '';
-      
-      if (cnpjCadastro === cnpjBuscado) {
-        linhasParaExcluir.push(i + 2);
-      }
-    }
-    
-    linhasParaExcluir.forEach(linha => {
-      try {
-        aba.deleteRow(linha);
-      } catch (erroExclusao) {
-        console.error(`❌ Erro ao excluir linha ${linha}:`, erroExclusao);
-      }
-    });
-    
-    return {
-      success: true,
-      message: `✅ ${linhasParaExcluir.length} registro(s) excluído(s) do CNPJ ${cnpj}`,
-      registrosExcluidos: linhasParaExcluir.length
+function validarEtapa(etapa, situacao) {
+  const situacaoNormalizada = normalizarTexto(situacao || '');
+  const precisaValidarEtapa = situacaoNormalizada === 'EM ANDAMENTO' || situacaoNormalizada === 'NOVO REGISTRO';
+  
+  if (!precisaValidarEtapa) {
+    return { valida: true, etapa: etapa ? normalizarTexto(etapa) : '' };
+  }
+  
+  if (!etapa || etapa.trim() === '') {
+    return { 
+      valida: false, 
+      mensagem: `❌ Para situações "${situacao}" o campo Etapa é obrigatório!` 
     };
+  }
+  
+  const etapasValidas = [
+    "PENDENTE FORNECEDOR(ES)",
+    "PENDENTE SIM", 
+    "PENDENTE RETORNO EXTERNO"
+  ];
+  
+  const etapaNormalizada = normalizarTexto(etapa);
+  
+  const etapasBloqueadas = ["DESISTIU", "REJEITADO", "CADASTRADO", "NOVO REGISTRO", "EM ANDAMENTO", "DESCREDENCIADO"];
+  
+  if (etapasBloqueadas.includes(etapaNormalizada)) {
+    const mensagemErro = `❌ ETAPA NÃO PERMITIDA!\n\nA etapa "${etapa}" é uma SITUAÇÃO, não uma etapa do processo.\n\n📋 ETAPAS VÁLIDAS (do processo):\n• PENDENTE FORNECEDOR(ES)\n• PENDENTE SIM\n• PENDENTE RETORNO EXTERNO\n\n💡 Use o campo "Situação" para: ${etapa}`;
+    
+    return { valida: false, mensagem: mensagemErro };
+  }
+  
+  if (!etapasValidas.includes(etapaNormalizada)) {
+    const mensagemErro = `❌ ETAPA INVÁLIDA!\n\nA etapa "${etapa}" não é válida.\n\n📋 ETAPAS VÁLIDAS:\n• PENDENTE FORNECEDOR(ES)\n• PENDENTE SIM\n• PENDENTE RETORNO EXTERNO\n\nSelecione uma das etapas acima para continuar.`;
+    
+    return { valida: false, mensagem: mensagemErro };
+  }
+  
+  return { valida: true, etapa: etapaNormalizada };
+}
+
+function processarCadastroComWaitlabel(dados, waitlabel) {
+  try {
+    console.log("🎯 PROCESSAR CADASTRO - INICIANDO");
+    
+    const sheet = getSheetByName(waitlabel);
+    
+    if (dados.acao === 'atualizar' && dados.id) {
+      console.log("✏️ MODO ATUALIZAÇÃO");
+      
+      const linhaAtualizar = parseInt(dados.id);
+      if (linhaAtualizar < 2 || linhaAtualizar > sheet.getLastRow()) {
+        return { success: false, message: "Registro não encontrado" };
+      }
+
+      const dadosAtuais = sheet.getRange(linhaAtualizar, 1, 1, 18).getValues()[0];
+      
+      let houveAlteracaoRelevante = false;
+      
+      if (dados.etapa && dados.etapa !== dadosAtuais[COLUNAS.ETAPA]) {
+        houveAlteracaoRelevante = true;
+      }
+      
+      if (dados.situacao && dados.situacao !== dadosAtuais[COLUNAS.SITUACAO]) {
+        houveAlteracaoRelevante = true;
+      }
+      
+      if (dados.observacoes && dados.observacoes !== dadosAtuais[COLUNAS.OBSERVACAO]) {
+        houveAlteracaoRelevante = true;
+      }
+      
+      const novosDados = Array(18).fill('');
+      
+      for (let i = 0; i < 18; i++) {
+        novosDados[i] = dadosAtuais[i] || '';
+      }
+      
+      if (dados.razao_social) novosDados[COLUNAS.RAZAO_SOCIAL] = normalizarTexto(dados.razao_social);
+      if (dados.nome_fantasia) novosDados[COLUNAS.NOME_FANTASIA] = normalizarTexto(dados.nome_fantasia);
+      if (dados.cnpj) novosDados[COLUNAS.CNPJ] = dados.cnpj.toString();
+      
+      if (dados.fornecedores && dados.fornecedores.length > 0) {
+        const primeiroFornecedor = dados.fornecedores[0];
+        novosDados[COLUNAS.FORNECEDOR] = normalizarTexto(primeiroFornecedor.nome || primeiroFornecedor);
+        
+        // 🔥 CORREÇÃO: REMOVIDA DIVISÃO POR 100
+        novosDados[COLUNAS.MDR] = primeiroFornecedor.mdr ? parseFloat(primeiroFornecedor.mdr.toString().replace('%', '').replace(',', '.')) : '';
+        novosDados[COLUNAS.TIS] = primeiroFornecedor.tis ? parseFloat(primeiroFornecedor.tis.toString().replace('%', '').replace(',', '.')) : '';
+        novosDados[COLUNAS.REBATE] = primeiroFornecedor.rebate ? parseFloat(primeiroFornecedor.rebate.toString().replace('%', '').replace(',', '.')) : '';
+      }
+      
+      if (dados.etapa) novosDados[COLUNAS.ETAPA] = normalizarTexto(dados.etapa);
+      if (dados.observacoes !== undefined) novosDados[COLUNAS.OBSERVACAO] = normalizarTexto(dados.observacoes);
+      if (dados.contrato_enviado) novosDados[COLUNAS.CONTRATO_ENVIADO] = normalizarTexto(dados.contrato_enviado);
+      if (dados.contrato_assinado) novosDados[COLUNAS.CONTRATO_ASSINADO] = normalizarTexto(dados.contrato_assinado);
+      if (dados.ativacao) novosDados[COLUNAS.ATIVACAO] = dados.ativacao;
+      if (dados.link) novosDados[COLUNAS.LINK] = dados.link;
+      if (dados.mensalidade !== undefined) novosDados[COLUNAS.MENSALIDADE] = converterMoedaParaNumero(dados.mensalidade);
+      if (dados.mensalidade_sim !== undefined) novosDados[COLUNAS.MENSALIDADE_SIM] = converterMoedaParaNumero(dados.mensalidade_sim);
+      if (dados.adesao !== undefined) novosDados[COLUNAS.ADESAO] = processarAdesaoParaSalvar(dados.adesao);
+      if (dados.situacao) novosDados[COLUNAS.SITUACAO] = normalizarTexto(dados.situacao);
+      
+      if (houveAlteracaoRelevante) {
+        const novaData = formatarDataBrasilSimples();
+        novosDados[COLUNAS.ULTIMA_ETAPA] = novaData;
+      }
+      
+      sheet.getRange(linhaAtualizar, 1, 1, novosDados.length).setValues([novosDados]);
+      
+      sheet.getRange(linhaAtualizar, COLUNAS.MENSALIDADE + 1).setNumberFormat('"R$"#,##0.00');
+      sheet.getRange(linhaAtualizar, COLUNAS.MENSALIDADE_SIM + 1).setNumberFormat('"R$"#,##0.00');
+      sheet.getRange(linhaAtualizar, COLUNAS.ADESAO + 1).setNumberFormat('"R$"#,##0.00');
+      sheet.getRange(linhaAtualizar, COLUNAS.MDR + 1).setNumberFormat('0.00"%"');
+      sheet.getRange(linhaAtualizar, COLUNAS.TIS + 1).setNumberFormat('0.00"%"');
+      sheet.getRange(linhaAtualizar, COLUNAS.REBATE + 1).setNumberFormat('0.00"%"');
+      
+      SpreadsheetApp.flush();
+      
+      return {
+        success: true,
+        message: '✅ Cadastro atualizado com sucesso!' + (houveAlteracaoRelevante ? ' (Data da última etapa atualizada)' : '')
+      };
+      
+    } else {
+      console.log("🆕 MODO NOVO CADASTRO");
+      
+      if (!dados.fornecedores || dados.fornecedores.length === 0) {
+        return { success: false, message: '❌ Nenhum fornecedor selecionado!' };
+      }
+      
+      const ultimaLinha = sheet.getLastRow();
+      let linhaInserir = Math.max(2, ultimaLinha + 1);
+      let registrosCriados = 0;
+      
+      const validacaoEtapa = validarEtapa(dados.etapa, dados.situacao);
+      if (!validacaoEtapa.valida) {
+        return { success: false, message: validacaoEtapa.mensagem };
+      }
+      const etapaValidada = validacaoEtapa.etapa;
+      
+      const cadastrosExistentes = buscarTodosCadastrosPorCNPJComWaitlabel(dados.cnpj, waitlabel);
+      const fornecedoresDuplicados = [];
+      
+      for (let fornecedor of dados.fornecedores) {
+        const nomeFornecedor = fornecedor.nome || fornecedor;
+        const jaExiste = cadastrosExistentes.some(cad => cad.fornecedor === nomeFornecedor);
+        if (jaExiste) {
+          fornecedoresDuplicados.push(nomeFornecedor);
+        }
+      }
+      
+      if (fornecedoresDuplicados.length > 0) {
+        return { 
+          success: false, 
+          message: `❌ Este CNPJ já possui cadastro no ${waitlabel} para: ${fornecedoresDuplicados.join(', ')}` 
+        };
+      }
+      
+      for (let i = 0; i < dados.fornecedores.length; i++) {
+        const fornecedor = dados.fornecedores[i];
+        const nomeFornecedor = fornecedor.nome || fornecedor;
+        
+        const dataAtual = formatarDataBrasilSimples();
+        
+        const linhaDados = [
+          normalizarTexto(dados.razao_social) || '',
+          normalizarTexto(dados.nome_fantasia) || '',
+          dados.cnpj ? dados.cnpj.toString() : '',
+          normalizarTexto(nomeFornecedor),
+          dataAtual,
+          etapaValidada,
+          normalizarTexto(dados.observacoes) || '',
+          normalizarTexto(dados.contrato_enviado) || '',
+          normalizarTexto(dados.contrato_assinado) || '',
+          dados.ativacao || '',
+          dados.link || '',
+          converterMoedaParaNumero(dados.mensalidade) || 0,
+          converterMoedaParaNumero(dados.mensalidade_sim) || 0,
+          // 🔥 CORREÇÃO: REMOVIDA DIVISÃO POR 100
+          fornecedor.mdr ? parseFloat(fornecedor.mdr.toString().replace('%', '').replace(',', '.')) : '',
+          fornecedor.tis ? parseFloat(fornecedor.tis.toString().replace('%', '').replace(',', '.')) : '',
+          fornecedor.rebate ? parseFloat(fornecedor.rebate.toString().replace('%', '').replace(',', '.')) : '',
+          processarAdesaoParaSalvar(dados.adesao),
+          normalizarTexto(dados.situacao) || 'NOVO REGISTRO'
+        ];
+        
+        try {
+          sheet.getRange(linhaInserir, 1, 1, linhaDados.length).setValues([linhaDados]);
+          
+          sheet.getRange(linhaInserir, COLUNAS.MENSALIDADE + 1).setNumberFormat('"R$"#,##0.00');
+          sheet.getRange(linhaInserir, COLUNAS.MENSALIDADE_SIM + 1).setNumberFormat('"R$"#,##0.00');
+          sheet.getRange(linhaInserir, COLUNAS.ADESAO + 1).setNumberFormat('"R$"#,##0.00');
+          sheet.getRange(linhaInserir, COLUNAS.MDR + 1).setNumberFormat('0.00"%"');
+          sheet.getRange(linhaInserir, COLUNAS.TIS + 1).setNumberFormat('0.00"%"');
+          sheet.getRange(linhaInserir, COLUNAS.REBATE + 1).setNumberFormat('0.00"%"');
+          
+          linhaInserir++;
+          registrosCriados++;
+        } catch (erro) {
+          console.error(`❌ Erro ao salvar fornecedor ${nomeFornecedor}:`, erro);
+        }
+      }
+      
+      SpreadsheetApp.flush();
+      
+      return {
+        success: true,
+        message: `✅ "${dados.razao_social}" cadastrado com sucesso no ${waitlabel} para ${registrosCriados} fornecedor(es)!`,
+        registrosCriados: registrosCriados
+      };
+    }
     
   } catch (error) {
-    console.error("❌ Erro em excluirTodosFornecedoresCNPJ:", error);
-    return { 
-      success: false, 
-      message: "Erro ao excluir registros: " + error.message 
+    console.error("❌ Erro em processarCadastroComWaitlabel:", error);
+    return {
+      success: false,
+      message: '❌ Erro: ' + error.toString()
     };
   }
 }
 
-function contarRegistrosPorCNPJ(cnpj) {
+function aplicarAlteracoesATodos(cnpj, dados, camposSelecionados) {
   try {
+    console.log("🎯 APLICAR A TODOS - INICIANDO");
+    
     const waitlabelAtual = getWaitlabelAtual();
-    const ss = SpreadsheetApp.openById(CONFIG.ID_PLANILHA);
-    const aba = ss.getSheetByName(waitlabelAtual);
+    const sheet = getSheetByName(waitlabelAtual);
     
-    if (!aba) return 0;
+    const dadosCompletos = sheet.getDataRange().getValues();
+    const registrosParaAtualizar = [];
     
-    const ultimaLinha = aba.getLastRow();
-    if (ultimaLinha < 2) return 0;
-    
-    const dados = aba.getRange(2, 1, ultimaLinha - 1, 17).getValues();
     const cnpjBuscado = cnpj.toString().replace(/\D/g, '');
     
-    let contador = 0;
-    
-    for (let i = 0; i < dados.length; i++) {
-      const linha = dados[i];
-      const cnpjCadastro = linha[2]?.toString().replace(/\D/g, '') || '';
+    for (let i = 1; i < dadosCompletos.length; i++) {
+      const linha = dadosCompletos[i];
+      if (!linha[0] || linha[0].toString().trim() === '') continue;
       
-      if (cnpjCadastro === cnpjBuscado) {
-        contador++;
+      const cnpjLinha = linha[COLUNAS.CNPJ]?.toString().replace(/\D/g, '') || '';
+      
+      if (cnpjLinha === cnpjBuscado) {
+        registrosParaAtualizar.push({
+          linhaNumero: i + 1,
+          dadosOriginais: linha
+        });
       }
     }
     
-    return contador;
+    console.log(`🔍 Encontrados ${registrosParaAtualizar.length} registros`);
+    
+    const mudouEtapa = camposSelecionados.includes('etapa') || camposSelecionados.includes('inputEtapaSearch');
+    const mudouSituacao = camposSelecionados.includes('situacao');
+    const mudouObservacao = camposSelecionados.includes('observacoes');
+    
+    const precisaAtualizarData = mudouEtapa || mudouSituacao || mudouObservacao;
+    
+    let registrosAtualizados = 0;
+    
+    for (const registro of registrosParaAtualizar) {
+      const novosDados = [...registro.dadosOriginais];
+      
+      for (const campo of camposSelecionados) {
+        const valor = obterValorParaAplicarTodos(campo, dados);
+        
+        switch(campo) {
+          case 'razao_social': novosDados[COLUNAS.RAZAO_SOCIAL] = valor; break;
+          case 'nome_fantasia': novosDados[COLUNAS.NOME_FANTASIA] = valor; break;
+          case 'cnpj_cadastro': novosDados[COLUNAS.CNPJ] = valor; break;
+          case 'etapa':
+          case 'inputEtapaSearch': novosDados[COLUNAS.ETAPA] = valor; break;
+          case 'situacao': novosDados[COLUNAS.SITUACAO] = valor; break;
+          case 'observacoes': novosDados[COLUNAS.OBSERVACAO] = valor; break;
+          case 'contrato_enviado': novosDados[COLUNAS.CONTRATO_ENVIADO] = valor; break;
+          case 'contrato_assinado': novosDados[COLUNAS.CONTRATO_ASSINADO] = valor; break;
+          case 'ativacao': novosDados[COLUNAS.ATIVACAO] = valor; break;
+          case 'link': novosDados[COLUNAS.LINK] = valor; break;
+          case 'mensalidade': novosDados[COLUNAS.MENSALIDADE] = valor; break;
+          case 'mensalidade_sim': novosDados[COLUNAS.MENSALIDADE_SIM] = valor; break;
+          case 'adesao': novosDados[COLUNAS.ADESAO] = valor; break;
+          case 'mdr': novosDados[COLUNAS.MDR] = valor; break;
+          case 'tis': novosDados[COLUNAS.TIS] = valor; break;
+          case 'rebate': novosDados[COLUNAS.REBATE] = valor; break;
+        }
+      }
+      
+      if (precisaAtualizarData) {
+        const novaData = formatarDataBrasilSimples();
+        novosDados[COLUNAS.ULTIMA_ETAPA] = novaData;
+      }
+      
+      sheet.getRange(registro.linhaNumero, 1, 1, novosDados.length).setValues([novosDados]);
+      
+      sheet.getRange(registro.linhaNumero, COLUNAS.MENSALIDADE + 1).setNumberFormat('"R$"#,##0.00');
+      sheet.getRange(registro.linhaNumero, COLUNAS.MENSALIDADE_SIM + 1).setNumberFormat('"R$"#,##0.00');
+      sheet.getRange(registro.linhaNumero, COLUNAS.ADESAO + 1).setNumberFormat('"R$"#,##0.00');
+      // 🔧 ALTERADO: De '0,00%' para '0.0"%"'
+      sheet.getRange(registro.linhaNumero, COLUNAS.MDR + 1).setNumberFormat('0.00"%"');
+      sheet.getRange(registro.linhaNumero, COLUNAS.TIS + 1).setNumberFormat('0.00"%"');
+      sheet.getRange(registro.linhaNumero, COLUNAS.REBATE + 1).setNumberFormat('0.00"%"');
+      
+      registrosAtualizados++;
+    }
+    
+    SpreadsheetApp.flush();
+    
+    return {
+      success: true,
+      registrosAtualizados: registrosAtualizados,
+      message: `✅ ${registrosAtualizados} registro(s) atualizado(s) com sucesso!` +
+               (precisaAtualizarData ? ' (Data da última etapa atualizada)' : '')
+    };
     
   } catch (error) {
-    console.error("❌ Erro em contarRegistrosPorCNPJ:", error);
-    return 0;
+    console.error("❌ ERRO em aplicarAlteracoesATodos:", error);
+    return { success: false, message: "❌ Erro: " + error.toString() };
   }
+}
+
+function obterValorParaAplicarTodos(campo, dados) {
+  switch(campo) {
+    case 'razao_social': return normalizarTexto(dados.razao_social) || '';
+    case 'nome_fantasia': return normalizarTexto(dados.nome_fantasia) || '';
+    case 'cnpj_cadastro': return dados.cnpj ? dados.cnpj.toString() : '';
+    case 'etapa':
+    case 'inputEtapaSearch': return normalizarTexto(dados.etapa) || '';
+    case 'observacoes': return normalizarTexto(dados.observacoes) || '';
+    case 'contrato_enviado': return normalizarTexto(dados.contrato_enviado) || '';
+    case 'contrato_assinado': return normalizarTexto(dados.contrato_assinado) || '';
+    case 'ativacao': return dados.ativacao || '';
+    case 'link': return dados.link || '';
+    case 'mensalidade': return converterMoedaParaNumero(dados.mensalidade) || 0;
+    case 'mensalidade_sim': return converterMoedaParaNumero(dados.mensalidade_sim) || 0;
+    case 'adesao': return processarAdesaoParaSalvar(dados.adesao);
+    // 🔥 CORREÇÃO: REMOVIDA DIVISÃO POR 100
+    case 'mdr': return dados.mdr ? parseFloat(dados.mdr.toString().replace('%', '').replace(',', '.')) : '';
+    case 'tis': return dados.tis ? parseFloat(dados.tis.toString().replace('%', '').replace(',', '.')) : '';
+    case 'rebate': return dados.rebate ? parseFloat(dados.rebate.toString().replace('%', '').replace(',', '.')) : '';
+    case 'situacao': 
+      let situacao = normalizarTexto(dados.situacao) || 'NOVO REGISTRO';
+      if (situacao === 'NOVO REGISTRO') situacao = 'Novo Registro';
+      return situacao;
+    default: return '';
+  }
+}
+
+// 🔥 FUNÇÕES DE BUSCA CORRIGIDAS
+function buscarTodosCadastrosComWaitlabel(waitlabel) {
+  try {
+    const sheet = getSheetByName(waitlabel);
+    const ultimaLinha = sheet.getLastRow();
+    if (ultimaLinha < 2) return [];
+    
+    const dados = sheet.getRange(2, 1, ultimaLinha - 1, 18).getValues();
+    const cadastros = [];
+    
+    for (let i = 0; i < dados.length; i++) {
+      const linha = dados[i];
+      if (!linha[0] || linha[0].toString().trim() === '') continue;
+
+      let ultimaEtapaFormatada = '';
+      if (linha[COLUNAS.ULTIMA_ETAPA] instanceof Date) {
+        const dataUTC = linha[COLUNAS.ULTIMA_ETAPA];
+        const dataBrasilia = new Date(dataUTC.getTime() - (5 * 60 * 60 * 1000));
+        
+        const dia = String(dataBrasilia.getDate()).padStart(2, '0');
+        const mes = String(dataBrasilia.getMonth() + 1).padStart(2, '0');
+        const ano = dataBrasilia.getFullYear();
+        const horas = String(dataBrasilia.getHours()).padStart(2, '0');
+        const minutos = String(dataBrasilia.getMinutes()).padStart(2, '0');
+        const segundos = String(dataBrasilia.getSeconds()).padStart(2, '0');
+        ultimaEtapaFormatada = `${dia}/${mes}/${ano} ${horas}:${minutos}:${segundos}`;
+      } else {
+        ultimaEtapaFormatada = linha[COLUNAS.ULTIMA_ETAPA]?.toString().trim() || '';
+      }
+      
+      const cadastro = {
+        id: i + 2,
+        razao_social: linha[COLUNAS.RAZAO_SOCIAL]?.toString().trim() || '',
+        nome_fantasia: linha[COLUNAS.NOME_FANTASIA]?.toString().trim() || '',
+        cnpj: formatarCNPJNoSheets(linha[COLUNAS.CNPJ]?.toString().trim() || ''),
+        fornecedor: linha[COLUNAS.FORNECEDOR]?.toString().trim() || '',
+        ultima_etapa: ultimaEtapaFormatada,
+        etapa: linha[COLUNAS.ETAPA]?.toString().trim() || '',
+        observacoes: linha[COLUNAS.OBSERVACAO]?.toString().trim() || '',
+        contrato_enviado: linha[COLUNAS.CONTRATO_ENVIADO]?.toString().trim() || '',
+        contrato_assinado: linha[COLUNAS.CONTRATO_ASSINADO]?.toString().trim() || '',
+        ativacao: linha[COLUNAS.ATIVACAO]?.toString().trim() || '',
+        link: linha[COLUNAS.LINK]?.toString().trim() || '',
+        mensalidade: parseFloat(linha[COLUNAS.MENSALIDADE]) || 0,
+        mensalidade_sim: parseFloat(linha[COLUNAS.MENSALIDADE_SIM]) || 0,
+        mdr: formatarPercentualParaExibicao(linha[COLUNAS.MDR]),
+        tis: formatarPercentualParaExibicao(linha[COLUNAS.TIS]),
+        rebate: formatarPercentualParaExibicao(linha[COLUNAS.REBATE]),
+        adesao: processarAdesao(linha[COLUNAS.ADESAO]),
+        situacao: (linha[COLUNAS.SITUACAO]?.toString().trim() || 'Novo registro'),
+        waitlabel: waitlabel
+      };
+      
+      cadastros.push(cadastro);
+    }
+    
+    return cadastros;
+    
+  } catch (error) {
+    console.error("❌ Erro em buscarTodosCadastrosComWaitlabel:", error);
+    return [];
+  }
+}
+
+function buscarTodosCadastrosPorCNPJComWaitlabel(cnpj, waitlabel) {
+  try {
+    const sheet = getSheetByName(waitlabel);
+    const ultimaLinha = sheet.getLastRow();
+    if (ultimaLinha < 2) return [];
+    
+    const dados = sheet.getRange(2, 1, ultimaLinha - 1, 18).getValues();
+    const cnpjBuscado = cnpj.toString().replace(/\D/g, '');
+    const cadastrosEncontrados = [];
+    
+    for (let i = 0; i < dados.length; i++) {
+      const linha = dados[i];
+      if (!linha[0] || linha[0].toString().trim() === '') continue;
+      
+      const cnpjCadastro = linha[COLUNAS.CNPJ]?.toString().replace(/\D/g, '') || '';
+      
+      if (cnpjCadastro === cnpjBuscado) {
+        let ultimaEtapaFormatada = '';
+        if (linha[COLUNAS.ULTIMA_ETAPA] instanceof Date) {
+          const dataUTC = linha[COLUNAS.ULTIMA_ETAPA];
+          const dataBrasilia = new Date(dataUTC.getTime() - (5 * 60 * 60 * 1000));
+          
+          const dia = String(dataBrasilia.getDate()).padStart(2, '0');
+          const mes = String(dataBrasilia.getMonth() + 1).padStart(2, '0');
+          const ano = dataBrasilia.getFullYear();
+          const horas = String(dataBrasilia.getHours()).padStart(2, '0');
+          const minutos = String(dataBrasilia.getMinutes()).padStart(2, '0');
+          const segundos = String(dataBrasilia.getSeconds()).padStart(2, '0');
+          ultimaEtapaFormatada = `${dia}/${mes}/${ano} ${horas}:${minutos}:${segundos}`;
+        } else {
+          ultimaEtapaFormatada = linha[COLUNAS.ULTIMA_ETAPA]?.toString().trim() || '';
+        }
+        
+        const cadastro = {
+          id: i + 2,
+          razao_social: linha[COLUNAS.RAZAO_SOCIAL]?.toString().trim() || '',
+          nome_fantasia: linha[COLUNAS.NOME_FANTASIA]?.toString().trim() || '',
+          cnpj: formatarCNPJNoSheets(linha[COLUNAS.CNPJ]?.toString().trim() || ''),
+          fornecedor: linha[COLUNAS.FORNECEDOR]?.toString().trim() || '',
+          ultima_etapa: ultimaEtapaFormatada,
+          etapa: linha[COLUNAS.ETAPA]?.toString().trim() || '',
+          observacoes: linha[COLUNAS.OBSERVACAO]?.toString().trim() || '',
+          contrato_enviado: linha[COLUNAS.CONTRATO_ENVIADO]?.toString().trim() || '',
+          contrato_assinado: linha[COLUNAS.CONTRATO_ASSINADO]?.toString().trim() || '',
+          ativacao: linha[COLUNAS.ATIVACAO]?.toString().trim() || '',
+          link: linha[COLUNAS.LINK]?.toString().trim() || '',
+          mensalidade: parseFloat(linha[COLUNAS.MENSALIDADE]) || 0,
+          mensalidade_sim: parseFloat(linha[COLUNAS.MENSALIDADE_SIM]) || 0,
+          mdr: formatarPercentualParaExibicao(linha[COLUNAS.MDR]),
+          tis: formatarPercentualParaExibicao(linha[COLUNAS.TIS]),
+          rebate: formatarPercentualParaExibicao(linha[COLUNAS.REBATE]),
+          adesao: processarAdesao(linha[COLUNAS.ADESAO]),
+          situacao: (linha[COLUNAS.SITUACAO]?.toString().trim() || 'Novo registro'),
+          waitlabel: waitlabel
+        };
+        
+        cadastrosEncontrados.push(cadastro);
+      }
+    }
+    
+    return cadastrosEncontrados;
+    
+  } catch (error) {
+    console.error("❌ Erro em buscarTodosCadastrosPorCNPJComWaitlabel:", error);
+    return [];
+  }
+}
+
+function buscarCadastroPorIDComWaitlabel(id, waitlabel) {
+  try {
+    const sheet = getSheetByName(waitlabel);
+    const ultimaLinha = sheet.getLastRow();
+    if (ultimaLinha < id) return { encontrado: false, mensagem: "Registro não encontrado" };
+    
+    const linha = sheet.getRange(id, 1, 1, 18).getValues()[0];
+    
+    if (!linha[0] || linha[0].toString().trim() === '') {
+      return { encontrado: false, mensagem: "Registro vazio ou não encontrado" };
+    }
+
+    let ultimaEtapaFormatada = '';
+    if (linha[COLUNAS.ULTIMA_ETAPA] instanceof Date) {
+      const dataUTC = linha[COLUNAS.ULTIMA_ETAPA];
+      const dataBrasilia = new Date(dataUTC.getTime() - (5 * 60 * 60 * 1000));
+      
+      const dia = String(dataBrasilia.getDate()).padStart(2, '0');
+      const mes = String(dataBrasilia.getMonth() + 1).padStart(2, '0');
+      const ano = dataBrasilia.getFullYear();
+      const horas = String(dataBrasilia.getHours()).padStart(2, '0');
+      const minutos = String(dataBrasilia.getMinutes()).padStart(2, '0');
+      const segundos = String(dataBrasilia.getSeconds()).padStart(2, '0');
+      ultimaEtapaFormatada = `${dia}/${mes}/${ano} ${horas}:${minutos}:${segundos}`;
+    } else {
+      ultimaEtapaFormatada = linha[COLUNAS.ULTIMA_ETAPA]?.toString().trim() || '';
+    }
+
+    const fornecedorParaFormulario = {
+      nome: linha[COLUNAS.FORNECEDOR]?.toString().trim() || '',
+      mdr: formatarPercentualParaExibicao(linha[COLUNAS.MDR]),
+      tis: formatarPercentualParaExibicao(linha[COLUNAS.TIS]),
+      rebate: formatarPercentualParaExibicao(linha[COLUNAS.REBATE])
+    };
+    
+    const resultado = {
+      encontrado: true,
+      id: id,
+      razao_social: linha[COLUNAS.RAZAO_SOCIAL]?.toString().trim() || '',
+      nome_fantasia: linha[COLUNAS.NOME_FANTASIA]?.toString().trim() || '',
+      cnpj: formatarCNPJNoSheets(linha[COLUNAS.CNPJ]?.toString().trim() || ''),
+      fornecedor: linha[COLUNAS.FORNECEDOR]?.toString().trim() || '',
+      fornecedores: [fornecedorParaFormulario],
+      ultima_etapa: ultimaEtapaFormatada,
+      etapa: linha[COLUNAS.ETAPA]?.toString().trim() || '',
+      observacoes: linha[COLUNAS.OBSERVACAO]?.toString().trim() || '',
+      contrato_enviado: linha[COLUNAS.CONTRATO_ENVIADO]?.toString().trim() || '',
+      contrato_assinado: linha[COLUNAS.CONTRATO_ASSINADO]?.toString().trim() || '',
+      ativacao: linha[COLUNAS.ATIVACAO]?.toString().trim() || '',
+      link: linha[COLUNAS.LINK]?.toString().trim() || '',
+      mensalidade: parseFloat(linha[COLUNAS.MENSALIDADE]) || 0,
+      mensalidade_sim: parseFloat(linha[COLUNAS.MENSALIDADE_SIM]) || 0,
+      mdr: fornecedorParaFormulario.mdr,
+      tis: fornecedorParaFormulario.tis,
+      rebate: fornecedorParaFormulario.rebate,
+      adesao: processarAdesao(linha[COLUNAS.ADESAO]),
+      situacao: (linha[COLUNAS.SITUACAO]?.toString().trim() || 'Novo registro'),
+      waitlabel: waitlabel
+    };
+
+    return resultado;
+    
+  } catch (error) {
+    console.error("❌ Erro em buscarCadastroPorIDComWaitlabel:", error);
+    return { encontrado: false, mensagem: "Erro: " + error.message };
+  }
+}
+
+// 🔥 FUNÇÕES DE WAITLABELS
+function getWaitlabelAtual() {
+  const cache = CacheService.getScriptCache();
+  const waitlabelAtual = cache.get('waitlabel_atual');
+  return waitlabelAtual || WAITLABELS_CONFIG.WAITLABEL_PADRAO;
+}
+
+function setWaitlabelAtual(waitlabel) {
+  if (WAITLABELS_CONFIG.WAITLABELS.includes(waitlabel)) {
+    const cache = CacheService.getScriptCache();
+    cache.put('waitlabel_atual', waitlabel, 21600);
+    return { success: true, message: `Waitlabel alterado para: ${waitlabel}` };
+  }
+  return { success: false, message: 'Waitlabel inválido' };
+}
+
+function getCoresWaitlabels() {
+  return WAITLABELS_CONFIG.CORES;
+}
+
+function getWaitlabels() {
+  return WAITLABELS_CONFIG.WAITLABELS;
+}
+
+// 🔥 FUNÇÃO PRINCIPAL DO WEB APP
+function doGet() {
+  return HtmlService.createTemplateFromFile('Index')
+    .evaluate()
+    .setTitle('Sistema - Gestão de Cadastros')
+    .setXFrameOptionsMode(HtmlService.XFrameOptionsMode.ALLOWALL);
+}
+
+function include(filename) {
+  return HtmlService.createHtmlOutputFromFile(filename).getContent();
+}
+
+// 🔥 ADICIONE ESTA FUNÇÃO NO FINAL DO ARQUIVO GS
+function corrigirTodosPercentuais() {
+  const waitlabel = 'Sim_Facilita';
+  const sheet = getSheetByName(waitlabel);
+  const ultimaLinha = sheet.getLastRow();
+  
+  console.log("🔄 CORRIGINDO TODOS OS PERCENTUAIS...");
+  
+  if (ultimaLinha < 2) return { success: true, message: "Nenhum dado para corrigir" };
+  
+  let correcoes = 0;
+  
+  for (let linha = 2; linha <= ultimaLinha; linha++) {
+    const mdrRange = sheet.getRange(linha, COLUNAS.MDR + 1);
+    const tisRange = sheet.getRange(linha, COLUNAS.TIS + 1);
+    const rebateRange = sheet.getRange(linha, COLUNAS.REBATE + 1);
+    
+    const mdrValor = mdrRange.getValue();
+    const tisValor = tisRange.getValue();
+    const rebateValor = rebateRange.getValue();
+    
+    // Se o valor for muito grande (ex: 1112), divide por 100
+    if (typeof mdrValor === 'number' && mdrValor > 10) {
+      mdrRange.setValue(mdrValor / 100);
+      correcoes++;
+      console.log(`Linha ${linha}: MDR ${mdrValor} → ${mdrValor/100}`);
+    }
+    
+    if (typeof tisValor === 'number' && tisValor > 10) {
+      tisRange.setValue(tisValor / 100);
+      correcoes++;
+      console.log(`Linha ${linha}: TIS ${tisValor} → ${tisValor/100}`);
+    }
+    
+    if (typeof rebateValor === 'number' && rebateValor > 10) {
+      rebateRange.setValue(rebateValor / 100);
+      correcoes++;
+      console.log(`Linha ${linha}: Rebate ${rebateValor} → ${rebateValor/100}`);
+    }
+  }
+  
+  // Aplica formato correto para TODAS as células
+  sheet.getRange(2, COLUNAS.MDR + 1, ultimaLinha - 1, 3).setNumberFormat('0.00"%"');
+  
+  SpreadsheetApp.flush();
+  
+  return { 
+    success: true, 
+    message: `✅ ${correcoes} valores de percentual corrigidos! Formato: 0.00%`,
+    correcoes: correcoes
+  };
 }
 
 // 🔥 FUNÇÃO DE TESTE
@@ -1114,36 +1053,4 @@ function testar() {
     message: "✅ Sistema funcionando!",
     timestamp: new Date().toISOString()
   };
-}
-
-// 🔥 FUNÇÃO PARA VERIFICAR COLUNAS
-function verificarColunas() {
-  try {
-    const waitlabelAtual = getWaitlabelAtual();
-    const ss = SpreadsheetApp.openById(CONFIG.ID_PLANILHA);
-    const aba = ss.getSheetByName(waitlabelAtual);
-    
-    if (!aba) return { error: "Aba não encontrada" };
-    
-    const cabecalhos = aba.getRange(1, 1, 1, aba.getLastColumn()).getValues()[0];
-    
-    console.log("🔍 COLUNAS ENCONTRADAS:");
-    cabecalhos.forEach((cabecalho, index) => {
-      const letraColuna = String.fromCharCode(65 + index);
-      console.log(`Coluna ${letraColuna} [${index}]: "${cabecalho}"`);
-    });
-    
-    const ultimaEtapaIndex = cabecalhos.indexOf("Ultima etapa");
-    console.log("🎯 Índice da coluna 'Ultima etapa':", ultimaEtapaIndex);
-    
-    return {
-      cabecalhos: cabecalhos,
-      ultimaEtapaIndex: ultimaEtapaIndex,
-      encontrada: ultimaEtapaIndex !== -1
-    };
-    
-  } catch (error) {
-    console.error("❌ Erro:", error);
-    return { error: error.message };
-  }
 }
