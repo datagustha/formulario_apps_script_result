@@ -214,10 +214,9 @@ function verificarValoresAtuais() {
   
   return { success: true };
 }
-
 function formatarPercentualParaSalvar(percentual) {
-  if (!percentual && percentual !== 0) {
-    return '';
+  if (percentual === null || percentual === undefined || percentual === '') {
+    return 0; // 🔥 ALTERADO: Retorna 0 em vez de string vazia
   }
   
   console.log("💾 Front->GS: formatarPercentualParaSalvar recebeu:", percentual, "tipo:", typeof percentual);
@@ -225,12 +224,16 @@ function formatarPercentualParaSalvar(percentual) {
   try {
     if (typeof percentual === 'string') {
       const limpo = percentual.trim();
+      if (limpo === '') return 0; // 🔥 Adicionado
+      
       const numeroStr = limpo.replace('%', '').replace(',', '.');
       const numero = parseFloat(numeroStr);
       
       if (!isNaN(numero)) {
         // 🔥 CORREÇÃO: NÃO divide por 100 - salva o valor direto
         return parseFloat(numero.toFixed(4));
+      } else {
+        return 0; // 🔥 Se não for número válido, retorna 0
       }
     }
     
@@ -239,12 +242,57 @@ function formatarPercentualParaSalvar(percentual) {
       return parseFloat(percentual.toFixed(4));
     }
     
-    return '';
+    return 0; // 🔥 ALTERADO: Retorna 0 por padrão
     
   } catch (error) {
     console.error("❌ Front->GS: Erro em formatarPercentualParaSalvar:", error);
-    return '';
+    return 0; // 🔥 ALTERADO: Retorna 0 em caso de erro
   }
+}
+
+// 🔥 FUNÇÃO PARA GARANTIR VALORES PADRÃO NOS PERCENTUAIS
+function garantirValoresPadraoPercentuais() {
+  const waitlabelAtual = getWaitlabelAtual();
+  const sheet = getSheetByName(waitlabelAtual);
+  const ultimaLinha = sheet.getLastRow();
+  
+  if (ultimaLinha < 2) return { success: true, message: "Nenhum registro" };
+  
+  let correcoes = 0;
+  
+  const dados = sheet.getDataRange().getValues();
+  
+  for (let i = 1; i < dados.length; i++) {
+    const linha = dados[i];
+    
+    // Verificar coluna MDR (coluna 14 - índice 13)
+    if (linha[COLUNAS.MDR] === '' || linha[COLUNAS.MDR] === null || linha[COLUNAS.MDR] === undefined) {
+      sheet.getRange(i + 1, COLUNAS.MDR + 1).setValue(0);
+      correcoes++;
+    }
+    
+    // Verificar coluna TIS (coluna 15 - índice 14)
+    if (linha[COLUNAS.TIS] === '' || linha[COLUNAS.TIS] === null || linha[COLUNAS.TIS] === undefined) {
+      sheet.getRange(i + 1, COLUNAS.TIS + 1).setValue(0);
+      correcoes++;
+    }
+    
+    // Verificar coluna Rebate (coluna 16 - índice 15)
+    if (linha[COLUNAS.REBATE] === '' || linha[COLUNAS.REBATE] === null || linha[COLUNAS.REBATE] === undefined) {
+      sheet.getRange(i + 1, COLUNAS.REBATE + 1).setValue(0);
+      correcoes++;
+    }
+  }
+  
+  // Aplicar formato correto
+  sheet.getRange(2, COLUNAS.MDR + 1, ultimaLinha - 1, 3).setNumberFormat('0.00"%"');
+  SpreadsheetApp.flush();
+  
+  return { 
+    success: true, 
+    message: `✅ ${correcoes} células definidas como 0%!`,
+    correcoes: correcoes
+  };
 }
 
 function resetarValoresPercentuais() {
@@ -498,10 +546,18 @@ function processarCadastroComWaitlabel(dados, waitlabel) {
         const primeiroFornecedor = dados.fornecedores[0];
         novosDados[COLUNAS.FORNECEDOR] = normalizarTexto(primeiroFornecedor.nome || primeiroFornecedor);
         
-        // 🔥 CORREÇÃO: REMOVIDA DIVISÃO POR 100
-        novosDados[COLUNAS.MDR] = primeiroFornecedor.mdr ? parseFloat(primeiroFornecedor.mdr.toString().replace('%', '').replace(',', '.')) : '';
-        novosDados[COLUNAS.TIS] = primeiroFornecedor.tis ? parseFloat(primeiroFornecedor.tis.toString().replace('%', '').replace(',', '.')) : '';
-        novosDados[COLUNAS.REBATE] = primeiroFornecedor.rebate ? parseFloat(primeiroFornecedor.rebate.toString().replace('%', '').replace(',', '.')) : '';
+        // 🔥 CORREÇÃO: Se vazio ou indefinido, salvar como 0
+        novosDados[COLUNAS.MDR] = (primeiroFornecedor.mdr !== undefined && primeiroFornecedor.mdr !== null && primeiroFornecedor.mdr !== '') 
+            ? parseFloat(primeiroFornecedor.mdr.toString().replace('%', '').replace(',', '.')) 
+            : 0;
+            
+        novosDados[COLUNAS.TIS] = (primeiroFornecedor.tis !== undefined && primeiroFornecedor.tis !== null && primeiroFornecedor.tis !== '') 
+            ? parseFloat(primeiroFornecedor.tis.toString().replace('%', '').replace(',', '.')) 
+            : 0;
+            
+        novosDados[COLUNAS.REBATE] = (primeiroFornecedor.rebate !== undefined && primeiroFornecedor.rebate !== null && primeiroFornecedor.rebate !== '') 
+            ? parseFloat(primeiroFornecedor.rebate.toString().replace('%', '').replace(',', '.')) 
+            : 0;
       }
       
       if (dados.etapa) novosDados[COLUNAS.ETAPA] = normalizarTexto(dados.etapa);
@@ -591,10 +647,16 @@ function processarCadastroComWaitlabel(dados, waitlabel) {
           dados.link || '',
           converterMoedaParaNumero(dados.mensalidade) || 0,
           converterMoedaParaNumero(dados.mensalidade_sim) || 0,
-          // 🔥 CORREÇÃO: REMOVIDA DIVISÃO POR 100
-          fornecedor.mdr ? parseFloat(fornecedor.mdr.toString().replace('%', '').replace(',', '.')) : '',
-          fornecedor.tis ? parseFloat(fornecedor.tis.toString().replace('%', '').replace(',', '.')) : '',
-          fornecedor.rebate ? parseFloat(fornecedor.rebate.toString().replace('%', '').replace(',', '.')) : '',
+          // 🔥 CORREÇÃO: Se vazio ou indefinido, salvar como 0
+          (fornecedor.mdr !== undefined && fornecedor.mdr !== null && fornecedor.mdr !== '') 
+              ? parseFloat(fornecedor.mdr.toString().replace('%', '').replace(',', '.')) 
+              : 0,
+          (fornecedor.tis !== undefined && fornecedor.tis !== null && fornecedor.tis !== '') 
+              ? parseFloat(fornecedor.tis.toString().replace('%', '').replace(',', '.')) 
+              : 0,
+          (fornecedor.rebate !== undefined && fornecedor.rebate !== null && fornecedor.rebate !== '') 
+              ? parseFloat(fornecedor.rebate.toString().replace('%', '').replace(',', '.')) 
+              : 0,
           processarAdesaoParaSalvar(dados.adesao),
           normalizarTexto(dados.situacao) || 'NOVO REGISTRO'
         ];
@@ -707,7 +769,6 @@ function aplicarAlteracoesATodos(cnpj, dados, camposSelecionados) {
       sheet.getRange(registro.linhaNumero, COLUNAS.MENSALIDADE + 1).setNumberFormat('"R$"#,##0.00');
       sheet.getRange(registro.linhaNumero, COLUNAS.MENSALIDADE_SIM + 1).setNumberFormat('"R$"#,##0.00');
       sheet.getRange(registro.linhaNumero, COLUNAS.ADESAO + 1).setNumberFormat('"R$"#,##0.00');
-      // 🔧 ALTERADO: De '0,00%' para '0.0"%"'
       sheet.getRange(registro.linhaNumero, COLUNAS.MDR + 1).setNumberFormat('0.00"%"');
       sheet.getRange(registro.linhaNumero, COLUNAS.TIS + 1).setNumberFormat('0.00"%"');
       sheet.getRange(registro.linhaNumero, COLUNAS.REBATE + 1).setNumberFormat('0.00"%"');
@@ -745,10 +806,19 @@ function obterValorParaAplicarTodos(campo, dados) {
     case 'mensalidade': return converterMoedaParaNumero(dados.mensalidade) || 0;
     case 'mensalidade_sim': return converterMoedaParaNumero(dados.mensalidade_sim) || 0;
     case 'adesao': return processarAdesaoParaSalvar(dados.adesao);
-    // 🔥 CORREÇÃO: REMOVIDA DIVISÃO POR 100
-    case 'mdr': return dados.mdr ? parseFloat(dados.mdr.toString().replace('%', '').replace(',', '.')) : '';
-    case 'tis': return dados.tis ? parseFloat(dados.tis.toString().replace('%', '').replace(',', '.')) : '';
-    case 'rebate': return dados.rebate ? parseFloat(dados.rebate.toString().replace('%', '').replace(',', '.')) : '';
+    // 🔥 CORREÇÃO: Se vazio ou indefinido, retornar 0
+    case 'mdr': 
+        return (dados.mdr !== undefined && dados.mdr !== null && dados.mdr !== '') 
+            ? parseFloat(dados.mdr.toString().replace('%', '').replace(',', '.')) 
+            : 0;
+    case 'tis': 
+        return (dados.tis !== undefined && dados.tis !== null && dados.tis !== '') 
+            ? parseFloat(dados.tis.toString().replace('%', '').replace(',', '.')) 
+            : 0;
+    case 'rebate': 
+        return (dados.rebate !== undefined && dados.rebate !== null && dados.rebate !== '') 
+            ? parseFloat(dados.rebate.toString().replace('%', '').replace(',', '.')) 
+            : 0;
     case 'situacao': 
       let situacao = normalizarTexto(dados.situacao) || 'NOVO REGISTRO';
       if (situacao === 'NOVO REGISTRO') situacao = 'Novo Registro';
