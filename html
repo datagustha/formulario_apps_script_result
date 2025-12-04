@@ -5,7 +5,7 @@
   <meta name="viewport" content="width=device-width, initial-scale=1.0">
   <title>Sistema de Gestão de Cadastros - RESULT</title>
   <link href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.0.0/css/all.min.css" rel="stylesheet">
-<style>
+  <style>
     * {
       box-sizing: border-box;
       margin: 0;
@@ -312,24 +312,24 @@
       border-bottom: 2px solid rgba(255,255,255,0.2);
     }
 
+    /* Ajuste das colunas da tabela - ATUALIZADO PARA NOVAS COLUNAS */
     .data-table th:nth-child(1) {
-      width: 18%;
+      width: 14%;
       text-align: left !important;
       padding-left: 12px !important;
     }
 
+    /* Substitua ou ajuste as regras CSS para as colunas (aproximadamente linha 153) */
+    .data-table th:nth-child(1) { width: 18%; text-align: left !important; padding-left: 12px !important; }
     .data-table th:nth-child(2) { width: 12%; }
-    .data-table th:nth-child(3) { width: 12%; }
+    .data-table th:nth-child(3) { width: 10%; }
     .data-table th:nth-child(4) { width: 10%; }
-    .data-table th:nth-child(5) { 
-      width: 14%; 
-      text-align: left !important;
-      padding-left: 12px !important;
-    }
+    .data-table th:nth-child(5) { width: 15%; text-align: left !important; padding-left: 12px !important; }
     .data-table th:nth-child(6) { width: 8%; }
-    .data-table th:nth-child(7) { width: 10%; }
-    .data-table th:nth-child(8) { width: 8%; }
-    .data-table th:nth-child(9) { width: 8%; }
+    .data-table th:nth-child(7) { width: 9%; }
+    .data-table th:nth-child(8) { width: 9%; }
+    .data-table th:nth-child(9) { width: 9%; }
+    .data-table th:nth-child(10) { width: 10%; } /* Ações */
     
     .data-table td {
       padding: 12px 6px !important;
@@ -350,7 +350,10 @@
     .data-table td:nth-child(6),
     .data-table td:nth-child(7),
     .data-table td:nth-child(8),
-    .data-table td:nth-child(9) {
+    .data-table td:nth-child(9),
+    .data-table td:nth-child(10),
+    .data-table td:nth-child(11),
+    .data-table td:nth-child(12) {
       text-align: center !important;
       vertical-align: middle !important;
     }
@@ -367,7 +370,22 @@
 
     .data-table td:nth-child(8) {
       font-weight: 600;
-      color: var(--info) !important;
+      color: var(--primary) !important;
+    }
+
+    .data-table td:nth-child(10) {
+      font-weight: 600;
+      color: #FF6B35 !important;
+    }
+
+    .data-table td:nth-child(11) {
+      font-weight: 600;
+      color: #17A2B8 !important;
+    }
+
+    .data-table td:nth-child(12) {
+      font-weight: 600;
+      color: #A1CC4C !important;
     }
     
     .data-table tbody tr {
@@ -396,8 +414,6 @@
   text-align: center;
   display: inline-block;
   min-width: 80px;
-  /* REMOVER ESTA LINHA: border: 2px solid; */
-  /* REMOVER ESTA LINHA: box-shadow: 0 2px 6px rgba(0,0,0,0.15); */
   text-transform: uppercase;
   letter-spacing: 0.5px;
 }
@@ -472,7 +488,6 @@
     .situacao-novo-registro {
   background: #bfe1f6 !important;
   color: #0c5aa3 !important;
-  /* REMOVER: border: 1px solid #8bc9f0 !important; */
 }
 
 .situacao-cadastrado {
@@ -498,7 +513,6 @@
 .situacao-desistiu {
   background: #e6cff2 !important;
   color: #4a1e6b !important;
-  /* REMOVER: border: 1px solid #d4b5e6 !important; */
 }
     
     .cadastro-info {
@@ -1303,8 +1317,6 @@
   font-size: 0.8rem;
   font-weight: 700;
   min-width: 85px;
-  /* REMOVER: border: 2px solid; */
-  /* REMOVER: box-shadow: 0 3px 8px rgba(0,0,0,0.15); */
   text-transform: uppercase;
   letter-spacing: 0.5px;
   text-align: center;
@@ -1573,9 +1585,9 @@
   background: var(--primary);
   color: white;
   padding: 8px 12px;
-  border-radius: 6px;
-  font-weight: 700;
-  font-size: 0.9rem;
+      border-radius: 6px;
+      font-weight: 700;
+      font-size: 0.9rem;
 }
 
 .fornecedor-indice {
@@ -1661,6 +1673,163 @@
   color: var(--gray);
   font-size: 13px;
 }
+
+/* NOVO: QUADRADO DE INFORMAÇÕES FINANCEIRAS DO CNPJ */
+.cnpj-financeiro-card {
+  background: linear-gradient(135deg, #f0fff0 0%, #e0ffe0 100%);
+  padding: 20px;
+  border-radius: 10px;
+  margin-bottom: 25px;
+  border-left: 4px solid var(--primary);
+  border: 2px solid var(--primary);
+  display: flex;
+  justify-content: space-between;
+  align-items: center;
+  box-shadow: 0 4px 15px rgba(126, 62, 154, 0.2);
+}
+
+.financeiro-title {
+  font-size: 1rem;
+  font-weight: 700;
+  color: var(--primary);
+  margin-bottom: 10px;
+  display: flex;
+  align-items: center;
+  gap: 8px;
+}
+
+.financeiro-grid {
+  display: grid;
+  grid-template-columns: repeat(3, 1fr);
+  gap: 20px;
+  width: 100%;
+}
+
+.financeiro-item {
+  text-align: center;
+  padding: 15px;
+  background: white;
+  border-radius: 8px;
+  border: 1px solid var(--border);
+  box-shadow: 0 2px 5px rgba(0,0,0,0.05);
+}
+
+.financeiro-valor {
+  display: block;
+  font-size: 1.4rem;
+  font-weight: 700;
+  color: var(--primary);
+  margin-bottom: 5px;
+}
+
+.financeiro-valor.mensalidade {
+  color: var(--success);
+}
+
+.financeiro-valor.mensalidade-sim {
+  color: var(--primary);
+}
+
+.financeiro-valor.adesao {
+  color: var(--info);
+}
+
+.financeiro-label {
+  font-size: 0.85rem;
+  color: var(--gray);
+  font-weight: 600;
+}
+
+/* NOVOS ESTILOS PARA CONFIGURAÇÃO DE FORNECEDOR */
+.fornecedor-config-grid {
+  display: grid;
+  grid-template-columns: 1fr 1fr 1fr;
+  gap: 12px;
+  padding: 12px;
+  background: #f8f9fa;
+  border-radius: 6px;
+  margin-top: 8px;
+}
+
+.config-column {
+  display: flex;
+  flex-direction: column;
+  gap: 8px;
+}
+
+.config-label {
+  font-weight: 600;
+  font-size: 0.85rem;
+  color: var(--dark);
+  margin-bottom: 4px;
+}
+
+.config-input-group {
+  display: flex;
+  flex-direction: column;
+  gap: 4px;
+}
+
+.percent-input {
+  padding: 6px 10px;
+  border: 2px solid var(--border);
+  border-radius: 5px;
+  font-size: 0.85rem;
+  text-align: center;
+}
+
+.percent-input::placeholder {
+  color: var(--gray);
+  font-size: 0.8rem;
+}
+
+.config-radio-group {
+  display: flex;
+  gap: 8px;
+  align-items: center;
+}
+
+.config-radio-label {
+  display: flex;
+  align-items: center;
+  gap: 4px;
+  font-size: 0.8rem;
+  cursor: pointer;
+}
+
+.config-radio-label input[type="radio"] {
+  accent-color: var(--primary);
+}
+
+.percent-value-display {
+  font-weight: 600;
+  padding: 4px 8px;
+  border-radius: 4px;
+  text-align: center;
+  font-size: 0.85rem;
+  background: white;
+  border: 1px solid var(--border);
+  min-height: 30px;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+}
+
+.percent-value-display.mdr {
+  color: #FF6B35;
+  border-left: 3px solid #FF6B35;
+}
+
+.percent-value-display.tis {
+  color: #17A2B8;
+  border-left: 3px solid #17A2B8;
+}
+
+.percent-value-display.rebate {
+  color: #A1CC4C;
+  border-left: 3px solid #A1CC4C;
+}
+
 </style>
 </head>
 <body>
@@ -1829,27 +1998,39 @@
                   <input type="checkbox" name="fornecedor" value="Agil" style="width: 18px; height: 18px; accent-color: var(--primary);" onchange="toggleFornecedorConfig(this, 'agil')">
                   <span style="font-weight: 600; color: var(--dark); font-size: 1rem;">AGIL</span>
                 </div>
-                <div id="config-agil" style="display: none; grid-template-columns: 1fr 1fr; gap: 12px; padding: 12px; background: #f8f9fa; border-radius: 6px;">
-                  <div>
-                    <label style="font-weight: 600; margin-bottom: 6px; display: block;">Tipo de Tarifa</label>
-                    <div style="display: flex; gap: 12px;">
-                      <div style="display: flex; align-items: center; gap: 6px;">
-                        <input type="radio" name="tarifa_agil" value="MDR" style="accent-color: var(--primary);">
-                        <label style="font-weight: 600;">MDR</label>
-                      </div>
-                      <div style="display: flex; align-items: center; gap: 6px;">
-                        <input type="radio" name="tarifa_agil" value="TIS" style="accent-color: var(--primary);">
-                        <label style="font-weight: 600;">TIS</label>
-                      </div>
+                <div id="config-agil" style="display: none;" class="fornecedor-config-grid">
+                  <div class="config-column">
+                    <div class="config-label">MDR %</div>
+                    <div class="config-input-group">
+                      <input type="text" 
+                        name="mdr_agil" 
+                        class="percent-input"
+                        placeholder="Ex: 0,00%"
+                        oninput="formatarPercentual(this, 'mdr_agil_display')">
                     </div>
+                    <div id="mdr_agil_display" class="percent-value-display mdr"></div>
                   </div>
-                  <div>
-                    <label style="font-weight: 600; margin-bottom: 6px; display: block;">Valor da Tarifa</label>
-                    <input type="text" 
-                      name="percentual_agil" 
-                      style="width: 100%; padding: 6px 10px; border: 2px solid var(--border); border-radius: 5px;"
-                      placeholder="Digite o % (ex: 3,2%)"
-                      oninput="formatarPercentual(this)">
+                  <div class="config-column">
+                    <div class="config-label">TIS %</div>
+                    <div class="config-input-group">
+                      <input type="text" 
+                        name="tis_agil" 
+                        class="percent-input"
+                        placeholder="Ex: 0,00%"
+                        oninput="formatarPercentual(this, 'tis_agil_display')">
+                    </div>
+                    <div id="tis_agil_display" class="percent-value-display tis"></div>
+                  </div>
+                  <div class="config-column">
+                    <div class="config-label">Rebate %</div>
+                    <div class="config-input-group">
+                      <input type="text" 
+                        name="rebate_agil" 
+                        class="percent-input"
+                        placeholder="Ex: 0,00%"
+                        oninput="formatarPercentual(this, 'rebate_agil_display')">
+                    </div>
+                    <div id="rebate_agil_display" class="percent-value-display rebate"></div>
                   </div>
                 </div>
               </div>
@@ -1859,27 +2040,39 @@
                   <input type="checkbox" name="fornecedor" value="BC" style="width: 18px; height: 18px; accent-color: var(--primary);" onchange="toggleFornecedorConfig(this, 'bc')">
                   <span style="font-weight: 600; color: var(--dark); font-size: 1rem;">BC</span>
                 </div>
-                <div id="config-bc" style="display: none; grid-template-columns: 1fr 1fr; gap: 12px; padding: 12px; background: #f8f9fa; border-radius: 6px;">
-                  <div>
-                    <label style="font-weight: 600; margin-bottom: 6px; display: block;">Tipo de Tarifa</label>
-                    <div style="display: flex; gap: 12px;">
-                      <div style="display: flex; align-items: center; gap: 6px;">
-                        <input type="radio" name="tarifa_bc" value="MDR" style="accent-color: var(--primary);">
-                        <label style="font-weight: 600;">MDR</label>
-                      </div>
-                      <div style="display: flex; align-items: center; gap: 6px;">
-                        <input type="radio" name="tarifa_bc" value="TIS" style="accent-color: var(--primary);">
-                        <label style="font-weight: 600;">TIS</label>
-                      </div>
+                <div id="config-bc" style="display: none;" class="fornecedor-config-grid">
+                  <div class="config-column">
+                    <div class="config-label">MDR %</div>
+                    <div class="config-input-group">
+                      <input type="text" 
+                        name="mdr_bc" 
+                        class="percent-input"
+                        placeholder="Ex: 0,00%"
+                        oninput="formatarPercentual(this, 'mdr_bc_display')">
                     </div>
+                    <div id="mdr_bc_display" class="percent-value-display mdr"></div>
                   </div>
-                  <div>
-                    <label style="font-weight: 600; margin-bottom: 6px; display: block;">Valor da Tarifa</label>
-                    <input type="text" 
-                      name="percentual_bc" 
-                      style="width: 100%; padding: 6px 10px; border: 2px solid var(--border); border-radius: 5px;"
-                      placeholder="Digite o % (ex: 3,2%)"
-                      oninput="formatarPercentual(this)">
+                  <div class="config-column">
+                    <div class="config-label">TIS %</div>
+                    <div class="config-input-group">
+                      <input type="text" 
+                        name="tis_bc" 
+                        class="percent-input"
+                        placeholder="Ex: 0,00%"
+                        oninput="formatarPercentual(this, 'tis_bc_display')">
+                    </div>
+                    <div id="tis_bc_display" class="percent-value-display tis"></div>
+                  </div>
+                  <div class="config-column">
+                    <div class="config-label">Rebate %</div>
+                    <div class="config-input-group">
+                      <input type="text" 
+                        name="rebate_bc" 
+                        class="percent-input"
+                        placeholder="Ex: 0,00%"
+                        oninput="formatarPercentual(this, 'rebate_bc_display')">
+                    </div>
+                    <div id="rebate_bc_display" class="percent-value-display rebate"></div>
                   </div>
                 </div>
               </div>
@@ -1889,27 +2082,39 @@
                   <input type="checkbox" name="fornecedor" value="Parcelex" style="width: 18px; height: 18px; accent-color: var(--primary);" onchange="toggleFornecedorConfig(this, 'parcelex')">
                   <span style="font-weight: 600; color: var(--dark); font-size: 1rem;">PARCELEX</span>
                 </div>
-                <div id="config-parcelex" style="display: none; grid-template-columns: 1fr 1fr; gap: 12px; padding: 12px; background: #f8f9fa; border-radius: 6px;">
-                  <div>
-                    <label style="font-weight: 600; margin-bottom: 6px; display: block;">Tipo de Tarifa</label>
-                    <div style="display: flex; gap: 12px;">
-                      <div style="display: flex; align-items: center; gap: 6px;">
-                        <input type="radio" name="tarifa_parcelex" value="MDR" style="accent-color: var(--primary);">
-                        <label style="font-weight: 600;">MDR</label>
-                      </div>
-                      <div style="display: flex; align-items: center; gap: 6px;">
-                        <input type="radio" name="tarifa_parcelex" value="TIS" style="accent-color: var(--primary);">
-                        <label style="font-weight: 600;">TIS</label>
-                      </div>
+                <div id="config-parcelex" style="display: none;" class="fornecedor-config-grid">
+                  <div class="config-column">
+                    <div class="config-label">MDR %</div>
+                    <div class="config-input-group">
+                      <input type="text" 
+                        name="mdr_parcelex" 
+                        class="percent-input"
+                        placeholder="Ex: 0,00%"
+                        oninput="formatarPercentual(this, 'mdr_parcelex_display')">
                     </div>
+                    <div id="mdr_parcelex_display" class="percent-value-display mdr"></div>
                   </div>
-                  <div>
-                    <label style="font-weight: 600; margin-bottom: 6px; display: block;">Valor da Tarifa</label>
-                    <input type="text" 
-                      name="percentual_parcelex" 
-                      style="width: 100%; padding: 6px 10px; border: 2px solid var(--border); border-radius: 5px;"
-                      placeholder="Digite o % (ex: 3,2%)"
-                      oninput="formatarPercentual(this)">
+                  <div class="config-column">
+                    <div class="config-label">TIS %</div>
+                    <div class="config-input-group">
+                      <input type="text" 
+                        name="tis_parcelex" 
+                        class="percent-input"
+                        placeholder="Ex: 0,00%"
+                        oninput="formatarPercentual(this, 'tis_parcelex_display')">
+                    </div>
+                    <div id="tis_parcelex_display" class="percent-value-display tis"></div>
+                  </div>
+                  <div class="config-column">
+                    <div class="config-label">Rebate %</div>
+                    <div class="config-input-group">
+                      <input type="text" 
+                        name="rebate_parcelex" 
+                        class="percent-input"
+                        placeholder="Ex: 0,00%"
+                        oninput="formatarPercentual(this, 'rebate_parcelex_display')">
+                    </div>
+                    <div id="rebate_parcelex_display" class="percent-value-display rebate"></div>
                   </div>
                 </div>
               </div>
@@ -1919,27 +2124,39 @@
                   <input type="checkbox" name="fornecedor" value="Agoracred" style="width: 18px; height: 18px; accent-color: var(--primary);" onchange="toggleFornecedorConfig(this, 'agoracred')">
                   <span style="font-weight: 600; color: var(--dark); font-size: 1rem;">AGORACRED</span>
                 </div>
-                <div id="config-agoracred" style="display: none; grid-template-columns: 1fr 1fr; gap: 12px; padding: 12px; background: #f8f9fa; border-radius: 6px;">
-                  <div>
-                    <label style="font-weight: 600; margin-bottom: 6px; display: block;">Tipo de Tarifa</label>
-                    <div style="display: flex; gap: 12px;">
-                      <div style="display: flex; align-items: center; gap: 6px;">
-                        <input type="radio" name="tarifa_agoracred" value="MDR" style="accent-color: var(--primary);">
-                        <label style="font-weight: 600;">MDR</label>
-                      </div>
-                      <div style="display: flex; align-items: center; gap: 6px;">
-                        <input type="radio" name="tarifa_agoracred" value="TIS" style="accent-color: var(--primary);">
-                        <label style="font-weight: 600;">TIS</label>
-                      </div>
+                <div id="config-agoracred" style="display: none;" class="fornecedor-config-grid">
+                  <div class="config-column">
+                    <div class="config-label">MDR %</div>
+                    <div class="config-input-group">
+                      <input type="text" 
+                        name="mdr_agoracred" 
+                        class="percent-input"
+                        placeholder="Ex: 0,00%"
+                        oninput="formatarPercentual(this, 'mdr_agoracred_display')">
                     </div>
+                    <div id="mdr_agoracred_display" class="percent-value-display mdr"></div>
                   </div>
-                  <div>
-                    <label style="font-weight: 600; margin-bottom: 6px; display: block;">Valor da Tarifa</label>
-                    <input type="text" 
-                      name="percentual_agoracred" 
-                      style="width: 100%; padding: 6px 10px; border: 2px solid var(--border); border-radius: 5px;"
-                      placeholder="Digite o % (ex: 3,2%)"
-                      oninput="formatarPercentual(this)">
+                  <div class="config-column">
+                    <div class="config-label">TIS %</div>
+                    <div class="config-input-group">
+                      <input type="text" 
+                        name="tis_agoracred" 
+                        class="percent-input"
+                        placeholder="Ex: 0,00%"
+                        oninput="formatarPercentual(this, 'tis_agoracred_display')">
+                    </div>
+                    <div id="tis_agoracred_display" class="percent-value-display tis"></div>
+                  </div>
+                  <div class="config-column">
+                    <div class="config-label">Rebate %</div>
+                    <div class="config-input-group">
+                      <input type="text" 
+                        name="rebate_agoracred" 
+                        class="percent-input"
+                        placeholder="Ex: 0,00%"
+                        oninput="formatarPercentual(this, 'rebate_agoracred_display')">
+                    </div>
+                    <div id="rebate_agoracred_display" class="percent-value-display rebate"></div>
                   </div>
                 </div>
               </div>
@@ -1949,27 +2166,39 @@
                   <input type="checkbox" name="fornecedor" value="Afinz" style="width: 18px; height: 18px; accent-color: var(--primary);" onchange="toggleFornecedorConfig(this, 'afinz')">
                   <span style="font-weight: 600; color: var(--dark); font-size: 1rem;">AFINZ</span>
                 </div>
-                <div id="config-afinz" style="display: none; grid-template-columns: 1fr 1fr; gap: 12px; padding: 12px; background: #f8f9fa; border-radius: 6px;">
-                  <div>
-                    <label style="font-weight: 600; margin-bottom: 6px; display: block;">Tipo de Tarifa</label>
-                    <div style="display: flex; gap: 12px;">
-                      <div style="display: flex; align-items: center; gap: 6px;">
-                        <input type="radio" name="tarifa_afinz" value="MDR" style="accent-color: var(--primary);">
-                        <label style="font-weight: 600;">MDR</label>
-                      </div>
-                      <div style="display: flex; align-items: center; gap: 6px;">
-                        <input type="radio" name="tarifa_afinz" value="TIS" style="accent-color: var(--primary);">
-                        <label style="font-weight: 600;">TIS</label>
-                      </div>
+                <div id="config-afinz" style="display: none;" class="fornecedor-config-grid">
+                  <div class="config-column">
+                    <div class="config-label">MDR %</div>
+                    <div class="config-input-group">
+                      <input type="text" 
+                        name="mdr_afinz" 
+                        class="percent-input"
+                        placeholder="Ex: 0,00%"
+                        oninput="formatarPercentual(this, 'mdr_afinz_display')">
                     </div>
+                    <div id="mdr_afinz_display" class="percent-value-display mdr"></div>
                   </div>
-                  <div>
-                    <label style="font-weight: 600; margin-bottom: 6px; display: block;">Valor da Tarifa</label>
-                    <input type="text" 
-                      name="percentual_afinz" 
-                      style="width: 100%; padding: 6px 10px; border: 2px solid var(--border); border-radius: 5px;"
-                      placeholder="Digite o % (ex: 3,2%)"
-                      oninput="formatarPercentual(this)">
+                  <div class="config-column">
+                    <div class="config-label">TIS %</div>
+                    <div class="config-input-group">
+                      <input type="text" 
+                        name="tis_afinz" 
+                        class="percent-input"
+                        placeholder="Ex: 0,00%"
+                        oninput="formatarPercentual(this, 'tis_afinz_display')">
+                    </div>
+                    <div id="tis_afinz_display" class="percent-value-display tis"></div>
+                  </div>
+                  <div class="config-column">
+                    <div class="config-label">Rebate %</div>
+                    <div class="config-input-group">
+                      <input type="text" 
+                        name="rebate_afinz" 
+                        class="percent-input"
+                        placeholder="Ex: 0,00%"
+                        oninput="formatarPercentual(this, 'rebate_afinz_display')">
+                    </div>
+                    <div id="rebate_afinz_display" class="percent-value-display rebate"></div>
                   </div>
                 </div>
               </div>
@@ -2104,19 +2333,21 @@
           <div class="filtro-group">
             <label class="filtro-label">📊 Ordenar por:</label>
             <select id="ordenacaoCadastros" class="form-select" onchange="ordenarCadastros()">
-              <option value="razao_social" selected>Razão Social (A-Z)</option>
-              <option value="razao_social_desc">Razão Social (Z-A)</option>
-              <option value="nome_fantasia">Nome Fantasia (A-Z)</option>
-              <option value="nome_fantasia_desc">Nome Fantasia (Z-A)</option>
-              <option value="situacao">Situação</option>
-              <option value="fornecedor">Fornecedor</option>
-              <option value="mensalidade">Mensalidade (Maior)</option>
-              <option value="mensalidade_asc">Mensalidade (Menor)</option>
-              <option value="adesao">Adesão (Maior)</option>
-              <option value="adesao_asc">Adesão (Menor)</option>
-              <option value="defasagem">Defasagem (Maior)</option>
-              <option value="defasagem_asc">Defasagem (Menor)</option>
-            </select>
+            <option value="razao_social" selected>Razão Social (A-Z)</option>
+            <option value="razao_social_desc">Razão Social (Z-A)</option>
+            <option value="nome_fantasia">Nome Fantasia (A-Z)</option>
+            <option value="nome_fantasia_desc">Nome Fantasia (Z-A)</option>
+            <option value="situacao">Situação</option>
+            <option value="fornecedor">Fornecedor</option>
+            <option value="mensalidade">Mensalidade (Maior)</option>
+            <option value="mensalidade_asc">Mensalidade (Menor)</option>
+            <option value="mensalidade_sim">Mensalidade SIM (Maior)</option>
+            <option value="mensalidade_sim_asc">Mensalidade SIM (Menor)</option>
+            <option value="adesao">Adesão (Maior)</option>
+            <option value="adesao_asc">Adesão (Menor)</option>
+            <option value="defasagem">Defasagem (Maior)</option>
+            <option value="defasagem_asc">Defasagem (Menor)</option>
+          </select>
           </div>
 
           <div class="filtro-group">
@@ -2138,18 +2369,19 @@
           <div class="table-responsive">
             <table class="data-table" id="tabelaCadastros">
               <thead>
-                <tr>
-                  <th width="18%">Razão Social</th>
-                  <th width="12%">CNPJ</th>
-                  <th width="12%">Fornecedor</th>
-                  <th width="10%">Situação</th>
-                  <th width="14%">Última Etapa</th>
-                  <th width="8%">Defasagem</th>
-                  <th width="10%">Mensalidade</th>
-                  <th width="8%">Adesão</th>
-                  <th width="8%">Ações</th>
-                </tr>
-              </thead>
+  <tr>
+    <th>Razão Social</th>
+    <th>CNPJ</th>
+    <th>Fornecedor</th>
+    <th>Situação</th>
+    <th>Última Etapa</th>
+    <th>Defasagem</th>
+    <th>Mensalidade</th>
+    <th>Mensalidade SIM</th>
+    <th>Adesão</th>
+    <th>Ações</th>
+  </tr>
+</thead>
               <tbody id="tabelaCadastrosBody">
               </tbody>
             </table>
@@ -2174,6 +2406,7 @@
     </div>
   </div>
 
+  <!-- MODAIS E POPUPS -->
   <div id="loadingOverlay">
     <div class="loading-content">
       <div class="loading-spinner-large"></div>
@@ -2243,6 +2476,33 @@
           </button>
         </div>
       </div>
+    </div>
+  </div>
+
+  <!-- POPUP Carregando Lojas -->
+  <div id="popupCarregandoLojas" class="popup-carregamento">
+    <div class="popup-conteudo">
+      <div class="popup-spinner"></div>
+      <p class="popup-texto">Carregando Lojas</p>
+      <p class="popup-subtexto">Buscando informações no sistema...</p>
+    </div>
+  </div>
+
+  <!-- POPUP Carregando Modal -->
+  <div id="popupCarregandoModal" class="popup-carregamento">
+    <div class="popup-conteudo">
+      <div class="popup-spinner"></div>
+      <p class="popup-texto">Abrindo Detalhes</p>
+      <p class="popup-subtexto">Carregando informações completas...</p>
+    </div>
+  </div>
+
+  <!-- POPUP Atualizando -->
+  <div id="popupAtualizando" class="popup-carregamento">
+    <div class="popup-conteudo">
+      <div class="popup-spinner"></div>
+      <p class="popup-texto">Atualizando Dados</p>
+      <p class="popup-subtexto">Salvando alterações...</p>
     </div>
   </div>
 
@@ -2378,7 +2638,6 @@ document.addEventListener('DOMContentLoaded', function() {
     });
   }
 
-  // EVENT LISTENER CORRETO PARA FECHAR SUGESTÕES
   document.addEventListener('click', function(e) {
     const suggestionsSearch = document.getElementById('suggestionsEtapaSearch');
     const inputSearch = document.getElementById('inputEtapaSearch');
@@ -2482,11 +2741,9 @@ function mostrarSugestoesEtapaFiltro() {
     
     let html = '';
     
-    // 🔥 REMOVA TODAS AS SEÇÕES COM TÍTULO - deixe apenas as etapas
     todasEtapas.forEach(etapa => {
         const jaSelecionado = etapasSelecionados.includes(etapa);
         
-        // Determinar ícone e cor
         let icone = "fas fa-calendar-check";
         let cor = "#7E3E9A";
         
@@ -2533,7 +2790,6 @@ function mostrarSugestoesFornecedorFiltro() {
     
     let html = '';
     
-    // 🔥 REMOVA A SEÇÃO COM TÍTULO - deixe apenas os fornecedores
     fornecedoresDisponiveis.forEach(fornecedor => {
         const jaSelecionado = fornecedoresSelecionados.includes(fornecedor);
         
@@ -2764,10 +3020,8 @@ function aplicarTodosFiltros() {
   
   cadastrosFiltrados = resultado;
   
-  // SEMPRE ORDENAR POR RAZÃO SOCIAL (A-Z) APÓS APLICAR FILTROS
   const cadastrosAgrupados = agruparCadastrosPorCNPJ(cadastrosFiltrados);
   
-  // Ordenar por Razão Social (A-Z)
   cadastrosAgrupados.sort((a, b) => {
     const razaoA = a.razao_social || '';
     const razaoB = b.razao_social || '';
@@ -2802,7 +3056,6 @@ function aplicarFiltroSituacao(situacao) {
     filtrosAtivos.situacao = situacaoAtiva;
   }
   
-  // GARANTIR QUE SEMPRE ORDENE POR RAZÃO SOCIAL AO FILTRAR
   document.getElementById('ordenacaoCadastros').value = 'razao_social';
   aplicarTodosFiltros();
 }
@@ -2814,7 +3067,6 @@ function limparTodosFiltros() {
   fornecedoresSelecionados = [];
   document.getElementById('pesquisaCadastros').value = '';
   
-  // SEMPRE VOLTAR PARA ORDENAÇÃO POR RAZÃO SOCIAL
   document.getElementById('ordenacaoCadastros').value = 'razao_social';
   
   document.getElementById('filtroEtapa').value = '';
@@ -2849,27 +3101,45 @@ function formatarCNPJ(input) {
     input.value = value;
 }
 
-
 function verTodosFornecedores(cnpj) {
-  mostrarPopupCarregandoModal(); // 👈🏼 NOVO POPUP AQUI
+  mostrarPopupCarregandoModal();
   
   const lojasDoCNPJ = todosCadastros.filter(cadastro => cadastro.cnpj === cnpj);
   
-  // Pequeno delay para garantir que o popup seja mostrado
   setTimeout(() => {
-    esconderPopupCarregandoModal(); // 👈🏼 ESCONDER POPUP AQUI
+    esconderPopupCarregandoModal();
     exibirModalFornecedores(cnpj, lojasDoCNPJ);
   }, 500);
 }
-
-
 function exibirModalFornecedores(cnpj, lojas) {
     const modal = document.getElementById('modalFornecedores');
     const content = document.getElementById('modalFornecedoresContent');
     
     let lojasHTML = '';
     
+    let mensalidadeCNPJ = 'R$ 0,00';
+    let mensalidadeSimCNPJ = 'R$ 0,00';
+    let adesaoCNPJ = 'Isento';
+    
     if (lojas && lojas.length > 0) {
+        for (const loja of lojas) {
+            if (mensalidadeCNPJ === 'R$ 0,00' && loja.mensalidade && loja.mensalidade !== 'R$ 0,00' && loja.mensalidade !== 0) {
+                mensalidadeCNPJ = formatarMoedaParaInput(loja.mensalidade);
+            }
+            
+            if (mensalidadeSimCNPJ === 'R$ 0,00' && loja.mensalidade_sim && loja.mensalidade_sim !== 'R$ 0,00' && loja.mensalidade_sim !== 0) {
+                mensalidadeSimCNPJ = formatarMoedaParaInput(loja.mensalidade_sim);
+            }
+            
+            if (adesaoCNPJ === 'Isento' && loja.adesao && loja.adesao !== 'Isento' && loja.adesao !== 0) {
+                adesaoCNPJ = formatarMoedaParaInput(loja.adesao);
+            }
+            
+            if (mensalidadeCNPJ !== 'R$ 0,00' && mensalidadeSimCNPJ !== 'R$ 0,00' && adesaoCNPJ !== 'Isento') {
+                break;
+            }
+        }
+        
         lojasHTML = lojas.map((loja, index) => {
             const ultimaEtapaCorrigida = loja.ultima_etapa ? 
                 corrigirHoraFrontend(loja.ultima_etapa) : 'N/A';
@@ -2879,7 +3149,6 @@ function exibirModalFornecedores(cnpj, lojas) {
             
             return `
             <div class="modal-fornecedor-card" style="border-left: 4px solid ${corBorda}; margin-bottom: 20px; padding: 15px; background: white; border-radius: 8px; box-shadow: 0 2px 8px rgba(0,0,0,0.1);">
-              <!-- Header com número e informações principais -->
               <div class="modal-fornecedor-header" style="display: flex; align-items: center; justify-content: space-between; margin-bottom: 15px;">
                 <div class="fornecedor-badge" style="background: var(--primary); color: white; padding: 8px 12px; border-radius: 6px; font-weight: 700;">
                   <span class="fornecedor-indice" style="display: block; text-align: center;">#${index + 1}</span>
@@ -2902,49 +3171,74 @@ function exibirModalFornecedores(cnpj, lojas) {
     </span>
               </div>
               
-              <!-- Grid de informações principais -->
-              <div class="modal-fornecedor-info-grid" style="display: grid; grid-template-columns: 1fr 1fr; gap: 15px; margin-bottom: 15px;">
-                <div class="modal-info-item" style="display: flex; align-items: center; gap: 10px;">
-                  <div class="info-icon" style="font-size: 1.2rem;">📋</div>
-                  <div class="info-content">
-                    <span class="modal-info-label" style="display: block; font-size: 0.8rem; color: var(--gray); margin-bottom: 2px;">Etapa Atual</span>
-                    <span class="modal-info-value etapa-destaque" style="font-weight: 700; color: var(--primary);">${loja.etapa || 'N/A'}</span>
+              <div class="modal-fornecedor-info-grid" style="display: grid; grid-template-columns: repeat(4, 1fr); gap: 12px; margin-bottom: 15px;">
+                <div class="modal-info-item" style="display: flex; flex-direction: column; gap: 5px; padding: 10px; background: white; border-radius: 8px; border: 1px solid var(--border); box-shadow: 0 2px 5px rgba(0,0,0,0.05);">
+                  <div style="display: flex; align-items: center; gap: 8px;">
+                    <div class="info-icon" style="font-size: 1.2rem; color: var(--primary);">📅</div>
+                    <span class="modal-info-label" style="font-size: 0.8rem; color: var(--gray);">Data Ativação</span>
                   </div>
+                  <span class="modal-info-value" style="font-weight: 600; color: var(--success); font-size: 0.9rem;">${formatarDataParaExibicao(loja.ativacao) || 'N/A'}</span>
                 </div>
                 
-                <div class="modal-info-item" style="display: flex; align-items: center; gap: 10px;">
-                  <div class="info-icon" style="font-size: 1.2rem;">💰</div>
-                  <div class="info-content">
-                    <span class="modal-info-label" style="display: block; font-size: 0.8rem; color: var(--gray); margin-bottom: 2px;">Configuração</span>
-                    <span class="modal-info-value" style="font-weight: 600;">
-                      ${loja.tarifa || 'N/A'} 
-                      <span class="percentual-destaque" style="background: var(--secondary); color: white; padding: 2px 6px; border-radius: 8px; font-size: 0.8rem; margin-left: 5px;">
-                        ${formatarPercentualCorrigido(loja.percentual_tarifa)}
-                      </span>
-                    </span>
+                <div class="modal-info-item" style="display: flex; flex-direction: column; gap: 5px; padding: 10px; background: white; border-radius: 8px; border: 1px solid var(--border); box-shadow: 0 2px 5px rgba(0,0,0,0.05);">
+                  <div style="display: flex; align-items: center; gap: 8px;">
+                    <div class="info-icon" style="font-size: 1.2rem; color: var(--primary);">📄</div>
+                    <span class="modal-info-label" style="font-size: 0.8rem; color: var(--gray);">Contrato Enviado</span>
                   </div>
+                  <span class="modal-info-value" style="font-weight: 600; color: var(--dark); font-size: 0.9rem;">${loja.contrato_enviado || 'N/A'}</span>
                 </div>
                 
-                <div class="modal-info-item" style="display: flex; align-items: center; gap: 10px;">
-                  <div class="info-icon" style="font-size: 1.2rem;">💵</div>
-                  <div class="info-content">
-                    <span class="modal-info-label" style="display: block; font-size: 0.8rem; color: var(--gray); margin-bottom: 2px;">Mensalidade</span>
-                    <span class="modal-info-value valor-destaque" style="font-weight: 700; color: var(--success);">${formatarMoedaParaInput(loja.mensalidade)}</span>
+                <div class="modal-info-item" style="display: flex; flex-direction: column; gap: 5px; padding: 10px; background: white; border-radius: 8px; border: 1px solid var(--border); box-shadow: 0 2px 5px rgba(0,0,0,0.05);">
+                  <div style="display: flex; align-items: center; gap: 8px;">
+                    <div class="info-icon" style="font-size: 1.2rem; color: var(--primary);">✍️</div>
+                    <span class="modal-info-label" style="font-size: 0.8rem; color: var(--gray);">Contrato Assinado</span>
                   </div>
+                  <span class="modal-info-value" style="font-weight: 600; color: var(--dark); font-size: 0.9rem;">${loja.contrato_assinado || 'N/A'}</span>
                 </div>
                 
-                <div class="modal-info-item" style="display: flex; align-items: center; gap: 10px;">
-                  <div class="info-icon" style="font-size: 1.2rem;">🤝</div>
-                  <div class="info-content">
-                    <span class="modal-info-label" style="display: block; font-size: 0.8rem; color: var(--gray); margin-bottom: 2px;">Adesão</span>
-                    <span class="modal-info-value valor-destaque" style="font-weight: 700; color: var(--info);">
-                      ${loja.adesao === 'Isento' || loja.adesao === 0 ? 'Isento' : formatarMoedaParaInput(loja.adesao)}
-                    </span>
+                <div class="modal-info-item" style="display: flex; flex-direction: column; gap: 5px; padding: 10px; background: white; border-radius: 8px; border: 1px solid var(--border); box-shadow: 0 2px 5px rgba(0,0,0,0.05);">
+                  <div style="display: flex; align-items: center; gap: 8px;">
+                    <div class="info-icon" style="font-size: 1.2rem; color: var(--primary);">🔗</div>
+                    <span class="modal-info-label" style="font-size: 0.8rem; color: var(--gray);">Link</span>
                   </div>
+                  <span class="modal-info-value" style="font-weight: 600; color: var(--primary); font-size: 0.9rem; word-break: break-all;">
+                    ${loja.link ? `<a href="${loja.link}" target="_blank" style="color: var(--primary); text-decoration: none;">Ver Link</a>` : 'N/A'}
+                  </span>
                 </div>
               </div>
               
-              <!-- Seção de timeline e acompanhamento -->
+              <div class="modal-fornecedor-info-grid" style="display: grid; grid-template-columns: repeat(3, 1fr); gap: 12px; margin-bottom: 15px;">
+                <div class="modal-info-item" style="display: flex; flex-direction: column; gap: 5px; padding: 10px; background: white; border-radius: 8px; border: 1px solid var(--border); box-shadow: 0 2px 5px rgba(0,0,0,0.05);">
+                  <div style="display: flex; align-items: center; gap: 8px;">
+                    <div class="info-icon" style="font-size: 1.2rem; color: #FF6B35;">💰</div>
+                    <span class="modal-info-label" style="font-size: 0.8rem; color: var(--gray);">MDR</span>
+                  </div>
+                  <span class="modal-info-value" style="font-weight: 600; color: #FF6B35; font-size: 0.9rem;">
+                    ${formatarPercentualCorrigido(loja.mdr)} 
+                  </span>
+                </div>
+                
+                <div class="modal-info-item" style="display: flex; flex-direction: column; gap: 5px; padding: 10px; background: white; border-radius: 8px; border: 1px solid var(--border); box-shadow: 0 2px 5px rgba(0,0,0,0.05);">
+                  <div style="display: flex; align-items: center; gap: 8px;">
+                    <div class="info-icon" style="font-size: 1.2rem; color: #17A2B8;">💳</div>
+                    <span class="modal-info-label" style="font-size: 0.8rem; color: var(--gray);">TIS</span>
+                  </div>
+                  <span class="modal-info-value" style="font-weight: 600; color: #17A2B8; font-size: 0.9rem;">
+                    ${formatarPercentualCorrigido(loja.tis)} 
+                  </span>
+                </div>
+                
+                <div class="modal-info-item" style="display: flex; flex-direction: column; gap: 5px; padding: 10px; background: white; border-radius: 8px; border: 1px solid var(--border); box-shadow: 0 2px 5px rgba(0,0,0,0.05);">
+                  <div style="display: flex; align-items: center; gap: 8px;">
+                    <div class="info-icon" style="font-size: 1.2rem; color: #A1CC4C;">🔄</div>
+                    <span class="modal-info-label" style="font-size: 0.8rem; color: var(--gray);">Rebate</span>
+                  </div>
+                  <span class="modal-info-value" style="font-weight: 600; color: #A1CC4C; font-size: 0.9rem;">
+                    ${formatarPercentualCorrigido(loja.rebate)} 
+                  </span>
+                </div>
+              </div>
+              
               <div class="timeline-section" style="background: #f8f9fa; padding: 12px; border-radius: 6px; margin-bottom: 15px;">
                 <div class="timeline-item" style="display: flex; align-items: center; gap: 10px; margin-bottom: 8px;">
                   <div class="timeline-icon" style="font-size: 1.1rem;">⏰</div>
@@ -2970,8 +3264,7 @@ function exibirModalFornecedores(cnpj, lojas) {
                   </div>
                 </div>
               </div>
-              
-              <!-- SEÇÃO DE OBSERVAÇÕES NO FINAL -->
+
               ${loja.observacoes ? `
               <div class="observacoes-section" style="background: #fff3cd; border-left: 4px solid #ffc107; padding: 12px; border-radius: 6px; margin-bottom: 15px;">
                 <div class="observacao-item" style="display: flex; align-items: flex-start; gap: 10px;">
@@ -2986,7 +3279,6 @@ function exibirModalFornecedores(cnpj, lojas) {
               </div>
               ` : ''}
               
-              <!-- Ações - CORREÇÃO AQUI: ADICIONAR BOTÃO EDITAR -->
               <div class="modal-actions" style="display: flex; gap: 8px; justify-content: flex-end;">
                 <button class="btn btn-warning btn-sm btn-action" 
                         onclick="verDetalhesCadastroModal('${loja.id}'); fecharModalFornecedores();"
@@ -2995,16 +3287,16 @@ function exibirModalFornecedores(cnpj, lojas) {
                   <i class="fas fa-eye"></i> Detalhes
                 </button>
                 
-                <!-- BOTÃO EDITAR ADICIONADO -->
-                <button class="btn btn-primary btn-sm btn-action" 
+                <button class="btn btn-sm btn-action" 
                         onclick="editarCadastroModal('${loja.id}'); fecharModalFornecedores();"
-                        title="Editar este fornecedor"
-                        style="padding: 6px 12px; border: none; border-radius: 4px; background: var(--primary); color: white; cursor: pointer; font-size: 0.8rem;">
+                        title="Editar este cadastro"
+                        style="padding: 6px 12px; border: none; border-radius: 4px; background: linear-gradient(135deg, #7E3E9A 0%, #9A5fb8 100%); color: white; cursor: pointer; font-size: 0.8rem;">
                   <i class="fas fa-edit"></i> Editar
                 </button>
               </div>
             </div>
-          `}).join('');
+          `;
+        }).join('');
     } else {
         lojasHTML = `
         <div class="empty-state" style="text-align: center; padding: 40px;">
@@ -3015,7 +3307,6 @@ function exibirModalFornecedores(cnpj, lojas) {
       `;
     }
 
-    // Restante do código permanece igual...
     const formatarCNPJParaModal = (cnpj) => {
       if (!cnpj) return 'N/A';
       const cnpjLimpo = cnpj.replace(/\D/g, '');
@@ -3030,7 +3321,6 @@ function exibirModalFornecedores(cnpj, lojas) {
     const razaoSocial = primeiraLoja ? primeiraLoja.razao_social : 'N/A';
 
     content.innerHTML = `
-      <!-- Header Profissional do CNPJ -->
       <div class="modal-cnpj-header-profissional">
         <div class="cnpj-header-content">
           <div class="cnpj-icon">
@@ -3048,8 +3338,28 @@ function exibirModalFornecedores(cnpj, lojas) {
         </div>
       </div>
       
+      <div class="cnpj-financeiro-card">
+        <div style="flex: 1;">
+          <div class="financeiro-title">
+            <i class="fas fa-chart-line"></i> INFORMAÇÕES FINANCEIRAS DO CNPJ
+          </div>
+          <div class="financeiro-grid">
+            <div class="financeiro-item">
+              <span class="financeiro-valor mensalidade">${mensalidadeCNPJ}</span>
+              <span class="financeiro-label">Mensalidade</span>
+            </div>
+            <div class="financeiro-item">
+              <span class="financeiro-valor mensalidade-sim">${mensalidadeSimCNPJ}</span>
+              <span class="financeiro-label">Mensalidade SIM</span>
+            </div>
+            <div class="financeiro-item">
+              <span class="financeiro-valor adesao">${adesaoCNPJ}</span>
+              <span class="financeiro-label">Adesão</span>
+            </div>
+          </div>
+        </div>
+      </div>
       
-      <!-- Lista de Fornecedores -->
       <div class="modal-content-scroll">
         <div class="fornecedores-list-header">
           <h4><i class="fas fa-list-ul"></i> Fornecedores Vinculados</h4>
@@ -3060,23 +3370,7 @@ function exibirModalFornecedores(cnpj, lojas) {
     `;
     
     modal.style.display = 'flex';
-    hideLoadingPopup();
 }
-
-// ADICIONE ESTA FUNÇÃO NO FINAL DO SEU CÓDIGO (antes do fechamento da tag script)
-function formatarCNPJParaExibicao(cnpj) {
-  if (!cnpj) return 'N/A';
-  
-  // Remover caracteres não numéricos
-  const cnpjLimpo = cnpj.replace(/\D/g, '');
-  
-  if (cnpjLimpo.length === 14) {
-    return cnpjLimpo.replace(/^(\d{2})(\d{3})(\d{3})(\d{4})(\d{2})/, '$1.$2.$3/$4-$5');
-  }
-  
-  return cnpj;
-}
-
 
 function fecharModalFornecedores() {
   const modal = document.getElementById('modalFornecedores');
@@ -3128,38 +3422,125 @@ function getCorBordaSituacao(situacao) {
   else return 'var(--border)';
 }
 
-function formatarPercentualCorrigido(percentual) {
-    if (!percentual && percentual !== 0) return 'N/A';
+function formatarDataAtivacao(data) {
+    if (!data || data === 'N/A' || data === 'undefined') {
+        return 'N/A';
+    }
     
     try {
-        const numero = typeof percentual === 'string' ? parseFloat(percentual) : percentual;
+        // Se já está no formato DD/MM/YYYY
+        if (typeof data === 'string' && data.includes('/') && data.length === 10) {
+            const partes = data.split('/');
+            if (partes.length === 3 && partes[0].length === 2 && partes[1].length === 2 && partes[2].length === 4) {
+                return data;
+            }
+        }
         
-        if (isNaN(numero)) return String(percentual);
+        // Se for string com formato ISO (YYYY-MM-DD)
+        if (typeof data === 'string' && data.includes('-')) {
+            const partes = data.split('T')[0].split('-');
+            if (partes.length === 3) {
+                const [ano, mes, dia] = partes;
+                return `${dia.padStart(2, '0')}/${mes.padStart(2, '0')}/${ano}`;
+            }
+        }
         
-        const porcentagem = numero * 100;
-        return porcentagem.toFixed(2).replace('.', ',') + '%';
+        // Se for uma string complexa com GMT
+        if (typeof data === 'string' && (data.includes('GMT') || data.includes('('))) {
+            // Extrair apenas a parte da data
+            const match = data.match(/(\w{3} \w{3} \d{2} \d{4})/);
+            if (match) {
+                const dateObj = new Date(match[0]);
+                if (!isNaN(dateObj.getTime())) {
+                    const dia = String(dateObj.getDate()).padStart(2, '0');
+                    const mes = String(dateObj.getMonth() + 1).padStart(2, '0');
+                    const ano = dateObj.getFullYear();
+                    return `${dia}/${mes}/${ano}`;
+                }
+            }
+        }
+        
+        // Tentar criar objeto Date
+        const dateObj = new Date(data);
+        if (!isNaN(dateObj.getTime())) {
+            const dia = String(dateObj.getDate()).padStart(2, '0');
+            const mes = String(dateObj.getMonth() + 1).padStart(2, '0');
+            const ano = dateObj.getFullYear();
+            return `${dia}/${mes}/${ano}`;
+        }
+        
+        return 'N/A';
+    } catch (error) {
+        console.error('Erro ao formatar data de ativação:', error, 'Data:', data);
+        return 'N/A';
+    }
+}
+
+function formatarPercentualCorrigido(percentual) {
+    if (!percentual && percentual !== 0) {
+        console.log("📭 Percentual vazio:", percentual);
+        return 'N/A';
+    }
+    
+    console.log("📊 formatarPercentualCorrigido recebeu:", percentual, "tipo:", typeof percentual);
+    
+    try {
+        // Se já for string formatada com %, retornar como está
+        if (typeof percentual === 'string' && percentual.includes('%')) {
+            console.log("✅ Já formatado com %:", percentual);
+            return percentual;
+        }
+        
+        // Converter para número
+        let numero;
+        if (typeof percentual === 'string') {
+            // Remove % e converte vírgula para ponto
+            const strLimpa = percentual.replace('%', '').replace(',', '.').trim();
+            numero = parseFloat(strLimpa);
+        } else {
+            numero = parseFloat(percentual);
+        }
+        
+        if (isNaN(numero)) {
+            console.log("⚠️ Não é número válido:", percentual);
+            return String(percentual);
+        }
+        
+        console.log("🔢 Número convertido:", numero);
+        
+        // ⚠️ AQUI ESTÁ A CORREÇÃO: MULTIPLICAR POR 100!
+        // 0.08 → "8,00%" ✓
+        // 0.0553 → "5,53%" ✓
+        // 0.688 → "68,80%" ✓
+        // 4.20 → "420,00%" (se vier como 4.20, significa 420%)
+        
+        const valorMultiplicado = numero * 100;
+        const resultado = valorMultiplicado.toFixed(2).replace('.', ',') + '%';
+        
+        console.log("✅ Resultado final:", percentual, "→", numero, "→", resultado);
+        return resultado;
         
     } catch (error) {
+        console.error("❌ Erro em formatarPercentualCorrigido:", error);
         return String(percentual);
     }
 }
 
 function verDetalhesCadastroModal(id) {
-  mostrarPopupCarregandoModal(); // 👈 NOVO POPUP AQUI
+  console.log("👀 Visualizando detalhes ID:", id);
+  
+  mostrarPopupCarregandoModal();
   
   cadastroAtualModalId = id;
   
   google.script.run
     .withSuccessHandler(function(dados) {
-      esconderPopupCarregandoModal(); // 👈 ESCONDER POPUP AQUI
-      hideLoading();
-      
-      dados.waitlabel = waitlabelAtual;
+      console.log("✅ Dados recebidos para detalhes:", dados);
       exibirModalDetalhesCompleto(dados);
+      esconderPopupCarregandoModal();
     })
     .withFailureHandler(function(error) {
-      esconderPopupCarregandoModal(); // 👈 ESCONDER POPUP AQUI EM CASO DE ERRO
-      hideLoading();
+      esconderPopupCarregandoModal();
       showMessage('error', '❌ Erro ao carregar detalhes: ' + error.message);
     })
     .buscarCadastroPorIDComWaitlabel(id, waitlabelAtual);
@@ -3177,14 +3558,14 @@ function exibirTabelaCadastrosAgrupada(cadastrosAgrupados, titulo) {
   tabelaBody.innerHTML = '';
 
   if (cadastrosAgrupados.length === 0) {
-    tabelaBody.innerHTML = `
-      <tr>
-        <td colspan="9" style="text-align: center; padding: 30px;">
-          <i class="fas fa-search" style="font-size: 2.5rem; color: var(--gray); margin-bottom: 12px;"></i>
-          <h3>Nenhum resultado encontrado</h3>
-          <p>Tente alterar os filtros de pesquisa.</p>
-        </td>
-      </tr>
+  tabelaBody.innerHTML = `
+    <tr>
+      <td colspan="10" style="text-align: center; padding: 30px;">
+        <i class="fas fa-search" style="font-size: 2.5rem; color: var(--gray); margin-bottom: 12px;"></i>
+        <h3>Nenhum resultado encontrado</h3>
+        <p>Tente alterar os filtros de pesquisa.</p>
+      </td>
+    </tr>
     `;
   } else {
     cadastrosAgrupados.forEach(cadastro => {
@@ -3205,38 +3586,45 @@ function exibirTabelaCadastrosAgrupada(cadastrosAgrupados, titulo) {
 }
 
 function corrigirHoraFrontend(dataHoraString) {
-    if (!dataHoraString || !dataHoraString.includes('/') || !dataHoraString.includes(':')) {
+    if (!dataHoraString || dataHoraString === 'N/A') {
         return dataHoraString;
     }
     
     try {
-        const [dataPart, horaPart] = dataHoraString.split(' ');
-        const [dia, mes, ano] = dataPart.split('/');
-        const [hora, minuto, segundo] = horaPart.split(':');
+        if (dataHoraString.includes('/') && dataHoraString.includes(':')) {
+            return dataHoraString;
+        }
         
-        const dataOriginal = new Date(
-            parseInt(ano),
-            parseInt(mes) - 1,
-            parseInt(dia),
-            parseInt(hora),
-            parseInt(minuto), 
-            parseInt(segundo)
-        );
+        if (dataHoraString.includes('GMT')) {
+            const data = new Date(dataHoraString);
+            if (isNaN(data.getTime())) return dataHoraString;
+            
+            const dia = String(data.getDate()).padStart(2, '0');
+            const mes = String(data.getMonth() + 1).padStart(2, '0');
+            const ano = data.getFullYear();
+            const hora = String(data.getHours()).padStart(2, '0');
+            const minuto = String(data.getMinutes()).padStart(2, '0');
+            const segundo = String(data.getSeconds()).padStart(2, '0');
+            
+            return `${dia}/${mes}/${ano} ${hora}:${minuto}:${segundo}`;
+        }
         
-        const dataCorrigida = new Date(dataOriginal.getTime() - (4 * 60 * 60 * 1000));
+        const data = new Date(dataHoraString);
+        if (!isNaN(data.getTime())) {
+            const dia = String(data.getDate()).padStart(2, '0');
+            const mes = String(data.getMonth() + 1).padStart(2, '0');
+            const ano = data.getFullYear();
+            const hora = String(data.getHours()).padStart(2, '0');
+            const minuto = String(data.getMinutes()).padStart(2, '0');
+            const segundo = String(data.getSeconds()).padStart(2, '0');
+            
+            return `${dia}/${mes}/${ano} ${hora}:${minuto}:${segundo}`;
+        }
         
-        const diaCorrigido = String(dataCorrigida.getDate()).padStart(2, '0');
-        const mesCorrigido = String(dataCorrigida.getMonth() + 1).padStart(2, '0');
-        const anoCorrigido = dataCorrigida.getFullYear();
-        const horaCorrigida = String(dataCorrigida.getHours()).padStart(2, '0');
-        const minutoCorrigido = String(dataCorrigida.getMinutes()).padStart(2, '0');
-        const segundoCorrigido = String(dataCorrigida.getSeconds()).padStart(2, '0');
-        
-        const resultado = `${diaCorrigido}/${mesCorrigido}/${anoCorrigido} ${horaCorrigida}:${minutoCorrigido}:${segundoCorrigido}`;
-        
-        return resultado;
+        return dataHoraString;
         
     } catch (error) {
+        console.error("❌ Erro em corrigirHoraFrontend:", error);
         return dataHoraString;
     }
 }
@@ -3244,11 +3632,9 @@ function corrigirHoraFrontend(dataHoraString) {
 function criarLinhaTabelaAgrupada(grupo) {
   const row = document.createElement('tr');
   
-  // NOVA LÓGICA: Priorizar situações
   const situacoes = grupo.lojas.map(l => l.situacao);
   
-  // Ordem de prioridade
-  let situacaoPrincipal = 'CADASTRADO'; // padrão
+  let situacaoPrincipal = 'CADASTRADO';
   
   if (situacoes.includes('EM ANDAMENTO')) {
     situacaoPrincipal = 'EM ANDAMENTO';
@@ -3263,29 +3649,37 @@ function criarLinhaTabelaAgrupada(grupo) {
   }
   
   const fornecedorMaisAntigo = encontrarFornecedorMaisAntigo(grupo.lojas);
-  const dataHoraMaisAntiga = fornecedorMaisAntigo.data || 'N/A';
-  const dataHoraCorrigida = dataHoraMaisAntiga !== 'N/A' ? 
-      corrigirHoraFrontend(dataHoraMaisAntiga) : 'N/A';
+  
+  let dataHoraMaisAntiga = 'N/A';
+  let dataHoraCorrigida = 'N/A';
 
-  const etapaMaisAntigo = fornecedorMaisAntigo.etapa || 'N/A';
+  if (fornecedorMaisAntigo.data && fornecedorMaisAntigo.data !== 'N/A') {
+    dataHoraMaisAntiga = fornecedorMaisAntigo.data;
+    
+    if (typeof dataHoraMaisAntiga === 'string' && dataHoraMaisAntiga.includes('/') && dataHoraMaisAntiga.includes(':')) {
+      dataHoraCorrigida = corrigirHoraFrontend(dataHoraMaisAntiga);
+    } else {
+      dataHoraCorrigida = dataHoraMaisAntiga.toString();
+    }
+  }
+
+  const etapaMaisAntiga = fornecedorMaisAntigo.etapa || 'N/A';
   const nomeFornecedorAntigo = fornecedorMaisAntigo.fornecedor || 'N/A';
 
-  // VERIFICAR SE DEVE MOSTRAR HORA E FORNECEDOR
   const mostrarHoraFornecedor = situacaoPrincipal === 'EM ANDAMENTO' || situacaoPrincipal === 'NOVO REGISTRO';
 
   let ultimaEtapaInfo = '';
   
-  if (dataHoraCorrigida !== 'N/A') {
+  if (dataHoraCorrigida !== 'N/A' && etapaMaisAntiga !== 'N/A') {
     if (dataHoraCorrigida.includes('/') && dataHoraCorrigida.includes(':')) {
       const [dataPart, horaPart] = dataHoraCorrigida.split(' ');
       
       if (mostrarHoraFornecedor) {
-        // MOSTRAR ETAPA, HORA E FORNECEDOR (EM ANDAMENTO e NOVO REGISTRO)
         ultimaEtapaInfo = `
           <div style="font-size: 0.75rem;">
-            <div style="font-weight: 500; margin-bottom: 2px;">${etapaMaisAntigo}</div>
+            <div style="font-weight: 500; margin-bottom: 2px;">${etapaMaisAntiga}</div>
             <div style="color: var(--gray); font-size: 0.65rem;">
-              ${dataPart} ${horaPart}
+              ${dataPart} ${horaPart || ''}
             </div>
             <div style="color: var(--danger); font-size: 0.6rem; margin-top: 2px;">
               ⚠️ ${nomeFornecedorAntigo}
@@ -3293,10 +3687,9 @@ function criarLinhaTabelaAgrupada(grupo) {
           </div>
         `;
       } else {
-        // MOSTRAR APENAS A ETAPA (outras situações)
         ultimaEtapaInfo = `
           <div style="font-size: 0.75rem;">
-            <div style="font-weight: 500; margin-bottom: 2px;">${etapaMaisAntigo}</div>
+            <div style="font-weight: 500; margin-bottom: 2px;">${etapaMaisAntiga}</div>
             <div style="color: var(--gray); font-size: 0.65rem;">
               Finalizado
             </div>
@@ -3305,10 +3698,9 @@ function criarLinhaTabelaAgrupada(grupo) {
       }
     } else {
       if (mostrarHoraFornecedor) {
-        // MOSTRAR ETAPA E FORNECEDOR (sem hora válida)
         ultimaEtapaInfo = `
           <div style="font-size: 0.75rem;">
-            <div style="font-weight: 500; margin-bottom: 2px;">${etapaMaisAntigo}</div>
+            <div style="font-weight: 500; margin-bottom: 2px;">${etapaMaisAntiga}</div>
             <div style="color: var(--gray); font-size: 0.65rem;">${dataHoraCorrigida}</div>
             <div style="color: var(--danger); font-size: 0.6rem; margin-top: 2px;">
               ⚠️ ${nomeFornecedorAntigo}
@@ -3316,10 +3708,9 @@ function criarLinhaTabelaAgrupada(grupo) {
           </div>
         `;
       } else {
-        // MOSTRAR APENAS A ETAPA
         ultimaEtapaInfo = `
           <div style="font-size: 0.75rem;">
-            <div style="font-weight: 500; margin-bottom: 2px;">${etapaMaisAntigo}</div>
+            <div style="font-weight: 500; margin-bottom: 2px;">${etapaMaisAntiga}</div>
             <div style="color: var(--gray); font-size: 0.65rem;">Etapa registrada</div>
           </div>
         `;
@@ -3327,10 +3718,9 @@ function criarLinhaTabelaAgrupada(grupo) {
     }
   } else {
     if (mostrarHoraFornecedor) {
-      // MOSTRAR ETAPA E FORNECEDOR (sem data)
       ultimaEtapaInfo = `
         <div style="font-size: 0.75rem;">
-          <div style="font-weight: 500; margin-bottom: 2px;">${etapaMaisAntigo}</div>
+          <div style="font-weight: 500; margin-bottom: 2px;">${etapaMaisAntiga}</div>
           <div style="color: var(--gray); font-size: 0.65rem;">N/A</div>
           <div style="color: var(--danger); font-size: 0.6rem; margin-top: 2px;">
             ⚠️ ${nomeFornecedorAntigo}
@@ -3338,17 +3728,15 @@ function criarLinhaTabelaAgrupada(grupo) {
         </div>
       `;
     } else {
-      // MOSTRAR APENAS A ETAPA
       ultimaEtapaInfo = `
         <div style="font-size: 0.75rem;">
-          <div style="font-weight: 500; margin-bottom: 2px;">${etapaMaisAntigo}</div>
+          <div style="font-weight: 500; margin-bottom: 2px;">${etapaMaisAntiga}</div>
           <div style="color: var(--gray); font-size: 0.65rem;">Sem informações</div>
         </div>
       `;
     }
   }
 
-  // Restante do código permanece igual...
   const temLojaEmAndamento = grupo.lojas.some(loja => 
     loja.situacao && loja.situacao.toUpperCase() === 'EM ANDAMENTO'
   );
@@ -3382,43 +3770,83 @@ function criarLinhaTabelaAgrupada(grupo) {
     `;
   }
 
-  row.innerHTML = `
-    <td>
-      <div style="font-weight: 600; color: var(--primary); margin-bottom: 2px;">${grupo.razao_social || 'N/A'}</div>
-      <div style="font-size: 0.7rem; color: var(--gray);">${grupo.nome_fantasia || 'Sem nome fantasia'}</div>
-      <div style="font-size: 0.65rem; color: var(--info); margin-top: 2px;">
-        <strong>${grupo.lojas.length}</strong> fornecedor(es)
-      </div>
-    </td>
-    <td>
-      <div style="font-family: monospace; font-size: 0.75rem; font-weight: 600; color: var(--dark);">
-        ${grupo.cnpj || 'N/A'}
-      </div>
-    </td>
-    <td>
-      <div style="font-weight: 500; color: var(--dark);">
-        ${grupo.lojas.map(l => l.fornecedor).join(', ')}
-      </div>
-    </td>
-    <td>
-      <span class="status-badge ${getSituacaoClass(situacaoPrincipal)}">${situacaoPrincipal}</span>
-    </td>
-    <td>
-      ${ultimaEtapaInfo}
-    </td>
-    ${defasagemHTML}
-    <td style="font-weight: 600; color: var(--success); text-align: center;">
-      ${formatarMoedaParaInput(grupo.lojas[0]?.mensalidade)}
-    </td>
-    <td style="font-weight: 600; color: var(--info); text-align: center;">
-      ${grupo.lojas[0]?.adesao === 'Isento' || grupo.lojas[0]?.adesao === 0 ? 'Isento' : formatarMoedaParaInput(grupo.lojas[0]?.adesao)}
-    </td>
-    <td style="text-align: center;">
-      <button class="btn btn-info btn-sm btn-visualizar-compact" onclick="verTodosFornecedores('${grupo.cnpj}')" title="Visualizar Todos">
-        <i class="fas fa-eye"></i> Ver Todos
-      </button>
-    </td>
-  `;
+  let mensalidadeCNPJ = 'R$ 0,00';
+  let mensalidadeSimCNPJ = 'R$ 0,00';
+  let adesaoCNPJ = 'Isento';
+  
+  for (const loja of grupo.lojas) {
+    if (mensalidadeCNPJ === 'R$ 0,00' && loja.mensalidade && loja.mensalidade !== 'R$ 0,00' && loja.mensalidade !== 0) {
+      mensalidadeCNPJ = formatarMoedaParaInput(loja.mensalidade);
+    }
+    
+    if (mensalidadeSimCNPJ === 'R$ 0,00' && loja.mensalidade_sim && loja.mensalidade_sim !== 'R$ 0,00' && loja.mensalidade_sim !== 0) {
+      mensalidadeSimCNPJ = formatarMoedaParaInput(loja.mensalidade_sim);
+    }
+    
+    if (adesaoCNPJ === 'Isento' && loja.adesao && loja.adesao !== 'Isento' && loja.adesao !== 0) {
+      adesaoCNPJ = formatarMoedaParaInput(loja.adesao);
+    }
+    
+    if (mensalidadeCNPJ !== 'R$ 0,00' && mensalidadeSimCNPJ !== 'R$ 0,00' && adesaoCNPJ !== 'Isento') {
+      break;
+    }
+  }
+
+  // Calcular totais de MDR, TIS e Rebate para o CNPJ
+  let totalMDR = 'N/A';
+  let totalTIS = 'N/A';
+  let totalRebate = 'N/A';
+  
+  const lojasComDados = grupo.lojas.filter(loja => loja.mdr || loja.tis || loja.rebate);
+  if (lojasComDados.length > 0) {
+    // Pegar os valores da primeira loja que tenha dados
+    const primeiraLojaComDados = lojasComDados[0];
+    totalMDR = formatarPercentualCorrigido(primeiraLojaComDados.mdr);
+    totalTIS = formatarPercentualCorrigido(primeiraLojaComDados.tis);
+    totalRebate = formatarPercentualCorrigido(primeiraLojaComDados.rebate);
+  }
+
+  // Na função criarLinhaTabelaAgrupada, substitua o row.innerHTML atual por:
+row.innerHTML = `
+  <td>
+    <div style="font-weight: 600; color: var(--primary); margin-bottom: 2px;">${grupo.razao_social || 'N/A'}</div>
+    <div style="font-size: 0.7rem; color: var(--gray);">${grupo.nome_fantasia || 'Sem nome fantasia'}</div>
+    <div style="font-size: 0.65rem; color: var(--info); margin-top: 2px;">
+      <strong>${grupo.lojas.length}</strong> fornecedor(es)
+    </div>
+  </td>
+  <td>
+    <div style="font-family: monospace; font-size: 0.75rem; font-weight: 600; color: var(--dark);">
+      ${grupo.cnpj || 'N/A'}
+    </div>
+  </td>
+  <td>
+    <div style="font-weight: 500; color: var(--dark);">
+      ${grupo.lojas.map(l => l.fornecedor).join(', ')}
+    </div>
+  </td>
+  <td>
+    <span class="status-badge ${getSituacaoClass(situacaoPrincipal)}">${situacaoPrincipal}</span>
+  </td>
+  <td>
+    ${ultimaEtapaInfo}
+  </td>
+  ${defasagemHTML}
+  <td style="font-weight: 600; color: var(--success); text-align: center;">
+    ${mensalidadeCNPJ}
+  </td>
+  <td style="font-weight: 600; color: var(--primary); text-align: center;">
+    ${mensalidadeSimCNPJ}
+  </td>
+  <td style="font-weight: 600; color: var(--info); text-align: center;">
+    ${adesaoCNPJ}
+  </td>
+  <td style="text-align: center;">
+    <button class="btn btn-info btn-sm btn-visualizar-compact" onclick="verTodosFornecedores('${grupo.cnpj}')" title="Visualizar Todos">
+      <i class="fas fa-eye"></i> Ver Todos
+    </button>
+  </td>
+`;
 
   return row;
 }
@@ -3428,17 +3856,14 @@ function encontrarFornecedorMaisAntigo(lojasDoCNPJ) {
     return { fornecedor: 'N/A', data: 'N/A', etapa: 'N/A', dias: 9999 };
   }
   
-  // Primeiro, verificar se há alguma loja com situação prioritária
   const situacoesPrioritarias = ['EM ANDAMENTO', 'NOVO REGISTRO'];
   
-  // Buscar por situações prioritárias
   for (const situacao of situacoesPrioritarias) {
     const lojasPrioritarias = lojasDoCNPJ.filter(loja => 
       loja.situacao && loja.situacao.toUpperCase() === situacao
     );
     
     if (lojasPrioritarias.length > 0) {
-      // Entre as prioritárias, pegar a mais antiga
       const lojasComData = lojasPrioritarias.filter(loja => {
         if (!loja.ultima_etapa || loja.ultima_etapa === 'N/A') return false;
         try {
@@ -3469,7 +3894,6 @@ function encontrarFornecedorMaisAntigo(lojasDoCNPJ) {
           situacao: lojaMaisAntiga.situacao
         };
       } else if (lojasPrioritarias.length > 0) {
-        // Se não tem data válida, retorna a primeira prioritária
         return {
           fornecedor: lojasPrioritarias[0].fornecedor,
           data: 'N/A',
@@ -3481,7 +3905,6 @@ function encontrarFornecedorMaisAntigo(lojasDoCNPJ) {
     }
   }
   
-  // Se não há situações prioritárias, usar a lógica original (mais antiga)
   const lojasComData = lojasDoCNPJ.filter(loja => {
     if (!loja.ultima_etapa || loja.ultima_etapa === 'N/A') return false;
     try {
@@ -3513,7 +3936,6 @@ function encontrarFornecedorMaisAntigo(lojasDoCNPJ) {
     };
   }
   
-  // Se não encontrar lojas com data, retorne a primeira loja que tenha etapa
   const lojaComEtapa = lojasDoCNPJ.find(loja => loja.etapa && loja.etapa !== 'N/A');
   if (lojaComEtapa) {
     return {
@@ -3525,7 +3947,6 @@ function encontrarFornecedorMaisAntigo(lojasDoCNPJ) {
     };
   }
   
-  // Último recurso: retorne a primeira loja
   return {
     fornecedor: lojasDoCNPJ[0].fornecedor,
     data: 'N/A',
@@ -3535,21 +3956,18 @@ function encontrarFornecedorMaisAntigo(lojasDoCNPJ) {
   };
 }
 
-
-
 function calcularDefasagemPorCNPJ(lojasDoCNPJ) {
   if (!lojasDoCNPJ || lojasDoCNPJ.length === 0) {
     return { dias: 9999, fornecedor: 'N/A', data: 'N/A', etapa: 'N/A' };
   }
   
-  // Usar a mesma lógica de priorização
-  const fornecedorPrioritario = encontrarFornecedorMaisAntigo(lojasDoCNPJ);
+  const fornecedorMaisAntigo = encontrarFornecedorMaisAntigo(lojasDoCNPJ);
   
   return {
-    dias: fornecedorPrioritario.dias,
-    fornecedor: fornecedorPrioritario.fornecedor,
-    data: fornecedorPrioritario.data,
-    etapa: fornecedorPrioritario.etapa
+    dias: fornecedorMaisAntigo.dias,
+    fornecedor: fornecedorMaisAntigo.fornecedor,
+    data: fornecedorMaisAntigo.data,
+    etapa: fornecedorMaisAntigo.etapa
   };
 }
 
@@ -3561,7 +3979,6 @@ function filtrarPesquisa() {
     delete filtrosAtivos.pesquisa;
   }
   
-  // GARANTIR ORDENAÇÃO POR RAZÃO SOCIAL NA PESQUISA
   document.getElementById('ordenacaoCadastros').value = 'razao_social';
   aplicarTodosFiltros();
 }
@@ -3569,42 +3986,28 @@ function filtrarPesquisa() {
 function ordenarCadastros() {
   const criterio = document.getElementById('ordenacaoCadastros').value;
   
+  console.log("🎯 Ordenando por:", criterio);
+  
   const cadastrosAgrupados = agruparCadastrosPorCNPJ(cadastrosFiltrados);
   
   cadastrosAgrupados.sort((a, b) => {
     switch(criterio) {
       case 'razao_social':
-        return (a.razao_social || '').localeCompare(b.razao_social || '', 'pt-BR', { sensitivity: 'base' });
+        return (a.razao_social || '').localeCompare(b.razao_social || '');
       case 'razao_social_desc':
-        return (b.razao_social || '').localeCompare(a.razao_social || '', 'pt-BR', { sensitivity: 'base' });
+        return (b.razao_social || '').localeCompare(a.razao_social || '');
       case 'nome_fantasia':
-        return (a.nome_fantasia || '').localeCompare(b.nome_fantasia || '', 'pt-BR', { sensitivity: 'base' });
+        return (a.nome_fantasia || '').localeCompare(b.nome_fantasia || '');
       case 'nome_fantasia_desc':
-        return (b.nome_fantasia || '').localeCompare(a.nome_fantasia || '', 'pt-BR', { sensitivity: 'base' });
+        return (b.nome_fantasia || '').localeCompare(a.nome_fantasia || '');
       case 'situacao':
         const situacaoA = a.lojas[0]?.situacao || '';
         const situacaoB = b.lojas[0]?.situacao || '';
-        return situacaoA.localeCompare(situacaoB, 'pt-BR', { sensitivity: 'base' });
+        return situacaoA.localeCompare(situacaoB);
       case 'fornecedor':
         const fornecedorA = a.lojas[0]?.fornecedor || '';
         const fornecedorB = b.lojas[0]?.fornecedor || '';
-        return fornecedorA.localeCompare(fornecedorB, 'pt-BR', { sensitivity: 'base' });
-      case 'mensalidade':
-        const mensalidadeA = parseFloat(a.lojas[0]?.mensalidade || 0);
-        const mensalidadeB = parseFloat(b.lojas[0]?.mensalidade || 0);
-        return mensalidadeB - mensalidadeA;
-      case 'mensalidade_asc':
-        const mensalidadeAAsc = parseFloat(a.lojas[0]?.mensalidade || 0);
-        const mensalidadeBAsc = parseFloat(b.lojas[0]?.mensalidade || 0);
-        return mensalidadeAAsc - mensalidadeBAsc;
-      case 'adesao':
-        const adesaoA = a.lojas[0]?.adesao === 'Isento' || a.lojas[0]?.adesao === 0 ? 0 : parseFloat(a.lojas[0]?.adesao || 0);
-        const adesaoB = b.lojas[0]?.adesao === 'Isento' || b.lojas[0]?.adesao === 0 ? 0 : parseFloat(b.lojas[0]?.adesao || 0);
-        return adesaoB - adesaoA;
-      case 'adesao_asc':
-        const adesaoAAsc = a.lojas[0]?.adesao === 'Isento' || a.lojas[0]?.adesao === 0 ? 0 : parseFloat(a.lojas[0]?.adesao || 0);
-        const adesaoBAsc = b.lojas[0]?.adesao === 'Isento' || b.lojas[0]?.adesao === 0 ? 0 : parseFloat(b.lojas[0]?.adesao || 0);
-        return adesaoAAsc - adesaoBAsc;
+        return fornecedorA.localeCompare(fornecedorB);
       case 'defasagem':
         const defasagemA = calcularDefasagemParaOrdenacao(a.lojas);
         const defasagemB = calcularDefasagemParaOrdenacao(b.lojas);
@@ -3613,12 +4016,48 @@ function ordenarCadastros() {
         const defasagemAAsc = calcularDefasagemParaOrdenacao(a.lojas);
         const defasagemBAsc = calcularDefasagemParaOrdenacao(b.lojas);
         return defasagemAAsc - defasagemBAsc;
+      case 'mensalidade':
+        const mensalidadeA = parseFloat(a.lojas[0]?.mensalidade || 0);
+        const mensalidadeB = parseFloat(b.lojas[0]?.mensalidade || 0);
+        return mensalidadeB - mensalidadeA;
+      case 'mensalidade_asc':
+        const mensalidadeAAsc = parseFloat(a.lojas[0]?.mensalidade || 0);
+        const mensalidadeBAsc = parseFloat(b.lojas[0]?.mensalidade || 0);
+        return mensalidadeAAsc - mensalidadeBAsc;
+      case 'mensalidade_sim':
+        const mensalidadeSimA = parseFloat(getMensalidadeSimParaOrdenacao(a.lojas));
+        const mensalidadeSimB = parseFloat(getMensalidadeSimParaOrdenacao(b.lojas));
+        return mensalidadeSimB - mensalidadeSimA;
+      case 'mensalidade_sim_asc':
+        const mensalidadeSimAAsc = parseFloat(getMensalidadeSimParaOrdenacao(a.lojas));
+        const mensalidadeSimBAsc = parseFloat(getMensalidadeSimParaOrdenacao(b.lojas));
+        return mensalidadeSimAAsc - mensalidadeSimBAsc;
+      case 'adesao':
+        const adesaoA = a.lojas[0]?.adesao === 'Isento' || a.lojas[0]?.adesao === 0 ? 0 : parseFloat(a.lojas[0]?.adesao || 0);
+        const adesaoB = b.lojas[0]?.adesao === 'Isento' || b.lojas[0]?.adesao === 0 ? 0 : parseFloat(b.lojas[0]?.adesao || 0);
+        return adesaoB - adesaoA;
+      case 'adesao_asc':
+        const adesaoAAsc = a.lojas[0]?.adesao === 'Isento' || a.lojas[0]?.adesao === 0 ? 0 : parseFloat(a.lojas[0]?.adesao || 0);
+        const adesaoBAsc = b.lojas[0]?.adesao === 'Isento' || b.lojas[0]?.adesao === 0 ? 0 : parseFloat(b.lojas[0]?.adesao || 0);
+        return adesaoAAsc - adesaoBAsc;
       default:
         return 0;
     }
   });
   
   exibirTabelaCadastrosAgrupada(cadastrosAgrupados, 'Cadastros Ordenados');
+}
+
+function getMensalidadeSimParaOrdenacao(lojas) {
+  for (const loja of lojas) {
+    if (loja.mensalidade_sim && loja.mensalidade_sim !== 'R$ 0,00' && loja.mensalidade_sim !== 0) {
+      if (typeof loja.mensalidade_sim === 'string') {
+        return loja.mensalidade_sim.replace('R$', '').replace('.', '').replace(',', '.').trim();
+      }
+      return loja.mensalidade_sim;
+    }
+  }
+  return 0;
 }
 
 function calcularDefasagemParaOrdenacao(lojasDoCNPJ) {
@@ -3640,7 +4079,6 @@ function calcularDefasagemParaOrdenacao(lojasDoCNPJ) {
 }
 
 function recarregarCadastros() {
-  // SALVAR OS FILTROS ATUAIS ANTES DE RECARREGAR
   const filtrosSalvos = {
     situacaoAtiva: situacaoAtiva,
     filtrosAtivos: {...filtrosAtivos},
@@ -3661,17 +4099,14 @@ function recarregarCadastros() {
   google.script.run
     .withSuccessHandler(function(cadastros) {
       esconderPopupCarregandoLojas();
-      hideLoading();
       
       if (cadastros && cadastros.length > 0) {
         todosCadastros = cadastros;
         cadastrosFiltrados = [...cadastros];
         
-        // ORDENAR POR RAZÃO SOCIAL (A-Z) AO CARREGAR
         document.getElementById('ordenacaoCadastros').value = 'razao_social';
-        ordenarCadastros(); // 👈🏼 ADICIONE ESTA LINHA
+        ordenarCadastros();
         
-        // RESTAURAR OS FILTROS APÓS CARREGAR OS DADOS
         restaurarFiltros(filtrosSalvos);
         
         showMessage('success', `✅ ${cadastros.length} cadastros atualizados do ${formatarNomeWaitlabel(waitlabelAtual)}!`);
@@ -3681,7 +4116,7 @@ function recarregarCadastros() {
         tableContainer.style.display = 'block';
         document.getElementById('tabelaCadastrosBody').innerHTML = `
           <tr>
-            <td colspan="9" style="text-align: center; padding: 30px;">
+            <td colspan="13" style="text-align: center; padding: 30px;">
               <i class="fas fa-inbox" style="font-size: 2.5rem; color: var(--gray); margin-bottom: 12px;"></i>
               <h3>Nenhum cadastro encontrado</h3>
               <p>Não há cadastros no waitlabel ${formatarNomeWaitlabel(waitlabelAtual)}.</p>
@@ -3693,7 +4128,6 @@ function recarregarCadastros() {
     })
     .withFailureHandler(function(error) {
       esconderPopupCarregandoLojas();
-      hideLoading();
       
       loading.style.display = 'none';
       tableContainer.style.display = 'block';
@@ -3702,15 +4136,64 @@ function recarregarCadastros() {
     .buscarTodosCadastrosComWaitlabel(waitlabelAtual);
 }
 
-function atualizarContador() {
+function exibirTabelaCadastros() {
+  const tabelaBody = document.getElementById('tabelaCadastrosBody');
+  const loading = document.getElementById('loadingCadastros');
+  const tableContainer = document.getElementById('tableContainer');
+
+  tabelaBody.innerHTML = '';
+
+  if (cadastrosFiltrados.length === 0) {
+    tabelaBody.innerHTML = `
+      <tr>
+        <td colspan="13" style="text-align: center; padding: 40px;">
+          <i class="fas fa-search" style="font-size: 3rem; color: var(--gray); margin-bottom: 15px;"></i>
+          <h3>Nenhum resultado encontrado</h3>
+          <p>Tente alterar os filtros de pesquisa.</p>
+        </td>
+      </tr>
+    `;
+  } else {
+    const cadastrosAgrupados = agruparCadastrosPorCNPJ(cadastrosFiltrados);
+    
+    atualizarContadorCNPJs(cadastrosAgrupados.length);
+    
+    cadastrosAgrupados.forEach(grupo => {
+      const row = criarLinhaTabelaAgrupada(grupo);
+      tabelaBody.appendChild(row);
+    });
+  }
+
+  loading.style.display = 'none';
+  tableContainer.style.display = 'block';
+}
+
+function atualizarContadorCNPJs(cnpjCount) {
   const contador = document.getElementById('contadorCadastros');
-  const cadastrosVisiveis = cadastrosFiltrados.length;
   const totalCadastros = todosCadastros.length;
   
-  if (cadastrosVisiveis === totalCadastros) {
-    contador.textContent = `${totalCadastros} cadastro${totalCadastros !== 1 ? 's' : ''}`;
+  const cnpjUnicosTotal = [...new Set(todosCadastros.map(c => c.cnpj))].length;
+  
+  if (cnpjCount === cnpjUnicosTotal) {
+    contador.textContent = `${cnpjUnicosTotal} CNPJ${cnpjUnicosTotal !== 1 ? 's' : ''}`;
   } else {
-    contador.textContent = `${cadastrosVisiveis} de ${totalCadastros} cadastros`;
+    contador.textContent = `${cnpjCount} de ${cnpjUnicosTotal} CNPJ${cnpjUnicosTotal !== 1 ? 's' : ''}`;
+  }
+}
+
+function atualizarContador() {
+  const contador = document.getElementById('contadorCadastros');
+  const totalCadastros = todosCadastros.length;
+  
+  // CONTAR CNPJs ÚNICOS, não fornecedores
+  const cnpjsUnicos = [...new Set(todosCadastros.map(c => c.cnpj))].length;
+  
+  if (cadastrosFiltrados.length === totalCadastros) {
+    contador.textContent = `${cnpjsUnicos} CNPJ${cnpjsUnicos !== 1 ? 's' : ''}`;
+  } else {
+    // Contar CNPJs únicos nos filtrados
+    const cnpjsFiltradosUnicos = [...new Set(cadastrosFiltrados.map(c => c.cnpj))].length;
+    contador.textContent = `${cnpjsFiltradosUnicos} de ${cnpjsUnicos} CNPJ${cnpjsUnicos !== 1 ? 's' : ''}`;
   }
 }
 
@@ -3750,30 +4233,27 @@ function editarCadastroDoModal() {
   
   fecharModalDetalhes();
   
+  // Chama a função de edição existente
   editarCadastroModal(cadastroAtualModalId);
 }
 
 function exibirModalDetalhesCompleto(dados) {
-  const modal = document.getElementById('modalDetalhes');
-  const content = document.getElementById('modalDetalhesContent');
-  
-  const waitlabelInfo = dados.waitlabel ? 
-    `<div style="background: ${WAITLABELS_CONFIG.CORES[dados.waitlabel] || '#7E3E9A'}; color: white; padding: 8px 12px; border-radius: 6px; margin-bottom: 15px; text-align: center;">
-      <strong>📁 Waitlabel:</strong> ${formatarNomeWaitlabel(dados.waitlabel)}
-    </div>` : '';
-  
-  const mensalidadeFormatada = formatarMoedaParaInput(dados.mensalidade);
-  const mensalidadeSimFormatada = formatarMoedaParaInput(dados.mensalidade_sim || 0);
-  const adesaoFormatada = dados.adesao === 'Isento' || dados.adesao === 0 ? 'Isento' : formatarMoedaParaInput(dados.adesao);
-  
-  const ultimaEtapaCorrigido = dados.ultima_etapa ? 
-      corrigirHoraFrontend(dados.ultima_etapa) : 'N/A';
+    const modal = document.getElementById('modalDetalhes');
+    const content = document.getElementById('modalDetalhesContent');
+    
+    const mensalidadeFormatada = formatarMoedaParaInput(dados.mensalidade);
+    const mensalidadeSimFormatada = formatarMoedaParaInput(dados.mensalidade_sim || 0);
+    const adesaoFormatada = dados.adesao === 'Isento' || dados.adesao === 0 ? 'Isento' : formatarMoedaParaInput(dados.adesao);
+    
+    // CORRIGIR DATAS PARA EXIBIÇÃO
+    const ultimaEtapaCorrigida = dados.ultima_etapa ? corrigirHoraFrontend(dados.ultima_etapa) : 'N/A';
 
-  const defasagem = calcularDefasagem(ultimaEtapaCorrigido);
-  
-  const mostrarDefasagem = dados.situacao && dados.situacao.toUpperCase() === 'EM ANDAMENTO';
+    // CORREÇÃO: SÓ MOSTRAR DEFASAGEM SE FOR EM ANDAMENTO
+    const mostrarDefasagem = dados.situacao && dados.situacao.toUpperCase() === 'EM ANDAMENTO';
+    const defasagem = calcularDefasagem(ultimaEtapaCorrigida);
 
-  const secaoDefasagem = mostrarDefasagem && defasagem !== 'N/A' && defasagem !== '0 dias' && defasagem !== 'Data inválida' && defasagem !== 'Erro no cálculo' ? `
+    // SEÇÃO DE DEFASAGEM (SÓ SE FOR EM ANDAMENTO)
+    const secaoDefasagem = mostrarDefasagem && defasagem !== 'N/A' && defasagem !== '0 dias' && defasagem !== 'Data inválida' && defasagem !== 'Erro no cálculo' ? `
     <div class="detalhe-item" style="grid-column: 1 / -1; background: #fff5f5; border-left: 4px solid #dc3545; margin-top: 10px;">
         <span class="detalhe-label" style="font-size: 1.1em; color: #dc3545;">
             <i class="fas fa-clock"></i> ⚠️ INFORMAÇÕES DE DEFASAGEM
@@ -3789,7 +4269,7 @@ function exibirModalDetalhesCompleto(dados) {
             </span>
         </div>
     </div>
-  ` : mostrarDefasagem ? '' : `
+    ` : mostrarDefasagem ? '' : `
     <div class="detalhe-item" style="grid-column: 1 / -1; background: #e9ecef; border-left: 4px solid #6c757d; margin-top: 10px;">
         <span class="detalhe-label" style="font-size: 1.1em; color: #6c757d;">
             <i class="fas fa-clock"></i> INFORMAÇÕES DE DEFASAGEM
@@ -3805,21 +4285,20 @@ function exibirModalDetalhesCompleto(dados) {
             </span>
         </div>
     </div>
-  `;
+    `;
 
-  content.innerHTML = `
-    ${waitlabelInfo}
-    
+    content.innerHTML = `
     <div class="detalhes-grid">
-        <div class="detalhe-item" style="grid-column: 1 / -1; background: #f0f8ff; border-left: 4px solid #7E3E9A;">
-            <span class="detalhe-label" style="font-size: 1.1em; color: #7E3E9A;">
+        <!-- SEÇÃO: INFORMAÇÕES PRINCIPAIS -->
+        <div class="detalhe-item" style="grid-column: 1 / -1; background: #f0f8ff; border-left: 4px solid #2EBE76;">
+            <span class="detalhe-label" style="font-size: 1.1em; color: #2EBE76;">
                 <i class="fas fa-info-circle"></i> 📋 INFORMAÇÕES PRINCIPAIS
             </span>
         </div>
         
         <div class="detalhe-item">
             <span class="detalhe-label">🏢 Razão Social</span>
-            <div class="detalhe-valor" style="font-weight: bold; color: #7E3E9A;">${dados.razao_social || 'N/A'}</div>
+            <div class="detalhe-valor" style="font-weight: bold; color: #2EBE76;">${dados.razao_social || 'N/A'}</div>
         </div>
         
         <div class="detalhe-item">
@@ -3831,16 +4310,11 @@ function exibirModalDetalhesCompleto(dados) {
             <span class="detalhe-label">🔢 CNPJ</span>
             <div class="detalhe-valor" style="font-family: monospace;">${dados.cnpj || 'N/A'}</div>
         </div>
-        
-        
-        <div class="detalhe-item">
-            <span class="detalhe-label">🚚 Fornecedor</span>
-            <div class="detalhe-valor">${dados.fornecedor || 'N/A'}</div>
-        </div>
 
+        <!-- SEÇÃO: FINANCEIRO -->
         <div class="detalhe-item" style="grid-column: 1 / -1; background: #f0fff0; border-left: 4px solid #28a745; margin-top: 10px;">
             <span class="detalhe-label" style="font-size: 1.1em; color: #28a745;">
-                <i class="fas fa-chart-line"></i> 💰 INFORMAÇÕES FINANCEIRAS
+                <i class="fas fa-chart-line"></i> 💰 INFORMAÇÕES FINANCEIRAS DO CNPJ
             </span>
         </div>
         
@@ -3850,20 +4324,46 @@ function exibirModalDetalhesCompleto(dados) {
         </div>
 
         <div class="detalhe-item">
-            <span class="detalhe-label" style="color: var(--primary); font-weight: 700;">💜 Mensalidade SIM</span>
-            <div class="detalhe-valor" style="color: var(--primary); font-weight: 600;">${mensalidadeSimFormatada}</div>
+            <span class="detalhe-label" style="color: var(--sim); font-weight: 700;">
+                <i class="fas fa-heart" style="color: var(--sim);"></i> Mensalidade SIM
+            </span>
+            <div class="detalhe-valor" style="color: var(--sim); font-weight: 600;">${mensalidadeSimFormatada}</div>
         </div>
         
         <div class="detalhe-item">
             <span class="detalhe-label">🤝 Adesão</span>
             <div class="detalhe-valor" style="color: var(--info); font-weight: 600;">${adesaoFormatada}</div>
         </div>
+
+        <!-- SEÇÃO: MDR, TIS e REBATE -->
+        <div class="detalhe-item" style="grid-column: 1 / -1; background: linear-gradient(135deg, #f8f9fa 0%, #f0f8ff 100%); border-left: 4px solid #FF6B35; margin-top: 10px;">
+            <span class="detalhe-label" style="font-size: 1.1em; color: #FF6B35;">
+                <i class="fas fa-percentage"></i> 📊 MDR, TIS E REBATE
+            </span>
+        </div>
         
         <div class="detalhe-item">
-            <span class="detalhe-label">💰 Tarifa</span>
-            <div class="detalhe-valor">${dados.tarifa || 'N/A'} ${formatarPercentualParaExibicao(dados.percentual_tarifa)}</div>
+            <span class="detalhe-label" style="color: #FF6B35; font-weight: 700;">
+                <i class="fas fa-money-bill-wave"></i> MDR
+            </span>
+            <div class="detalhe-valor" style="color: #FF6B35; font-weight: 600;">${formatarPercentualCorrigido(dados.mdr) || 'N/A'}</div>
+        </div>
+        
+        <div class="detalhe-item">
+            <span class="detalhe-label" style="color: #17A2B8; font-weight: 700;">
+                <i class="fas fa-credit-card"></i> TIS
+            </span>
+            <div class="detalhe-valor" style="color: #17A2B8; font-weight: 600;">${formatarPercentualCorrigido(dados.tis) || 'N/A'}</div>
+        </div>
+        
+        <div class="detalhe-item">
+            <span class="detalhe-label" style="color: #A1CC4C; font-weight: 700;">
+                <i class="fas fa-sync-alt"></i> Rebate
+            </span>
+            <div class="detalhe-valor" style="color: #A1CC4C; font-weight: 600;">${formatarPercentualCorrigido(dados.rebate) || 'N/A'}</div>
         </div>
 
+        <!-- SEÇÃO: CONTRATOS E DATAS -->
         <div class="detalhe-item" style="grid-column: 1 / -1; background: #fff8f0; border-left: 4px solid #ff6b35; margin-top: 10px;">
             <span class="detalhe-label" style="font-size: 1.1em; color: #ff6b35;">
                 <i class="fas fa-file-contract"></i> 📄 CONTRATOS E DATAS
@@ -3881,15 +4381,21 @@ function exibirModalDetalhesCompleto(dados) {
         </div>
         
         <div class="detalhe-item">
-            <span class="detalhe-label">🚀 Data Ativação</span>
-            <div class="detalhe-valor">${formatarDataParaExibicao(dados.ativacao) || 'N/A'}</div>
+           <span class="detalhe-label">🚀 Data Ativação</span>
+           <div class="detalhe-valor">${formatarDataAtivacao(dados.ativacao)}</div>
         </div>
         
         <div class="detalhe-item">
             <span class="detalhe-label">📅 Última Etapa</span>
-            <div class="detalhe-valor">${ultimaEtapaCorrigido}</div>
+            <div class="detalhe-valor">${ultimaEtapaCorrigida}</div>
+        </div>
+        
+        <div class="detalhe-item">
+            <span class="detalhe-label">🚚 Fornecedor</span>
+            <div class="detalhe-valor">${dados.fornecedor || 'N/A'}</div>
         </div>
 
+        <!-- SEÇÃO: STATUS E ACOMPANHAMENTO -->
         <div class="detalhe-item" style="grid-column: 1 / -1; background: #f0f0f8; border-left: 4px solid #6f42c1; margin-top: 10px;">
             <span class="detalhe-label" style="font-size: 1.1em; color: #6f42c1;">
                 <i class="fas fa-tasks"></i> 📊 STATUS E ACOMPANHAMENTO
@@ -3904,12 +4410,13 @@ function exibirModalDetalhesCompleto(dados) {
         </div>
         
         <div class="detalhe-item">
-            <span class="detalhe-label">📅 Etapa</span>
-            <div class="detalhe-valor">${dados.etapa || 'N/A'}</div>
+            <span class="detalhe-label">📅 Etapa (data/hora)</span>
+            <div class="detalhe-valor">${dados.etapa || 'N/A'} ${ultimaEtapaCorrigida !== 'N/A' ? `- ${ultimaEtapaCorrigida}` : ''}</div>
         </div>
 
-        <div class="detalhe-item" style="grid-column: 1 / -1; background: #f0f0f0; border-left: 4px solid #6c757d; margin-top: 10px;">
-            <span class="detalhe-label" style="font-size: 1.1em; color: #6c757d;">
+        <!-- SEÇÃO: LINKS E OBSERVAÇÕES -->
+        <div class="detalhe-item" style="grid-column: 1 / -1; background: #fff5f5; border-left: 4px solid #e83e8c; margin-top: 10px;">
+            <span class="detalhe-label" style="font-size: 1.1em; color: #e83e8c;">
                 <i class="fas fa-sticky-note"></i> 🔗 LINKS E OBSERVAÇÕES
             </span>
         </div>
@@ -3933,17 +4440,21 @@ function exibirModalDetalhesCompleto(dados) {
             </div>
         </div>
 
+        <!-- SEÇÃO: DEFASAGEM - AGORA CORRETA -->
         ${secaoDefasagem}
     </div>
-
-    <div class="modal-detalhes-actions">
-        <button type="button" class="btn btn-warning" onclick="editarCadastroModal('${dados.id}')">
+    
+    <div class="modal-detalhes-actions" style="display: flex; gap: 10px; justify-content: center; margin-top: 20px; padding-top: 15px; border-top: 1px solid var(--border);">
+        <button class="btn btn-primary" onclick="editarCadastroDoModal()" style="background: linear-gradient(135deg, #7E3E9A 0%, #9A5FB8 100%); color: white; border: none; padding: 10px 20px; border-radius: 6px; cursor: pointer; font-weight: 600; display: flex; align-items: center; gap: 8px;">
             <i class="fas fa-edit"></i> ✏️ Editar Cadastro
         </button>
+        <button class="btn btn-primary" onclick="fecharModalDetalhes()" style="background: linear-gradient(135deg, #2EBE76 0%, #3CD88C 100%); color: white; border: none; padding: 10px 20px; border-radius: 6px; cursor: pointer; font-weight: 600; display: flex; align-items: center; gap: 8px;">
+            <i class="fas fa-check"></i> Fechar
+        </button>
     </div>
-  `;
-  
-  modal.style.display = 'flex';
+    `;
+    
+    modal.style.display = 'flex';
 }
 
 function formatarDataHoraParaExibicao(dataString) {
@@ -3972,17 +4483,15 @@ function formatarDataHoraParaExibicao(dataString) {
 }
 
 function calcularDefasagem(dataUltimaEtapa) {
-    const dataCorrigida = corrigirHoraFrontend(dataUltimaEtapa);
-    
-    if (!dataCorrigida || dataCorrigida === 'N/A' || dataCorrigida === '' || dataCorrigida === 'Data inválida') {
+    if (!dataUltimaEtapa || dataUltimaEtapa === 'N/A' || dataUltimaEtapa === '' || dataUltimaEtapa === 'Data inválida') {
         return 'N/A';
     }
     
     try {
         let dataEtapa;
         
-        if (dataCorrigida.includes('/') && dataCorrigida.includes(':')) {
-            const [dataPart, horaPart] = dataCorrigida.split(' ');
+        if (dataUltimaEtapa.includes('/') && dataUltimaEtapa.includes(':')) {
+            const [dataPart, horaPart] = dataUltimaEtapa.split(' ');
             const [dia, mes, ano] = dataPart.split('/');
             const [hora, minuto, segundo] = horaPart.split(':');
             
@@ -3995,8 +4504,10 @@ function calcularDefasagem(dataUltimaEtapa) {
                 parseInt(segundo)
             );
             
+        } else if (dataUltimaEtapa.includes('GMT')) {
+            dataEtapa = new Date(dataUltimaEtapa);
         } else {
-            dataEtapa = new Date(dataCorrigida);
+            dataEtapa = new Date(dataUltimaEtapa);
         }
         
         if (isNaN(dataEtapa.getTime())) {
@@ -4018,6 +4529,7 @@ function calcularDefasagem(dataUltimaEtapa) {
         return 'N/A';
         
     } catch (error) {
+        console.error("❌ Erro ao calcular defasagem:", error, "Data:", dataUltimaEtapa);
         return 'Erro no cálculo';
     }
 }
@@ -4108,7 +4620,6 @@ function toggleCampoParaTodos(campoId) {
 }
 
 async function aplicarAlteracoesATodos() {
-  // SALVAR FILTROS ANTES DE APLICAR
   const filtrosSalvos = {
     situacaoAtiva: situacaoAtiva,
     filtrosAtivos: {...filtrosAtivos},
@@ -4146,6 +4657,7 @@ async function aplicarAlteracoesATodos() {
   const precisaEtapaEspecifica = situacaoUpper === 'NOVO REGISTRO' || situacaoUpper === 'EM ANDAMENTO';
   const etapaEstaSelecionada = camposParaAplicarATodos['inputEtapaSearch'] || camposParaAplicarATodos['etapa'];
 
+  // VALIDAÇÃO 1: Se precisa de etapa, verificar se está marcada
   if (precisaEtapaEspecifica && !etapaEstaSelecionada) {
     showMessage('error', `❌ Para situações "${situacaoSelecionada}" você DEVE marcar o checkbox "Aplicar Etapa a todos"!`);
     
@@ -4161,6 +4673,104 @@ async function aplicarAlteracoesATodos() {
       checkboxEtapa.style.outlineOffset = '2px';
     }
     return;
+  }
+
+  // VALIDAÇÃO 2: Se etapa está selecionada, verificar se é válida
+  if (etapaEstaSelecionada) {
+    const etapaSelecionada = document.getElementById('inputEtapaSearch').value;
+    
+    if (!etapaSelecionada || etapaSelecionada.trim() === '') {
+      showMessage('error', `❌ O campo "Etapa" não pode estar vazio quando aplicando a todos!`);
+      
+      if (btnAplicar) {
+        btnAplicar.disabled = false;
+        btnAplicar.innerHTML = '<i class="fas fa-copy"></i> Aplicar a Todos';
+      }
+      
+      const inputEtapa = document.getElementById('inputEtapaSearch');
+      if (inputEtapa) {
+        inputEtapa.style.border = '3px solid var(--danger)';
+        inputEtapa.style.backgroundColor = '#fff5f5';
+        inputEtapa.style.boxShadow = '0 0 10px rgba(220, 53, 69, 0.3)';
+        inputEtapa.focus();
+        inputEtapa.scrollIntoView({ behavior: 'smooth', block: 'center' });
+        
+        inputEtapa.style.animation = 'shake 0.5s ease-in-out';
+        setTimeout(() => {
+          inputEtapa.style.animation = '';
+        }, 500);
+      }
+      return;
+    }
+    
+    // Lista de etapas válidas para EM ANDAMENTO e NOVO REGISTRO
+    const etapasValidas = [
+      "PENDENTE FORNECEDOR(ES)",
+      "PENDENTE SIM", 
+      "PENDENTE RETORNO EXTERNO"
+    ];
+    
+    // Lista de situações que NÃO podem ser usadas como etapa
+    const situacoesInvalidasComoEtapa = [
+      "CADASTRADO", "REJEITADO", "DESCREDENCIADO", "DESISTIU", 
+      "NOVO REGISTRO", "EM ANDAMENTO"
+    ];
+    
+    const etapaUpper = etapaSelecionada.toUpperCase().trim();
+    
+    // VALIDAÇÃO 2A: Verificar se não é uma situação sendo usada como etapa
+    if (situacoesInvalidasComoEtapa.includes(etapaUpper)) {
+      const mensagemErro = `❌ ETAPA INVÁLIDA!\n\nA etapa "${etapaSelecionada}" é uma SITUAÇÃO, não uma etapa do processo.\n\n📋 ETAPAS VÁLIDAS para "${situacaoSelecionada}":\n• PENDENTE FORNECEDOR(ES)\n• PENDENTE SIM\n• PENDENTE RETORNO EXTERNO`;
+      
+      showMessage('error', mensagemErro);
+      
+      if (btnAplicar) {
+        btnAplicar.disabled = false;
+        btnAplicar.innerHTML = '<i class="fas fa-copy"></i> Aplicar a Todos';
+      }
+      
+      const inputEtapa = document.getElementById('inputEtapaSearch');
+      if (inputEtapa) {
+        inputEtapa.style.border = '3px solid var(--danger)';
+        inputEtapa.style.backgroundColor = '#fff5f5';
+        inputEtapa.style.boxShadow = '0 0 10px rgba(220, 53, 69, 0.3)';
+        inputEtapa.focus();
+        inputEtapa.scrollIntoView({ behavior: 'smooth', block: 'center' });
+        
+        inputEtapa.style.animation = 'shake 0.5s ease-in-out';
+        setTimeout(() => {
+          inputEtapa.style.animation = '';
+        }, 500);
+      }
+      return;
+    }
+    
+    // VALIDAÇÃO 2B: Verificar se está na lista de etapas válidas
+    if (!etapasValidas.includes(etapaUpper)) {
+      const mensagemErro = `❌ ETAPA INVÁLIDA!\n\nA etapa "${etapaSelecionada}" não é válida.\n\n📋 ETAPAS VÁLIDAS para "${situacaoSelecionada}":\n• PENDENTE FORNECEDOR(ES)\n• PENDENTE SIM\n• PENDENTE RETORNO EXTERNO`;
+      
+      showMessage('error', mensagemErro);
+      
+      if (btnAplicar) {
+        btnAplicar.disabled = false;
+        btnAplicar.innerHTML = '<i class="fas fa-copy"></i> Aplicar a Todos';
+      }
+      
+      const inputEtapa = document.getElementById('inputEtapaSearch');
+      if (inputEtapa) {
+        inputEtapa.style.border = '3px solid var(--danger)';
+        inputEtapa.style.backgroundColor = '#fff5f5';
+        inputEtapa.style.boxShadow = '0 0 10px rgba(220, 53, 69, 0.3)';
+        inputEtapa.focus();
+        inputEtapa.scrollIntoView({ behavior: 'smooth', block: 'center' });
+        
+        inputEtapa.style.animation = 'shake 0.5s ease-in-out';
+        setTimeout(() => {
+          inputEtapa.style.animation = '';
+        }, 500);
+      }
+      return;
+    }
   }
 
   const dadosAtuais = coletarDadosFormulario();
@@ -4186,7 +4796,6 @@ async function aplicarAlteracoesATodos() {
   
   mostrarPopupAplicarTodosMelhorado(cnpjCorreto, camposSelecionados, dadosAtuais, filtrosSalvos);
 }
-
 
 function mostrarPopupAplicarTodosMelhorado(cnpj, camposSelecionados, dados, filtrosSalvos) {
     const formatarValorParaPopup = (campo, valor) => {
@@ -4318,15 +4927,67 @@ async function processarAplicarATodosComDelay(filtrosSalvos) {
     const { cnpj, campos, dados } = window.dadosAplicarTodos;
     const btnAplicar = document.getElementById('btnAplicarATodos');
     
-    showLoading(`Aplicando ${campos.length} campo(s) a todos os registros...`, "Processamento seguro com delay entre requisições");
+    mostrarPopupAtualizando();
     
     try {
-        const dadosSemDataFixa = { ...dados };
-        delete dadosSemDataFixa.ultima_etapa;
+        // VALIDAÇÃO DUPLA NO FRONTEND (segurança extra)
+        const situacaoUpper = dados.situacao ? dados.situacao.toUpperCase().trim() : '';
+        const precisaValidarEtapa = situacaoUpper === 'EM ANDAMENTO' || situacaoUpper === 'NOVO REGISTRO';
+        
+        if (precisaValidarEtapa && dados.etapa) {
+            const etapasValidas = [
+                "PENDENTE FORNECEDOR(ES)",
+                "PENDENTE SIM", 
+                "PENDENTE RETORNO EXTERNO"
+            ];
+            
+            const etapaUpper = dados.etapa.toUpperCase().trim();
+            
+            if (!etapasValidas.includes(etapaUpper)) {
+                esconderPopupAtualizando();
+                showMessage('error', `❌ ETAPA INVÁLIDA! A etapa "${dados.etapa}" não é válida para situações "${dados.situacao}".`);
+                
+                if (btnAplicar) {
+                    btnAplicar.disabled = false;
+                    btnAplicar.innerHTML = '<i class="fas fa-copy"></i> Aplicar a Todos';
+                }
+                return;
+            }
+        }
+        
+        // CORREÇÃO: GARANTIR QUE A ETAPA SEJA A SITUAÇÃO QUANDO FOR SITUAÇÃO FINAL
+        const dadosParaEnviar = { ...dados };
+        
+        // Se a situação for final, garantir que a etapa seja a mesma
+        const ehSituacaoFinal = situacaoUpper === 'CADASTRADO' || 
+                               situacaoUpper === 'REJEITADO' || 
+                               situacaoUpper === 'DESCREDENCIADO' || 
+                               situacaoUpper === 'DESISTIU';
+        
+        if (ehSituacaoFinal) {
+            console.log("🔄 Situação final detectada:", situacaoUpper);
+            console.log("📝 Etapa antes:", dadosParaEnviar.etapa);
+            
+            // Forçar a etapa a ser a mesma situação
+            dadosParaEnviar.etapa = dadosParaEnviar.situacao;
+            
+            console.log("📝 Etapa depois:", dadosParaEnviar.etapa);
+            
+            // Garantir que o campo etapa esteja nos campos a aplicar
+            if (!campos.includes('etapa') && !campos.includes('inputEtapaSearch')) {
+                campos.push('etapa');
+                console.log("✅ Etapa adicionada aos campos a aplicar");
+            }
+        }
+        
+        delete dadosParaEnviar.ultima_etapa;
+        
+        console.log("📤 Dados sendo enviados para 'Aplicar a Todos':", dadosParaEnviar);
+        console.log("🎯 Campos a aplicar:", campos);
         
         google.script.run
             .withSuccessHandler(function(res) {
-                hideLoading();
+                esconderPopupAtualizando();
                 
                 if (btnAplicar) {
                     btnAplicar.disabled = false;
@@ -4338,7 +4999,6 @@ async function processarAplicarATodosComDelay(filtrosSalvos) {
                     limparSelecaoAplicarATodos();
                     
                     if (document.getElementById('secaoCadastros').style.display === 'block') {
-                        // RESTAURAR FILTROS APÓS APLICAR A TODOS
                         restaurarFiltros(filtrosSalvos);
                     }
                 } else {
@@ -4360,7 +5020,7 @@ async function processarAplicarATodosComDelay(filtrosSalvos) {
                 }
             })
             .withFailureHandler(function(error) {
-                hideLoading();
+                esconderPopupAtualizando();
                 
                 if (btnAplicar) {
                     btnAplicar.disabled = false;
@@ -4373,10 +5033,10 @@ async function processarAplicarATodosComDelay(filtrosSalvos) {
                     showMessage('error', '❌ Erro: ' + error.message);
                 }
             })
-            .aplicarAlteracoesATodos(cnpj, dadosSemDataFixa, campos);
+            .aplicarAlteracoesATodos(cnpj, dadosParaEnviar, campos);
             
     } catch (error) {
-        hideLoading();
+        esconderPopupAtualizando();
         
         if (btnAplicar) {
             btnAplicar.disabled = false;
@@ -4386,7 +5046,6 @@ async function processarAplicarATodosComDelay(filtrosSalvos) {
         showMessage('error', '❌ Erro crítico: ' + error.message);
     }
 }
-
 
 function fecharPopupAplicarTodos(confirmado) {
     const modal = document.getElementById('modalAplicarTodos');
@@ -4398,11 +5057,11 @@ function fecharPopupAplicarTodos(confirmado) {
         const dadosAtuais = coletarDadosFormulario();
         const cnpjCorreto = document.getElementById('cnpj_cadastro')?.value || dadosAtuais.cnpj;
         
-        showLoading(`Aplicando alterações para ${camposSelecionados.length} campo(s)...`, "Atualizando todos os registros do mesmo CNPJ");
+        mostrarPopupAtualizando();
         
         google.script.run
             .withSuccessHandler(function(res) {
-                hideLoading();
+                esconderPopupAtualizando();
                 
                 if (btnAplicar) {
                     btnAplicar.disabled = false;
@@ -4420,7 +5079,7 @@ function fecharPopupAplicarTodos(confirmado) {
                 }
             })
             .withFailureHandler(function(error) {
-                hideLoading();
+                esconderPopupAtualizando();
                 
                 if (btnAplicar) {
                     btnAplicar.disabled = false;
@@ -4651,7 +5310,7 @@ function cadastrar() {
 
   dadosBase.acao = 'cadastrar';
 
-  showLoading(`Cadastrando loja ${dadosBase.razao_social}...`, `Processando ${dadosBase.fornecedores.length} fornecedor(es)`);
+  mostrarPopupAtualizando();
 
   const btnCadastrar = document.getElementById('btnCadastrar');
   btnCadastrar.innerHTML = '<i class="fas fa-spinner fa-spin"></i> Cadastrando...';
@@ -4659,7 +5318,7 @@ function cadastrar() {
 
   google.script.run
     .withSuccessHandler(function(res) {
-      hideLoading();
+      esconderPopupAtualizando();
       
       btnCadastrar.innerHTML = '<i class="fas fa-plus-circle"></i> Cadastrar';
       btnCadastrar.disabled = false;
@@ -4672,7 +5331,7 @@ function cadastrar() {
       }
     })
     .withFailureHandler(function(error) {
-      hideLoading();
+      esconderPopupAtualizando();
       
       btnCadastrar.innerHTML = '<i class="fas fa-plus-circle"></i> Cadastrar';
       btnCadastrar.disabled = false;
@@ -4680,8 +5339,8 @@ function cadastrar() {
     })
     .processarCadastroComWaitlabel(dadosBase, waitlabelAtual);
 }
+
 function atualizar() {
-  // SALVAR O ESTADO ATUAL DOS FILTROS ANTES DE ATUALIZAR
   const filtrosSalvos = {
     situacaoAtiva: situacaoAtiva,
     filtrosAtivos: {...filtrosAtivos},
@@ -4691,32 +5350,31 @@ function atualizar() {
     ordenacao: document.getElementById('ordenacaoCadastros').value
   };
 
-  // 👇🏼 NOVO POPUP AQUI
   mostrarPopupAtualizando();
 
   if (!cadastroAtualId) {
-    esconderPopupAtualizando(); // 👈🏼 Esconder popup em caso de erro
+    esconderPopupAtualizando();
     showMessage('error', '❌ Nenhum cadastro selecionado para atualizar!');
     return;
   }
 
   const camposInvalidos = validarCamposObrigatorios();
   if (camposInvalidos.length > 0) {
-    esconderPopupAtualizando(); // 👈🏼 Esconder popup em caso de erro
+    esconderPopupAtualizando();
     showMessage('error', `❌ Preencha os campos obrigatórios: ${camposInvalidos.join(', ')}`);
     return;
   }
 
   const fornecedoresSelecionadosForm = document.querySelectorAll('input[name="fornecedor"]:checked');
   if (fornecedoresSelecionadosForm.length === 0) {
-    esconderPopupAtualizando(); // 👈🏼 Esconder popup em caso de erro
+    esconderPopupAtualizando();
     showMessage('error', '❌ Selecione pelo menos um fornecedor!');
     return;
   }
 
   const dados = coletarDadosFormulario();
   if (!dados) {
-    esconderPopupAtualizando(); // 👈🏼 Esconder popup em caso de erro
+    esconderPopupAtualizando();
     showMessage('error', '❌ Erro ao coletar dados do formulário');
     return;
   }
@@ -4729,7 +5387,7 @@ function atualizar() {
 
   if (precisaValidarEtapa) {
     if (!etapaSelecionada) {
-      esconderPopupAtualizando(); // 👈🏼 Esconder popup em caso de erro
+      esconderPopupAtualizando();
       showMessage('error', `❌ Para situações "${situacaoSelecionada}" o campo Etapa é obrigatório!`);
       
       const inputEtapa = document.getElementById('inputEtapaSearch');
@@ -4756,7 +5414,7 @@ function atualizar() {
     const etapaUpper = etapaSelecionada.toUpperCase().trim();
     
     if (situacoesInvalidasComoEtapa.includes(etapaUpper)) {
-      esconderPopupAtualizando(); // 👈🏼 Esconder popup em caso de erro
+      esconderPopupAtualizando();
       const mensagemErro = `❌ ETAPA INVÁLIDA!\n\nA etapa "${etapaSelecionada}" é uma SITUAÇÃO, não uma etapa do processo.\n\n📋 ETAPAS VÁLIDAS:\n• PENDENTE FORNECEDOR(ES)\n• PENDENTE SIM\n• PENDENTE RETORNO EXTERNO`;
       
       showMessage('error', mensagemErro);
@@ -4778,7 +5436,7 @@ function atualizar() {
     }
     
     if (!etapasValidas.includes(etapaUpper)) {
-      esconderPopupAtualizando(); // 👈🏼 Esconder popup em caso de erro
+      esconderPopupAtualizando();
       const mensagemErro = `❌ ETAPA INVÁLIDA!\n\nA etapa "${etapaSelecionada}" não é válida.\n\n📋 ETAPAS VÁLIDAS:\n• PENDENTE FORNECEDOR(ES)\n• PENDENTE SIM\n• PENDENTE RETORNO EXTERNO`;
       
       showMessage('error', mensagemErro);
@@ -4803,7 +5461,7 @@ function atualizar() {
   dados.acao = 'atualizar';
   dados.id = cadastroAtualId;
 
-  showLoading(`Atualizando loja ${dados.razao_social}...`, `Processando alterações nos dados`);
+  mostrarPopupAtualizando();
 
   const btnAtualizar = document.getElementById('btnAtualizar');
   const btnOriginalHTML = btnAtualizar.innerHTML;
@@ -4812,8 +5470,7 @@ function atualizar() {
 
   google.script.run
     .withSuccessHandler(function(res) {
-      esconderPopupAtualizando(); // 👈🏼 ESCONDER POPUP AQUI (sucesso)
-      hideLoading();
+      esconderPopupAtualizando();
       
       btnAtualizar.innerHTML = btnOriginalHTML;
       btnAtualizar.disabled = false;
@@ -4822,7 +5479,6 @@ function atualizar() {
         showMessage('success', '✅ ' + res.message);
         
         if (document.getElementById('secaoCadastros').style.display === 'block') {
-          // RESTAURAR OS FILTROS APÓS ATUALIZAR
           restaurarFiltros(filtrosSalvos);
         }
         
@@ -4832,64 +5488,13 @@ function atualizar() {
       }
     })
     .withFailureHandler(function(error) {
-      esconderPopupAtualizando(); // 👈🏼 ESCONDER POPUP AQUI (erro)
-      hideLoading();
+      esconderPopupAtualizando();
       
       btnAtualizar.innerHTML = btnOriginalHTML;
       btnAtualizar.disabled = false;
       showMessage('error', '❌ Erro ao atualizar: ' + error.message);
     })
     .processarCadastroComWaitlabel(dados, waitlabelAtual);
-}
-
-function restaurarFiltros(filtrosSalvos) {
-  if (!filtrosSalvos) return;
-  
-  // Restaurar variáveis globais
-  situacaoAtiva = filtrosSalvos.situacaoAtiva || 'all';
-  filtrosAtivos = {...filtrosSalvos.filtrosAtivos};
-  etapasSelecionados = [...filtrosSalvos.etapasSelecionados];
-  fornecedoresSelecionados = [...filtrosSalvos.fornecedoresSelecionados];
-  
-  // Restaurar elementos da interface
-  if (document.getElementById('pesquisaCadastros')) {
-    document.getElementById('pesquisaCadastros').value = filtrosSalvos.pesquisa || '';
-  }
-  
-  if (document.getElementById('ordenacaoCadastros')) {
-    document.getElementById('ordenacaoCadastros').value = filtrosSalvos.ordenacao || 'razao_social';
-  }
-  
-  // GARANTIR QUE OS FILTROS ESTEJAM VISÍVEIS
-  const filtrosContainer = document.getElementById('filtrosContainer');
-  const filtrosAvancados = document.getElementById('filtrosAvancadosContainer');
-  
-  if (filtrosContainer) filtrosContainer.style.display = 'flex';
-  if (filtrosAvancados) filtrosAvancados.style.display = 'grid';
-  
-  // Atualizar botões de situação
-  document.querySelectorAll('.filtro-btn').forEach(btn => {
-    btn.classList.remove('active');
-  });
-  
-  const btnAtivo = document.querySelector(`.filtro-btn[data-situacao="${situacaoAtiva}"]`);
-  if (btnAtivo) {
-    btnAtivo.classList.add('active');
-  }
-  
-  // Atualizar tags selecionadas
-  atualizarEtapasSelecionados();
-  atualizarFornecedoresSelecionados();
-  
-  // Reaplicar os filtros
-  aplicarTodosFiltros();
-  
-  // Reordenar se necessário
-  if (filtrosSalvos.ordenacao) {
-    setTimeout(() => {
-      ordenarCadastros();
-    }, 100);
-  }
 }
 
 function mostrarTodosCadastros() {
@@ -4908,23 +5513,19 @@ function mostrarTodosCadastros() {
   google.script.run
     .withSuccessHandler(function(cadastros) {
       esconderPopupCarregandoLojas();
-      hideLoading();
       
       if (cadastros && cadastros.length > 0) {
         todosCadastros = cadastros;
         cadastrosFiltrados = [...cadastros];
         
-        // ORDENAR POR RAZÃO SOCIAL (A-Z) AO CARREGAR - CORREÇÃO AQUI
         const cadastrosAgrupados = agruparCadastrosPorCNPJ(cadastrosFiltrados);
         
-        // Ordenar por Razão Social (A-Z)
         cadastrosAgrupados.sort((a, b) => {
           const razaoA = a.razao_social || '';
           const razaoB = b.razao_social || '';
           return razaoA.localeCompare(razaoB, 'pt-BR', { sensitivity: 'base' });
         });
         
-        // Exibir os dados ordenados
         exibirTabelaCadastrosAgrupada(cadastrosAgrupados, 'Todos os Cadastros');
         
         document.getElementById('filtrosContainer').style.display = 'flex';
@@ -4937,7 +5538,7 @@ function mostrarTodosCadastros() {
         tableContainer.style.display = 'block';
         document.getElementById('tabelaCadastrosBody').innerHTML = `
           <tr>
-            <td colspan="9" style="text-align: center; padding: 30px;">
+            <td colspan="13" style="text-align: center; padding: 30px;">
               <i class="fas fa-inbox" style="font-size: 2.5rem; color: var(--gray); margin-bottom: 12px;"></i>
               <h3>Nenhum cadastro encontrado</h3>
               <p>Não há cadastros no waitlabel ${formatarNomeWaitlabel(waitlabelAtual)}.</p>
@@ -4949,7 +5550,6 @@ function mostrarTodosCadastros() {
     })
     .withFailureHandler(function(error) {
       esconderPopupCarregandoLojas();
-      hideLoading();
       
       loading.style.display = 'none';
       showMessage('error', '❌ Erro ao carregar cadastros: ' + error.message);
@@ -5023,53 +5623,54 @@ function coletarDadosFormulario() {
       return null;
     }
 
-    const cnpjInput = document.getElementById('cnpj_cadastro');
-    const cnpjFormatado = cnpjInput.value;
+    const situacaoSelecionada = document.getElementById('situacao').value;
+    let etapaValue = document.getElementById('inputEtapaSearch').value || '';
+    
+    const isAplicarATodos = Object.keys(camposParaAplicarATodos).some(campo => camposParaAplicarATodos[campo]);
+    const situacaoUpper = situacaoSelecionada ? situacaoSelecionada.toUpperCase().trim() : '';
+    
+    console.log("🔍 COLETAR DADOS - Debug:");
+    console.log("📋 Situação selecionada:", situacaoSelecionada);
+    console.log("🎯 Modo Aplicar a Todos:", isAplicarATodos);
+    console.log("📝 Etapa do input:", etapaValue);
+    console.log("✅ Campos selecionados:", camposParaAplicarATodos);
+
+    // CORREÇÃO CRÍTICA: QUANDO APLICAR A TODOS E SITUAÇÃO FOR FINAL
+    if (isAplicarATodos && camposParaAplicarATodos['situacao']) {
+        console.log("🔄 Situação está sendo aplicada a todos");
+        
+        const ehSituacaoFinal = situacaoUpper === 'CADASTRADO' || 
+                               situacaoUpper === 'REJEITADO' || 
+                               situacaoUpper === 'DESCREDENCIADO' || 
+                               situacaoUpper === 'DESISTIU';
+        
+        console.log("📊 É situação final?", ehSituacaoFinal);
+        
+        if (ehSituacaoFinal) {
+            console.log("⚡ Situação final detectada, forçando etapa = situação");
+            etapaValue = situacaoSelecionada;
+            
+            // Forçar o checkbox de etapa a ser marcado
+            const checkboxEtapa = document.querySelector('[data-campo="inputEtapaSearch"]');
+            if (checkboxEtapa) {
+                checkboxEtapa.checked = true;
+                camposParaAplicarATodos['inputEtapaSearch'] = true;
+                console.log("✅ Checkbox de etapa marcado automaticamente");
+            }
+            
+            // Atualizar visualmente
+            document.getElementById('inputEtapaSearch').value = situacaoSelecionada;
+        }
+    }
+
+    // Resto da função permanece igual...
+    const cnpjFormatado = document.getElementById('cnpj_cadastro').value;
 
     let adesaoValue = document.getElementById('adesao').value;
-
     if (adesaoValue === 'R$ 0,00' || adesaoValue === '0,00' || adesaoValue === '0' || adesaoValue === 'R$ 0') {
       adesaoValue = 0;
     } else {
       adesaoValue = converterMoedaParaNumero(adesaoValue);
-    }
-
-    const situacaoSelecionada = document.getElementById('situacao').value;
-    let etapaValue = document.getElementById('inputEtapaSearch').value || '';
-
-    const situacaoUpper = situacaoSelecionada ? situacaoSelecionada.toUpperCase().trim() : '';
-    const isAtualizacao = cadastroAtualId !== null;
-    const isAplicarATodos = Object.keys(camposParaAplicarATodos).some(campo => camposParaAplicarATodos[campo]);
-
-    if (isAtualizacao || isAplicarATodos) {
-      if (situacaoUpper !== 'NOVO REGISTRO' && situacaoUpper !== 'EM ANDAMENTO') {
-        if (etapaValue !== situacaoSelecionada) {
-          etapaValue = situacaoSelecionada;
-          
-          document.getElementById('inputEtapaSearch').value = situacaoSelecionada;
-          document.getElementById('etapa').value = situacaoSelecionada;
-          
-          const checkboxEtapa = document.querySelector('[data-campo="inputEtapaSearch"]');
-          if (checkboxEtapa && !checkboxEtapa.checked) {
-            checkboxEtapa.checked = true;
-            camposParaAplicarATodos['inputEtapaSearch'] = true;
-          }
-          
-          document.getElementById('suggestionsEtapaSearch').style.display = 'none';
-        }
-      } else {
-        if (!etapaValue) {
-        }
-      }
-    } else {
-      const ehSituacaoFinal = situacaoUpper === 'CADASTRADO' || 
-                             situacaoUpper === 'REJEITADO' || 
-                             situacaoUpper === 'DESCREDENCIADO' || 
-                             situacaoUpper === 'DESISTIU';
-
-      if (ehSituacaoFinal && !etapaValue) {
-        etapaValue = situacaoSelecionada;
-      }
     }
 
     const checkboxesFornecedores = document.querySelectorAll('input[name="fornecedor"]:checked');
@@ -5090,26 +5691,27 @@ function coletarDadosFormulario() {
         return;
       }
       
-      const tarifaRadio = document.querySelector(`input[name="tarifa_${fornecedorId}"]:checked`);
-      const percentualInput = document.querySelector(`input[name^="percentual_${fornecedorId}"]`);
+      // Coletar valores de MDR, TIS e Rebate
+      const mdrInput = document.querySelector(`input[name="mdr_${fornecedorId}"]`);
+      const tisInput = document.querySelector(`input[name="tis_${fornecedorId}"]`);
+      const rebateInput = document.querySelector(`input[name="rebate_${fornecedorId}"]`);
       
-      let tarifaSelecionada = tarifaRadio ? tarifaRadio.value : 'MDR';
-      let percentualSelecionado = percentualInput ? percentualInput.value : '0%';
+      let mdrValor = mdrInput ? mdrInput.value : '';
+      let tisValor = tisInput ? tisInput.value : '';
+      let rebateValor = rebateInput ? rebateInput.value : '';
       
-      if (!tarifaRadio) {
-        const radioMDR = document.querySelector(`input[name="tarifa_${fornecedorId}"][value="MDR"]`);
-        if (radioMDR) {
-          radioMDR.checked = true;
-        }
-      }
-      
-      let percentualNumerico = converterPercentualParaNumero(percentualSelecionado);
+      let mdrNumerico = converterPercentualParaNumero(mdrValor);
+      let tisNumerico = converterPercentualParaNumero(tisValor);
+      let rebateNumerico = converterPercentualParaNumero(rebateValor);
 
       fornecedoresComConfiguracoes.push({
           nome: fornecedorPadronizado,
-          tarifa: tarifaSelecionada,
-          percentual_tarifa: percentualNumerico,
-          percentual_exibicao: percentualSelecionado
+          mdr: mdrNumerico,
+          tis: tisNumerico,
+          rebate: rebateNumerico,
+          mdr_exibicao: mdrValor,
+          tis_exibicao: tisValor,
+          rebate_exibicao: rebateValor
       });
     });
 
@@ -5120,8 +5722,9 @@ function coletarDadosFormulario() {
       adesao: adesaoValue,
       fornecedores: fornecedoresComConfiguracoes,
       fornecedor: fornecedoresComConfiguracoes.length > 0 ? fornecedoresComConfiguracoes[0].nome : '',
-      tarifa: fornecedoresComConfiguracoes.length > 0 ? fornecedoresComConfiguracoes[0].tarifa : '',
-      percentual_tarifa: fornecedoresComConfiguracoes.length > 0 ? fornecedoresComConfiguracoes[0].percentual_tarifa : '0%',
+      mdr: fornecedoresComConfiguracoes.length > 0 ? fornecedoresComConfiguracoes[0].mdr : 0,
+      tis: fornecedoresComConfiguracoes.length > 0 ? fornecedoresComConfiguracoes[0].tis : 0,
+      rebate: fornecedoresComConfiguracoes.length > 0 ? fornecedoresComConfiguracoes[0].rebate : 0,
       observacoes: document.getElementById('observacoes').value,
       contrato_enviado: document.getElementById('contrato_enviado').value,
       contrato_assinado: document.getElementById('contrato_assinado').value,
@@ -5131,13 +5734,15 @@ function coletarDadosFormulario() {
       mensalidade_sim: converterMoedaParaNumero(document.getElementById('mensalidade_sim').value),
       situacao: situacaoSelecionada,
       etapa: etapaValue,
-      operacao: isAtualizacao ? 'atualizar' : (isAplicarATodos ? 'aplicar_todos' : 'cadastrar')
+      operacao: 'aplicar_todos'
     };
+
+    console.log("✅ Dados finais para enviar:", dados);
 
     return dados;
 
   } catch (error) {
-    showMessage('error', '❌ Erro interno ao processar formulário');
+    showMessage('error', '❌ Erro interno ao processar formulário: ' + error.message);
     return null;
   }
 }
@@ -5145,65 +5750,97 @@ function coletarDadosFormulario() {
 function formatarPercentualParaExibicao(percentual) {
     if (!percentual && percentual !== 0) return '';
     
+    console.log("🔍 formatarPercentualParaExibicao recebeu:", percentual, "tipo:", typeof percentual);
+    
     try {
+        // Se for string (ex: "4,78%" ou "0.05%")
         if (typeof percentual === 'string') {
-            if (percentual.match(/^\d*\.?\d+$/)) {
-                const numero = parseFloat(percentual);
-                if (!isNaN(numero)) {
-                    const valorFormatado = numero * 100;
-                    const valorString = valorFormatado.toFixed(2);
-                    const valorFinal = valorString.replace('.', ',') + '%';
-                    return valorFinal;
+            const valorLimpo = percentual.replace('%', '').replace(',', '.').trim();
+            const numero = parseFloat(valorLimpo);
+            
+            if (!isNaN(numero)) {
+                // Se for número muito pequeno (ex: 0.05), provavelmente está errado
+                if (numero < 1 && numero > 0) {
+                    // Multiplica por 100 para corrigir: 0.05 → 5.00
+                    const corrigido = (numero * 100).toFixed(2).replace('.', ',') + '%';
+                    console.log("✅ Corrigido:", percentual, "→", corrigido);
+                    return corrigido;
                 }
+                // Número normal (ex: 4.78)
+                return numero.toFixed(2).replace('.', ',') + '%';
             }
-            if (percentual.includes('%')) {
-                return percentual;
-            }
-            return percentual + '%';
+            return percentual;
         }
         
+        // Se for número
         if (typeof percentual === 'number') {
-            let valorFormatado = percentual * 100;
-            const valorString = valorFormatado.toFixed(2);
-            const valorFinal = valorString.replace('.', ',') + '%';
-            return valorFinal;
+            // Se for número pequeno (ex: 0.05), provavelmente está errado
+            if (percentual < 1 && percentual > 0) {
+                // Multiplica por 100 para corrigir: 0.05 → 5.00
+                const corrigido = (percentual * 100).toFixed(2).replace('.', ',') + '%';
+                console.log("✅ Número corrigido:", percentual, "→", corrigido);
+                return corrigido;
+            }
+            // Número normal (ex: 4.78)
+            return percentual.toFixed(2).replace('.', ',') + '%';
         }
         
         return String(percentual);
         
     } catch (error) {
+        console.error("❌ Erro em formatarPercentualParaExibicao:", error);
         return String(percentual || '');
     }
 }
 
 function converterPercentualParaNumero(valorInput) {
-    if (!valorInput) return 0;
+    if (!valorInput && valorInput !== 0) return 0;
     
     try {
-        let valor = valorInput.toString();
-        valor = valor.replace('%', '').replace(/\s/g, '').trim();
-        valor = valor.replace(',', '.');
-        
-        const numero = parseFloat(valor);
-        
-        if (isNaN(numero)) {
-            return 0;
+        // Se já é número, retorna como está
+        if (typeof valorInput === 'number') {
+            console.log("🔢 Número recebido:", valorInput);
+            return valorInput; // 4.20 → 4.20 (CORRETO)
         }
         
-        if (valorInput.toString().includes('%')) {
-            const resultado = numero / 100;
-            return resultado;
+        // Se é string
+        if (typeof valorInput === 'string') {
+            console.log("📝 String recebida:", valorInput);
+            
+            // Remove % e espaços
+            const strLimpa = valorInput.replace('%', '').replace(/\s/g, '').trim();
+            
+            // Troca vírgula por ponto
+            const strComPonto = strLimpa.replace(',', '.');
+            
+            // Converte para número
+            const numero = parseFloat(strComPonto);
+            
+            if (isNaN(numero)) {
+                console.log("⚠️ Não é número válido:", valorInput);
+                return 0;
+            }
+            
+            console.log("✅ Número convertido:", numero);
+            
+            // ⚠️ CRÍTICO: NUNCA DIVIDIR POR 100!
+            // "4,20%" deve virar 4.20, NÃO 0.042
+            return numero;
         }
         
-        return numero;
+        // Para qualquer outro tipo
+        const numeroFinal = parseFloat(valorInput) || 0;
+        console.log("📦 Outro tipo convertido:", valorInput, "→", numeroFinal);
+        return numeroFinal;
         
     } catch (error) {
+        console.error("❌ Erro ao converter percentual:", error, "Valor:", valorInput);
         return 0;
     }
 }
 
 function validarPercentuais() {
-    const inputsPercentual = document.querySelectorAll('input[name^="percentual_"]');
+    const inputsPercentual = document.querySelectorAll('input[name^="mdr_"], input[name^="tis_"], input[name^="rebate_"]');
     let todosValidos = true;
     
     inputsPercentual.forEach(input => {
@@ -5226,22 +5863,58 @@ function toggleFornecedorConfig(checkbox, fornecedorId) {
   
   if (checkbox.checked) {
     configDiv.style.display = 'grid';
+    // Atualizar displays
+    const mdrInput = configDiv.querySelector(`input[name="mdr_${fornecedorId}"]`);
+    const tisInput = configDiv.querySelector(`input[name="tis_${fornecedorId}"]`);
+    const rebateInput = configDiv.querySelector(`input[name="rebate_${fornecedorId}"]`);
+    
+    if (mdrInput) formatarPercentual(mdrInput, `mdr_${fornecedorId}_display`);
+    if (tisInput) formatarPercentual(tisInput, `tis_${fornecedorId}_display`);
+    if (rebateInput) formatarPercentual(rebateInput, `rebate_${fornecedorId}_display`);
   } else {
     configDiv.style.display = 'none';
-    const radios = configDiv.querySelectorAll('input[type="radio"]');
-    radios.forEach(radio => radio.checked = false);
-    const select = configDiv.querySelector('select');
-    if (select) select.value = '0%';
   }
-  
-  atualizarTarifaPrincipal();
 }
-
-function atualizarTarifaPrincipal() {
-  const checkboxesFornecedores = document.querySelectorAll('input[name="fornecedor"]:checked');
-  if (checkboxesFornecedores.length > 0) {
-    const primeiroFornecedor = checkboxesFornecedores[0].value.toLowerCase();
-  }
+function formatarPercentual(input, displayId) {
+    const cursorPos = input.selectionStart;
+    let valor = input.value;
+    
+    console.log("⌨️ formatarPercentual input:", valor);
+    
+    // Permitir apenas números, vírgula e %
+    valor = valor.replace(/[^\d,%]/g, '');
+    
+    // Garantir que tem % no final
+    if (valor && !valor.includes('%')) {
+        valor = valor + '%';
+    }
+    
+    // Substituir ponto por vírgula
+    valor = valor.replace('.', ',');
+    
+    input.value = valor;
+    
+    // Atualizar display
+    const display = document.getElementById(displayId);
+    if (display) {
+        display.textContent = valor || 'N/A';
+        console.log("🖥️ Display atualizado:", valor);
+    }
+    
+    // Restaurar posição do cursor
+    setTimeout(() => {
+        let novaPos = Math.min(cursorPos, input.value.length);
+        input.setSelectionRange(novaPos, novaPos);
+    }, 0);
+    
+    // Validar formato
+    const formatoValido = /^\d+[,]?\d*%$/;
+    if (valor && !formatoValido.test(valor)) {
+        input.style.borderColor = 'var(--danger)';
+        console.log("❌ Formato inválido:", valor);
+    } else {
+        input.style.borderColor = '';
+    }
 }
 
 function converterMoedaParaNumero(valorMoeda) {
@@ -5288,7 +5961,15 @@ function preencherDadosCadastro(dados) {
     preencherCampoSeExistir('observacoes', dados.observacoes);
     preencherCampoSeExistir('contrato_enviado', dados.contrato_enviado);
     preencherCampoSeExistir('contrato_assinado', dados.contrato_assinado);
-    preencherCampoSeExistir('ativacao', dados.ativacao);
+    
+    // CORREÇÃO: FORMATAR DATA DE ATIVAÇÃO PARA O INPUT DATE
+    if (dados.ativacao) {
+      const dataFormatada = formatarDataParaInputDate(dados.ativacao);
+      preencherCampoSeExistir('ativacao', dataFormatada);
+    } else {
+      preencherCampoSeExistir('ativacao', '');
+    }
+    
     preencherCampoSeExistir('link', dados.link);
     preencherCampoSeExistir('situacao', dados.situacao || 'NOVO REGISTRO');
     
@@ -5296,10 +5977,20 @@ function preencherDadosCadastro(dados) {
     preencherCampoSeExistir('mensalidade_sim', formatarMoedaParaInput(dados.mensalidade_sim));
     preencherCampoSeExistir('adesao', dados.adesao === 'Isento' || dados.adesao === 0 ? 'R$ 0,00' : formatarMoedaParaInput(dados.adesao));
     
-    preencherCampoSeExistir('inputEtapaSearch', dados.etapa);
-    preencherCampoSeExistir('inputUltimaEtapa', dados.ultima_etapa);
+    // CORREÇÃO: QUANDO É SITUAÇÃO FINAL, PREENCHER ETAPA COM A SITUAÇÃO
+    const situacaoUpper = dados.situacao ? dados.situacao.toUpperCase().trim() : '';
+    const ehSituacaoFinal = situacaoUpper === 'CADASTRADO' || 
+                           situacaoUpper === 'REJEITADO' || 
+                           situacaoUpper === 'DESCREDENCIADO' || 
+                           situacaoUpper === 'DESISTIU';
     
-    preencherFornecedorComTarifas(dados);
+    if (ehSituacaoFinal) {
+      preencherCampoSeExistir('inputEtapaSearch', dados.situacao);
+    } else {
+      preencherCampoSeExistir('inputEtapaSearch', dados.etapa);
+    }
+    
+    preencherFornecedorComMDRTIS(dados);
 
     cadastroAtualId = dados.id;
     
@@ -5317,6 +6008,43 @@ function preencherDadosCadastro(dados) {
     
   } catch (error) {
     showMessage('error', '❌ Erro ao carregar cadastro: ' + error.message);
+  }
+}
+
+function formatarDataParaInputDate(data) {
+  if (!data) return '';
+  
+  try {
+    // Se já estiver no formato YYYY-MM-DD (input date)
+    if (typeof data === 'string' && /^\d{4}-\d{2}-\d{2}$/.test(data)) {
+      return data;
+    }
+    
+    // Se estiver no formato DD/MM/YYYY
+    if (typeof data === 'string' && data.includes('/')) {
+      const partes = data.split('/');
+      if (partes.length === 3) {
+        const [dia, mes, ano] = partes;
+        // Verificar se é formato brasileiro
+        if (dia.length === 2 && mes.length === 2 && ano.length === 4) {
+          return `${ano}-${mes}-${dia}`;
+        }
+      }
+    }
+    
+    // Se for um objeto Date ou string com GMT
+    const dateObj = new Date(data);
+    if (!isNaN(dateObj.getTime())) {
+      const ano = dateObj.getFullYear();
+      const mes = String(dateObj.getMonth() + 1).padStart(2, '0');
+      const dia = String(dateObj.getDate()).padStart(2, '0');
+      return `${ano}-${mes}-${dia}`;
+    }
+    
+    return '';
+  } catch (error) {
+    console.error('Erro ao formatar data para input:', error);
+    return '';
   }
 }
 
@@ -5396,7 +6124,6 @@ function validarCamposObrigatorios() {
       elemento: document.getElementById('inputEtapaSearch'),
       tipo: 'text'
     });
-  } else if (isAtualizacao || isAplicarATodos) {
   }
 
   for (const campo of camposParaValidar) {
@@ -5427,41 +6154,67 @@ function validarCamposObrigatorios() {
   return camposInvalidos;
 }
 
-function preencherFornecedorComTarifas(dados) {
+function preencherFornecedorComMDRTIS(dados) {
+  console.log("🔍 === DADOS CRUS DO SERVIDOR ===");
+    console.log("MDR:", dados.mdr, "Tipo:", typeof dados.mdr);
+    console.log("TIS:", dados.tis, "Tipo:", typeof dados.tis);
+    console.log("Rebate:", dados.rebate, "Tipo:", typeof dados.rebate);
+    console.log("=================================");
   const checkboxes = document.querySelectorAll('input[name="fornecedor"]');
+  
+  // 1. LIMPAR TODOS OS CHECKBOXES E CONFIGS
   checkboxes.forEach(cb => {
     cb.checked = false;
     const fornecedorId = cb.value.toLowerCase();
     const configDiv = document.getElementById(`config-${fornecedorId}`);
+    
     if (configDiv) {
       configDiv.style.display = 'none';
-      const radios = configDiv.querySelectorAll('input[type="radio"]');
-      radios.forEach(radio => radio.checked = false);
       
-      const percentualInput = configDiv.querySelector(`input[name^="percentual_"]`);
-      if (percentualInput) {
-        percentualInput.value = '';
-      }
+      // Limpar inputs
+      const mdrInput = configDiv.querySelector(`input[name="mdr_${fornecedorId}"]`);
+      const tisInput = configDiv.querySelector(`input[name="tis_${fornecedorId}"]`);
+      const rebateInput = configDiv.querySelector(`input[name="rebate_${fornecedorId}"]`);
+      
+      if (mdrInput) mdrInput.value = '';
+      if (tisInput) tisInput.value = '';
+      if (rebateInput) rebateInput.value = '';
+      
+      // Limpar displays
+      const mdrDisplay = document.getElementById(`mdr_${fornecedorId}_display`);
+      const tisDisplay = document.getElementById(`tis_${fornecedorId}_display`);
+      const rebateDisplay = document.getElementById(`rebate_${fornecedorId}_display`);
+      
+      if (mdrDisplay) mdrDisplay.textContent = '';
+      if (tisDisplay) tisDisplay.textContent = '';
+      if (rebateDisplay) rebateDisplay.textContent = '';
     }
   });
   
+  // 2. SE NÃO TIVER FORNECEDOR NOS DADOS, PARA AQUI
   if (!dados.fornecedor) {
+    console.log("⚠️ Nenhum fornecedor nos dados para preencher");
     return;
   }
   
   const fornecedorBuscado = dados.fornecedor.toUpperCase().trim();
+  console.log("🔍 Buscando fornecedor:", fornecedorBuscado);
   
+  // 3. ENCONTRAR O CHECKBOX CORRESPONDENTE
   let checkboxEncontrado = null;
   
   checkboxes.forEach(cb => {
     const checkboxValor = cb.value.toUpperCase().trim();
+    console.log(`  Comparando: "${checkboxValor}" com "${fornecedorBuscado}"`);
     
     if (checkboxValor === fornecedorBuscado) {
       checkboxEncontrado = cb;
     }
   });
   
+  // 4. SE ENCONTROU, PREENCHER
   if (checkboxEncontrado) {
+    console.log("✅ Fornecedor encontrado:", checkboxEncontrado.value);
     checkboxEncontrado.checked = true;
     
     const fornecedorId = checkboxEncontrado.value.toLowerCase();
@@ -5470,30 +6223,123 @@ function preencherFornecedorComTarifas(dados) {
     if (configDiv) {
       configDiv.style.display = 'grid';
       
-      if (dados.tarifa) {
-        const tarifaBuscada = dados.tarifa.toUpperCase().trim();
-        
-        const radioTarifa = configDiv.querySelector(`input[name="tarifa_${fornecedorId}"][value="${tarifaBuscada}"]`);
-        if (radioTarifa) {
-          radioTarifa.checked = true;
-        } else {
-          const radioMDR = configDiv.querySelector(`input[name="tarifa_${fornecedorId}"][value="MDR"]`);
-          if (radioMDR) {
-            radioMDR.checked = true;
-          }
+      console.log("📊 Dados recebidos para preencher:");
+      console.log("  MDR:", dados.mdr, "(tipo:", typeof dados.mdr, ")");
+      console.log("  TIS:", dados.tis, "(tipo:", typeof dados.tis, ")");
+      console.log("  Rebate:", dados.rebate, "(tipo:", typeof dados.rebate, ")");
+      
+      // 🎯 PREENCHER MDR (COM CORREÇÃO)
+      if (dados.mdr !== undefined && dados.mdr !== null) {
+        const mdrInput = configDiv.querySelector(`input[name="mdr_${fornecedorId}"]`);
+        if (mdrInput) {
+          // Usar a função corrigida para exibição
+          let mdrFormatado = formatarPercentualParaExibicaoCorrigida(dados.mdr);
+          mdrInput.value = mdrFormatado;
+          console.log("  MDR formatado para input:", mdrFormatado);
+          
+          // Atualizar display
+          formatarPercentual(mdrInput, `mdr_${fornecedorId}_display`);
         }
       }
       
-      if (dados.percentual_tarifa !== undefined && dados.percentual_tarifa !== null) {
-        const percentualInput = configDiv.querySelector(`input[name="percentual_${fornecedorId}"]`);
-
-        if (percentualInput) {
-          let percentualFormatado = formatarPercentualParaExibicao(dados.percentual_tarifa);
-          percentualInput.value = percentualFormatado;
+      // 🎯 PREENCHER TIS (COM CORREÇÃO)
+      if (dados.tis !== undefined && dados.tis !== null) {
+        const tisInput = configDiv.querySelector(`input[name="tis_${fornecedorId}"]`);
+        if (tisInput) {
+          // Usar a função corrigida para exibição
+          let tisFormatado = formatarPercentualParaExibicaoCorrigida(dados.tis);
+          tisInput.value = tisFormatado;
+          console.log("  TIS formatado para input:", tisFormatado);
+          
+          // Atualizar display
+          formatarPercentual(tisInput, `tis_${fornecedorId}_display`);
         }
       }
+      
+      // 🎯 PREENCHER REBATE (COM CORREÇÃO)
+      if (dados.rebate !== undefined && dados.rebate !== null) {
+        const rebateInput = configDiv.querySelector(`input[name="rebate_${fornecedorId}"]`);
+        if (rebateInput) {
+          // Usar a função corrigida para exibição
+          let rebateFormatado = formatarPercentualParaExibicaoCorrigida(dados.rebate);
+          rebateInput.value = rebateFormatado;
+          console.log("  Rebate formatado para input:", rebateFormatado);
+          
+          // Atualizar display
+          formatarPercentual(rebateInput, `rebate_${fornecedorId}_display`);
+        }
+      }
+    } else {
+      console.log("❌ Config div não encontrada para:", fornecedorId);
     }
+  } else {
+    console.log("❌ Fornecedor não encontrado nos checkboxes:", fornecedorBuscado);
+    console.log("Checkboxes disponíveis:");
+    checkboxes.forEach(cb => {
+      console.log(`  - ${cb.value}`);
+    });
   }
+}
+
+function formatarPercentualParaExibicaoCorrigida(valor) {
+    if (!valor && valor !== 0) {
+        console.log("📭 Valor vazio ou null");
+        return '';
+    }
+    
+    console.log("🔧 formatarPercentualParaExibicaoCorrigida recebeu:", valor, "tipo:", typeof valor);
+    
+    try {
+        // CASO 1: STRING JÁ FORMATADA (ex: "8,00%" ou "5,53%")
+        if (typeof valor === 'string' && valor.includes('%')) {
+            console.log("✅ String já formatada, retornando como está:", valor);
+            return valor;
+        }
+        
+        // CASO 2: STRING NUMÉRICA (ex: "8" ou "5.53")
+        if (typeof valor === 'string') {
+            const valorLimpo = valor.replace(',', '.').trim();
+            const numero = parseFloat(valorLimpo);
+            
+            if (!isNaN(numero)) {
+                console.log("✅ String numérica convertida:", valor, "→", numero);
+                // MULTIPLICAR POR 100 se for menor que 1 (assumindo que é decimal)
+                if (numero < 1) {
+                    const corrigido = (numero * 100).toFixed(2).replace('.', ',') + '%';
+                    console.log("🔄 Corrigido (decimal → percentual):", valor, "→", corrigido);
+                    return corrigido;
+                }
+                // Se já for percentual (ex: 8.5)
+                return numero.toFixed(2).replace('.', ',') + '%';
+            }
+            console.log("⚠️ String não numérica:", valor);
+            return valor;
+        }
+        
+        // CASO 3: NÚMERO (ex: 0.08, 0.0553, 0.688)
+        if (typeof valor === 'number') {
+            console.log("🔢 Processando número:", valor);
+            
+            // ⚠️ IMPORTANTE: MULTIPLICAR POR 100 SE FOR DECIMAL!
+            if (valor < 1) {
+                const formatado = (valor * 100).toFixed(2).replace('.', ',') + '%';
+                console.log("✅ Decimal formatado:", valor, "→", formatado);
+                return formatado;
+            }
+            // Se já for percentual (ex: 8)
+            const formatado = valor.toFixed(2).replace('.', ',') + '%';
+            console.log("✅ Percentual formatado:", valor, "→", formatado);
+            return formatado;
+        }
+        
+        // CASO 4: QUALQUER OUTRO TIPO
+        console.log("📦 Outro tipo:", typeof valor, valor);
+        return String(valor);
+        
+    } catch (error) {
+        console.error("❌ Erro em formatarPercentualParaExibicaoCorrigida:", error);
+        return String(valor || '');
+    }
 }
 
 function limparFormulario() {
@@ -5509,11 +6355,22 @@ function limparFormulario() {
     if (configDiv) {
       configDiv.style.display = 'none';
       
-      const radios = configDiv.querySelectorAll('input[type="radio"]');
-      radios.forEach(radio => radio.checked = false);
+      const mdrInput = configDiv.querySelector(`input[name="mdr_${fornecedorId}"]`);
+      const tisInput = configDiv.querySelector(`input[name="tis_${fornecedorId}"]`);
+      const rebateInput = configDiv.querySelector(`input[name="rebate_${fornecedorId}"]`);
       
-      const percentualInputs = configDiv.querySelectorAll('input[name^="percentual_"]');
-      percentualInputs.forEach(input => input.value = '');
+      if (mdrInput) mdrInput.value = '';
+      if (tisInput) tisInput.value = '';
+      if (rebateInput) rebateInput.value = '';
+      
+      // Limpar displays
+      const mdrDisplay = document.getElementById(`mdr_${fornecedorId}_display`);
+      const tisDisplay = document.getElementById(`tis_${fornecedorId}_display`);
+      const rebateDisplay = document.getElementById(`rebate_${fornecedorId}_display`);
+      
+      if (mdrDisplay) mdrDisplay.textContent = '';
+      if (tisDisplay) tisDisplay.textContent = '';
+      if (rebateDisplay) rebateDisplay.textContent = '';
     }
   });
   
@@ -5611,12 +6468,14 @@ function getSituacaoClass(situacao) {
 }
 
 function editarCadastroModal(id) {
-    showLoading("Carregando dados...", "Buscando informações da loja");
+    fecharModalFornecedores(); // Fecha o modal de fornecedores se estiver aberto
+    fecharModalDetalhes(); // Fecha o modal de detalhes se estiver aberto
+    
+    mostrarPopupCarregandoModal();
     
     google.script.run
         .withSuccessHandler(function(dados) {
-            hideLoading();
-            fecharModalDetalhes();
+            esconderPopupCarregandoModal();
             
             if (dados.encontrado) {
                 preencherDadosCadastro(dados);
@@ -5631,7 +6490,7 @@ function editarCadastroModal(id) {
             }
         })
         .withFailureHandler(function(error) {
-            hideLoading();
+            esconderPopupCarregandoModal();
             showMessage('error', '❌ Erro ao carregar cadastro: ' + error.message);
         })
         .buscarCadastroPorIDComWaitlabel(id, waitlabelAtual);
@@ -5694,7 +6553,6 @@ function filtrarSugestoesEtapaSearch() {
   } else {
     let html = '';
     
-    // 🔥 REMOVA AS SEÇÕES COM TÍTULO - deixe apenas as etapas
     todasEtapas.forEach(etapa => {
       if (termo.length === 0 || etapa.toLowerCase().includes(termo)) {
         let cor = "#7E3E9A";
@@ -5739,37 +6597,46 @@ function selecionarEtapaSearch(etapa) {
   suggestions.style.display = 'none';
 }
 
-function formatarPercentual(input) {
-    const cursorPos = input.selectionStart;
-    let valor = input.value;
-    
-    valor = valor.replace(/[^\d,%]/g, '');
-    
-    if (valor && !valor.includes('%')) {
-        valor = valor + '%';
-    }
-    
-    input.value = valor;
-    
-    setTimeout(() => {
-        let novaPos = Math.min(cursorPos, input.value.length);
-        input.setSelectionRange(novaPos, novaPos);
-    }, 0);
-}
-
 function formatarDataParaExibicao(data) {
-  if (!data) return '';
+  if (!data) return 'N/A';
   
   try {
+    // Se for string com formato ISO (YYYY-MM-DD)
+    if (typeof data === 'string' && data.includes('-') && data.length >= 10) {
+      // Extrair ano, mês, dia
+      const partes = data.split('T')[0].split('-');
+      if (partes.length >= 3) {
+        const [ano, mes, dia] = partes;
+        return `${dia.padStart(2, '0')}/${mes.padStart(2, '0')}/${ano}`;
+      }
+    }
+    
+    // Se for string com barras (DD/MM/YYYY)
     if (typeof data === 'string' && data.includes('/')) {
-      return data;
+      const partes = data.split('/');
+      if (partes.length === 3) {
+        // Verificar se já está no formato correto
+        if (partes[0].length === 2 && partes[1].length === 2 && partes[2].length === 4) {
+          return data;
+        }
+      }
     }
     
-    if (typeof data === 'string' && data.includes('-')) {
-      const [ano, mes, dia] = data.split('-');
-      return `${dia}/${mes}/${ano}`;
+    // Se for uma string que contém "GMT" ou é um timestamp
+    if (typeof data === 'string' && (data.includes('GMT') || data.includes('('))) {
+      // Limpar a string para extrair apenas a parte da data
+      const dataLimpa = data.replace(/\(.*\)/g, '').trim();
+      const dateObj = new Date(dataLimpa);
+      
+      if (!isNaN(dateObj.getTime())) {
+        const dia = String(dateObj.getDate()).padStart(2, '0');
+        const mes = String(dateObj.getMonth() + 1).padStart(2, '0');
+        const ano = dateObj.getFullYear();
+        return `${dia}/${mes}/${ano}`;
+      }
     }
     
+    // Tentar criar objeto Date diretamente
     const dateObj = new Date(data);
     if (!isNaN(dateObj.getTime())) {
       const dia = String(dateObj.getDate()).padStart(2, '0');
@@ -5778,9 +6645,11 @@ function formatarDataParaExibicao(data) {
       return `${dia}/${mes}/${ano}`;
     }
     
-    return String(data);
+    // Se nada funcionar, retornar N/A
+    return 'N/A';
   } catch (error) {
-    return String(data || '');
+    console.error('Erro ao formatar data:', error, 'Data:', data);
+    return 'N/A';
   }
 }
 
@@ -5891,13 +6760,15 @@ function coletarDadosFormularioTemporario() {
     const configDiv = document.getElementById(`config-${fornecedorId}`);
     
     if (configDiv && configDiv.style.display === 'grid') {
-      const tarifaRadio = document.querySelector(`input[name="tarifa_${fornecedorId}"]:checked`);
-      const percentualSelect = document.querySelector(`select[name="percentual_${fornecedorId}"]`);
+      const mdrInput = configDiv.querySelector(`input[name="mdr_${fornecedorId}"]`);
+      const tisInput = configDiv.querySelector(`input[name="tis_${fornecedorId}"]`);
+      const rebateInput = configDiv.querySelector(`input[name="rebate_${fornecedorId}"]`);
       
       fornecedoresSelecionados.push({
         nome: fornecedorNome,
-        tarifa: tarifaRadio ? tarifaRadio.value : '',
-        percentual: percentualSelect ? percentualSelect.value : ''
+        mdr: mdrInput ? mdrInput.value : '',
+        tis: tisInput ? tisInput.value : '',
+        rebate: rebateInput ? rebateInput.value : ''
       });
     }
   });
@@ -5933,17 +6804,27 @@ function restaurarDadosFormulario(dados) {
         if (configDiv) {
           configDiv.style.display = 'grid';
           
-          if (fornecedor.tarifa) {
-            const tarifaRadio = document.querySelector(`input[name="tarifa_${fornecedorId}"][value="${fornecedor.tarifa}"]`);
-            if (tarifaRadio) {
-              tarifaRadio.checked = true;
+          if (fornecedor.mdr) {
+            const mdrInput = configDiv.querySelector(`input[name="mdr_${fornecedorId}"]`);
+            if (mdrInput) {
+              mdrInput.value = fornecedor.mdr;
+              formatarPercentual(mdrInput, `mdr_${fornecedorId}_display`);
             }
           }
           
-          if (fornecedor.percentual) {
-            const percentualSelect = document.querySelector(`select[name="percentual_${fornecedorId}"]`);
-            if (percentualSelect) {
-              percentualSelect.value = fornecedor.percentual;
+          if (fornecedor.tis) {
+            const tisInput = configDiv.querySelector(`input[name="tis_${fornecedorId}"]`);
+            if (tisInput) {
+              tisInput.value = fornecedor.tis;
+              formatarPercentual(tisInput, `tis_${fornecedorId}_display`);
+            }
+          }
+          
+          if (fornecedor.rebate) {
+            const rebateInput = configDiv.querySelector(`input[name="rebate_${fornecedorId}"]`);
+            if (rebateInput) {
+              rebateInput.value = fornecedor.rebate;
+              formatarPercentual(rebateInput, `rebate_${fornecedorId}_display`);
             }
           }
         }
@@ -5985,8 +6866,9 @@ function liberarTodosCamposProtegidos() {
   
   const camposFornecedor = document.querySelectorAll(`
     input[name="fornecedor"], 
-    input[name^="tarifa_"], 
-    select[name^="percentual_"]
+    input[name^="mdr_"], 
+    input[name^="tis_"],
+    input[name^="rebate_"]
   `);
   
   camposFornecedor.forEach(campo => {
@@ -6061,8 +6943,9 @@ function configurarCamposProtegidos() {
     });
     
     const checkboxesFornecedor = document.querySelectorAll('input[name="fornecedor"]');
-    const radiosTarifa = document.querySelectorAll('input[name^="tarifa_"]');
-    const selectsPercentual = document.querySelectorAll('select[name^="percentual_"]');
+    const inputsMDR = document.querySelectorAll('input[name^="mdr_"]');
+    const inputsTIS = document.querySelectorAll('input[name^="tis_"]');
+    const inputsRebate = document.querySelectorAll('input[name^="rebate_"]');
 
     checkboxesFornecedor.forEach(checkbox => {
       checkbox.disabled = true;
@@ -6070,16 +6953,22 @@ function configurarCamposProtegidos() {
       checkbox.style.opacity = '0.6';
     });
 
-    radiosTarifa.forEach(radio => {
-      radio.disabled = false;
-      radio.style.cursor = 'pointer';
-      radio.style.opacity = '1';
+    inputsMDR.forEach(input => {
+      input.disabled = false;
+      input.style.cursor = 'pointer';
+      input.style.opacity = '1';
     });
 
-    selectsPercentual.forEach(select => {
-      select.disabled = false;
-      select.style.cursor = 'pointer';
-      select.style.opacity = '1';
+    inputsTIS.forEach(input => {
+      input.disabled = false;
+      input.style.cursor = 'pointer';
+      input.style.opacity = '1';
+    });
+
+    inputsRebate.forEach(input => {
+      input.disabled = false;
+      input.style.cursor = 'pointer';
+      input.style.opacity = '1';
     });
     
     setTimeout(() => {
@@ -6105,6 +6994,7 @@ function configurarCamposProtegidos() {
 function fecharModalDetalhes() {
   const modal = document.getElementById('modalDetalhes');
   modal.style.display = 'none';
+  cadastroAtualModalId = null; // Limpar ID ao fechar
 }
 
 // FUNÇÕES PARA OS POPUPS
@@ -6132,32 +7022,31 @@ function esconderPopupAtualizando() {
   document.getElementById('popupAtualizando').style.display = 'none';
 }
 
+function restaurarFiltros(filtrosSalvos) {
+  situacaoAtiva = filtrosSalvos.situacaoAtiva;
+  filtrosAtivos = filtrosSalvos.filtrosAtivos || {};
+  etapasSelecionados = filtrosSalvos.etapasSelecionados || [];
+  fornecedoresSelecionados = filtrosSalvos.fornecedoresSelecionados || [];
+  
+  document.getElementById('pesquisaCadastros').value = filtrosSalvos.pesquisa || '';
+  document.getElementById('ordenacaoCadastros').value = filtrosSalvos.ordenacao || 'razao_social';
+  
+  document.querySelectorAll('.filtro-btn').forEach(btn => {
+    btn.classList.remove('active');
+  });
+  
+  const btnAtivo = document.querySelector(`.filtro-btn[data-situacao="${situacaoAtiva}"]`);
+  if (btnAtivo) {
+    btnAtivo.classList.add('active');
+  } else {
+    document.querySelector('.filtro-btn[data-situacao="all"]').classList.add('active');
+  }
+  
+  atualizarEtapasSelecionados();
+  atualizarFornecedoresSelecionados();
+  
+  aplicarTodosFiltros();
+}
   </script>
-  <!-- POPUP Carregando Lojas -->
-<div id="popupCarregandoLojas" class="popup-carregamento">
-  <div class="popup-conteudo">
-    <div class="popup-spinner"></div>
-    <p class="popup-texto">Carregando Lojas</p>
-    <p class="popup-subtexto">Buscando informações no sistema...</p>
-  </div>
-</div>
-
-<!-- POPUP Carregando Modal -->
-<div id="popupCarregandoModal" class="popup-carregamento">
-  <div class="popup-conteudo">
-    <div class="popup-spinner"></div>
-    <p class="popup-texto">Abrindo Detalhes</p>
-    <p class="popup-subtexto">Carregando informações completas...</p>
-  </div>
-</div>
-
-<!-- POPUP Atualizando -->
-<div id="popupAtualizando" class="popup-carregamento">
-  <div class="popup-conteudo">
-    <div class="popup-spinner"></div>
-    <p class="popup-texto">Atualizando Dados</p>
-    <p class="popup-subtexto">Salvando alterações...</p>
-  </div>
-</div>
 </body>
 </html>
