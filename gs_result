@@ -1,60 +1,33 @@
-// CONFIGURAÇÃO DA PLANILHA FILHA (SOMENTE LEITURA) - CORRIGIDA PARA USAR ETAPAS
+// CONFIGURAÇÃO DA PLANILHA FILHA (SOMENTE LEITURA) - AJUSTADO COM MESMOS NOMES
 const CONFIG_FILHA = {
   ID_PLANILHA_MAE: "1V4iGN14UpIQcwf3qKU0_Wbiy2exdW2WUmrYTniy0upA",
-  WAITLABEL_FILHA: "Result", // Altere para o nome da sua aba filha
+  WAITLABEL_FILHA: "Result",
   TIMEZONE: "America/Sao_Paulo"
 };
 
-// 🔥🔥🔥 FUNÇÃO CORRIGIDA - SIMPLIFICADA PARA VISUALIZAÇÃO
-function formatarDataBrasilVisualizacao(data) {
-  if (!data) return '';
-  
-  try {
-    console.log("📅 formatarDataBrasilVisualizacao - Entrada:", data, "Tipo:", typeof data);
-    
-    // 🔥 CORREÇÃO: Se já é string no formato correto, retornar COMO ESTÁ
-    if (typeof data === 'string') {
-      // Verificar se já está no formato dd/MM/yyyy HH:mm:ss
-      if (data.match(/^\d{2}\/\d{2}\/\d{4} \d{2}:\d{2}:\d{2}$/)) {
-        console.log("✅ Já está no formato correto - retornando como está:", data);
-        return data;
-      }
-      // Verificar se está no formato dd/MM/yyyy
-      if (data.match(/^\d{2}\/\d{2}\/\d{4}$/)) {
-        console.log("✅ Já está no formato data simples - retornando como está:", data);
-        return data;
-      }
-    }
-    
-    // Se é objeto Date, formatar CORRETAMENTE
-    if (data instanceof Date) {
-      const dataBrasil = Utilities.formatDate(data, CONFIG_FILHA.TIMEZONE, "dd/MM/yyyy HH:mm:ss");
-      console.log("✅ Date convertido:", data.toString(), "→", dataBrasil);
-      return dataBrasil;
-    }
-    
-    // Para outros casos, tentar converter
-    try {
-      const dataObj = new Date(data);
-      if (!isNaN(dataObj.getTime())) {
-        const dataBrasil = Utilities.formatDate(dataObj, CONFIG_FILHA.TIMEZONE, "dd/MM/yyyy HH:mm:ss");
-        console.log("✅ Outro tipo convertido:", data, "→", dataBrasil);
-        return dataBrasil;
-      }
-    } catch (e) {
-      console.log("⚠️ Não conseguiu converter, retornando original:", data);
-      return data.toString();
-    }
-    
-    return data ? data.toString() : '';
-    
-  } catch (error) {
-    console.error("❌ Erro em formatarDataBrasilVisualizacao:", error);
-    return data ? data.toString() : '';
-  }
-}
+// 🔥 ESTRUTURA DAS COLUNAS - EXATAMENTE IGUAL AO CADASTROS
+const COLUNAS_RESULT = {
+  RAZAO_SOCIAL: 0,
+  NOME_FANTASIA: 1,
+  CNPJ: 2,
+  FORNECEDOR: 3,
+  ULTIMA_ETAPA: 4,
+  ETAPA: 5,
+  OBSERVACAO: 6,
+  CONTRATO_ENVIADO: 7,
+  CONTRATO_ASSINADO: 8,
+  ATIVACAO: 9,
+  LINK: 10,
+  MENSALIDADE: 11,
+  MENSALIDADE_SIM: 12,
+  MDR: 13,
+  TIS: 14,
+  REBATE: 15,
+  ADESAO: 16,
+  SITUACAO: 17
+};
 
-// 🔥🔥🔥 FUNÇÃO PRINCIPAL CORRIGIDA
+// 🔥 FUNÇÃO PRINCIPAL
 function doGet() {
   const htmlOutput = HtmlService.createHtmlOutputFromFile('IndexFilha')
     .setTitle('Sistema - Visualização de Dados')
@@ -63,10 +36,10 @@ function doGet() {
   return htmlOutput;
 }
 
-// 🔥🔥🔥 BUSCAR TODOS OS CADASTROS - VERSÃO CORRIGIDA COM FUSO HORÁRIO
+// 🔥 BUSCAR TODOS OS CADASTROS - COM MESMA LÓGICA DO CADASTROS
 function buscarTodosCadastrosComWaitlabel(waitlabel) {
   try {
-    console.log("🔍 [VISUALIZAÇÃO] Buscando dados no waitlabel:", waitlabel);
+    console.log("🔍 [VISUALIZAÇÃO RESULT] Buscando dados no waitlabel:", waitlabel);
     
     const ss = SpreadsheetApp.openById(CONFIG_FILHA.ID_PLANILHA_MAE);
     const aba = ss.getSheetByName(waitlabel);
@@ -81,9 +54,9 @@ function buscarTodosCadastrosComWaitlabel(waitlabel) {
     
     if (ultimaLinha < 2) return [];
     
-    // Buscar dados - usar número fixo de colunas para consistência
-    const dados = aba.getRange(2, 1, ultimaLinha - 1, 17).getValues();
-    console.log("📈 Dados brutos encontrados:", dados.length);
+    // Buscar dados com todas as colunas (18 colunas conforme estrutura)
+    const dados = aba.getRange(2, 1, ultimaLinha - 1, 18).getValues();
+    console.log("📈 Dados brutos encontrados:", dados.length, "linhas x", dados[0]?.length || 0, "colunas");
     
     const cadastros = [];
     
@@ -92,83 +65,56 @@ function buscarTodosCadastrosComWaitlabel(waitlabel) {
       
       if (!linha || !linha[0] || linha[0].toString().trim() === '') continue;
 
-      // 🔥🔥🔥 CORREÇÃO CRÍTICA: Processamento CORRETO de datas COM FUSO HORÁRIO
-      let ultimaEtapaFormatada = linha[4] ? linha[4].toString() : '';
+      // 🔥 Processamento de datas - IGUAL AO CADASTROS
+      let ultimaEtapaFormatada = linha[COLUNAS_RESULT.ULTIMA_ETAPA] ? linha[COLUNAS_RESULT.ULTIMA_ETAPA].toString() : '';
       
-      // Se é Date, formatar corretamente SUBTRAINDO 5 HORAS
-      if (linha[4] instanceof Date) {
-        // 🔥 CORREÇÃO DO FUSO: Subtrair 5 horas para UTC → Brasília
-        const dataUTC = linha[4];
+      if (linha[COLUNAS_RESULT.ULTIMA_ETAPA] instanceof Date) {
+        const dataUTC = linha[COLUNAS_RESULT.ULTIMA_ETAPA];
         const dataBrasilia = new Date(dataUTC.getTime() - (5 * 60 * 60 * 1000));
         ultimaEtapaFormatada = Utilities.formatDate(dataBrasilia, CONFIG_FILHA.TIMEZONE, "dd/MM/yyyy HH:mm:ss");
       }
       
-      let ativacaoFormatada = linha[9] ? linha[9].toString() : '';
+      let ativacaoFormatada = linha[COLUNAS_RESULT.ATIVACAO] ? linha[COLUNAS_RESULT.ATIVACAO].toString() : '';
       
-      // Se é Date, formatar para exibição simples
-      if (linha[9] instanceof Date) {
-        ativacaoFormatada = Utilities.formatDate(linha[9], CONFIG_FILHA.TIMEZONE, "dd/MM/yyyy");
+      if (linha[COLUNAS_RESULT.ATIVACAO] instanceof Date) {
+        ativacaoFormatada = Utilities.formatDate(linha[COLUNAS_RESULT.ATIVACAO], CONFIG_FILHA.TIMEZONE, "dd/MM/yyyy");
       }
 
-      // 🔥 CORREÇÃO: Processamento do percentual - MAIS SIMPLES
-      let percentualTarifa = '0%';
-      if (linha[14] !== null && linha[14] !== undefined && linha[14] !== '') {
-        const valor = linha[14];
-        
-        if (typeof valor === 'number') {
-          // Número direto: 0.035 → 3.50%
-          percentualTarifa = (valor * 100).toFixed(2) + '%';
-        } else if (typeof valor === 'string') {
-          const valorStr = valor.toString().trim();
-          if (valorStr.includes('%')) {
-            percentualTarifa = valorStr;
-          } else {
-            // Tentar converter string para número
-            const valorNum = parseFloat(valorStr.replace(',', '.'));
-            if (!isNaN(valorNum)) {
-              percentualTarifa = valorNum.toFixed(2) + '%';
-            }
-          }
-        }
-      }
+      // 🔥 Processamento do MDR - EXATAMENTE IGUAL AO CADASTROS
+      let mdrFormatado = formatarPercentualParaExibicao(linha[COLUNAS_RESULT.MDR]);
+      
+      // 🔥 Processamento do TIS - EXATAMENTE IGUAL AO CADASTROS
+      let tisFormatado = formatarPercentualParaExibicao(linha[COLUNAS_RESULT.TIS]);
+      
+      // 🔥 Processamento do REBATE - EXATAMENTE IGUAL AO CADASTROS
+      let rebateFormatado = formatarPercentualParaExibicao(linha[COLUNAS_RESULT.REBATE]);
 
-      // 🔥 CORREÇÃO: Processamento da adesão - MAIS SIMPLES
-      let adesaoFormatada = 'Isento';
-      if (linha[15] !== null && linha[15] !== undefined && linha[15] !== '') {
-        const valorAdesao = linha[15];
-        if (typeof valorAdesao === 'number' && valorAdesao > 0) {
-          adesaoFormatada = valorAdesao;
-        } else if (typeof valorAdesao === 'string') {
-          const valorStr = valorAdesao.toString().trim();
-          if (valorStr !== 'Isento' && valorStr !== '0' && valorStr !== '0.00') {
-            const valorNum = parseFloat(valorStr.replace('R$', '').replace(/\./g, '').replace(',', '.').trim());
-            if (!isNaN(valorNum) && valorNum > 0) {
-              adesaoFormatada = valorNum;
-            }
-          }
-        }
-      }
+      // 🔥 Processamento da adesão - EXATAMENTE IGUAL AO CADASTROS
+      let adesaoFormatada = processarAdesao(linha[COLUNAS_RESULT.ADESAO]);
 
-      // 🔥🔥🔥 CORREÇÃO: AGORA USA "ETAPA" EM VEZ DE "EVENTO"
       const cadastro = {
         id: i + 2,
-        razao_social: linha[0]?.toString().trim() || '',
-        nome_fantasia: linha[1]?.toString().trim() || '',
-        cnpj: formatarCNPJNoSheets(linha[2]?.toString().trim() || ''),
-        fornecedor: linha[3]?.toString().trim() || '',
-        ultima_etapa: ultimaEtapaFormatada, // 🔥 MUDOU: ultima_etapa em vez de ultimo_evento
-        etapa: linha[5]?.toString().trim() || '', // 🔥 MUDOU: etapa em vez de evento
-        observacoes: linha[6]?.toString().trim() || '',
-        contrato_enviado: linha[7]?.toString().trim() || '',
-        contrato_assinado: linha[8]?.toString().trim() || '',
+        razao_social: linha[COLUNAS_RESULT.RAZAO_SOCIAL]?.toString().trim() || '',
+        nome_fantasia: linha[COLUNAS_RESULT.NOME_FANTASIA]?.toString().trim() || '',
+        cnpj: formatarCNPJNoSheets(linha[COLUNAS_RESULT.CNPJ]?.toString().trim() || ''),
+        fornecedor: linha[COLUNAS_RESULT.FORNECEDOR]?.toString().trim() || '',
+        ultima_etapa: ultimaEtapaFormatada,
+        etapa: linha[COLUNAS_RESULT.ETAPA]?.toString().trim() || '',
+        observacoes: linha[COLUNAS_RESULT.OBSERVACAO]?.toString().trim() || '',
+        contrato_enviado: linha[COLUNAS_RESULT.CONTRATO_ENVIADO]?.toString().trim() || '',
+        contrato_assinado: linha[COLUNAS_RESULT.CONTRATO_ASSINADO]?.toString().trim() || '',
         ativacao: ativacaoFormatada,
-        link: linha[10]?.toString().trim() || '',
-        mensalidade: typeof linha[11] === 'number' ? linha[11] : 0,
-        mensalidade_sim: typeof linha[12] === 'number' ? linha[12] : 0,
-        tarifa: linha[13]?.toString().trim() || '',
-        percentual_tarifa: percentualTarifa,
+        link: linha[COLUNAS_RESULT.LINK]?.toString().trim() || '',
+        
+        // 🔥 DADOS FINANCEIROS - MESMOS NOMES DO CADASTROS:
+        mensalidade: typeof linha[COLUNAS_RESULT.MENSALIDADE] === 'number' ? linha[COLUNAS_RESULT.MENSALIDADE] : 0,
+        mensalidade_sim: typeof linha[COLUNAS_RESULT.MENSALIDADE_SIM] === 'number' ? linha[COLUNAS_RESULT.MENSALIDADE_SIM] : 0,
+        mdr: mdrFormatado,           // MESMO NOME: mdr
+        tis: tisFormatado,           // MESMO NOME: tis
+        rebate: rebateFormatado,     // MESMO NOME: rebate
+        
         adesao: adesaoFormatada,
-        situacao: (linha[16]?.toString().trim() || 'Novo registro'),
+        situacao: (linha[COLUNAS_RESULT.SITUACAO]?.toString().trim() || 'Novo registro'),
         waitlabel: waitlabel
       };
       
@@ -184,10 +130,10 @@ function buscarTodosCadastrosComWaitlabel(waitlabel) {
   }
 }
 
-// 🔥🔥🔥 BUSCAR CADASTRO POR ID - VERSÃO CORRIGIDA COM FUSO HORÁRIO
+// 🔥 BUSCAR CADASTRO POR ID - COM MESMA LÓGICA DO CADASTROS
 function buscarCadastroPorIDComWaitlabel(id, waitlabel) {
   try {
-    console.log("🔍 [VISUALIZAÇÃO] Buscando cadastro por ID:", id, "no waitlabel:", waitlabel);
+    console.log("🔍 [VISUALIZAÇÃO RESULT] Buscando cadastro por ID:", id, "no waitlabel:", waitlabel);
     
     const ss = SpreadsheetApp.openById(CONFIG_FILHA.ID_PLANILHA_MAE);
     const aba = ss.getSheetByName(waitlabel);
@@ -196,37 +142,28 @@ function buscarCadastroPorIDComWaitlabel(id, waitlabel) {
     const ultimaLinha = aba.getLastRow();
     if (ultimaLinha < id) return { encontrado: false, mensagem: "Registro não encontrado" };
     
-    const linha = aba.getRange(id, 1, 1, 17).getValues()[0];
+    const linha = aba.getRange(id, 1, 1, 18).getValues()[0];
     
     if (!linha[0] || linha[0].toString().trim() === '') {
       return { encontrado: false, mensagem: "Registro vazio ou não encontrado" };
     }
 
-    console.log("📊 DEBUG - Linha encontrada na linha", id);
-    console.log("🔍 Coluna E [4] - Última etapa:", linha[4], "Tipo:", typeof linha[4]);
-    console.log("🔍 Coluna J [9] - Ativação:", linha[9], "Tipo:", typeof linha[9]);
-
-    // 🔥🔥🔥 CORREÇÃO CRÍTICA: Processamento CORRETO das datas COM FUSO HORÁRIO
-    let ultimaEtapaFormatada = linha[4] ? linha[4].toString() : '';
+    // 🔥 Processamento de datas - IGUAL AO CADASTROS
+    let ultimaEtapaFormatada = linha[COLUNAS_RESULT.ULTIMA_ETAPA] ? linha[COLUNAS_RESULT.ULTIMA_ETAPA].toString() : '';
     
-    // Se é Date, formatar SUBTRAINDO 5 HORAS para correção do fuso
-    if (linha[4] instanceof Date) {
-      // 🔥 CORREÇÃO DO FUSO: Subtrair 5 horas para UTC → Brasília
-      const dataUTC = linha[4];
+    if (linha[COLUNAS_RESULT.ULTIMA_ETAPA] instanceof Date) {
+      const dataUTC = linha[COLUNAS_RESULT.ULTIMA_ETAPA];
       const dataBrasilia = new Date(dataUTC.getTime() - (5 * 60 * 60 * 1000));
       ultimaEtapaFormatada = Utilities.formatDate(dataBrasilia, CONFIG_FILHA.TIMEZONE, "dd/MM/yyyy HH:mm:ss");
     }
     
     let ativacaoFormatada = '';
-    if (linha[9]) {
-      if (linha[9] instanceof Date) {
-        // 🔥 CORREÇÃO: Para input date, usar formato yyyy-MM-dd
-        ativacaoFormatada = Utilities.formatDate(linha[9], CONFIG_FILHA.TIMEZONE, "yyyy-MM-dd");
+    if (linha[COLUNAS_RESULT.ATIVACAO]) {
+      if (linha[COLUNAS_RESULT.ATIVACAO] instanceof Date) {
+        ativacaoFormatada = Utilities.formatDate(linha[COLUNAS_RESULT.ATIVACAO], CONFIG_FILHA.TIMEZONE, "yyyy-MM-dd");
       } else {
-        // Se já é string, verificar formato e converter se necessário
-        const dataStr = linha[9].toString();
+        const dataStr = linha[COLUNAS_RESULT.ATIVACAO].toString();
         if (dataStr.includes('/')) {
-          // Converter de dd/MM/yyyy para yyyy-MM-dd
           const partes = dataStr.split('/');
           if (partes.length === 3) {
             ativacaoFormatada = `${partes[2]}-${partes[1]}-${partes[0]}`;
@@ -239,72 +176,59 @@ function buscarCadastroPorIDComWaitlabel(id, waitlabel) {
       }
     }
 
-    // 🔥 CORREÇÃO: Processamento SIMPLIFICADO do percentual
-    let percentualTarifa = '0%';
-    if (linha[14] !== null && linha[14] !== undefined && linha[14] !== '') {
-      const valor = linha[14];
-      
-      if (typeof valor === 'number') {
-        percentualTarifa = (valor * 100).toFixed(2) + '%';
-      } else if (typeof valor === 'string') {
-        const valorStr = valor.toString().trim();
-        if (valorStr.includes('%')) {
-          percentualTarifa = valorStr;
-        } else {
-          const valorNum = parseFloat(valorStr.replace(',', '.'));
-          if (!isNaN(valorNum)) {
-            percentualTarifa = valorNum.toFixed(2) + '%';
-          }
-        }
-      }
-    }
+    // 🔥 Processamento do MDR - EXATAMENTE IGUAL AO CADASTROS
+    let mdrFormatado = formatarPercentualParaExibicao(linha[COLUNAS_RESULT.MDR]);
+    
+    // 🔥 Processamento do TIS - EXATAMENTE IGUAL AO CADASTROS
+    let tisFormatado = formatarPercentualParaExibicao(linha[COLUNAS_RESULT.TIS]);
+    
+    // 🔥 Processamento do REBATE - EXATAMENTE IGUAL AO CADASTROS
+    let rebateFormatado = formatarPercentualParaExibicao(linha[COLUNAS_RESULT.REBATE]);
 
-    // 🔥 CORREÇÃO: Processamento SIMPLIFICADO da adesão
-    let adesaoFormatada = 'Isento';
-    if (linha[15] !== null && linha[15] !== undefined && linha[15] !== '') {
-      const valorAdesao = linha[15];
-      if (typeof valorAdesao === 'number' && valorAdesao > 0) {
-        adesaoFormatada = valorAdesao;
-      } else if (typeof valorAdesao === 'string') {
-        const valorStr = valorAdesao.toString().trim();
-        if (valorStr !== 'Isento' && valorStr !== '0' && valorStr !== '0.00') {
-          const valorNum = parseFloat(valorStr.replace('R$', '').replace(/\./g, '').replace(',', '.').trim());
-          if (!isNaN(valorNum) && valorNum > 0) {
-            adesaoFormatada = valorNum;
-          }
-        }
-      }
-    }
+    // 🔥 Processamento da adesão - EXATAMENTE IGUAL AO CADASTROS
+    let adesaoFormatada = processarAdesao(linha[COLUNAS_RESULT.ADESAO]);
 
-    // 🔥🔥🔥 CORREÇÃO: AGORA USA "ETAPA" EM VEZ DE "EVENTO"
+    // Criar objeto fornecedor para formulário
+    const fornecedorParaFormulario = {
+      nome: linha[COLUNAS_RESULT.FORNECEDOR]?.toString().trim() || '',
+      mdr: mdrFormatado,
+      tis: tisFormatado,
+      rebate: rebateFormatado
+    };
+    
     const resultado = {
       encontrado: true,
       id: id,
-      razao_social: linha[0]?.toString().trim() || '',
-      nome_fantasia: linha[1]?.toString().trim() || '',
-      cnpj: formatarCNPJNoSheets(linha[2]?.toString().trim() || ''),
-      fornecedor: linha[3]?.toString().trim() || '',
-      ultima_etapa: ultimaEtapaFormatada, // 🔥 MUDOU: ultima_etapa em vez de ultimo_evento
-      etapa: linha[5]?.toString().trim() || '', // 🔥 MUDOU: etapa em vez de evento
-      observacoes: linha[6]?.toString().trim() || '',
-      contrato_enviado: linha[7]?.toString().trim() || '',
-      contrato_assinado: linha[8]?.toString().trim() || '',
+      razao_social: linha[COLUNAS_RESULT.RAZAO_SOCIAL]?.toString().trim() || '',
+      nome_fantasia: linha[COLUNAS_RESULT.NOME_FANTASIA]?.toString().trim() || '',
+      cnpj: formatarCNPJNoSheets(linha[COLUNAS_RESULT.CNPJ]?.toString().trim() || ''),
+      fornecedor: linha[COLUNAS_RESULT.FORNECEDOR]?.toString().trim() || '',
+      fornecedores: [fornecedorParaFormulario],
+      ultima_etapa: ultimaEtapaFormatada,
+      etapa: linha[COLUNAS_RESULT.ETAPA]?.toString().trim() || '',
+      observacoes: linha[COLUNAS_RESULT.OBSERVACAO]?.toString().trim() || '',
+      contrato_enviado: linha[COLUNAS_RESULT.CONTRATO_ENVIADO]?.toString().trim() || '',
+      contrato_assinado: linha[COLUNAS_RESULT.CONTRATO_ASSINADO]?.toString().trim() || '',
       ativacao: ativacaoFormatada,
-      link: linha[10]?.toString().trim() || '',
-      mensalidade: typeof linha[11] === 'number' ? linha[11] : 0,
-      mensalidade_sim: typeof linha[12] === 'number' ? linha[12] : 0,
-      tarifa: linha[13]?.toString().trim() || '',
-      percentual_tarifa: percentualTarifa,
+      link: linha[COLUNAS_RESULT.LINK]?.toString().trim() || '',
+      
+      // 🔥 DADOS FINANCEIROS - MESMOS NOMES:
+      mensalidade: parseFloat(linha[COLUNAS_RESULT.MENSALIDADE]) || 0,
+      mensalidade_sim: parseFloat(linha[COLUNAS_RESULT.MENSALIDADE_SIM]) || 0,
+      mdr: mdrFormatado,          // MESMO NOME: mdr
+      tis: tisFormatado,          // MESMO NOME: tis
+      rebate: rebateFormatado,    // MESMO NOME: rebate
+      
       adesao: adesaoFormatada,
-      situacao: (linha[16]?.toString().trim() || 'Novo registro'),
+      situacao: (linha[COLUNAS_RESULT.SITUACAO]?.toString().trim() || 'Novo registro'),
       waitlabel: waitlabel
     };
 
-    console.log("✅ [VISUALIZAÇÃO] Cadastro processado:", {
+    console.log("✅ [RESULT] Cadastro processado:", {
       id: resultado.id,
       razao_social: resultado.razao_social,
-      ultima_etapa: resultado.ultima_etapa, // 🔥 MUDOU
-      ativacao: resultado.ativacao
+      mensalidade: resultado.mensalidade,
+      mdr: resultado.mdr
     });
     
     return resultado;
@@ -315,13 +239,12 @@ function buscarCadastroPorIDComWaitlabel(id, waitlabel) {
   }
 }
 
-// 🔥🔥🔥 FUNÇÃO PARA OBTER FILTROS - ATUALIZADA COM AS NOVAS ETAPAS
+// 🔥 FUNÇÃO PARA OBTER FILTROS
 function obterFiltrosDisponiveis() {
   try {
     const waitlabelAtual = CONFIG_FILHA.WAITLABEL_FILHA;
     const cadastros = buscarTodosCadastrosComWaitlabel(waitlabelAtual);
     
-    // 🔥🔥🔥 ETAPAS VÁLIDAS ATUALIZADAS (SEM CLÍNICA E WL, COM RETORNO EXTERNO)
     const etapasValidas = [
       "PENDENTE FORNECEDOR(ES)",
       "PENDENTE SIM", 
@@ -337,14 +260,12 @@ function obterFiltrosDisponiveis() {
       "DESCREDENCIADO"
     ];
     
-    // Coletar dados únicos dos cadastros
     const etapasEncontradas = new Set();
     const situacoesEncontradas = new Set();
     const fornecedoresEncontrados = new Set();
     
     cadastros.forEach(cadastro => {
       if (cadastro.etapa && cadastro.etapa.trim() !== '') {
-        // 🔥 FILTRAR APENAS ETAPAS VÁLIDAS
         const etapaNormalizada = normalizarTexto(cadastro.etapa);
         if (etapasValidas.includes(etapaNormalizada)) {
           etapasEncontradas.add(cadastro.etapa);
@@ -360,20 +281,17 @@ function obterFiltrosDisponiveis() {
       }
     });
     
-    // Ordenar os resultados
     const etapasOrdenadas = Array.from(etapasEncontradas).sort();
     const situacoesOrdenadas = Array.from(situacoesEncontradas).sort();
     const fornecedoresOrdenados = Array.from(fornecedoresEncontrados).sort();
     
-    console.log("🎯 Filtros disponíveis - Etapas:", etapasOrdenadas);
-    console.log("🎯 Filtros disponíveis - Situações:", situacoesOrdenadas);
-    console.log("🎯 Filtros disponíveis - Fornecedores:", fornecedoresOrdenados.length);
+    console.log("🎯 [RESULT] Filtros disponíveis - Etapas:", etapasOrdenadas);
+    console.log("🎯 [RESULT] Filtros disponíveis - Situações:", situacoesOrdenadas);
     
     return {
       etapas: etapasOrdenadas,
       situacoes: situacoesOrdenadas,
       fornecedores: fornecedoresOrdenados,
-      // 🔥 ADICIONAR LISTA DE ETAPAS VÁLIDAS PARA VALIDAÇÃO
       etapasValidas: etapasValidas,
       situacoesValidas: situacoesValidas
     };
@@ -390,119 +308,49 @@ function obterFiltrosDisponiveis() {
   }
 }
 
-// 🔥🔥🔥 FUNÇÃO DE VALIDAÇÃO DE ETAPA - ATUALIZADA
-function validarEtapaVisualizacao(etapa, situacao) {
-  // 🔥 VALIDAR APENAS PARA "EM ANDAMENTO" E "NOVO REGISTRO"
-  const situacaoNormalizada = normalizarTexto(situacao || '');
-  const precisaValidarEtapa = situacaoNormalizada === 'EM ANDAMENTO' || situacaoNormalizada === 'NOVO REGISTRO';
-  
-  if (!precisaValidarEtapa) {
-    console.log("✅ Situação não requer validação de etapa");
-    return { valida: true, etapa: etapa ? normalizarTexto(etapa) : '' };
-  }
-  
-  // 🔥 SE É "EM ANDAMENTO" OU "NOVO REGISTRO", ENTÃO ETAPA É OBRIGATÓRIA
-  if (!etapa || etapa.trim() === '') {
-    return { 
-      valida: false, 
-      mensagem: `❌ Para situações "${situacao}" o campo Etapa é obrigatório!` 
-    };
-  }
-  
-  // 🔥 NOVAS ETAPAS VÁLIDAS (SEM CLÍNICA E WL, COM RETORNO EXTERNO)
-  const etapasValidas = [
-    "PENDENTE FORNECEDOR(ES)",
-    "PENDENTE SIM", 
-    "PENDENTE RETORNO EXTERNO"
-  ];
-  
-  const etapaNormalizada = normalizarTexto(etapa);
-  
-  // 🔥 BLOQUEAR EXPLICITAMENTE "DESISTIU" E OUTRAS ETAPAS INVÁLIDAS
-  const etapasBloqueadas = ["DESISTIU", "REJEITADO", "CADASTRADO", "NOVO REGISTRO", "EM ANDAMENTO", "DESCREDENCIADO"];
-  
-  if (etapasBloqueadas.includes(etapaNormalizada)) {
-    const mensagemErro = `❌ ETAPA NÃO PERMITIDA!\n\nA etapa "${etapa}" é uma SITUAÇÃO, não uma etapa do processo.\n\n📋 ETAPAS VÁLIDAS (do processo):\n• PENDENTE FORNECEDOR(ES)\n• PENDENTE SIM\n• PENDENTE RETORNO EXTERNO\n\n💡 Use o campo "Situação" para: ${etapa}`;
-    
-    return { valida: false, mensagem: mensagemErro };
-  }
-  
-  if (!etapasValidas.includes(etapaNormalizada)) {
-    const mensagemErro = `❌ ETAPA INVÁLIDA!\n\nA etapa "${etapa}" não é válida.\n\n📋 ETAPAS VÁLIDAS:\n• PENDENTE FORNECEDOR(ES)\n• PENDENTE SIM\n• PENDENTE RETORNO EXTERNO\n\nSelecione uma das etapas acima para continuar.`;
-    
-    return { valida: false, mensagem: mensagemErro };
-  }
-  
-  return { valida: true, etapa: etapaNormalizada };
-}
+// 🔥🔥🔥 FUNÇÕES AUXILIARES - COPIADAS DIRETO DO CADASTROS
 
-// 🔥🔥🔥 FUNÇÃO DE TESTE ATUALIZADA PARA ETAPAS
-function testarDatasVisualizacao() {
+function formatarPercentualParaExibicao(valor) {
+  if (valor === null || valor === undefined || valor === '') {
+    return '';
+  }
+  
+  console.log("🔧 GS->Front: formatarPercentualParaExibicao recebeu:", valor, "tipo:", typeof valor);
+  
   try {
-    console.log("=== 🧪 TESTE ESPECÍFICO PARA VISUALIZAÇÃO ===");
-    
-    const ss = SpreadsheetApp.openById(CONFIG_FILHA.ID_PLANILHA_MAE);
-    const aba = ss.getSheetByName(CONFIG_FILHA.WAITLABEL_FILHA);
-    
-    if (!aba) {
-      return { error: "Aba não encontrada" };
+    if (typeof valor === 'string' && valor.includes('%')) {
+      return valor;
     }
     
-    // Buscar algumas linhas para testar
-    const dadosTeste = aba.getRange(2, 1, 5, 17).getValues();
-    const resultadosTeste = [];
-    
-    for (let i = 0; i < dadosTeste.length; i++) {
-      const linha = dadosTeste[i];
-      if (!linha[0] || linha[0].toString().trim() === '') continue;
-      
-      const ultimaEtapaOriginal = linha[4]; // 🔥 MUDOU: ultima_etapa
-      const ativacaoOriginal = linha[9];
-      
-      // Processar como na função corrigida COM FUSO HORÁRIO
-      let ultimaEtapaFormatada = ultimaEtapaOriginal ? ultimaEtapaOriginal.toString() : '';
-      if (ultimaEtapaOriginal instanceof Date) {
-        // 🔥 CORREÇÃO DO FUSO: Subtrair 5 horas para UTC → Brasília
-        const dataUTC = ultimaEtapaOriginal;
-        const dataBrasilia = new Date(dataUTC.getTime() - (5 * 60 * 60 * 1000));
-        ultimaEtapaFormatada = Utilities.formatDate(dataBrasilia, CONFIG_FILHA.TIMEZONE, "dd/MM/yyyy HH:mm:ss");
-      }
-      
-      let ativacaoFormatada = '';
-      if (ativacaoOriginal) {
-        if (ativacaoOriginal instanceof Date) {
-          ativacaoFormatada = Utilities.formatDate(ativacaoOriginal, CONFIG_FILHA.TIMEZONE, "yyyy-MM-dd");
-        } else {
-          ativacaoFormatada = ativacaoOriginal.toString();
-        }
-      }
-      
-      resultadosTeste.push({
-        linha: i + 2,
-        razao_social: linha[0]?.toString().trim() || '',
-        etapa_atual: linha[5]?.toString().trim() || '', // 🔥 NOVO: mostrar etapa atual
-        ultima_etapa_original: ultimaEtapaOriginal, // 🔥 MUDOU
-        ultima_etapa_formatada: ultimaEtapaFormatada, // 🔥 MUDOU
-        ativacao_original: ativacaoOriginal,
-        ativacao_formatada: ativacaoFormatada
-      });
+    if (typeof valor === 'number') {
+      // 🔥 CORREÇÃO: NÃO multiplica por 100 - usa o valor direto
+      // Se é 0.98, mostra 0,98%
+      const formatado = valor.toFixed(2).replace('.', ',') + '%';
+      console.log("✅ GS->Front: Número formatado:", valor, "→", formatado);
+      return formatado;
     }
     
-    console.log("📅 Resultados do teste de visualização:", resultadosTeste);
-    
-    return {
-      success: true,
-      teste_visualizacao: resultadosTeste,
-      message: "Teste de visualização concluído"
-    };
+    return String(valor || '');
     
   } catch (error) {
-    console.error("❌ Erro no teste de visualização:", error);
-    return { error: error.message };
+    console.error("❌ GS->Front: Erro em formatarPercentualParaExibicao:", error);
+    return String(valor || '');
   }
 }
 
-// 🔥🔥🔥 FUNÇÕES AUXILIARES (MANTIDAS E ATUALIZADAS)
+function processarAdesao(valorAdesao) {
+  if (!valorAdesao && valorAdesao !== 0) return 'Isento';
+  const valorStr = valorAdesao.toString().trim();
+  if (valorStr === 'Isento' || valorStr === '0' || valorStr === '0.00' || valorStr === 'R$ 0,00') {
+    return 'Isento';
+  }
+  const numero = parseFloat(valorStr);
+  if (!isNaN(numero)) {
+    return numero;
+  }
+  return valorStr;
+}
+
 function formatarCNPJNoSheets(cnpj) {
   if (!cnpj) return '';
   if (cnpj.toString().includes('.') || cnpj.toString().includes('/') || cnpj.toString().includes('-')) {
@@ -515,7 +363,6 @@ function formatarCNPJNoSheets(cnpj) {
   return cnpj;
 }
 
-// 🔥🔥🔥 FUNÇÃO DE NORMALIZAÇÃO DE TEXTO
 function normalizarTexto(texto) {
   if (!texto || typeof texto !== 'string') return texto;
   return texto
@@ -525,26 +372,7 @@ function normalizarTexto(texto) {
     .trim();
 }
 
-// 🔥🔥🔥 FUNÇÃO DE TESTE ATUALIZADA
-function testar() {
-  const totalCadastros = buscarTodosCadastrosComWaitlabel(CONFIG_FILHA.WAITLABEL_FILHA).length;
-  const testeDatas = testarDatasVisualizacao();
-  const filtros = obterFiltrosDisponiveis();
-  
-  return { 
-    success: true, 
-    message: "✅ Sistema de VISUALIZAÇÃO funcionando!",
-    modo: "Somente leitura - CORRIGIDO PARA ETAPAS E FUSO HORÁRIO",
-    waitlabel: CONFIG_FILHA.WAITLABEL_FILHA,
-    totalCadastros: totalCadastros,
-    etapas_validas: filtros.etapasValidas, // 🔥 NOVO: mostrar etapas válidas
-    situacoes_validas: filtros.situacoesValidas, // 🔥 NOVO: mostrar situações válidas
-    teste_datas: testeDatas,
-    timestamp: new Date().toISOString()
-  };
-}
-
-// 🔥🔥🔥 FUNÇÃO PARA BUSCAR POR CNPJ - ADICIONADA PARA COMPLETAR
+// 🔥 FUNÇÃO PARA BUSCAR POR CNPJ
 function buscarTodosCadastrosPorCNPJComWaitlabel(cnpj, waitlabel) {
   try {
     const cadastros = buscarTodosCadastrosComWaitlabel(waitlabel);
@@ -564,4 +392,40 @@ function buscarTodosCadastrosPorCNPJComWaitlabel(cnpj, waitlabel) {
     console.error("❌ Erro em buscarTodosCadastrosPorCNPJComWaitlabel:", error);
     return [];
   }
+}
+
+// 🔥 FUNÇÃO DE TESTE
+function testar() {
+  const totalCadastros = buscarTodosCadastrosComWaitlabel(CONFIG_FILHA.WAITLABEL_FILHA).length;
+  const filtros = obterFiltrosDisponiveis();
+  
+  // Testar estrutura de uma linha
+  const ss = SpreadsheetApp.openById(CONFIG_FILHA.ID_PLANILHA_MAE);
+  const aba = ss.getSheetByName(CONFIG_FILHA.WAITLABEL_FILHA);
+  
+  let estruturaTeste = null;
+  if (aba && aba.getLastRow() >= 2) {
+    const primeiraLinha = aba.getRange(2, 1, 1, 18).getValues()[0];
+    estruturaTeste = {
+      colunas: primeiraLinha.length,
+      colunas_nomes: [
+        "RAZAO_SOCIAL", "NOME_FANTASIA", "CNPJ", "FORNECEDOR", "ULTIMA_ETAPA", "ETAPA", "OBSERVACAO",
+        "CONTRATO_ENVIADO", "CONTRATO_ASSINADO", "ATIVACAO", "LINK", 
+        "MENSALIDADE", "MENSALIDADE_SIM", "MDR", "TIS", "REBATE",
+        "ADESAO", "SITUACAO"
+      ],
+      valores_amostra: primeiraLinha.slice(0, 18)
+    };
+  }
+  
+  return { 
+    success: true, 
+    message: "✅ Sistema de VISUALIZAÇÃO RESULT funcionando!",
+    modo: "Somente leitura - MESMA ESTRUTURA DO CADASTROS",
+    waitlabel: CONFIG_FILHA.WAITLABEL_FILHA,
+    totalCadastros: totalCadastros,
+    colunas: "MESMAS DO CADASTROS: MENSALIDADE, MENSALIDADE_SIM, MDR, TIS, REBATE",
+    estrutura_teste: estruturaTeste,
+    timestamp: new Date().toISOString()
+  };
 }
