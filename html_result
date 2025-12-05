@@ -2593,31 +2593,24 @@ function exibirModalFornecedores(cnpj, lojas) {
     
     let lojasHTML = '';
     
-    // VARIÁVEIS DEFINIDAS FORA DO BLOCO IF - AGORA SÃO SEMPRE DEFINIDAS
     let mensalidadeCNPJ = 'R$ 0,00';
     let mensalidadeSimCNPJ = 'R$ 0,00';
     let adesaoCNPJ = 'Isento';
     
     if (lojas && lojas.length > 0) {
-        // ENCONTRAR INFORMAÇÕES FINANCEIRAS DO CNPJ (COM HERANÇA)
-        // Buscar valores de TODAS as lojas do CNPJ, herdando valores de outros fornecedores
         for (const loja of lojas) {
-            // MENSALIDADE: Pega o primeiro valor não-zero que encontrar
             if (mensalidadeCNPJ === 'R$ 0,00' && loja.mensalidade && loja.mensalidade !== 'R$ 0,00' && loja.mensalidade !== 0) {
                 mensalidadeCNPJ = formatarMoedaParaInput(loja.mensalidade);
             }
             
-            // MENSALIDADE SIM: Pega o primeiro valor não-zero que encontrar (HERANÇA)
             if (mensalidadeSimCNPJ === 'R$ 0,00' && loja.mensalidade_sim && loja.mensalidade_sim !== 'R$ 0,00' && loja.mensalidade_sim !== 0) {
                 mensalidadeSimCNPJ = formatarMoedaParaInput(loja.mensalidade_sim);
             }
             
-            // ADESÃO: Pega o primeiro valor não-zero que encontrar (HERANÇA)
             if (adesaoCNPJ === 'Isento' && loja.adesao && loja.adesao !== 'Isento' && loja.adesao !== 0) {
                 adesaoCNPJ = formatarMoedaParaInput(loja.adesao);
             }
             
-            // Se já encontrou todos os valores, pode parar
             if (mensalidadeCNPJ !== 'R$ 0,00' && mensalidadeSimCNPJ !== 'R$ 0,00' && adesaoCNPJ !== 'Isento') {
                 break;
             }
@@ -2632,7 +2625,6 @@ function exibirModalFornecedores(cnpj, lojas) {
             
             return `
             <div class="modal-fornecedor-card" style="border-left: 4px solid ${corBorda}; margin-bottom: 20px; padding: 15px; background: white; border-radius: 8px; box-shadow: 0 2px 8px rgba(0,0,0,0.1);">
-              <!-- Header com número e informações principais -->
               <div class="modal-fornecedor-header" style="display: flex; align-items: center; justify-content: space-between; margin-bottom: 15px;">
                 <div class="fornecedor-badge" style="background: var(--primary); color: white; padding: 8px 12px; border-radius: 6px; font-weight: 700;">
                   <span class="fornecedor-indice" style="display: block; text-align: center;">#${index + 1}</span>
@@ -2655,58 +2647,74 @@ function exibirModalFornecedores(cnpj, lojas) {
     </span>
               </div>
               
-              <!-- Grid de informações principais - ADICIONADAS INFORMAÇÕES DE CONTRATO E ATIVAÇÃO -->
-              <div class="modal-fornecedor-info-grid" style="display: grid; grid-template-columns: 1fr 1fr; gap: 15px; margin-bottom: 15px;">
-                <div class="modal-info-item" style="display: flex; align-items: center; gap: 10px;">
-                  <div class="info-icon" style="font-size: 1.2rem;">📋</div>
-                  <div class="info-content">
-                    <span class="modal-info-label" style="display: block; font-size: 0.8rem; color: var(--gray); margin-bottom: 2px;">Etapa Atual</span>
-                    <span class="modal-info-value etapa-destaque" style="font-weight: 700; color: var(--primary);">${loja.etapa || 'N/A'}</span>
+              <div class="modal-fornecedor-info-grid" style="display: grid; grid-template-columns: repeat(4, 1fr); gap: 12px; margin-bottom: 15px;">
+                <div class="modal-info-item" style="display: flex; flex-direction: column; gap: 5px; padding: 10px; background: white; border-radius: 8px; border: 1px solid var(--border); box-shadow: 0 2px 5px rgba(0,0,0,0.05);">
+                  <div style="display: flex; align-items: center; gap: 8px;">
+                    <div class="info-icon" style="font-size: 1.2rem; color: var(--primary);">📅</div>
+                    <span class="modal-info-label" style="font-size: 0.8rem; color: var(--gray);">Data Ativação</span>
                   </div>
+                  <span class="modal-info-value" style="font-weight: 600; color: var(--success); font-size: 0.9rem;">${formatarDataParaExibicao(loja.ativacao) || 'N/A'}</span>
                 </div>
                 
-                <div class="modal-info-item" style="display: flex; align-items: center; gap: 10px;">
-                  <div class="info-icon" style="font-size: 1.2rem;">📅</div>
-                  <div class="info-content">
-                    <span class="modal-info-label" style="display: block; font-size: 0.8rem; color: var(--gray); margin-bottom: 2px;">Data Ativação</span>
-                    <span class="modal-info-value" style="font-weight: 600; color: var(--success);">${formatarDataAtivacao(loja.ativacao) || 'N/A'}</span>
+                <div class="modal-info-item" style="display: flex; flex-direction: column; gap: 5px; padding: 10px; background: white; border-radius: 8px; border: 1px solid var(--border); box-shadow: 0 2px 5px rgba(0,0,0,0.05);">
+                  <div style="display: flex; align-items: center; gap: 8px;">
+                    <div class="info-icon" style="font-size: 1.2rem; color: var(--primary);">📄</div>
+                    <span class="modal-info-label" style="font-size: 0.8rem; color: var(--gray);">Contrato Enviado</span>
                   </div>
+                  <span class="modal-info-value" style="font-weight: 600; color: var(--dark); font-size: 0.9rem;">${loja.contrato_enviado || 'N/A'}</span>
                 </div>
                 
-                <div class="modal-info-item" style="display: flex; align-items: center; gap: 10px;">
-                  <div class="info-icon" style="font-size: 1.2rem;">📄</div>
-                  <div class="info-content">
-                    <span class="modal-info-label" style="display: block; font-size: 0.8rem; color: var(--gray); margin-bottom: 2px;">Contrato Enviado</span>
-                    <span class="modal-info-value" style="font-weight: 600;">${loja.contrato_enviado || 'N/A'}</span>
+                <div class="modal-info-item" style="display: flex; flex-direction: column; gap: 5px; padding: 10px; background: white; border-radius: 8px; border: 1px solid var(--border); box-shadow: 0 2px 5px rgba(0,0,0,0.05);">
+                  <div style="display: flex; align-items: center; gap: 8px;">
+                    <div class="info-icon" style="font-size: 1.2rem; color: var(--primary);">✍️</div>
+                    <span class="modal-info-label" style="font-size: 0.8rem; color: var(--gray);">Contrato Assinado</span>
                   </div>
+                  <span class="modal-info-value" style="font-weight: 600; color: var(--dark); font-size: 0.9rem;">${loja.contrato_assinado || 'N/A'}</span>
                 </div>
                 
-                <div class="modal-info-item" style="display: flex; align-items: center; gap: 10px;">
-                  <div class="info-icon" style="font-size: 1.2rem;">✍️</div>
-                  <div class="info-content">
-                    <span class="modal-info-label" style="display: block; font-size: 0.8rem; color: var(--gray); margin-bottom: 2px;">Contrato Assinado</span>
-                    <span class="modal-info-value" style="font-weight: 600;">${loja.contrato_assinado || 'N/A'}</span>
+                <div class="modal-info-item" style="display: flex; flex-direction: column; gap: 5px; padding: 10px; background: white; border-radius: 8px; border: 1px solid var(--border); box-shadow: 0 2px 5px rgba(0,0,0,0.05);">
+                  <div style="display: flex; align-items: center; gap: 8px;">
+                    <div class="info-icon" style="font-size: 1.2rem; color: var(--primary);">🔗</div>
+                    <span class="modal-info-label" style="font-size: 0.8rem; color: var(--gray);">Link</span>
                   </div>
+                  <span class="modal-info-value" style="font-weight: 600; color: var(--primary); font-size: 0.9rem; word-break: break-all;">
+                    ${loja.link ? `<a href="${loja.link}" target="_blank" style="color: var(--primary); text-decoration: none;">Ver Link</a>` : 'N/A'}
+                  </span>
                 </div>
               </div>
               
-              <!-- Configurações do Fornecedor -->
-              <div class="modal-fornecedor-info-grid" style="display: grid; grid-template-columns: 1fr 1fr; gap: 15px; margin-bottom: 15px;">
-                <div class="modal-info-item" style="display: flex; align-items: center; gap: 10px;">
-                  <div class="info-icon" style="font-size: 1.2rem;">💰</div>
-                  <div class="info-content">
-                    <span class="modal-info-label" style="display: block; font-size: 0.8rem; color: var(--gray); margin-bottom: 2px;">Configuração</span>
-                    <span class="modal-info-value" style="font-weight: 600;">
-                      ${loja.tarifa || 'N/A'} 
-                      <span class="percentual-destaque" style="background: var(--secondary); color: white; padding: 2px 6px; border-radius: 8px; font-size: 0.8rem; margin-left: 5px;">
-                        ${formatarPercentualCorrigido(loja.percentual_tarifa)}
-                      </span>
-                    </span>
+              <div class="modal-fornecedor-info-grid" style="display: grid; grid-template-columns: repeat(3, 1fr); gap: 12px; margin-bottom: 15px;">
+                <div class="modal-info-item" style="display: flex; flex-direction: column; gap: 5px; padding: 10px; background: white; border-radius: 8px; border: 1px solid var(--border); box-shadow: 0 2px 5px rgba(0,0,0,0.05);">
+                  <div style="display: flex; align-items: center; gap: 8px;">
+                    <div class="info-icon" style="font-size: 1.2rem; color: #FF6B35;">💰</div>
+                    <span class="modal-info-label" style="font-size: 0.8rem; color: var(--gray);">MDR</span>
                   </div>
+                  <span class="modal-info-value" style="font-weight: 600; color: #FF6B35; font-size: 0.9rem;">
+                    ${formatarPercentualCorrigido(loja.mdr)} 
+                  </span>
+                </div>
+                
+                <div class="modal-info-item" style="display: flex; flex-direction: column; gap: 5px; padding: 10px; background: white; border-radius: 8px; border: 1px solid var(--border); box-shadow: 0 2px 5px rgba(0,0,0,0.05);">
+                  <div style="display: flex; align-items: center; gap: 8px;">
+                    <div class="info-icon" style="font-size: 1.2rem; color: #17A2B8;">💳</div>
+                    <span class="modal-info-label" style="font-size: 0.8rem; color: var(--gray);">TIS</span>
+                  </div>
+                  <span class="modal-info-value" style="font-weight: 600; color: #17A2B8; font-size: 0.9rem;">
+                    ${formatarPercentualCorrigido(loja.tis)} 
+                  </span>
+                </div>
+                
+                <div class="modal-info-item" style="display: flex; flex-direction: column; gap: 5px; padding: 10px; background: white; border-radius: 8px; border: 1px solid var(--border); box-shadow: 0 2px 5px rgba(0,0,0,0.05);">
+                  <div style="display: flex; align-items: center; gap: 8px;">
+                    <div class="info-icon" style="font-size: 1.2rem; color: #A1CC4C;">🔄</div>
+                    <span class="modal-info-label" style="font-size: 0.8rem; color: var(--gray);">Rebate</span>
+                  </div>
+                  <span class="modal-info-value" style="font-weight: 600; color: #A1CC4C; font-size: 0.9rem;">
+                    ${formatarPercentualCorrigido(loja.rebate)} 
+                  </span>
                 </div>
               </div>
               
-              <!-- Seção de timeline e acompanhamento -->
               <div class="timeline-section" style="background: #f8f9fa; padding: 12px; border-radius: 6px; margin-bottom: 15px;">
                 <div class="timeline-item" style="display: flex; align-items: center; gap: 10px; margin-bottom: 8px;">
                   <div class="timeline-icon" style="font-size: 1.1rem;">⏰</div>
@@ -2733,7 +2741,6 @@ function exibirModalFornecedores(cnpj, lojas) {
                 </div>
               </div>
 
-              <!-- SEÇÃO DE OBSERVAÇÕES NO FINAL CORRETO - DEPOIS DO TEMPO DE PROCESSO -->
               ${loja.observacoes ? `
               <div class="observacoes-section" style="background: #fff3cd; border-left: 4px solid #ffc107; padding: 12px; border-radius: 6px; margin-bottom: 15px;">
                 <div class="observacao-item" style="display: flex; align-items: flex-start; gap: 10px;">
@@ -2748,7 +2755,6 @@ function exibirModalFornecedores(cnpj, lojas) {
               </div>
               ` : ''}
               
-              <!-- Ações -->
               <div class="modal-actions" style="display: flex; gap: 8px; justify-content: flex-end;">
                 <button class="btn btn-warning btn-sm btn-action" 
                         onclick="verDetalhesCadastroModal('${loja.id}'); fecharModalFornecedores();"
@@ -2770,7 +2776,6 @@ function exibirModalFornecedores(cnpj, lojas) {
       `;
     }
 
-    // Função auxiliar para formatar CNPJ
     const formatarCNPJParaModal = (cnpj) => {
       if (!cnpj) return 'N/A';
       const cnpjLimpo = cnpj.replace(/\D/g, '');
@@ -2784,9 +2789,7 @@ function exibirModalFornecedores(cnpj, lojas) {
     const primeiraLoja = lojas && lojas.length > 0 ? lojas[0] : null;
     const razaoSocial = primeiraLoja ? primeiraLoja.razao_social : 'N/A';
 
-    // AGORA AS VARIÁVEIS JÁ ESTÃO SEMPRE DEFINIDAS (mesmo que não haja lojas)
     content.innerHTML = `
-      <!-- Header Profissional do CNPJ -->
       <div class="modal-cnpj-header-profissional">
         <div class="cnpj-header-content">
           <div class="cnpj-icon">
@@ -2804,7 +2807,6 @@ function exibirModalFornecedores(cnpj, lojas) {
         </div>
       </div>
       
-      <!-- NOVO: QUADRADO DE INFORMAÇÕES FINANCEIRAS DO CNPJ -->
       <div class="cnpj-financeiro-card">
         <div style="flex: 1;">
           <div class="financeiro-title">
@@ -2827,7 +2829,6 @@ function exibirModalFornecedores(cnpj, lojas) {
         </div>
       </div>
       
-      <!-- Lista de Fornecedores -->
       <div class="modal-content-scroll">
         <div class="fornecedores-list-header">
           <h4><i class="fas fa-list-ul"></i> Fornecedores Vinculados</h4>
@@ -2838,9 +2839,9 @@ function exibirModalFornecedores(cnpj, lojas) {
     `;
     
     modal.style.display = 'flex';
-    hideLoadingPopup();
 }
 
+// CORREÇÃO: ADICIONAR FUNÇÃO fecharModalFornecedores NO ESCOPO GLOBAL
 function fecharModalFornecedores() {
   const modal = document.getElementById('modalFornecedores');
   modal.style.display = 'none';
@@ -2962,6 +2963,34 @@ function exibirModalDetalhesCompleto(dados) {
             <div class="detalhe-valor" style="color: var(--info); font-weight: 600;">${adesaoFormatada}</div>
         </div>
 
+        <!-- SEÇÃO: MDR, TIS e REBATE -->
+        <div class="detalhe-item" style="grid-column: 1 / -1; background: linear-gradient(135deg, #f8f9fa 0%, #f0f8ff 100%); border-left: 4px solid #FF6B35; margin-top: 10px;">
+            <span class="detalhe-label" style="font-size: 1.1em; color: #FF6B35;">
+                <i class="fas fa-percentage"></i> 📊 MDR, TIS E REBATE
+            </span>
+        </div>
+        
+        <div class="detalhe-item">
+            <span class="detalhe-label" style="color: #FF6B35; font-weight: 700;">
+                <i class="fas fa-money-bill-wave"></i> MDR
+            </span>
+            <div class="detalhe-valor" style="color: #FF6B35; font-weight: 600;">${formatarPercentualCorrigido(dados.mdr) || 'N/A'}</div>
+        </div>
+        
+        <div class="detalhe-item">
+            <span class="detalhe-label" style="color: #17A2B8; font-weight: 700;">
+                <i class="fas fa-credit-card"></i> TIS
+            </span>
+            <div class="detalhe-valor" style="color: #17A2B8; font-weight: 600;">${formatarPercentualCorrigido(dados.tis) || 'N/A'}</div>
+        </div>
+        
+        <div class="detalhe-item">
+            <span class="detalhe-label" style="color: #A1CC4C; font-weight: 700;">
+                <i class="fas fa-sync-alt"></i> Rebate
+            </span>
+            <div class="detalhe-valor" style="color: #A1CC4C; font-weight: 600;">${formatarPercentualCorrigido(dados.rebate) || 'N/A'}</div>
+        </div>
+
         <!-- SEÇÃO: CONTRATOS E DATAS -->
         <div class="detalhe-item" style="grid-column: 1 / -1; background: #fff8f0; border-left: 4px solid #ff6b35; margin-top: 10px;">
             <span class="detalhe-label" style="font-size: 1.1em; color: #ff6b35;">
@@ -2980,8 +3009,8 @@ function exibirModalDetalhesCompleto(dados) {
         </div>
         
         <div class="detalhe-item">
-            <span class="detalhe-label">🚀 Data Ativação</span>
-            <div class="detalhe-valor">${formatarDataAtivacao(dados.ativacao)}</div>
+           <span class="detalhe-label">🚀 Data Ativação</span>
+           <div class="detalhe-valor">${formatarDataAtivacao(dados.ativacao)}</div>
         </div>
         
         <div class="detalhe-item">
@@ -2993,11 +3022,6 @@ function exibirModalDetalhesCompleto(dados) {
             <span class="detalhe-label">🚚 Fornecedor</span>
             <div class="detalhe-valor">${dados.fornecedor || 'N/A'}</div>
         </div>
-        
-        <div class="detalhe-item">
-            <span class="detalhe-label">💰 Tarifa</span>
-            <div class="detalhe-valor">${dados.tarifa || 'N/A'} ${formatarPercentualParaExibicao(dados.percentual_tarifa)}</div>
-        </div>
 
         <!-- SEÇÃO: STATUS E ACOMPANHAMENTO -->
         <div class="detalhe-item" style="grid-column: 1 / -1; background: #f0f0f8; border-left: 4px solid #6f42c1; margin-top: 10px;">
@@ -3006,7 +3030,7 @@ function exibirModalDetalhesCompleto(dados) {
             </span>
         </div>
         
-        <div class="detalhe-item">
+        <div class"detalhe-item">
             <span class="detalhe-label">🎯 Situação</span>
             <div class="detalhe-valor">
                 <span class="status-badge ${getSituacaoClass(dados.situacao)}">${dados.situacao || 'N/A'}</span>
@@ -3047,14 +3071,46 @@ function exibirModalDetalhesCompleto(dados) {
         <!-- SEÇÃO: DEFASAGEM - AGORA CORRETA -->
         ${secaoDefasagem}
     </div>
+    
+    <div class="modal-detalhes-actions" style="display: flex; gap: 10px; justify-content: center; margin-top: 20px; padding-top: 15px; border-top: 1px solid var(--border);">
+        <button class="btn btn-primary" onclick="fecharModalDetalhes()" style="background: linear-gradient(135deg, #2EBE76 0%, #3CD88C 100%); color: white; border: none; padding: 10px 20px; border-radius: 6px; cursor: pointer; font-weight: 600; display: flex; align-items: center; gap: 8px;">
+            <i class="fas fa-check"></i> Fechar
+        </button>
+    </div>
     `;
     
     modal.style.display = 'flex';
 }
 
+// CORREÇÃO: ADICIONAR FUNÇÃO fecharModalDetalhes NO ESCOPO GLOBAL
 function fecharModalDetalhes() {
   const modal = document.getElementById('modalDetalhes');
   modal.style.display = 'none';
+}
+
+function formatarDataParaExibicao(dataString) {
+    if (!dataString) return 'N/A';
+    
+    try {
+        if (dataString.includes('/') && dataString.includes(':')) {
+            return dataString;
+        }
+        
+        const data = new Date(dataString);
+        if (isNaN(data.getTime())) return dataString;
+        
+        const dia = String(data.getDate()).padStart(2, '0');
+        const mes = String(data.getMonth() + 1).padStart(2, '0');
+        const ano = data.getFullYear();
+        const hora = String(data.getHours()).padStart(2, '0');
+        const minuto = String(data.getMinutes()).padStart(2, '0');
+        const segundo = String(data.getSeconds()).padStart(2, '0');
+        
+        return `${dia}/${mes}/${ano} ${hora}:${minuto}:${segundo}`;
+        
+    } catch (error) {
+        return dataString;
+    }
 }
 
 function corrigirHoraFrontend(dataHoraString) {
