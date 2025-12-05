@@ -1,0 +1,569 @@
+// CONFIGURAÇÃO DA PLANILHA FILHA SIM (SOMENTE LEITURA) - CORRIGIDA PARA USAR ETAPAS
+const CONFIG_FILHA = {
+  ID_PLANILHA_MAE: "1V4iGN14UpIQcwf3qKU0_Wbiy2exdW2WUmrYTniy0upA",
+  WAITLABEL_FILHA: "Sim_Facilita", // Waitlabel específico do Sim
+  TIMEZONE: "America/Sao_Paulo"
+};
+
+// 🔥🔥🔥 FUNÇÃO CORRIGIDA - SIMPLIFICADA PARA VISUALIZAÇÃO
+function formatarDataBrasilVisualizacao(data) {
+  if (!data) return '';
+  
+  try {
+    console.log("📅 formatarDataBrasilVisualizacao - Entrada:", data, "Tipo:", typeof data);
+    
+    // 🔥 CORREÇÃO: Se já é string no formato correto, retornar COMO ESTÁ
+    if (typeof data === 'string') {
+      // Verificar se já está no formato dd/MM/yyyy HH:mm:ss
+      if (data.match(/^\d{2}\/\d{2}\/\d{4} \d{2}:\d{2}:\d{2}$/)) {
+        console.log("✅ Já está no formato correto - retornando como está:", data);
+        return data;
+      }
+      // Verificar se está no formato dd/MM/yyyy
+      if (data.match(/^\d{2}\/\d{2}\/\d{4}$/)) {
+        console.log("✅ Já está no formato data simples - retornando como está:", data);
+        return data;
+      }
+    }
+    
+    // Se é objeto Date, formatar CORRETAMENTE
+    if (data instanceof Date) {
+      const dataBrasil = Utilities.formatDate(data, CONFIG_FILHA.TIMEZONE, "dd/MM/yyyy HH:mm:ss");
+      console.log("✅ Date convertido:", data.toString(), "→", dataBrasil);
+      return dataBrasil;
+    }
+    
+    // Para outros casos, tentar converter
+    try {
+      const dataObj = new Date(data);
+      if (!isNaN(dataObj.getTime())) {
+        const dataBrasil = Utilities.formatDate(dataObj, CONFIG_FILHA.TIMEZONE, "dd/MM/yyyy HH:mm:ss");
+        console.log("✅ Outro tipo convertido:", data, "→", dataBrasil);
+        return dataBrasil;
+      }
+    } catch (e) {
+      console.log("⚠️ Não conseguiu converter, retornando original:", data);
+      return data.toString();
+    }
+    
+    return data ? data.toString() : '';
+    
+  } catch (error) {
+    console.error("❌ Erro em formatarDataBrasilVisualizacao:", error);
+    return data ? data.toString() : '';
+  }
+}
+
+// 🔥🔥🔥 FUNÇÃO PRINCIPAL CORRIGIDA
+function doGet() {
+  const htmlOutput = HtmlService.createHtmlOutputFromFile('IndexFilha')
+    .setTitle('Sistema Sim - Visualização de Dados')
+    .setXFrameOptionsMode(HtmlService.XFrameOptionsMode.ALLOWALL);
+  
+  return htmlOutput;
+}
+
+// 🔥🔥🔥 BUSCAR TODOS OS CADASTROS - VERSÃO CORRIGIDA COM FUSO HORÁRIO
+function buscarTodosCadastrosComWaitlabel(waitlabel) {
+  try {
+    console.log("🔍 [SIM] Buscando dados no waitlabel:", waitlabel);
+    
+    const ss = SpreadsheetApp.openById(CONFIG_FILHA.ID_PLANILHA_MAE);
+    const aba = ss.getSheetByName(waitlabel);
+    
+    if (!aba) {
+      console.log("❌ Aba não encontrada:", waitlabel);
+      return [];
+    }
+    
+    const ultimaLinha = aba.getLastRow();
+    console.log("📊 Última linha encontrada:", ultimaLinha);
+    
+    if (ultimaLinha < 2) return [];
+    
+    // Buscar dados - usar número fixo de colunas para consistência
+    const dados = aba.getRange(2, 1, ultimaLinha - 1, 17).getValues();
+    console.log("📈 Dados brutos encontrados:", dados.length);
+    
+    const cadastros = [];
+    
+    for (let i = 0; i < dados.length; i++) {
+      const linha = dados[i];
+      
+      if (!linha || !linha[0] || linha[0].toString().trim() === '') continue;
+
+      // 🔥🔥🔥 CORREÇÃO CRÍTICA: Processamento CORRETO de datas COM FUSO HORÁRIO
+      let ultimaEtapaFormatada = linha[4] ? linha[4].toString() : '';
+      
+      // Se é Date, formatar corretamente SUBTRAINDO 5 HORAS
+      if (linha[4] instanceof Date) {
+        // 🔥 CORREÇÃO DO FUSO: Subtrair 5 horas para UTC → Brasília
+        const dataUTC = linha[4];
+        const dataBrasilia = new Date(dataUTC.getTime() - (5 * 60 * 60 * 1000));
+        ultimaEtapaFormatada = Utilities.formatDate(dataBrasilia, CONFIG_FILHA.TIMEZONE, "dd/MM/yyyy HH:mm:ss");
+      }
+      
+      let ativacaoFormatada = linha[9] ? linha[9].toString() : '';
+      
+      // Se é Date, formatar para exibição simples
+      if (linha[9] instanceof Date) {
+        ativacaoFormatada = Utilities.formatDate(linha[9], CONFIG_FILHA.TIMEZONE, "dd/MM/yyyy");
+      }
+
+      // 🔥 CORREÇÃO: Processamento do percentual - MAIS SIMPLES
+      let percentualTarifa = '0%';
+      if (linha[14] !== null && linha[14] !== undefined && linha[14] !== '') {
+        const valor = linha[14];
+        
+        if (typeof valor === 'number') {
+          // Número direto: 0.035 → 3.50%
+          percentualTarifa = (valor * 100).toFixed(2) + '%';
+        } else if (typeof valor === 'string') {
+          const valorStr = valor.toString().trim();
+          if (valorStr.includes('%')) {
+            percentualTarifa = valorStr;
+          } else {
+            // Tentar converter string para número
+            const valorNum = parseFloat(valorStr.replace(',', '.'));
+            if (!isNaN(valorNum)) {
+              percentualTarifa = valorNum.toFixed(2) + '%';
+            }
+          }
+        }
+      }
+
+      // 🔥 CORREÇÃO: Processamento da adesão - MAIS SIMPLES
+      let adesaoFormatada = 'Isento';
+      if (linha[15] !== null && linha[15] !== undefined && linha[15] !== '') {
+        const valorAdesao = linha[15];
+        if (typeof valorAdesao === 'number' && valorAdesao > 0) {
+          adesaoFormatada = valorAdesao;
+        } else if (typeof valorAdesao === 'string') {
+          const valorStr = valorAdesao.toString().trim();
+          if (valorStr !== 'Isento' && valorStr !== '0' && valorStr !== '0.00') {
+            const valorNum = parseFloat(valorStr.replace('R$', '').replace(/\./g, '').replace(',', '.').trim());
+            if (!isNaN(valorNum) && valorNum > 0) {
+              adesaoFormatada = valorNum;
+            }
+          }
+        }
+      }
+
+      // 🔥🔥🔥 CORREÇÃO: AGORA USA "ETAPA" EM VEZ DE "EVENTO"
+      const cadastro = {
+        id: i + 2,
+        razao_social: linha[0]?.toString().trim() || '',
+        nome_fantasia: linha[1]?.toString().trim() || '',
+        cnpj: formatarCNPJNoSheets(linha[2]?.toString().trim() || ''),
+        fornecedor: linha[3]?.toString().trim() || '',
+        ultima_etapa: ultimaEtapaFormatada, // 🔥 MUDOU: ultima_etapa em vez de ultimo_evento
+        etapa: linha[5]?.toString().trim() || '', // 🔥 MUDOU: etapa em vez de evento
+        observacoes: linha[6]?.toString().trim() || '',
+        contrato_enviado: linha[7]?.toString().trim() || '',
+        contrato_assinado: linha[8]?.toString().trim() || '',
+        ativacao: ativacaoFormatada,
+        link: linha[10]?.toString().trim() || '',
+        mensalidade: typeof linha[11] === 'number' ? linha[11] : 0,
+        mensalidade_sim: typeof linha[12] === 'number' ? linha[12] : 0,
+        tarifa: linha[13]?.toString().trim() || '',
+        percentual_tarifa: percentualTarifa,
+        adesao: adesaoFormatada,
+        situacao: (linha[16]?.toString().trim() || 'Novo registro'),
+        waitlabel: waitlabel
+      };
+      
+      cadastros.push(cadastro);
+    }
+    
+    console.log("✅ [SIM] Dados carregados para visualização:", cadastros.length);
+    return cadastros;
+    
+  } catch (error) {
+    console.error("❌ [SIM] Erro na busca:", error);
+    return [];
+  }
+}
+
+// 🔥🔥🔥 BUSCAR CADASTRO POR ID - VERSÃO CORRIGIDA COM FUSO HORÁRIO
+function buscarCadastroPorIDComWaitlabel(id, waitlabel) {
+  try {
+    console.log("🔍 [SIM] Buscando cadastro por ID:", id, "no waitlabel:", waitlabel);
+    
+    const ss = SpreadsheetApp.openById(CONFIG_FILHA.ID_PLANILHA_MAE);
+    const aba = ss.getSheetByName(waitlabel);
+    if (!aba) return { encontrado: false, mensagem: "Waitlabel não encontrado" };
+    
+    const ultimaLinha = aba.getLastRow();
+    if (ultimaLinha < id) return { encontrado: false, mensagem: "Registro não encontrado" };
+    
+    const linha = aba.getRange(id, 1, 1, 17).getValues()[0];
+    
+    if (!linha[0] || linha[0].toString().trim() === '') {
+      return { encontrado: false, mensagem: "Registro vazio ou não encontrado" };
+    }
+
+    console.log("📊 [SIM] DEBUG - Linha encontrada na linha", id);
+    console.log("🔍 Coluna E [4] - Última etapa:", linha[4], "Tipo:", typeof linha[4]);
+    console.log("🔍 Coluna J [9] - Ativação:", linha[9], "Tipo:", typeof linha[9]);
+
+    // 🔥🔥🔥 CORREÇÃO CRÍTICA: Processamento CORRETO das datas COM FUSO HORÁRIO
+    let ultimaEtapaFormatada = linha[4] ? linha[4].toString() : '';
+    
+    // Se é Date, formatar SUBTRAINDO 5 HORAS para correção do fuso
+    if (linha[4] instanceof Date) {
+      // 🔥 CORREÇÃO DO FUSO: Subtrair 5 horas para UTC → Brasília
+      const dataUTC = linha[4];
+      const dataBrasilia = new Date(dataUTC.getTime() - (5 * 60 * 60 * 1000));
+      ultimaEtapaFormatada = Utilities.formatDate(dataBrasilia, CONFIG_FILHA.TIMEZONE, "dd/MM/yyyy HH:mm:ss");
+    }
+    
+    let ativacaoFormatada = '';
+    if (linha[9]) {
+      if (linha[9] instanceof Date) {
+        // 🔥 CORREÇÃO: Para input date, usar formato yyyy-MM-dd
+        ativacaoFormatada = Utilities.formatDate(linha[9], CONFIG_FILHA.TIMEZONE, "yyyy-MM-dd");
+      } else {
+        // Se já é string, verificar formato e converter se necessário
+        const dataStr = linha[9].toString();
+        if (dataStr.includes('/')) {
+          // Converter de dd/MM/yyyy para yyyy-MM-dd
+          const partes = dataStr.split('/');
+          if (partes.length === 3) {
+            ativacaoFormatada = `${partes[2]}-${partes[1]}-${partes[0]}`;
+          } else {
+            ativacaoFormatada = dataStr;
+          }
+        } else {
+          ativacaoFormatada = dataStr;
+        }
+      }
+    }
+
+    // 🔥 CORREÇÃO: Processamento SIMPLIFICADO do percentual
+    let percentualTarifa = '0%';
+    if (linha[14] !== null && linha[14] !== undefined && linha[14] !== '') {
+      const valor = linha[14];
+      
+      if (typeof valor === 'number') {
+        percentualTarifa = (valor * 100).toFixed(2) + '%';
+      } else if (typeof valor === 'string') {
+        const valorStr = valor.toString().trim();
+        if (valorStr.includes('%')) {
+          percentualTarifa = valorStr;
+        } else {
+          const valorNum = parseFloat(valorStr.replace(',', '.'));
+          if (!isNaN(valorNum)) {
+            percentualTarifa = valorNum.toFixed(2) + '%';
+          }
+        }
+      }
+    }
+
+    // 🔥 CORREÇÃO: Processamento SIMPLIFICADO da adesão
+    let adesaoFormatada = 'Isento';
+    if (linha[15] !== null && linha[15] !== undefined && linha[15] !== '') {
+      const valorAdesao = linha[15];
+      if (typeof valorAdesao === 'number' && valorAdesao > 0) {
+        adesaoFormatada = valorAdesao;
+      } else if (typeof valorAdesao === 'string') {
+        const valorStr = valorAdesao.toString().trim();
+        if (valorStr !== 'Isento' && valorStr !== '0' && valorStr !== '0.00') {
+          const valorNum = parseFloat(valorStr.replace('R$', '').replace(/\./g, '').replace(',', '.').trim());
+          if (!isNaN(valorNum) && valorNum > 0) {
+            adesaoFormatada = valorNum;
+          }
+        }
+      }
+    }
+
+    // 🔥🔥🔥 CORREÇÃO: AGORA USA "ETAPA" EM VEZ DE "EVENTO"
+    const resultado = {
+      encontrado: true,
+      id: id,
+      razao_social: linha[0]?.toString().trim() || '',
+      nome_fantasia: linha[1]?.toString().trim() || '',
+      cnpj: formatarCNPJNoSheets(linha[2]?.toString().trim() || ''),
+      fornecedor: linha[3]?.toString().trim() || '',
+      ultima_etapa: ultimaEtapaFormatada, // 🔥 MUDOU: ultima_etapa em vez de ultimo_evento
+      etapa: linha[5]?.toString().trim() || '', // 🔥 MUDOU: etapa em vez de evento
+      observacoes: linha[6]?.toString().trim() || '',
+      contrato_enviado: linha[7]?.toString().trim() || '',
+      contrato_assinado: linha[8]?.toString().trim() || '',
+      ativacao: ativacaoFormatada,
+      link: linha[10]?.toString().trim() || '',
+      mensalidade: typeof linha[11] === 'number' ? linha[11] : 0,
+      mensalidade_sim: typeof linha[12] === 'number' ? linha[12] : 0,
+      tarifa: linha[13]?.toString().trim() || '',
+      percentual_tarifa: percentualTarifa,
+      adesao: adesaoFormatada,
+      situacao: (linha[16]?.toString().trim() || 'Novo registro'),
+      waitlabel: waitlabel
+    };
+
+    console.log("✅ [SIM] Cadastro processado:", {
+      id: resultado.id,
+      razao_social: resultado.razao_social,
+      ultima_etapa: resultado.ultima_etapa, // 🔥 MUDOU
+      etapa: resultado.etapa, // 🔥 MUDOU
+      ativacao: resultado.ativacao
+    });
+    
+    return resultado;
+    
+  } catch (error) {
+    console.error("❌ [SIM] Erro em buscarCadastroPorIDComWaitlabel:", error);
+    return { encontrado: false, mensagem: "Erro: " + error.message };
+  }
+}
+
+// 🔥🔥🔥 FUNÇÃO PARA OBTER FILTROS - ATUALIZADA COM AS NOVAS ETAPAS
+function obterFiltrosDisponiveis() {
+  try {
+    const waitlabelAtual = CONFIG_FILHA.WAITLABEL_FILHA;
+    const cadastros = buscarTodosCadastrosComWaitlabel(waitlabelAtual);
+    
+    // 🔥🔥🔥 ETAPAS VÁLIDAS ATUALIZADAS (SEM CLÍNICA E WL, COM RETORNO EXTERNO)
+    const etapasValidas = [
+      "PENDENTE FORNECEDOR(ES)",
+      "PENDENTE SIM", 
+      "PENDENTE RETORNO EXTERNO"
+    ];
+    
+    const situacoesValidas = [
+      "NOVO REGISTRO",
+      "EM ANDAMENTO", 
+      "DESISTIU",
+      "REJEITADO",
+      "CADASTRADO",
+      "DESCREDENCIADO"
+    ];
+    
+    // Coletar dados únicos dos cadastros
+    const etapasEncontradas = new Set();
+    const situacoesEncontradas = new Set();
+    const fornecedoresEncontrados = new Set();
+    
+    cadastros.forEach(cadastro => {
+      if (cadastro.etapa && cadastro.etapa.trim() !== '') {
+        // 🔥 FILTRAR APENAS ETAPAS VÁLIDAS
+        const etapaNormalizada = normalizarTexto(cadastro.etapa);
+        if (etapasValidas.includes(etapaNormalizada)) {
+          etapasEncontradas.add(cadastro.etapa);
+        }
+      }
+      
+      if (cadastro.situacao && cadastro.situacao.trim() !== '') {
+        situacoesEncontradas.add(cadastro.situacao);
+      }
+      
+      if (cadastro.fornecedor && cadastro.fornecedor.trim() !== '') {
+        fornecedoresEncontrados.add(cadastro.fornecedor);
+      }
+    });
+    
+    // Ordenar os resultados
+    const etapasOrdenadas = Array.from(etapasEncontradas).sort();
+    const situacoesOrdenadas = Array.from(situacoesEncontradas).sort();
+    const fornecedoresOrdenados = Array.from(fornecedoresEncontrados).sort();
+    
+    console.log("🎯 [SIM] Filtros disponíveis - Etapas:", etapasOrdenadas);
+    console.log("🎯 [SIM] Filtros disponíveis - Situações:", situacoesOrdenadas);
+    console.log("🎯 [SIM] Filtros disponíveis - Fornecedores:", fornecedoresOrdenados.length);
+    
+    return {
+      etapas: etapasOrdenadas,
+      situacoes: situacoesOrdenadas,
+      fornecedores: fornecedoresOrdenados,
+      // 🔥 ADICIONAR LISTA DE ETAPAS VÁLIDAS PARA VALIDAÇÃO
+      etapasValidas: etapasValidas,
+      situacoesValidas: situacoesValidas
+    };
+    
+  } catch (error) {
+    console.error("❌ [SIM] Erro em obterFiltrosDisponiveis:", error);
+    return {
+      etapas: [],
+      situacoes: [],
+      fornecedores: [],
+      etapasValidas: [],
+      situacoesValidas: []
+    };
+  }
+}
+
+// 🔥🔥🔥 FUNÇÃO DE VALIDAÇÃO DE ETAPA - ATUALIZADA
+function validarEtapaVisualizacao(etapa, situacao) {
+  // 🔥 VALIDAR APENAS PARA "EM ANDAMENTO" E "NOVO REGISTRO"
+  const situacaoNormalizada = normalizarTexto(situacao || '');
+  const precisaValidarEtapa = situacaoNormalizada === 'EM ANDAMENTO' || situacaoNormalizada === 'NOVO REGISTRO';
+  
+  if (!precisaValidarEtapa) {
+    console.log("✅ [SIM] Situação não requer validação de etapa");
+    return { valida: true, etapa: etapa ? normalizarTexto(etapa) : '' };
+  }
+  
+  // 🔥 SE É "EM ANDAMENTO" OU "NOVO REGISTRO", ENTÃO ETAPA É OBRIGATÓRIA
+  if (!etapa || etapa.trim() === '') {
+    return { 
+      valida: false, 
+      mensagem: `❌ Para situações "${situacao}" o campo Etapa é obrigatório!` 
+    };
+  }
+  
+  // 🔥 NOVAS ETAPAS VÁLIDAS (SEM CLÍNICA E WL, COM RETORNO EXTERNO)
+  const etapasValidas = [
+    "PENDENTE FORNECEDOR(ES)",
+    "PENDENTE SIM", 
+    "PENDENTE RETORNO EXTERNO"
+  ];
+  
+  const etapaNormalizada = normalizarTexto(etapa);
+  
+  // 🔥 BLOQUEAR EXPLICITAMENTE "DESISTIU" E OUTRAS ETAPAS INVÁLIDAS
+  const etapasBloqueadas = ["DESISTIU", "REJEITADO", "CADASTRADO", "NOVO REGISTRO", "EM ANDAMENTO", "DESCREDENCIADO"];
+  
+  if (etapasBloqueadas.includes(etapaNormalizada)) {
+    const mensagemErro = `❌ ETAPA NÃO PERMITIDA!\n\nA etapa "${etapa}" é uma SITUAÇÃO, não uma etapa do processo.\n\n📋 ETAPAS VÁLIDAS (do processo):\n• PENDENTE FORNECEDOR(ES)\n• PENDENTE SIM\n• PENDENTE RETORNO EXTERNO\n\n💡 Use o campo "Situação" para: ${etapa}`;
+    
+    return { valida: false, mensagem: mensagemErro };
+  }
+  
+  if (!etapasValidas.includes(etapaNormalizada)) {
+    const mensagemErro = `❌ ETAPA INVÁLIDA!\n\nA etapa "${etapa}" não é válida.\n\n📋 ETAPAS VÁLIDAS:\n• PENDENTE FORNECEDOR(ES)\n• PENDENTE SIM\n• PENDENTE RETORNO EXTERNO\n\nSelecione uma das etapas acima para continuar.`;
+    
+    return { valida: false, mensagem: mensagemErro };
+  }
+  
+  return { valida: true, etapa: etapaNormalizada };
+}
+
+// 🔥🔥🔥 FUNÇÃO DE TESTE ATUALIZADA PARA ETAPAS
+function testarDatasVisualizacao() {
+  try {
+    console.log("=== 🧪 [SIM] TESTE ESPECÍFICO PARA VISUALIZAÇÃO ===");
+    
+    const ss = SpreadsheetApp.openById(CONFIG_FILHA.ID_PLANILHA_MAE);
+    const aba = ss.getSheetByName(CONFIG_FILHA.WAITLABEL_FILHA);
+    
+    if (!aba) {
+      return { error: "Aba não encontrada" };
+    }
+    
+    // Buscar algumas linhas para testar
+    const dadosTeste = aba.getRange(2, 1, 5, 17).getValues();
+    const resultadosTeste = [];
+    
+    for (let i = 0; i < dadosTeste.length; i++) {
+      const linha = dadosTeste[i];
+      if (!linha[0] || linha[0].toString().trim() === '') continue;
+      
+      const ultimaEtapaOriginal = linha[4]; // 🔥 MUDOU: ultima_etapa
+      const etapaAtual = linha[5]; // 🔥 NOVO: etapa atual
+      const ativacaoOriginal = linha[9];
+      
+      // Processar como na função corrigida COM FUSO HORÁRIO
+      let ultimaEtapaFormatada = ultimaEtapaOriginal ? ultimaEtapaOriginal.toString() : '';
+      if (ultimaEtapaOriginal instanceof Date) {
+        // 🔥 CORREÇÃO DO FUSO: Subtrair 5 horas para UTC → Brasília
+        const dataUTC = ultimaEtapaOriginal;
+        const dataBrasilia = new Date(dataUTC.getTime() - (5 * 60 * 60 * 1000));
+        ultimaEtapaFormatada = Utilities.formatDate(dataBrasilia, CONFIG_FILHA.TIMEZONE, "dd/MM/yyyy HH:mm:ss");
+      }
+      
+      let ativacaoFormatada = '';
+      if (ativacaoOriginal) {
+        if (ativacaoOriginal instanceof Date) {
+          ativacaoFormatada = Utilities.formatDate(ativacaoOriginal, CONFIG_FILHA.TIMEZONE, "yyyy-MM-dd");
+        } else {
+          ativacaoFormatada = ativacaoOriginal.toString();
+        }
+      }
+      
+      resultadosTeste.push({
+        linha: i + 2,
+        razao_social: linha[0]?.toString().trim() || '',
+        etapa_atual: etapaAtual?.toString().trim() || '', // 🔥 NOVO: mostrar etapa atual
+        ultima_etapa_original: ultimaEtapaOriginal, // 🔥 MUDOU
+        ultima_etapa_formatada: ultimaEtapaFormatada, // 🔥 MUDOU
+        ativacao_original: ativacaoOriginal,
+        ativacao_formatada: ativacaoFormatada
+      });
+    }
+    
+    console.log("📅 [SIM] Resultados do teste de visualização:", resultadosTeste);
+    
+    return {
+      success: true,
+      teste_visualizacao: resultadosTeste,
+      message: "Teste de visualização Sim concluído"
+    };
+    
+  } catch (error) {
+    console.error("❌ [SIM] Erro no teste de visualização:", error);
+    return { error: error.message };
+  }
+}
+
+// 🔥🔥🔥 FUNÇÕES AUXILIARES (MANTIDAS E ATUALIZADAS)
+function formatarCNPJNoSheets(cnpj) {
+  if (!cnpj) return '';
+  if (cnpj.toString().includes('.') || cnpj.toString().includes('/') || cnpj.toString().includes('-')) {
+    return cnpj.toString();
+  }
+  const cnpjStr = cnpj.toString().replace(/\D/g, '');
+  if (cnpjStr.length === 14) {
+    return cnpjStr.replace(/^(\d{2})(\d{3})(\d{3})(\d{4})(\d{2})/, '$1.$2.$3/$4-$5');
+  }
+  return cnpj;
+}
+
+// 🔥🔥🔥 FUNÇÃO DE NORMALIZAÇÃO DE TEXTO
+function normalizarTexto(texto) {
+  if (!texto || typeof texto !== 'string') return texto;
+  return texto
+    .normalize('NFD')
+    .replace(/[\u0300-\u036f]/g, '')
+    .toUpperCase()
+    .trim();
+}
+
+// 🔥🔥🔥 FUNÇÃO DE TESTE ATUALIZADA
+function testar() {
+  const totalCadastros = buscarTodosCadastrosComWaitlabel(CONFIG_FILHA.WAITLABEL_FILHA).length;
+  const testeDatas = testarDatasVisualizacao();
+  const filtros = obterFiltrosDisponiveis();
+  
+  return { 
+    success: true, 
+    message: "✅ Sistema SIM funcionando!",
+    modo: "Somente leitura - CORRIGIDO PARA ETAPAS E FUSO HORÁRIO",
+    waitlabel: CONFIG_FILHA.WAITLABEL_FILHA,
+    totalCadastros: totalCadastros,
+    etapas_validas: filtros.etapasValidas, // 🔥 NOVO: mostrar etapas válidas
+    situacoes_validas: filtros.situacoesValidas, // 🔥 NOVO: mostrar situações válidas
+    teste_datas: testeDatas,
+    timestamp: new Date().toISOString()
+  };
+}
+
+// 🔥🔥🔥 FUNÇÃO PARA BUSCAR POR CNPJ - ADICIONADA PARA COMPLETAR
+function buscarTodosCadastrosPorCNPJComWaitlabel(cnpj, waitlabel) {
+  try {
+    const cadastros = buscarTodosCadastrosComWaitlabel(waitlabel);
+    const cnpjBuscado = cnpj.toString().replace(/\D/g, '');
+    const cadastrosEncontrados = [];
+    
+    for (const cadastro of cadastros) {
+      const cnpjCadastro = cadastro.cnpj?.toString().replace(/\D/g, '') || '';
+      if (cnpjCadastro === cnpjBuscado) {
+        cadastrosEncontrados.push(cadastro);
+      }
+    }
+    
+    return cadastrosEncontrados;
+    
+  } catch (error) {
+    console.error("❌ [SIM] Erro em buscarTodosCadastrosPorCNPJComWaitlabel:", error);
+    return [];
+  }
+}
