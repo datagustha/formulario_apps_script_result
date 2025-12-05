@@ -145,6 +145,7 @@
       font-size: 0.9rem;
       transition: all 0.3s ease;
     }
+
     
     .form-control:focus {
       outline: none;
@@ -168,6 +169,29 @@
       background: var(--primary);
       color: white;
     }
+
+    /* 🔥 BOTÃO PARA APLICAR OBSERVAÇÃO */
+.btn-aplicar-observacao {
+  background: linear-gradient(135deg, #FF6B35 0%, #FF8E35 100%);
+  color: white;
+  border: none;
+  padding: 5px 12px;
+  border-radius: 5px;
+  font-size: 0.8rem;
+  cursor: pointer;
+  margin-left: 10px;
+  display: inline-flex;
+  align-items: center;
+  gap: 5px;
+  transition: all 0.3s ease;
+  font-weight: 600;
+}
+
+.btn-aplicar-observacao:hover {
+  transform: translateY(-2px);
+  box-shadow: 0 3px 8px rgba(255, 107, 53, 0.3);
+  background: linear-gradient(135deg, #E55A2B 0%, #E57C2B 100%);
+}
     
     .btn-primary:hover {
       background: #6a2e82;
@@ -1139,16 +1163,55 @@
       color: #0682c5 !important;
     }
 
-    .form-group:has(#observacoes) .form-label {
-      margin-left: 80px !important;
-      width: 85% !important;
-    }
+    /* REMOVA o código acima e COLOQUE este no lugar: */
+.form-group:has(#observacoes) {
+  grid-column: 1 / -1;
+  width: 100%;
+}
 
-    #observacoes {
-      margin-left: 40px !important;
-      width: 90% !important;
-      min-height: 80px;
-    }
+.form-group:has(#observacoes) .form-label {
+  margin-left: 0 !important;  /* Mude de 80px para 0 */
+  width: 100% !important;     /* Mude de 85% para 100% */
+  display: flex;
+  align-items: center;
+  gap: 8px;
+}
+
+#observacoes {
+  margin-left: 0 !important;   /* Mude de 40px para 0 */
+  width: 100% !important;      /* Mude de 90% para 100% */
+  min-height: 80px;
+  resize: vertical;
+}
+
+/* Container do checkbox de aplicar observação */
+.form-group:has(#observacoes) .checkbox-aplicar-todos {
+  width: 100%;
+  margin-top: 8px;
+  padding: 8px 12px;
+  background: #fff8f0;
+  border-radius: 5px;
+  border-left: 3px solid #FF6B35;
+  display: flex;
+  align-items: center;
+  gap: 8px;
+}
+
+.form-group:has(#observacoes) .checkbox-aplicar-todos input[type="checkbox"] {
+  width: 18px;
+  height: 18px;
+  accent-color: #FF6B35;
+}
+
+.form-group:has(#observacoes) .checkbox-aplicar-todos label {
+  font-size: 0.85rem;
+  color: #FF6B35;
+  font-weight: 600;
+  cursor: pointer;
+  display: flex;
+  align-items: center;
+  gap: 6px;
+}
 
     .btn-group {
       display: flex;
@@ -2236,15 +2299,26 @@
             </div>
           </div>
 
-          <div class="form-group" style="display: flex; justify-content: flex-end;">
-            <div style="width: 95%;">
-              <label class="form-label">
-                <i class="fas fa-sticky-note"></i>
-                Observação
-              </label>
-              <textarea id="observacoes" class="form-control" rows="3" style="width: 100%;"></textarea>
-            </div>
-          </div>
+<div class="form-group">
+  <label class="form-label">
+    <i class="fas fa-sticky-note"></i>
+    Observação
+  </label>
+  
+  <div style="width: 100%;">
+    <textarea id="observacoes" class="form-control" rows="3" 
+              style="width: 100%; margin-bottom: 8px;"></textarea>
+    
+    <!-- CHECKBOX PARA APLICAR A TODOS -->
+    <div class="checkbox-aplicar-todos">
+      <input type="checkbox" id="check_observacoes" data-campo="observacoes" 
+             onchange="toggleCampoParaTodos('observacoes')">
+      <label for="check_observacoes">
+        <i class="fas fa-copy"></i> Aplicar Observação a todos
+      </label>
+    </div>
+  </div>
+</div>
 
           <div class="btn-group" style="justify-content: flex-end; margin-left: auto; width: fit-content;">
             <button type="button" class="btn btn-success" onclick="cadastrar()" id="btnCadastrar">
@@ -4607,16 +4681,22 @@ function atualizarInterfaceWaitlabel() {
   }
 }
 
-// FUNÇÕES APLICAR A TODOS
 function toggleCampoParaTodos(campoId) {
+    console.log("🎯 Toggle campo para todos:", campoId);
+    
+    // Se for o campo de etapa do input de busca, usar 'etapa' como chave
     const campoParaAplicar = campoId === 'inputEtapaSearch' ? 'etapa' : campoId;
     
+    // Alternar estado
     camposParaAplicarATodos[campoParaAplicar] = !camposParaAplicarATodos[campoParaAplicar];
     
+    // Atualizar visualmente o checkbox
     const checkbox = document.querySelector(`[data-campo="${campoId}"]`);
     if (checkbox) {
         checkbox.checked = camposParaAplicarATodos[campoParaAplicar];
     }
+    
+    console.log("✅ Estado atual:", camposParaAplicarATodos);
 }
 
 async function aplicarAlteracoesATodos() {
@@ -4921,19 +5001,29 @@ function mostrarPopupAplicarTodosMelhorado(cnpj, camposSelecionados, dados, filt
 }
 
 async function processarAplicarATodosComDelay(filtrosSalvos) {
+    console.log("🚀 === PROCESSAR APLICAR A TODOS COM DELAY ===");
+    
     const modal = document.getElementById('modalAplicarTodos');
     if (modal) modal.remove();
     
     const { cnpj, campos, dados } = window.dadosAplicarTodos;
     const btnAplicar = document.getElementById('btnAplicarATodos');
     
+    console.log("📋 CNPJ:", cnpj);
+    console.log("🎯 Campos selecionados:", campos);
+    console.log("📦 Dados coletados:", dados);
+    
     mostrarPopupAtualizando();
     
     try {
-        // VALIDAÇÃO DUPLA NO FRONTEND (segurança extra)
+        // ✅ VALIDAÇÃO DUPLA NO FRONTEND (segurança extra)
         const situacaoUpper = dados.situacao ? dados.situacao.toUpperCase().trim() : '';
         const precisaValidarEtapa = situacaoUpper === 'EM ANDAMENTO' || situacaoUpper === 'NOVO REGISTRO';
         
+        console.log("🔍 Validando situação:", situacaoUpper);
+        console.log("🔍 Precisa validar etapa?", precisaValidarEtapa);
+        
+        // VALIDAÇÃO 1: Etapa quando necessário
         if (precisaValidarEtapa && dados.etapa) {
             const etapasValidas = [
                 "PENDENTE FORNECEDOR(ES)",
@@ -4942,6 +5032,9 @@ async function processarAplicarATodosComDelay(filtrosSalvos) {
             ];
             
             const etapaUpper = dados.etapa.toUpperCase().trim();
+            
+            console.log("📋 Etapa a validar:", etapaUpper);
+            console.log("📋 Etapas válidas:", etapasValidas);
             
             if (!etapasValidas.includes(etapaUpper)) {
                 esconderPopupAtualizando();
@@ -4955,10 +5048,39 @@ async function processarAplicarATodosComDelay(filtrosSalvos) {
             }
         }
         
+        // VALIDAÇÃO 2: Observações quando marcada
+        if (campos.includes('observacoes')) {
+            const observacao = document.getElementById('observacoes').value;
+            console.log("📝 Validando observações:", observacao);
+            
+            if (!observacao || observacao.trim() === '') {
+                esconderPopupAtualizando();
+                showMessage('error', '❌ O campo Observações não pode estar vazio quando aplicando a todos!');
+                
+                if (btnAplicar) {
+                    btnAplicar.disabled = false;
+                    btnAplicar.innerHTML = '<i class="fas fa-copy"></i> Aplicar a Todos';
+                }
+                
+                const textareaObs = document.getElementById('observacoes');
+                if (textareaObs) {
+                    textareaObs.style.border = '3px solid var(--danger)';
+                    textareaObs.style.backgroundColor = '#fff5f5';
+                    textareaObs.focus();
+                    textareaObs.scrollIntoView({ behavior: 'smooth', block: 'center' });
+                    
+                    textareaObs.style.animation = 'shake 0.5s ease-in-out';
+                    setTimeout(() => {
+                        textareaObs.style.animation = '';
+                    }, 500);
+                }
+                return;
+            }
+        }
+        
         // CORREÇÃO: GARANTIR QUE A ETAPA SEJA A SITUAÇÃO QUANDO FOR SITUAÇÃO FINAL
         const dadosParaEnviar = { ...dados };
         
-        // Se a situação for final, garantir que a etapa seja a mesma
         const ehSituacaoFinal = situacaoUpper === 'CADASTRADO' || 
                                situacaoUpper === 'REJEITADO' || 
                                situacaoUpper === 'DESCREDENCIADO' || 
@@ -4980,13 +5102,16 @@ async function processarAplicarATodosComDelay(filtrosSalvos) {
             }
         }
         
+        // Remover campo que não deve ser enviado
         delete dadosParaEnviar.ultima_etapa;
         
         console.log("📤 Dados sendo enviados para 'Aplicar a Todos':", dadosParaEnviar);
         console.log("🎯 Campos a aplicar:", campos);
         
+        // Enviar para o Google Apps Script
         google.script.run
             .withSuccessHandler(function(res) {
+                console.log("✅ Resposta do servidor:", res);
                 esconderPopupAtualizando();
                 
                 if (btnAplicar) {
@@ -4998,10 +5123,13 @@ async function processarAplicarATodosComDelay(filtrosSalvos) {
                     showMessage('success', `✅ ${res.registrosAtualizados} registro(s) atualizado(s) com sucesso!`);
                     limparSelecaoAplicarATodos();
                     
+                    // Recarregar se a tabela estiver visível
                     if (document.getElementById('secaoCadastros').style.display === 'block') {
+                        console.log("🔄 Recarregando tabela...");
                         restaurarFiltros(filtrosSalvos);
                     }
                 } else {
+                    // Tratar erros específicos
                     const inputEtapa = document.getElementById('inputEtapaSearch');
                     if (inputEtapa && res && res.message && res.message.includes('ETAPA')) {
                         inputEtapa.style.border = '3px solid var(--danger)';
@@ -5018,8 +5146,11 @@ async function processarAplicarATodosComDelay(filtrosSalvos) {
                     
                     showMessage('error', '❌ ' + (res ? res.message : 'Erro ao aplicar alterações'));
                 }
+                
+                console.log("✅ PROCESSAR APLICAR A TODOS - FINALIZADO");
             })
             .withFailureHandler(function(error) {
+                console.error("❌ Erro do servidor:", error);
                 esconderPopupAtualizando();
                 
                 if (btnAplicar) {
@@ -5032,10 +5163,13 @@ async function processarAplicarATodosComDelay(filtrosSalvos) {
                 } else {
                     showMessage('error', '❌ Erro: ' + error.message);
                 }
+                
+                console.log("❌ PROCESSAR APLICAR A TODOS - ERRO");
             })
             .aplicarAlteracoesATodos(cnpj, dadosParaEnviar, campos);
             
     } catch (error) {
+        console.error("❌ ERRO CRÍTICO em processarAplicarATodosComDelay:", error);
         esconderPopupAtualizando();
         
         if (btnAplicar) {
@@ -5044,6 +5178,7 @@ async function processarAplicarATodosComDelay(filtrosSalvos) {
         }
         
         showMessage('error', '❌ Erro crítico: ' + error.message);
+        console.log("❌ PROCESSAR APLICAR A TODOS - ERRO CRÍTICO");
     }
 }
 
@@ -5182,7 +5317,8 @@ function adicionarCheckboxesAosCampos() {
   const camposAplicaveis = [
     'razao_social', 'nome_fantasia','contrato_enviado', 
     'contrato_assinado', 'ativacao', 'link', 'mensalidade', 
-    'mensalidade_sim', 'adesao', 'situacao', 'inputEtapaSearch'
+    'mensalidade_sim', 'adesao', 'situacao', 'inputEtapaSearch',
+    'observacoes'  // ✅ ADICIONADO AQUI
   ];
     
     camposAplicaveis.forEach(campoId => {
@@ -5614,26 +5750,35 @@ function padronizarNomeFornecedor(nome) {
 }
 
 function coletarDadosFormulario() {
+  console.log("🔍 === COLETAR DADOS FORMULÁRIO ===");
+  
   try {
+    // Validar campos obrigatórios
     const razaoSocial = document.getElementById('razao_social').value.trim();
     const cnpj = document.getElementById('cnpj_cadastro').value.trim();
+    
+    console.log("📝 Razão Social:", razaoSocial);
+    console.log("📝 CNPJ:", cnpj);
     
     if (!razaoSocial || !cnpj) {
       showMessage('error', '❌ Razão Social e CNPJ são obrigatórios!');
       return null;
     }
 
+    // Coletar situação e etapa
     const situacaoSelecionada = document.getElementById('situacao').value;
     let etapaValue = document.getElementById('inputEtapaSearch').value || '';
+    const observacoesValue = document.getElementById('observacoes').value;
     
+    // Verificar modo aplicar a todos
     const isAplicarATodos = Object.keys(camposParaAplicarATodos).some(campo => camposParaAplicarATodos[campo]);
     const situacaoUpper = situacaoSelecionada ? situacaoSelecionada.toUpperCase().trim() : '';
     
-    console.log("🔍 COLETAR DADOS - Debug:");
     console.log("📋 Situação selecionada:", situacaoSelecionada);
-    console.log("🎯 Modo Aplicar a Todos:", isAplicarATodos);
     console.log("📝 Etapa do input:", etapaValue);
-    console.log("✅ Campos selecionados:", camposParaAplicarATodos);
+    console.log("📝 Observações:", observacoesValue);
+    console.log("🎯 Modo Aplicar a Todos:", isAplicarATodos);
+    console.log("✅ Campos selecionados para aplicar:", camposParaAplicarATodos);
 
     // CORREÇÃO CRÍTICA: QUANDO APLICAR A TODOS E SITUAÇÃO FOR FINAL
     if (isAplicarATodos && camposParaAplicarATodos['situacao']) {
@@ -5663,31 +5808,44 @@ function coletarDadosFormulario() {
         }
     }
 
-    // Resto da função permanece igual...
+    // Formatar CNPJ
     const cnpjFormatado = document.getElementById('cnpj_cadastro').value;
+    console.log("📋 CNPJ formatado:", cnpjFormatado);
 
+    // Coletar e processar adesão
     let adesaoValue = document.getElementById('adesao').value;
+    console.log("💰 Adesão bruta:", adesaoValue);
+    
     if (adesaoValue === 'R$ 0,00' || adesaoValue === '0,00' || adesaoValue === '0' || adesaoValue === 'R$ 0') {
       adesaoValue = 0;
+      console.log("💰 Adesão processada: Isento (0)");
     } else {
       adesaoValue = converterMoedaParaNumero(adesaoValue);
+      console.log("💰 Adesão processada:", adesaoValue);
     }
 
+    // Coletar fornecedores selecionados
     const checkboxesFornecedores = document.querySelectorAll('input[name="fornecedor"]:checked');
     const fornecedoresComConfiguracoes = [];
+    
+    console.log("🚚 Fornecedores selecionados:", checkboxesFornecedores.length);
 
     if (checkboxesFornecedores.length === 0) {
       showMessage('error', '❌ Selecione pelo menos um fornecedor!');
       return null;
     }
 
+    // Processar cada fornecedor selecionado
     checkboxesFornecedores.forEach(checkbox => {
       const fornecedorNome = checkbox.value;
       const fornecedorPadronizado = padronizarNomeFornecedor(fornecedorNome);
       const fornecedorId = fornecedorNome.toLowerCase();
       
+      console.log("🔧 Processando fornecedor:", fornecedorNome, "→", fornecedorPadronizado);
+      
       const configDiv = document.getElementById(`config-${fornecedorId}`);
       if (!configDiv || configDiv.style.display !== 'grid') {
+        console.log("⚠️ Configuração não visível para:", fornecedorNome);
         return;
       }
       
@@ -5700,9 +5858,13 @@ function coletarDadosFormulario() {
       let tisValor = tisInput ? tisInput.value : '';
       let rebateValor = rebateInput ? rebateInput.value : '';
       
+      console.log("📊 Valores brutos - MDR:", mdrValor, "TIS:", tisValor, "Rebate:", rebateValor);
+      
       let mdrNumerico = converterPercentualParaNumero(mdrValor);
       let tisNumerico = converterPercentualParaNumero(tisValor);
       let rebateNumerico = converterPercentualParaNumero(rebateValor);
+      
+      console.log("📊 Valores numéricos - MDR:", mdrNumerico, "TIS:", tisNumerico, "Rebate:", rebateNumerico);
 
       fornecedoresComConfiguracoes.push({
           nome: fornecedorPadronizado,
@@ -5715,6 +5877,14 @@ function coletarDadosFormulario() {
       });
     });
 
+    // Coletar mensalidades
+    const mensalidadeValor = converterMoedaParaNumero(document.getElementById('mensalidade').value);
+    const mensalidadeSimValor = converterMoedaParaNumero(document.getElementById('mensalidade_sim').value);
+    
+    console.log("💰 Mensalidade:", mensalidadeValor);
+    console.log("💰 Mensalidade SIM:", mensalidadeSimValor);
+
+    // Montar objeto de dados completo
     const dados = {
       razao_social: razaoSocial,
       nome_fantasia: document.getElementById('nome_fantasia').value,
@@ -5725,23 +5895,25 @@ function coletarDadosFormulario() {
       mdr: fornecedoresComConfiguracoes.length > 0 ? fornecedoresComConfiguracoes[0].mdr : 0,
       tis: fornecedoresComConfiguracoes.length > 0 ? fornecedoresComConfiguracoes[0].tis : 0,
       rebate: fornecedoresComConfiguracoes.length > 0 ? fornecedoresComConfiguracoes[0].rebate : 0,
-      observacoes: document.getElementById('observacoes').value,
+      observacoes: observacoesValue,
       contrato_enviado: document.getElementById('contrato_enviado').value,
       contrato_assinado: document.getElementById('contrato_assinado').value,
       ativacao: document.getElementById('ativacao').value,
       link: document.getElementById('link').value,
-      mensalidade: converterMoedaParaNumero(document.getElementById('mensalidade').value),
-      mensalidade_sim: converterMoedaParaNumero(document.getElementById('mensalidade_sim').value),
+      mensalidade: mensalidadeValor,
+      mensalidade_sim: mensalidadeSimValor,
       situacao: situacaoSelecionada,
       etapa: etapaValue,
-      operacao: 'aplicar_todos'
+      operacao: isAplicarATodos ? 'aplicar_todos' : 'normal'
     };
 
-    console.log("✅ Dados finais para enviar:", dados);
-
+    console.log("✅ Dados finais coletados:", dados);
+    console.log("✅ COLETAR DADOS FORMULÁRIO - FINALIZADO");
+    
     return dados;
 
   } catch (error) {
+    console.error("❌ ERRO em coletarDadosFormulario:", error);
     showMessage('error', '❌ Erro interno ao processar formulário: ' + error.message);
     return null;
   }
@@ -5949,12 +6121,19 @@ function converterMoedaParaNumero(valorMoeda) {
 }
 
 function preencherDadosCadastro(dados) {
+  console.log("🔍 === PREENCHER DADOS CADASTRO ===");
+  console.log("Dados recebidos:", dados);
+  
   if (!dados.encontrado) {
     showMessage('error', '❌ ' + dados.mensagem);
     return;
   }
 
   try {
+    // ✅ GARANTIR QUE OS CHECKBOXES ESTEJAM PRESENTES
+    adicionarCheckboxesAosCampos();
+    
+    // Preencher campos básicos
     preencherCampoSeExistir('razao_social', dados.razao_social);
     preencherCampoSeExistir('nome_fantasia', dados.nome_fantasia);
     preencherCampoSeExistir('cnpj_cadastro', dados.cnpj);
@@ -5965,6 +6144,7 @@ function preencherDadosCadastro(dados) {
     // CORREÇÃO: FORMATAR DATA DE ATIVAÇÃO PARA O INPUT DATE
     if (dados.ativacao) {
       const dataFormatada = formatarDataParaInputDate(dados.ativacao);
+      console.log("📅 Data ativação formatada:", dados.ativacao, "→", dataFormatada);
       preencherCampoSeExistir('ativacao', dataFormatada);
     } else {
       preencherCampoSeExistir('ativacao', '');
@@ -5973,9 +6153,16 @@ function preencherDadosCadastro(dados) {
     preencherCampoSeExistir('link', dados.link);
     preencherCampoSeExistir('situacao', dados.situacao || 'NOVO REGISTRO');
     
+    // Preencher campos financeiros
     preencherCampoSeExistir('mensalidade', formatarMoedaParaInput(dados.mensalidade));
     preencherCampoSeExistir('mensalidade_sim', formatarMoedaParaInput(dados.mensalidade_sim));
-    preencherCampoSeExistir('adesao', dados.adesao === 'Isento' || dados.adesao === 0 ? 'R$ 0,00' : formatarMoedaParaInput(dados.adesao));
+    
+    // Tratar adesão (pode ser "Isento" ou valor)
+    if (dados.adesao === 'Isento' || dados.adesao === 0 || dados.adesao === '0') {
+      preencherCampoSeExistir('adesao', 'R$ 0,00');
+    } else {
+      preencherCampoSeExistir('adesao', formatarMoedaParaInput(dados.adesao));
+    }
     
     // CORREÇÃO: QUANDO É SITUAÇÃO FINAL, PREENCHER ETAPA COM A SITUAÇÃO
     const situacaoUpper = dados.situacao ? dados.situacao.toUpperCase().trim() : '';
@@ -5984,67 +6171,88 @@ function preencherDadosCadastro(dados) {
                            situacaoUpper === 'DESCREDENCIADO' || 
                            situacaoUpper === 'DESISTIU';
     
+    console.log("📊 Situação:", dados.situacao, "É final?", ehSituacaoFinal);
+    
     if (ehSituacaoFinal) {
+      console.log("⚡ Preenchendo etapa com situação:", dados.situacao);
       preencherCampoSeExistir('inputEtapaSearch', dados.situacao);
     } else {
+      console.log("⚡ Preenchendo etapa normal:", dados.etapa);
       preencherCampoSeExistir('inputEtapaSearch', dados.etapa);
     }
     
+    // Preencher fornecedor com MDR/TIS/Rebate
     preencherFornecedorComMDRTIS(dados);
 
+    // Atualizar ID do cadastro atual
     cadastroAtualId = dados.id;
+    console.log("📝 Cadastro atual ID:", cadastroAtualId);
     
+    // Configurar botões
     const btnCadastrar = document.getElementById('btnCadastrar');
     const btnAtualizar = document.getElementById('btnAtualizar');
     
-    if (btnCadastrar) btnCadastrar.style.display = 'none';
-    if (btnAtualizar) btnAtualizar.style.display = 'block';
+    if (btnCadastrar) {
+      btnCadastrar.style.display = 'none';
+      console.log("🔘 Botão Cadastrar ocultado");
+    }
+    
+    if (btnAtualizar) {
+      btnAtualizar.style.display = 'block';
+      console.log("🔘 Botão Atualizar mostrado");
+    }
 
+    // ✅ MOSTRAR O BOTÃO "APLICAR A TODOS"
+    mostrarBotaoAplicarATodos();
+    console.log("🔘 Botão Aplicar a Todos mostrado");
+    
+    // ✅ ATUALIZAR O TÍTULO DO MODO APLICAR A TODOS
+    const titulo = document.getElementById('tituloAplicarTodos');
+    if (titulo && dados.cnpj) {
+        titulo.style.display = 'block';
+        titulo.innerHTML = `
+            <div style="background: linear-gradient(135deg, #FF6B35 0%, #FF8E35 100%); color: white; padding: 8px 12px; border-radius: 6px; margin-top: 8px; text-align: center;">
+                <i class="fas fa-copy"></i> <strong>MODO APLICAR A TODOS</strong> - CNPJ: ${dados.cnpj}
+                <br><small>Selecione os campos que deseja aplicar a todos os registros deste CNPJ</small>
+            </div>
+        `;
+        console.log("🏷️ Título Aplicar a Todos atualizado");
+    }
+    
+    // Adicionar classe de modo aplicar todos
+    document.getElementById('cardCadastro').classList.add('modo-aplicar-todos');
+    console.log("🎨 Modo Aplicar a Todos ativado");
+
+    // ✅ CONFIGURAR CNPJ PARA APLICAR A TODOS
+    if (dados.cnpj) {
+      cnpjAtualParaAplicar = dados.cnpj;
+      console.log("📋 CNPJ para aplicar a todos:", cnpjAtualParaAplicar);
+    }
+
+    // ✅ ATUALIZAR CHECKBOXES COM OS DADOS ATUAIS
+    setTimeout(() => {
+      // Verificar se algum campo já estava marcado para aplicar a todos
+      const camposCheckboxes = document.querySelectorAll('[data-campo]');
+      camposCheckboxes.forEach(checkbox => {
+        const campoId = checkbox.getAttribute('data-campo');
+        if (camposParaAplicarATodos[campoId]) {
+          checkbox.checked = true;
+          console.log(`✅ Checkbox ${campoId} mantido marcado`);
+        }
+      });
+    }, 100);
+
+    // Rolar para o topo
     setTimeout(() => {
       window.scrollTo({ top: 0, behavior: 'smooth' });
     }, 100);
     
     showMessage('success', '✅ Cadastro carregado para edição!');
+    console.log("✅ PREENCHER DADOS CADASTRO - FINALIZADO");
     
   } catch (error) {
+    console.error("❌ ERRO em preencherDadosCadastro:", error);
     showMessage('error', '❌ Erro ao carregar cadastro: ' + error.message);
-  }
-}
-
-function formatarDataParaInputDate(data) {
-  if (!data) return '';
-  
-  try {
-    // Se já estiver no formato YYYY-MM-DD (input date)
-    if (typeof data === 'string' && /^\d{4}-\d{2}-\d{2}$/.test(data)) {
-      return data;
-    }
-    
-    // Se estiver no formato DD/MM/YYYY
-    if (typeof data === 'string' && data.includes('/')) {
-      const partes = data.split('/');
-      if (partes.length === 3) {
-        const [dia, mes, ano] = partes;
-        // Verificar se é formato brasileiro
-        if (dia.length === 2 && mes.length === 2 && ano.length === 4) {
-          return `${ano}-${mes}-${dia}`;
-        }
-      }
-    }
-    
-    // Se for um objeto Date ou string com GMT
-    const dateObj = new Date(data);
-    if (!isNaN(dateObj.getTime())) {
-      const ano = dateObj.getFullYear();
-      const mes = String(dateObj.getMonth() + 1).padStart(2, '0');
-      const dia = String(dateObj.getDate()).padStart(2, '0');
-      return `${ano}-${mes}-${dia}`;
-    }
-    
-    return '';
-  } catch (error) {
-    console.error('Erro ao formatar data para input:', error);
-    return '';
   }
 }
 
@@ -7020,6 +7228,87 @@ function mostrarPopupAtualizando() {
 
 function esconderPopupAtualizando() {
   document.getElementById('popupAtualizando').style.display = 'none';
+}
+
+
+
+// 🔥 FUNÇÃO PARA APLICAR OBSERVAÇÃO A TODOS OS REGISTROS COM MESMO CNPJ
+function aplicarObservacaoATodosMesmoCNPJ(cnpj, observacao) {
+  try {
+    console.log("🎯 APLICAR OBSERVAÇÃO A TODOS - INICIANDO");
+    
+    const waitlabelAtual = getWaitlabelAtual();
+    const sheet = getSheetByName(waitlabelAtual);
+    
+    const dadosCompletos = sheet.getDataRange().getValues();
+    const registrosParaAtualizar = [];
+    
+    const cnpjBuscado = cnpj.toString().replace(/\D/g, '');
+    
+    // Encontrar todos os registros com o mesmo CNPJ
+    for (let i = 1; i < dadosCompletos.length; i++) {
+      const linha = dadosCompletos[i];
+      if (!linha[0] || linha[0].toString().trim() === '') continue;
+      
+      const cnpjLinha = linha[COLUNAS.CNPJ]?.toString().replace(/\D/g, '') || '';
+      
+      if (cnpjLinha === cnpjBuscado) {
+        registrosParaAtualizar.push({
+          linhaNumero: i + 1,
+          dadosOriginais: linha
+        });
+      }
+    }
+    
+    console.log(`🔍 Encontrados ${registrosParaAtualizar.length} registros para o CNPJ: ${cnpj}`);
+    
+    if (registrosParaAtualizar.length === 0) {
+      return {
+        success: false,
+        message: "❌ Nenhum registro encontrado com este CNPJ!"
+      };
+    }
+    
+    let registrosAtualizados = 0;
+    
+    // Atualizar observação em todos os registros encontrados
+    for (const registro of registrosParaAtualizar) {
+      const novosDados = [...registro.dadosOriginais];
+      
+      // Atualizar apenas a observação
+      novosDados[COLUNAS.OBSERVACAO] = normalizarTexto(observacao) || '';
+      
+      // Atualizar data da última etapa
+      const novaData = formatarDataBrasilSimples();
+      novosDados[COLUNAS.ULTIMA_ETAPA] = novaData;
+      
+      // Salvar na planilha
+      sheet.getRange(registro.linhaNumero, 1, 1, novosDados.length).setValues([novosDados]);
+      
+      registrosAtualizados++;
+    }
+    
+    SpreadsheetApp.flush();
+    
+    return {
+      success: true,
+      registrosAtualizados: registrosAtualizados,
+      message: `✅ ${registrosAtualizados} registro(s) atualizado(s) com a mesma observação!`
+    };
+    
+  } catch (error) {
+    console.error("❌ ERRO em aplicarObservacaoATodosMesmoCNPJ:", error);
+    return { success: false, message: "❌ Erro: " + error.toString() };
+  }
+}
+
+function normalizarTexto(texto) {
+  if (!texto || typeof texto !== 'string') return texto;
+  return texto
+    .normalize('NFD')
+    .replace(/[\u0300-\u036f]/g, '')
+    .toUpperCase()
+    .trim();
 }
 
 function restaurarFiltros(filtrosSalvos) {
