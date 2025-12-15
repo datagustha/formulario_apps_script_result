@@ -330,6 +330,7 @@
       table-layout: fixed;
     }
     
+    /* 🔥🔥🔥 TABELA ATUALIZADA PARA SIM_FACILITA (14 COLUNAS) */
     .data-table th {
       background: var(--primary); 
       color: white;
@@ -344,26 +345,22 @@
       border-bottom: 2px solid rgba(255,255,255,0.2);
     }
 
-    .data-table th:nth-child(1) {
-      width: 18%;
-      text-align: left !important;
-      padding-left: 12px !important;
-    }
+    /* 🔥🔥🔥 LARGURAS ATUALIZADAS PARA NOVAS COLUNAS */
+    .data-table th:nth-child(1) { width: 15%; }   /* Razão Social */
+    .data-table th:nth-child(2) { width: 10%; }   /* CNPJ */
+    .data-table th:nth-child(3) { width: 9%; }    /* Fornecedor */
+    .data-table th:nth-child(4) { width: 8%; }    /* Situação */
+    .data-table th:nth-child(5) { width: 12%; }   /* Última Etapa */
+    .data-table th:nth-child(6) { width: 7%; }    /* Defasagem */
+    .data-table th:nth-child(7) { width: 8%; }    /* Plano */
+    .data-table th:nth-child(8) { width: 8%; }    /* Mensalidade */
+    .data-table th:nth-child(9) { width: 6%; }    /* Vencimento */
+    .data-table th:nth-child(10) { width: 7%; }   /* Método Pgto */
+    .data-table th:nth-child(11) { width: 8%; }   /* Adesão */
+    .data-table th:nth-child(12) { width: 6%; }   /* Pgto Adesão */
+    .data-table th:nth-child(13) { width: 6%; }   /* Ações */
 
-    .data-table th:nth-child(2) { width: 12%; }
-    .data-table th:nth-child(3) { width: 12%; }
-    .data-table th:nth-child(4) { width: 10%; }
-    .data-table th:nth-child(5) { 
-      width: 14%; 
-      text-align: left !important;
-      padding-left: 12px !important;
-    }
-    .data-table th:nth-child(6) { width: 8%; }
-    .data-table th:nth-child(7) { width: 10%; }
-    .data-table th:nth-child(8) { width: 8%; }
-    .data-table th:nth-child(9) { width: 8%; }
-    .data-table th:nth-child(10) { width: 8%; }
-    
+    /* 🔥🔥🔥 ALINHAMENTO DAS COLUNAS */
     .data-table td {
       padding: 12px 6px !important;
       border-bottom: 1px solid var(--border);
@@ -372,11 +369,13 @@
       height: 100% !important;
     }
 
+    /* Coluna 1: Razão Social (alinhamento à esquerda) */
     .data-table td:nth-child(1) {
       text-align: left !important;
       vertical-align: top !important;
     }
 
+    /* Colunas 2-13: Centralizadas */
     .data-table td:nth-child(2),
     .data-table td:nth-child(3),
     .data-table td:nth-child(4),
@@ -384,29 +383,34 @@
     .data-table td:nth-child(7),
     .data-table td:nth-child(8),
     .data-table td:nth-child(9),
-    .data-table td:nth-child(10) {
+    .data-table td:nth-child(10),
+    .data-table td:nth-child(11),
+    .data-table td:nth-child(12),
+    .data-table td:nth-child(13) {
       text-align: center !important;
       vertical-align: middle !important;
     }
 
+    /* Coluna 5: Última Etapa (alinhamento à esquerda) */
     .data-table td:nth-child(5) {
       text-align: left !important;
       vertical-align: middle !important;
     }
 
+    /* 🔥🔥🔥 CORES ESPECÍFICAS */
     .data-table td:nth-child(7) {
       font-weight: 600;
-      color: var(--success) !important;
+      color: var(--primary) !important; /* PLANO em roxo */
     }
 
     .data-table td:nth-child(8) {
       font-weight: 600;
-      color: var(--sim) !important;
+      color: var(--success) !important; /* MENSALIDADE em verde */
     }
 
-    .data-table td:nth-child(9) {
+    .data-table td:nth-child(11) {
       font-weight: 600;
-      color: var(--info) !important;
+      color: var(--info) !important; /* ADESÃO em azul */
     }
     
     .data-table tbody tr {
@@ -1048,10 +1052,6 @@
       color: var(--success);
     }
 
-    .financeiro-valor.mensalidade-sim {
-      color: var(--sim);
-    }
-
     .financeiro-valor.adesao {
       color: var(--info);
     }
@@ -1342,10 +1342,10 @@
               <option value="nome_fantasia_desc">Nome Fantasia (Z-A)</option>
               <option value="situacao">Situação</option>
               <option value="fornecedor">Fornecedor</option>
+              <option value="plano">Plano (A-Z)</option>
+              <option value="plano_desc">Plano (Z-A)</option>
               <option value="mensalidade">Mensalidade (Maior)</option>
               <option value="mensalidade_asc">Mensalidade (Menor)</option>
-              <option value="mensalidade_sim">Mensalidade SIM (Maior)</option>
-              <option value="mensalidade_sim_asc">Mensalidade SIM (Menor)</option>
               <option value="adesao">Adesão (Maior)</option>
               <option value="adesao_asc">Adesão (Menor)</option>
               <option value="defasagem">Defasagem (Maior)</option>
@@ -1370,22 +1370,25 @@
           <p>Carregando cadastros Sim_Facilita...</p>
         </div>
         
-        <!-- TABELA MAIOR COM MAIS INFORMAÇÕES -->
+        <!-- TABELA ATUALIZADA PARA SIM_FACILITA (13 COLUNAS) -->
         <div class="table-container" id="tableContainer" style="display: none;">
           <div class="table-responsive">
             <table class="data-table" id="tabelaCadastros">
               <thead>
                 <tr>
-                  <th width="18%">Razão Social</th>
-                  <th width="12%">CNPJ</th>
-                  <th width="12%">Fornecedor</th>
-                  <th width="10%">Situação</th>
-                  <th width="14%">Última Etapa</th>
-                  <th width="8%">Defasagem</th>
-                  <th width="10%">Mensalidade</th>
-                  <th width="8%">Mensalidade SIM</th>
+                  <th width="15%">Razão Social</th>
+                  <th width="10%">CNPJ</th>
+                  <th width="9%">Fornecedor</th>
+                  <th width="8%">Situação</th>
+                  <th width="12%">Última Etapa</th>
+                  <th width="7%">Defasagem</th>
+                  <th width="8%">Plano</th>
+                  <th width="8%">Mensalidade</th>
+                  <th width="6%">Vencimento</th>
+                  <th width="7%">Método Pgto</th>
                   <th width="8%">Adesão</th>
-                  <th width="8%">Ações</th>
+                  <th width="6%">Pgto Adesão</th>
+                  <th width="6%">Ações</th>
                 </tr>
               </thead>
               <tbody id="tabelaCadastrosBody">
@@ -1476,6 +1479,11 @@ const etapasDisponiveis = [
 // FORNECEDORES DISPONÍVEIS
 const fornecedoresDisponiveis = [
   "AGIL", "BC", "PARCELEX", "AGORACRED", "AFINZ"
+].sort();
+
+// PLANOS DISPONÍVEIS PARA SIM_FACILITA
+const planosDisponiveis = [
+  "BASIC", "PRO", "PREMIUM", "ENTERPRISE"
 ].sort();
 
 // INICIALIZAÇÃO - CARREGAR FILTROS SALVOS SE EXISTIREM
@@ -1828,299 +1836,12 @@ function aplicarFiltroFornecedores() {
   aplicarTodosFiltros();
 }
 
-// FUNÇÃO CORRIGIDA: ENCONTRAR FORNECEDOR MAIS ATRASADO COM PRIORIDADE
-function encontrarFornecedorMaisAntigo(lojasDoCNPJ) {
-  if (!lojasDoCNPJ || lojasDoCNPJ.length === 0) {
-    return { fornecedor: 'N/A', data: 'N/A', etapa: 'N/A', dias: 9999 };
-  }
-  
-  // Primeiro, verificar se há alguma loja com situação prioritária
-  const situacoesPrioritarias = ['EM ANDAMENTO', 'NOVO REGISTRO'];
-  
-  // Buscar por situações prioritárias
-  for (const situacao of situacoesPrioritarias) {
-    const lojasPrioritarias = lojasDoCNPJ.filter(loja => 
-      loja.situacao && loja.situacao.toUpperCase() === situacao
-    );
-    
-    if (lojasPrioritarias.length > 0) {
-      // Entre as prioritárias, pegar a mais antiga
-      const lojasComData = lojasPrioritarias.filter(loja => {
-        if (!loja.ultima_etapa || loja.ultima_etapa === 'N/A') return false;
-        try {
-          const data = new Date(loja.ultima_etapa.split('/').reverse().join('-'));
-          return !isNaN(data.getTime());
-        } catch (error) {
-          return false;
-        }
-      });
-      
-      if (lojasComData.length > 0) {
-        const lojaMaisAntiga = lojasComData.reduce((maisAntiga, atual) => {
-          try {
-            const dataMaisAntiga = new Date(maisAntiga.ultima_etapa.split('/').reverse().join('-'));
-            const dataAtual = new Date(atual.ultima_etapa.split('/').reverse().join('-'));
-            return dataAtual < dataMaisAntiga ? atual : maisAntiga;
-          } catch (error) {
-            return maisAntiga;
-          }
-        });
-        
-        const diasDefasagem = calcularDiasDefasagem(lojaMaisAntiga.ultima_etapa);
-        return {
-          fornecedor: lojaMaisAntiga.fornecedor,
-          data: lojaMaisAntiga.ultima_etapa,
-          etapa: lojaMaisAntiga.etapa,
-          dias: diasDefasagem,
-          situacao: lojaMaisAntiga.situacao
-        };
-      } else if (lojasPrioritarias.length > 0) {
-        // Se não tem data válida, retorna a primeira prioritária
-        return {
-          fornecedor: lojasPrioritarias[0].fornecedor,
-          data: 'N/A',
-          etapa: lojasPrioritarias[0].etapa || 'N/A',
-          dias: 9999,
-          situacao: lojasPrioritarias[0].situacao
-        };
-      }
-    }
-  }
-  
-  // Se não há situações prioritárias, usar a lógica original (mais antiga)
-  const lojasComData = lojasDoCNPJ.filter(loja => {
-    if (!loja.ultima_etapa || loja.ultima_etapa === 'N/A') return false;
-    try {
-      const data = new Date(loja.ultima_etapa.split('/').reverse().join('-'));
-      return !isNaN(data.getTime());
-    } catch (error) {
-      return false;
-    }
-  });
-  
-  if (lojasComData.length > 0) {
-    const lojaMaisAntiga = lojasComData.reduce((maisAntiga, atual) => {
-      try {
-        const dataMaisAntiga = new Date(maisAntiga.ultima_etapa.split('/').reverse().join('-'));
-        const dataAtual = new Date(atual.ultima_etapa.split('/').reverse().join('-'));
-        return dataAtual < dataMaisAntiga ? atual : maisAntiga;
-      } catch (error) {
-        return maisAntiga;
-      }
-    });
-    
-    const diasDefasagem = calcularDiasDefasagem(lojaMaisAntiga.ultima_etapa);
-    return {
-      fornecedor: lojaMaisAntiga.fornecedor,
-      data: lojaMaisAntiga.ultima_etapa,
-      etapa: lojaMaisAntiga.etapa,
-      dias: diasDefasagem,
-      situacao: lojaMaisAntiga.situacao
-    };
-  }
-  
-  // Se não encontrar lojas com data, retorne a primeira loja que tenha etapa
-  const lojaComEtapa = lojasDoCNPJ.find(loja => loja.etapa && loja.etapa !== 'N/A');
-  if (lojaComEtapa) {
-    return {
-      fornecedor: lojaComEtapa.fornecedor,
-      data: 'N/A',
-      etapa: lojaComEtapa.etapa,
-      dias: 9999,
-      situacao: lojaComEtapa.situacao
-    };
-  }
-  
-  // Último recurso: retorne a primeira loja
-  return {
-    fornecedor: lojasDoCNPJ[0].fornecedor,
-    data: 'N/A',
-    etapa: lojasDoCNPJ[0].etapa || 'N/A',
-    dias: 9999,
-    situacao: lojasDoCNPJ[0].situacao
-  };
-}
-
-// FUNÇÃO CORRIGIDA: Calcular defasagem correta por CNPJ
-function calcularDefasagemPorCNPJ(lojasDoCNPJ) {
-  if (!lojasDoCNPJ || lojasDoCNPJ.length === 0) {
-    return { dias: 9999, fornecedor: 'N/A', data: 'N/A', etapa: 'N/A' };
-  }
-  
-  const fornecedorMaisAntigo = encontrarFornecedorMaisAntigo(lojasDoCNPJ);
-  
-  return {
-    dias: fornecedorMaisAntigo.dias,
-    fornecedor: fornecedorMaisAntigo.fornecedor,
-    data: fornecedorMaisAntigo.data,
-    etapa: fornecedorMaisAntigo.etapa
-  };
-}
-
-function carregarCadastros() {
-  console.log("🎯 Carregando cadastros Sim_Facilita...");
-  
-  showLoading();
-  document.getElementById('tableContainer').style.display = 'none';
-
-  // SALVAR FILTROS ATUAIS ANTES DE RECARREGAR
-  const filtrosSalvos = {
-    situacaoAtiva: situacaoAtiva,
-    filtrosAtivos: {...filtrosAtivos},
-    etapasSelecionados: [...etapasSelecionados],
-    fornecedoresSelecionados: [...fornecedoresSelecionados],
-    pesquisa: document.getElementById('pesquisaCadastros').value,
-    ordenacao: document.getElementById('ordenacaoCadastros').value
-  };
-
-  // SALVAR NO localStorage PARA GARANTIR PERSISTÊNCIA
-  localStorage.setItem('filtrosSalvos', JSON.stringify(filtrosSalvos));
-
-  google.script.run
-    .withSuccessHandler(function(cadastros) {
-      hideLoading();
-      hideLoadingPopup();
-      
-      console.log("✅ Cadastros Sim_Facilita recebidos:", cadastros);
-      
-      if (cadastros && cadastros.length > 0) {
-        // ORDENAR POR RAZÃO SOCIAL (A-Z) AO CARREGAR
-        const cadastrosOrdenados = cadastros.sort((a, b) => {
-          const nomeA = (a.razao_social || '').toLowerCase();
-          const nomeB = (b.razao_social || '').toLowerCase();
-          return nomeA.localeCompare(nomeB);
-        });
-        
-        todosCadastros = cadastrosOrdenados;
-        cadastrosFiltrados = [...cadastrosOrdenados];
-        
-        // RESTAURAR FILTROS APÓS CARREGAR
-        setTimeout(() => {
-          restaurarFiltros(filtrosSalvos);
-        }, 100);
-        
-        document.getElementById('filtrosContainer').style.display = 'flex';
-        
-        showMessage('success', `✅ ${cadastros.length} cadastros Sim_Facilita carregados!`);
-      } else {
-        document.getElementById('tabelaCadastrosBody').innerHTML = `
-          <tr>
-            <td colspan="10" style="text-align: center; padding: 40px;">
-              <i class="fas fa-inbox" style="font-size: 3rem; color: var(--gray); margin-bottom: 15px;"></i>
-              <h3>Nenhum cadastro encontrado</h3>
-              <p>Não há cadastros no sistema Sim_Facilita.</p>
-            </td>
-          </tr>
-        `;
-        document.getElementById('tableContainer').style.display = 'block';
-        showMessage('info', '📝 Nenhum cadastro Sim_Facilita encontrado.');
-      }
-    })
-    .withFailureHandler(function(error) {
-      hideLoading();
-      hideLoadingPopup();
-      console.error("❌ Erro ao carregar cadastros Sim_Facilita:", error);
-      showMessage('error', '❌ Erro ao carregar cadastros Sim_Facilita: ' + error.message);
-      
-      // TENTAR RESTAURAR FILTROS MESMO COM ERRO
-      try {
-        const filtrosSalvos = JSON.parse(localStorage.getItem('filtrosSalvos') || '{}');
-        restaurarFiltros(filtrosSalvos);
-      } catch (e) {
-        console.error("Erro ao restaurar filtros:", e);
-      }
-    })
-    .buscarTodosCadastrosComWaitlabel(waitlabelAtual);
-}
-
-function restaurarFiltros(filtrosSalvos) {
-  if (!filtrosSalvos) {
-    // TENTAR RECUPERAR DO localStorage SE NÃO FOR PASSADO
-    try {
-      filtrosSalvos = JSON.parse(localStorage.getItem('filtrosSalvos') || '{}');
-    } catch (e) {
-      console.error("Erro ao recuperar filtros do localStorage:", e);
-      return;
-    }
-  }
-  
-  console.log("🔄 Restaurando filtros:", filtrosSalvos);
-  
-  // Restaurar variáveis globais
-  situacaoAtiva = filtrosSalvos.situacaoAtiva || 'all';
-  filtrosAtivos = {...(filtrosSalvos.filtrosAtivos || {})};
-  etapasSelecionados = [...(filtrosSalvos.etapasSelecionados || [])];
-  fornecedoresSelecionados = [...(filtrosSalvos.fornecedoresSelecionados || [])];
-  
-  // Restaurar elementos da interface
-  if (document.getElementById('pesquisaCadastros')) {
-    document.getElementById('pesquisaCadastros').value = filtrosSalvos.pesquisa || '';
-  }
-  
-  if (document.getElementById('ordenacaoCadastros')) {
-    document.getElementById('ordenacaoCadastros').value = filtrosSalvos.ordenacao || 'razao_social';
-  }
-  
-  // Atualizar botões de situação
-  document.querySelectorAll('.filtro-btn').forEach(btn => {
-    btn.classList.remove('active');
-  });
-  
-  const btnAtivo = document.querySelector(`.filtro-btn[data-situacao="${situacaoAtiva}"]`);
-  if (btnAtivo) {
-    btnAtivo.classList.add('active');
-  } else {
-    // Fallback para "Todos"
-    const btnTodos = document.querySelector('.filtro-btn[data-situacao="all"]');
-    if (btnTodos) {
-      btnTodos.classList.add('active');
-      situacaoAtiva = 'all';
-    }
-  }
-  
-  // Atualizar tags selecionadas
-  atualizarEtapasSelecionados();
-  atualizarFornecedoresSelecionados();
-  
-  // Reaplicar os filtros
-  aplicarTodosFiltros();
-  
-  // Reordenar se necessário
-  if (filtrosSalvos.ordenacao) {
-    setTimeout(() => {
-      ordenarCadastros();
-    }, 150);
-  }
-}
-
-// AGRUPAR CADASTROS POR CNPJ - AGORA CONTANDO APENAS CNPJs ÚNICOS
-function agruparCadastrosPorCNPJ(cadastros) {
-  const agrupados = {};
-  
-  cadastros.forEach(cadastro => {
-    if (!agrupados[cadastro.cnpj]) {
-      agrupados[cadastro.cnpj] = {
-        razao_social: cadastro.razao_social,
-        nome_fantasia: cadastro.nome_fantasia,
-        cnpj: cadastro.cnpj,
-        lojas: []
-      };
-    }
-    
-    agrupados[cadastro.cnpj].lojas.push(cadastro);
-  });
-  
-  return Object.values(agrupados);
-}
-
-// FUNÇÃO criarLinhaTabelaAgrupada COMPLETA - COM A LÓGICA CORRIGIDA
+// 🔥🔥🔥 FUNÇÃO ATUALIZADA: criarLinhaTabelaAgrupada para SIM_FACILITA
 function criarLinhaTabelaAgrupada(grupo) {
   const row = document.createElement('tr');
   
-  // NOVA LÓGICA: Priorizar situações
+  // LÓGICA DE SITUAÇÃO
   const situacoes = grupo.lojas.map(l => l.situacao);
-  
-  // Ordem de prioridade
   let situacaoPrincipal = 'CADASTRADO'; // padrão
   
   if (situacoes.includes('EM ANDAMENTO')) {
@@ -2156,7 +1877,7 @@ function criarLinhaTabelaAgrupada(grupo) {
   // VERIFICAR SE DEVE MOSTRAR HORA E FORNECEDOR
   const mostrarHoraFornecedor = situacaoPrincipal === 'EM ANDAMENTO' || situacaoPrincipal === 'NOVO REGISTRO';
 
-  // LÓGICA PARA ÚLTIMA ETAPA - MOSTRAR HORA/FORNECEDOR APENAS PARA EM ANDAMENTO E NOVO REGISTRO
+  // LÓGICA PARA ÚLTIMA ETAPA
   let ultimaEtapaInfo = '';
   
   if (dataHoraCorrigida !== 'N/A' && etapaMaisAntiga !== 'N/A') {
@@ -2164,7 +1885,6 @@ function criarLinhaTabelaAgrupada(grupo) {
       const [dataPart, horaPart] = dataHoraCorrigida.split(' ');
       
       if (mostrarHoraFornecedor) {
-        // MOSTRAR ETAPA, HORA E FORNECEDOR (EM ANDAMENTO e NOVO REGISTRO)
         ultimaEtapaInfo = `
           <div style="font-size: 0.75rem;">
             <div style="font-weight: 500; margin-bottom: 2px;">${etapaMaisAntiga}</div>
@@ -2177,7 +1897,6 @@ function criarLinhaTabelaAgrupada(grupo) {
           </div>
         `;
       } else {
-        // MOSTRAR APENAS A ETAPA (outras situações)
         ultimaEtapaInfo = `
           <div style="font-size: 0.75rem;">
             <div style="font-weight: 500; margin-bottom: 2px;">${etapaMaisAntiga}</div>
@@ -2189,7 +1908,6 @@ function criarLinhaTabelaAgrupada(grupo) {
       }
     } else {
       if (mostrarHoraFornecedor) {
-        // MOSTRAR ETAPA E FORNECEDOR (sem hora válida)
         ultimaEtapaInfo = `
           <div style="font-size: 0.75rem;">
             <div style="font-weight: 500; margin-bottom: 2px;">${etapaMaisAntiga}</div>
@@ -2200,7 +1918,6 @@ function criarLinhaTabelaAgrupada(grupo) {
           </div>
         `;
       } else {
-        // MOSTRAR APENAS A ETAPA
         ultimaEtapaInfo = `
           <div style="font-size: 0.75rem;">
             <div style="font-weight: 500; margin-bottom: 2px;">${etapaMaisAntiga}</div>
@@ -2211,7 +1928,6 @@ function criarLinhaTabelaAgrupada(grupo) {
     }
   } else {
     if (mostrarHoraFornecedor) {
-      // MOSTRAR ETAPA E FORNECEDOR (sem data)
       ultimaEtapaInfo = `
         <div style="font-size: 0.75rem;">
           <div style="font-weight: 500; margin-bottom: 2px;">${etapaMaisAntiga}</div>
@@ -2222,7 +1938,6 @@ function criarLinhaTabelaAgrupada(grupo) {
         </div>
       `;
     } else {
-      // MOSTRAR APENAS A ETAPA
       ultimaEtapaInfo = `
         <div style="font-size: 0.75rem;">
           <div style="font-weight: 500; margin-bottom: 2px;">${etapaMaisAntiga}</div>
@@ -2232,7 +1947,7 @@ function criarLinhaTabelaAgrupada(grupo) {
     }
   }
 
-  // CORREÇÃO: SÓ MOSTRAR DEFASAGEM SE HOUVER LOJA EM ANDAMENTO
+  // DEFASAGEM
   const temLojaEmAndamento = grupo.lojas.some(loja => 
     loja.situacao && loja.situacao.toUpperCase() === 'EM ANDAMENTO'
   );
@@ -2266,30 +1981,49 @@ function criarLinhaTabelaAgrupada(grupo) {
     `;
   }
 
-  // NOVO: PEGAR AS INFORMAÇÕES FINANCEIRAS DO CNPJ (HERDANDO VALORES DE OUTROS FORNECEDORES)
+  // 🔥🔥🔥 DADOS ESPECÍFICOS DO SIM_FACILITA
+  let planoCNPJ = 'N/A';
   let mensalidadeCNPJ = 'R$ 0,00';
-  let mensalidadeSimCNPJ = 'R$ 0,00';
+  let vencimentoCNPJ = 'N/A';
+  let metodoPgtoCNPJ = 'N/A';
   let adesaoCNPJ = 'Isento';
+  let pgtoAdesaoCNPJ = 'N/A';
   
-  // Buscar valores de TODAS as lojas do CNPJ, herdando valores de outros fornecedores
+  // Buscar valores de TODAS as lojas do CNPJ
   for (const loja of grupo.lojas) {
-    // MENSALIDADE: Pega o primeiro valor não-zero que encontrar
+    // PLANO: Pega o primeiro valor não-vazio
+    if (planoCNPJ === 'N/A' && loja.plano && loja.plano.trim() !== '') {
+      planoCNPJ = loja.plano.toUpperCase();
+    }
+    
+    // MENSALIDADE: Pega o primeiro valor não-zero
     if (mensalidadeCNPJ === 'R$ 0,00' && loja.mensalidade && loja.mensalidade !== 'R$ 0,00' && loja.mensalidade !== 0) {
       mensalidadeCNPJ = formatarMoedaParaInput(loja.mensalidade);
     }
     
-    // MENSALIDADE SIM: Pega o primeiro valor não-zero que encontrar (HERANÇA)
-    if (mensalidadeSimCNPJ === 'R$ 0,00' && loja.mensalidade_sim && loja.mensalidade_sim !== 'R$ 0,00' && loja.mensalidade_sim !== 0) {
-      mensalidadeSimCNPJ = formatarMoedaParaInput(loja.mensalidade_sim);
+    // VENCIMENTO: Pega o primeiro valor não-vazio
+    if (vencimentoCNPJ === 'N/A' && loja.vencimento && loja.vencimento.trim() !== '') {
+      vencimentoCNPJ = loja.vencimento;
     }
     
-    // ADESÃO: Pega o primeiro valor não-zero que encontrar (HERANÇA)
+    // MÉTODO PAGAMENTO: Pega o primeiro valor não-vazio
+    if (metodoPgtoCNPJ === 'N/A' && loja.metodo_pgto && loja.metodo_pgto.trim() !== '') {
+      metodoPgtoCNPJ = loja.metodo_pgto.toUpperCase();
+    }
+    
+    // ADESÃO: Pega o primeiro valor não-zero
     if (adesaoCNPJ === 'Isento' && loja.adesao && loja.adesao !== 'Isento' && loja.adesao !== 0) {
       adesaoCNPJ = formatarMoedaParaInput(loja.adesao);
     }
     
+    // PAGAMENTO ADESÃO: Pega o primeiro valor não-vazio
+    if (pgtoAdesaoCNPJ === 'N/A' && loja.pgto_adesao && loja.pgto_adesao.trim() !== '') {
+      pgtoAdesaoCNPJ = formatarDataParaExibicao(loja.pgto_adesao);
+    }
+    
     // Se já encontrou todos os valores, pode parar
-    if (mensalidadeCNPJ !== 'R$ 0,00' && mensalidadeSimCNPJ !== 'R$ 0,00' && adesaoCNPJ !== 'Isento') {
+    if (planoCNPJ !== 'N/A' && mensalidadeCNPJ !== 'R$ 0,00' && vencimentoCNPJ !== 'N/A' && 
+        metodoPgtoCNPJ !== 'N/A' && adesaoCNPJ !== 'Isento' && pgtoAdesaoCNPJ !== 'N/A') {
       break;
     }
   }
@@ -2319,14 +2053,23 @@ function criarLinhaTabelaAgrupada(grupo) {
       ${ultimaEtapaInfo}
     </td>
     ${defasagemHTML}
+    <td style="font-weight: 600; color: var(--primary); text-align: center;">
+      ${planoCNPJ}
+    </td>
     <td style="font-weight: 600; color: var(--success); text-align: center;">
       ${mensalidadeCNPJ}
     </td>
-    <td style="font-weight: 600; color: var(--sim); text-align: center;">
-      ${mensalidadeSimCNPJ}
+    <td style="font-weight: 600; color: var(--warning); text-align: center;">
+      ${vencimentoCNPJ}
+    </td>
+    <td style="font-weight: 600; color: var(--info); text-align: center;">
+      ${metodoPgtoCNPJ}
     </td>
     <td style="font-weight: 600; color: var(--info); text-align: center;">
       ${adesaoCNPJ}
+    </td>
+    <td style="font-weight: 600; color: var(--dark); text-align: center;">
+      ${pgtoAdesaoCNPJ}
     </td>
     <td style="text-align: center;">
       <button class="btn btn-info btn-sm btn-visualizar-compact" onclick="verTodosFornecedores('${grupo.cnpj}')" title="Visualizar Todos">
@@ -2338,7 +2081,7 @@ function criarLinhaTabelaAgrupada(grupo) {
   return row;
 }
 
-// EXIBIR TABELA AGRUPADA
+// 🔥🔥🔥 FUNÇÃO ATUALIZADA: exibirTabelaCadastros para SIM_FACILITA
 function exibirTabelaCadastros() {
   const tabelaBody = document.getElementById('tabelaCadastrosBody');
   const loading = document.getElementById('loadingCadastros');
@@ -2349,7 +2092,7 @@ function exibirTabelaCadastros() {
   if (cadastrosFiltrados.length === 0) {
     tabelaBody.innerHTML = `
       <tr>
-        <td colspan="10" style="text-align: center; padding: 40px;">
+        <td colspan="13" style="text-align: center; padding: 40px;">
           <i class="fas fa-search" style="font-size: 3rem; color: var(--gray); margin-bottom: 15px;"></i>
           <h3>Nenhum resultado encontrado</h3>
           <p>Tente alterar os filtros de pesquisa.</p>
@@ -2359,7 +2102,7 @@ function exibirTabelaCadastros() {
   } else {
     const cadastrosAgrupados = agruparCadastrosPorCNPJ(cadastrosFiltrados);
     
-    // ATUALIZAR CONTADOR - AGORA CONTA CNPJs ÚNICOS
+    // ATUALIZAR CONTADOR
     atualizarContadorCNPJs(cadastrosAgrupados.length);
     
     cadastrosAgrupados.forEach(grupo => {
@@ -2442,7 +2185,9 @@ function aplicarTodosFiltros() {
       (cadastro.nome_fantasia && cadastro.nome_fantasia.toLowerCase().includes(filtrosAtivos.pesquisa)) ||
       (cadastro.cnpj && cadastro.cnpj.includes(filtrosAtivos.pesquisa)) ||
       (cadastro.fornecedor && cadastro.fornecedor.toLowerCase().includes(filtrosAtivos.pesquisa)) ||
-      (cadastro.etapa && cadastro.etapa.toLowerCase().includes(filtrosAtivos.pesquisa))
+      (cadastro.etapa && cadastro.etapa.toLowerCase().includes(filtrosAtivos.pesquisa)) ||
+      (cadastro.plano && cadastro.plano.toLowerCase().includes(filtrosAtivos.pesquisa)) ||
+      (cadastro.metodo_pgto && cadastro.metodo_pgto.toLowerCase().includes(filtrosAtivos.pesquisa))
     );
   }
   
@@ -2452,7 +2197,7 @@ function aplicarTodosFiltros() {
   exibirTabelaCadastros();
 }
 
-// ORDENAÇÃO
+// ORDENAÇÃO ATUALIZADA PARA SIM_FACILITA
 function ordenarCadastros() {
   const criterio = document.getElementById('ordenacaoCadastros').value;
   
@@ -2478,30 +2223,22 @@ function ordenarCadastros() {
         const fornecedorA = a.lojas[0]?.fornecedor || '';
         const fornecedorB = b.lojas[0]?.fornecedor || '';
         return fornecedorA.localeCompare(fornecedorB);
-      case 'defasagem':
-        const defasagemA = calcularDefasagemParaOrdenacao(a.lojas);
-        const defasagemB = calcularDefasagemParaOrdenacao(b.lojas);
-        return defasagemB - defasagemA;
-      case 'defasagem_asc':
-        const defasagemAAsc = calcularDefasagemParaOrdenacao(a.lojas);
-        const defasagemBAsc = calcularDefasagemParaOrdenacao(b.lojas);
-        return defasagemAAsc - defasagemBAsc;
+      case 'plano':
+        const planoA = getPlanoParaOrdenacao(a.lojas);
+        const planoB = getPlanoParaOrdenacao(b.lojas);
+        return planoA.localeCompare(planoB);
+      case 'plano_desc':
+        const planoADesc = getPlanoParaOrdenacao(a.lojas);
+        const planoBDesc = getPlanoParaOrdenacao(b.lojas);
+        return planoBDesc.localeCompare(planoADesc);
       case 'mensalidade':
-        const mensalidadeA = parseFloat(a.lojas[0]?.mensalidade || 0);
-        const mensalidadeB = parseFloat(b.lojas[0]?.mensalidade || 0);
+        const mensalidadeA = parseFloat(getMensalidadeParaOrdenacao(a.lojas));
+        const mensalidadeB = parseFloat(getMensalidadeParaOrdenacao(b.lojas));
         return mensalidadeB - mensalidadeA;
       case 'mensalidade_asc':
-        const mensalidadeAAsc = parseFloat(a.lojas[0]?.mensalidade || 0);
-        const mensalidadeBAsc = parseFloat(b.lojas[0]?.mensalidade || 0);
+        const mensalidadeAAsc = parseFloat(getMensalidadeParaOrdenacao(a.lojas));
+        const mensalidadeBAsc = parseFloat(getMensalidadeParaOrdenacao(b.lojas));
         return mensalidadeAAsc - mensalidadeBAsc;
-      case 'mensalidade_sim':
-        const mensalidadeSimA = parseFloat(getMensalidadeSimParaOrdenacao(a.lojas));
-        const mensalidadeSimB = parseFloat(getMensalidadeSimParaOrdenacao(b.lojas));
-        return mensalidadeSimB - mensalidadeSimA;
-      case 'mensalidade_sim_asc':
-        const mensalidadeSimAAsc = parseFloat(getMensalidadeSimParaOrdenacao(a.lojas));
-        const mensalidadeSimBAsc = parseFloat(getMensalidadeSimParaOrdenacao(b.lojas));
-        return mensalidadeSimAAsc - mensalidadeSimBAsc;
       case 'adesao':
         const adesaoA = a.lojas[0]?.adesao === 'Isento' || a.lojas[0]?.adesao === 0 ? 0 : parseFloat(a.lojas[0]?.adesao || 0);
         const adesaoB = b.lojas[0]?.adesao === 'Isento' || b.lojas[0]?.adesao === 0 ? 0 : parseFloat(b.lojas[0]?.adesao || 0);
@@ -2510,6 +2247,14 @@ function ordenarCadastros() {
         const adesaoAAsc = a.lojas[0]?.adesao === 'Isento' || a.lojas[0]?.adesao === 0 ? 0 : parseFloat(a.lojas[0]?.adesao || 0);
         const adesaoBAsc = b.lojas[0]?.adesao === 'Isento' || b.lojas[0]?.adesao === 0 ? 0 : parseFloat(b.lojas[0]?.adesao || 0);
         return adesaoAAsc - adesaoBAsc;
+      case 'defasagem':
+        const defasagemA = calcularDefasagemParaOrdenacao(a.lojas);
+        const defasagemB = calcularDefasagemParaOrdenacao(b.lojas);
+        return defasagemB - defasagemA;
+      case 'defasagem_asc':
+        const defasagemAAsc = calcularDefasagemParaOrdenacao(a.lojas);
+        const defasagemBAsc = calcularDefasagemParaOrdenacao(b.lojas);
+        return defasagemAAsc - defasagemBAsc;
       default:
         return 0;
     }
@@ -2518,13 +2263,24 @@ function ordenarCadastros() {
   exibirTabelaCadastrosAgrupada(cadastrosAgrupados, 'Cadastros Ordenados');
 }
 
-function getMensalidadeSimParaOrdenacao(lojas) {
+// 🔥🔥🔥 NOVA FUNÇÃO: getPlanoParaOrdenacao
+function getPlanoParaOrdenacao(lojas) {
   for (const loja of lojas) {
-    if (loja.mensalidade_sim && loja.mensalidade_sim !== 'R$ 0,00' && loja.mensalidade_sim !== 0) {
-      if (typeof loja.mensalidade_sim === 'string') {
-        return loja.mensalidade_sim.replace('R$', '').replace('.', '').replace(',', '.').trim();
+    if (loja.plano && loja.plano.trim() !== '' && loja.plano !== 'N/A') {
+      return loja.plano.toUpperCase();
+    }
+  }
+  return '';
+}
+
+// 🔥🔥🔥 NOVA FUNÇÃO: getMensalidadeParaOrdenacao
+function getMensalidadeParaOrdenacao(lojas) {
+  for (const loja of lojas) {
+    if (loja.mensalidade && loja.mensalidade !== 'R$ 0,00' && loja.mensalidade !== 0) {
+      if (typeof loja.mensalidade === 'string') {
+        return loja.mensalidade.replace('R$', '').replace('.', '').replace(',', '.').trim();
       }
-      return loja.mensalidade_sim;
+      return loja.mensalidade;
     }
   }
   return 0;
@@ -2540,7 +2296,7 @@ function exibirTabelaCadastrosAgrupada(cadastrosAgrupados, titulo) {
   if (cadastrosAgrupados.length === 0) {
     tabelaBody.innerHTML = `
       <tr>
-        <td colspan="10" style="text-align: center; padding: 40px;">
+        <td colspan="13" style="text-align: center; padding: 40px;">
           <i class="fas fa-search" style="font-size: 3rem; color: var(--gray); margin-bottom: 15px;"></i>
           <h3>Nenhum resultado encontrado</h3>
           <p>Tente alterar os filtros de pesquisa.</p>
@@ -2595,25 +2351,48 @@ function exibirModalFornecedores(cnpj, lojas) {
     
     let lojasHTML = '';
     
+    // 🔥🔥🔥 COLETAR DADOS DO CNPJ PARA SIM_FACILITA
+    let planoCNPJ = 'N/A';
     let mensalidadeCNPJ = 'R$ 0,00';
-    let mensalidadeSimCNPJ = 'R$ 0,00';
+    let vencimentoCNPJ = 'N/A';
+    let metodoPgtoCNPJ = 'N/A';
     let adesaoCNPJ = 'Isento';
+    let pgtoAdesaoCNPJ = 'N/A';
     
     if (lojas && lojas.length > 0) {
         for (const loja of lojas) {
+            // PLANO: Pega o primeiro valor não-vazio
+            if (planoCNPJ === 'N/A' && loja.plano && loja.plano.trim() !== '') {
+                planoCNPJ = loja.plano.toUpperCase();
+            }
+            
+            // MENSALIDADE: Pega o primeiro valor não-zero
             if (mensalidadeCNPJ === 'R$ 0,00' && loja.mensalidade && loja.mensalidade !== 'R$ 0,00' && loja.mensalidade !== 0) {
                 mensalidadeCNPJ = formatarMoedaParaInput(loja.mensalidade);
             }
             
-            if (mensalidadeSimCNPJ === 'R$ 0,00' && loja.mensalidade_sim && loja.mensalidade_sim !== 'R$ 0,00' && loja.mensalidade_sim !== 0) {
-                mensalidadeSimCNPJ = formatarMoedaParaInput(loja.mensalidade_sim);
+            // VENCIMENTO: Pega o primeiro valor não-vazio
+            if (vencimentoCNPJ === 'N/A' && loja.vencimento && loja.vencimento.trim() !== '') {
+                vencimentoCNPJ = loja.vencimento;
             }
             
+            // MÉTODO PAGAMENTO: Pega o primeiro valor não-vazio
+            if (metodoPgtoCNPJ === 'N/A' && loja.metodo_pgto && loja.metodo_pgto.trim() !== '') {
+                metodoPgtoCNPJ = loja.metodo_pgto.toUpperCase();
+            }
+            
+            // ADESÃO: Pega o primeiro valor não-zero
             if (adesaoCNPJ === 'Isento' && loja.adesao && loja.adesao !== 'Isento' && loja.adesao !== 0) {
                 adesaoCNPJ = formatarMoedaParaInput(loja.adesao);
             }
             
-            if (mensalidadeCNPJ !== 'R$ 0,00' && mensalidadeSimCNPJ !== 'R$ 0,00' && adesaoCNPJ !== 'Isento') {
+            // PAGAMENTO ADESÃO: Pega o primeiro valor não-vazio
+            if (pgtoAdesaoCNPJ === 'N/A' && loja.pgto_adesao && loja.pgto_adesao.trim() !== '') {
+                pgtoAdesaoCNPJ = formatarDataParaExibicao(loja.pgto_adesao);
+            }
+            
+            if (planoCNPJ !== 'N/A' && mensalidadeCNPJ !== 'R$ 0,00' && vencimentoCNPJ !== 'N/A' && 
+                metodoPgtoCNPJ !== 'N/A' && adesaoCNPJ !== 'Isento' && pgtoAdesaoCNPJ !== 'N/A') {
                 break;
             }
         }
@@ -2649,42 +2428,62 @@ function exibirModalFornecedores(cnpj, lojas) {
     </span>
               </div>
               
-              <div class="modal-fornecedor-info-grid" style="display: grid; grid-template-columns: repeat(4, 1fr); gap: 12px; margin-bottom: 15px;">
+              <!-- 🔥🔥🔥 SEÇÃO DE DADOS ESPECÍFICOS DO SIM_FACILITA -->
+              <div class="modal-fornecedor-info-grid" style="display: grid; grid-template-columns: repeat(6, 1fr); gap: 12px; margin-bottom: 15px;">
                 <div class="modal-info-item" style="display: flex; flex-direction: column; gap: 5px; padding: 10px; background: white; border-radius: 8px; border: 1px solid var(--border); box-shadow: 0 2px 5px rgba(0,0,0,0.05);">
                   <div style="display: flex; align-items: center; gap: 8px;">
-                    <div class="info-icon" style="font-size: 1.2rem; color: var(--primary);">📅</div>
-                    <span class="modal-info-label" style="font-size: 0.8rem; color: var(--gray);">Data Ativação</span>
+                    <div class="info-icon" style="font-size: 1.2rem; color: var(--primary);">📋</div>
+                    <span class="modal-info-label" style="font-size: 0.8rem; color: var(--gray);">Plano</span>
                   </div>
-                  <span class="modal-info-value" style="font-weight: 600; color: var(--success); font-size: 0.9rem;">${formatarDataParaExibicao(loja.ativacao) || 'N/A'}</span>
+                  <span class="modal-info-value" style="font-weight: 600; color: var(--primary); font-size: 0.9rem;">${loja.plano || 'N/A'}</span>
                 </div>
                 
                 <div class="modal-info-item" style="display: flex; flex-direction: column; gap: 5px; padding: 10px; background: white; border-radius: 8px; border: 1px solid var(--border); box-shadow: 0 2px 5px rgba(0,0,0,0.05);">
                   <div style="display: flex; align-items: center; gap: 8px;">
-                    <div class="info-icon" style="font-size: 1.2rem; color: var(--primary);">📄</div>
-                    <span class="modal-info-label" style="font-size: 0.8rem; color: var(--gray);">Contrato Enviado</span>
+                    <div class="info-icon" style="font-size: 1.2rem; color: var(--success);">💰</div>
+                    <span class="modal-info-label" style="font-size: 0.8rem; color: var(--gray);">Mensalidade</span>
                   </div>
-                  <span class="modal-info-value" style="font-weight: 600; color: var(--dark); font-size: 0.9rem;">${loja.contrato_enviado || 'N/A'}</span>
-                </div>
-                
-                <div class="modal-info-item" style="display: flex; flex-direction: column; gap: 5px; padding: 10px; background: white; border-radius: 8px; border: 1px solid var(--border); box-shadow: 0 2px 5px rgba(0,0,0,0.05);">
-                  <div style="display: flex; align-items: center; gap: 8px;">
-                    <div class="info-icon" style="font-size: 1.2rem; color: var(--primary);">✍️</div>
-                    <span class="modal-info-label" style="font-size: 0.8rem; color: var(--gray);">Contrato Assinado</span>
-                  </div>
-                  <span class="modal-info-value" style="font-weight: 600; color: var(--dark); font-size: 0.9rem;">${loja.contrato_assinado || 'N/A'}</span>
-                </div>
-                
-                <div class="modal-info-item" style="display: flex; flex-direction: column; gap: 5px; padding: 10px; background: white; border-radius: 8px; border: 1px solid var(--border); box-shadow: 0 2px 5px rgba(0,0,0,0.05);">
-                  <div style="display: flex; align-items: center; gap: 8px;">
-                    <div class="info-icon" style="font-size: 1.2rem; color: var(--primary);">🔗</div>
-                    <span class="modal-info-label" style="font-size: 0.8rem; color: var(--gray);">Link</span>
-                  </div>
-                  <span class="modal-info-value" style="font-weight: 600; color: var(--primary); font-size: 0.9rem; word-break: break-all;">
-                    ${loja.link ? `<a href="${loja.link}" target="_blank" style="color: var(--primary); text-decoration: none;">Ver Link</a>` : 'N/A'}
+                  <span class="modal-info-value" style="font-weight: 600; color: var(--success); font-size: 0.9rem;">
+                    ${formatarMoedaParaInput(loja.mensalidade)}
                   </span>
+                </div>
+                
+                <div class="modal-info-item" style="display: flex; flex-direction: column; gap: 5px; padding: 10px; background: white; border-radius: 8px; border: 1px solid var(--border); box-shadow: 0 2px 5px rgba(0,0,0,0.05);">
+                  <div style="display: flex; align-items: center; gap: 8px;">
+                    <div class="info-icon" style="font-size: 1.2rem; color: var(--warning);">📅</div>
+                    <span class="modal-info-label" style="font-size: 0.8rem; color: var(--gray);">Vencimento</span>
+                  </div>
+                  <span class="modal-info-value" style="font-weight: 600; color: var(--warning); font-size: 0.9rem;">${loja.vencimento || 'N/A'}</span>
+                </div>
+                
+                <div class="modal-info-item" style="display: flex; flex-direction: column; gap: 5px; padding: 10px; background: white; border-radius: 8px; border: 1px solid var(--border); box-shadow: 0 2px 5px rgba(0,0,0,0.05);">
+                  <div style="display: flex; align-items: center; gap: 8px;">
+                    <div class="info-icon" style="font-size: 1.2rem; color: var(--info);">💳</div>
+                    <span class="modal-info-label" style="font-size: 0.8rem; color: var(--gray);">Método Pgto</span>
+                  </div>
+                  <span class="modal-info-value" style="font-weight: 600; color: var(--info); font-size: 0.9rem;">${loja.metodo_pgto || 'N/A'}</span>
+                </div>
+                
+                <div class="modal-info-item" style="display: flex; flex-direction: column; gap: 5px; padding: 10px; background: white; border-radius: 8px; border: 1px solid var(--border); box-shadow: 0 2px 5px rgba(0,0,0,0.05);">
+                  <div style="display: flex; align-items: center; gap: 8px;">
+                    <div class="info-icon" style="font-size: 1.2rem; color: #FF6B35;">🤝</div>
+                    <span class="modal-info-label" style="font-size: 0.8rem; color: var(--gray);">Adesão</span>
+                  </div>
+                  <span class="modal-info-value" style="font-weight: 600; color: #FF6B35; font-size: 0.9rem;">
+                    ${loja.adesao === 'Isento' || loja.adesao === 0 ? 'Isento' : formatarMoedaParaInput(loja.adesao)}
+                  </span>
+                </div>
+                
+                <div class="modal-info-item" style="display: flex; flex-direction: column; gap: 5px; padding: 10px; background: white; border-radius: 8px; border: 1px solid var(--border); box-shadow: 0 2px 5px rgba(0,0,0,0.05);">
+                  <div style="display: flex; align-items: center; gap: 8px;">
+                    <div class="info-icon" style="font-size: 1.2rem; color: var(--dark);">💸</div>
+                    <span class="modal-info-label" style="font-size: 0.8rem; color: var(--gray);">Pgto Adesão</span>
+                  </div>
+                  <span class="modal-info-value" style="font-weight: 600; color: var(--dark); font-size: 0.9rem;">${formatarDataParaExibicao(loja.pgto_adesao) || 'N/A'}</span>
                 </div>
               </div>
               
+              <!-- PERCENTUAIS MDR, TIS, REBATE -->
               <div class="modal-fornecedor-info-grid" style="display: grid; grid-template-columns: repeat(3, 1fr); gap: 12px; margin-bottom: 15px;">
                 <div class="modal-info-item" style="display: flex; flex-direction: column; gap: 5px; padding: 10px; background: white; border-radius: 8px; border: 1px solid var(--border); box-shadow: 0 2px 5px rgba(0,0,0,0.05);">
                   <div style="display: flex; align-items: center; gap: 8px;">
@@ -2809,23 +2608,36 @@ function exibirModalFornecedores(cnpj, lojas) {
         </div>
       </div>
       
+      <!-- 🔥🔥🔥 QUADRADO DE INFORMAÇÕES FINANCEIRAS DO SIM_FACILITA -->
       <div class="cnpj-financeiro-card">
         <div style="flex: 1;">
           <div class="financeiro-title">
-            <i class="fas fa-chart-line"></i> INFORMAÇÕES FINANCEIRAS DO CNPJ
+            <i class="fas fa-chart-line"></i> INFORMAÇÕES FINANCEIRAS DO CNPJ - SIM_FACILITA
           </div>
           <div class="financeiro-grid">
+            <div class="financeiro-item">
+              <span class="financeiro-valor" style="color: var(--primary);">${planoCNPJ}</span>
+              <span class="financeiro-label">Plano</span>
+            </div>
             <div class="financeiro-item">
               <span class="financeiro-valor mensalidade">${mensalidadeCNPJ}</span>
               <span class="financeiro-label">Mensalidade</span>
             </div>
             <div class="financeiro-item">
-              <span class="financeiro-valor mensalidade-sim">${mensalidadeSimCNPJ}</span>
-              <span class="financeiro-label">Mensalidade SIM</span>
+              <span class="financeiro-valor" style="color: var(--info);">${vencimentoCNPJ}</span>
+              <span class="financeiro-label">Vencimento</span>
+            </div>
+            <div class="financeiro-item">
+              <span class="financeiro-valor" style="color: var(--info);">${metodoPgtoCNPJ}</span>
+              <span class="financeiro-label">Método Pgto</span>
             </div>
             <div class="financeiro-item">
               <span class="financeiro-valor adesao">${adesaoCNPJ}</span>
               <span class="financeiro-label">Adesão</span>
+            </div>
+            <div class="financeiro-item">
+              <span class="financeiro-valor" style="color: var(--dark);">${pgtoAdesaoCNPJ}</span>
+              <span class="financeiro-label">Pgto Adesão</span>
             </div>
           </div>
         </div>
@@ -2834,7 +2646,7 @@ function exibirModalFornecedores(cnpj, lojas) {
       <div class="modal-content-scroll">
         <div class="fornecedores-list-header">
           <h4><i class="fas fa-list-ul"></i> Fornecedores Vinculados</h4>
-          <span class="subtitle">Lista completa de integrações</span>
+          <span class="subtitle">Lista completa de integrações Sim_Facilita</span>
         </div>
         ${lojasHTML}
       </div>
@@ -2843,7 +2655,7 @@ function exibirModalFornecedores(cnpj, lojas) {
     modal.style.display = 'flex';
 }
 
-// CORREÇÃO: ADICIONAR FUNÇÃO fecharModalFornecedores NO ESCOPO GLOBAL
+// FUNÇÃO ADICIONADA: fecharModalFornecedores
 function fecharModalFornecedores() {
   const modal = document.getElementById('modalFornecedores');
   modal.style.display = 'none';
@@ -2867,22 +2679,22 @@ function verDetalhesCadastroModal(id) {
     .buscarCadastroPorIDComWaitlabel(id, waitlabelAtual);
 }
 
+// 🔥🔥🔥 FUNÇÃO ATUALIZADA: exibirModalDetalhesCompleto para SIM_FACILITA
 function exibirModalDetalhesCompleto(dados) {
     const modal = document.getElementById('modalDetalhes');
     const content = document.getElementById('modalDetalhesContent');
     
     const mensalidadeFormatada = formatarMoedaParaInput(dados.mensalidade);
-    const mensalidadeSimFormatada = formatarMoedaParaInput(dados.mensalidade_sim || 0);
     const adesaoFormatada = dados.adesao === 'Isento' || dados.adesao === 0 ? 'Isento' : formatarMoedaParaInput(dados.adesao);
     
     // CORRIGIR DATAS PARA EXIBIÇÃO
     const ultimaEtapaCorrigida = dados.ultima_etapa ? corrigirHoraFrontend(dados.ultima_etapa) : 'N/A';
 
-    // CORREÇÃO: SÓ MOSTRAR DEFASAGEM SE FOR EM ANDAMENTO
+    // DEFASAGEM (SÓ SE FOR EM ANDAMENTO)
     const mostrarDefasagem = dados.situacao && dados.situacao.toUpperCase() === 'EM ANDAMENTO';
     const defasagem = calcularDefasagem(ultimaEtapaCorrigida);
 
-    // SEÇÃO DE DEFASAGEM (SÓ SE FOR EM ANDAMENTO)
+    // SEÇÃO DE DEFASAGEM
     const secaoDefasagem = mostrarDefasagem && defasagem !== 'N/A' && defasagem !== '0 dias' && defasagem !== 'Data inválida' && defasagem !== 'Erro no cálculo' ? `
     <div class="detalhe-item" style="grid-column: 1 / -1; background: #fff5f5; border-left: 4px solid #dc3545; margin-top: 10px;">
         <span class="detalhe-label" style="font-size: 1.1em; color: #dc3545;">
@@ -2931,7 +2743,7 @@ function exibirModalDetalhesCompleto(dados) {
             <div class="detalhe-valor" style="font-weight: bold; color: var(--primary);">${dados.razao_social || 'N/A'}</div>
         </div>
         
-        <div class="detalhe-item">
+        <div class"detalhe-item">
             <span class="detalhe-label">🏷️ Nome Fantasia</span>
             <div class="detalhe-valor">${dados.nome_fantasia || 'N/A'}</div>
         </div>
@@ -2941,31 +2753,44 @@ function exibirModalDetalhesCompleto(dados) {
             <div class="detalhe-valor" style="font-family: monospace;">${dados.cnpj || 'N/A'}</div>
         </div>
 
-        <!-- SEÇÃO: FINANCEIRO -->
+        <!-- 🔥🔥🔥 SEÇÃO: DADOS ESPECÍFICOS DO SIM_FACILITA -->
         <div class="detalhe-item" style="grid-column: 1 / -1; background: #f5f0fa; border-left: 4px solid var(--primary); margin-top: 10px;">
             <span class="detalhe-label" style="font-size: 1.1em; color: var(--primary);">
-                <i class="fas fa-chart-line"></i> 💰 INFORMAÇÕES FINANCEIRAS DO CNPJ
+                <i class="fas fa-file-invoice-dollar"></i> 📊 DADOS SIM_FACILITA
             </span>
         </div>
         
         <div class="detalhe-item">
-            <span class="detalhe-label">💵 Mensalidade</span>
-            <div class="detalhe-valor" style="color: var(--success); font-weight: 600;">${mensalidadeFormatada}</div>
+            <span class="detalhe-label">📋 Plano</span>
+            <div class="detalhe-valor" style="color: var(--primary); font-weight: 600;">${dados.plano || 'N/A'}</div>
         </div>
 
         <div class="detalhe-item">
-            <span class="detalhe-label" style="color: var(--sim); font-weight: 700;">
-                <i class="fas fa-heart" style="color: var(--sim);"></i> Mensalidade SIM
-            </span>
-            <div class="detalhe-valor" style="color: var(--sim); font-weight: 600;">${mensalidadeSimFormatada}</div>
+            <span class="detalhe-label">💵 Mensalidade</span>
+            <div class="detalhe-valor" style="color: var(--success); font-weight: 600;">${mensalidadeFormatada}</div>
+        </div>
+        
+        <div class="detalhe-item">
+            <span class="detalhe-label">📅 Vencimento</span>
+            <div class="detalhe-valor" style="color: var(--warning); font-weight: 600;">${dados.vencimento || 'N/A'}</div>
+        </div>
+        
+        <div class="detalhe-item">
+            <span class="detalhe-label">💳 Método Pgto</span>
+            <div class="detalhe-valor" style="color: var(--info); font-weight: 600;">${dados.metodo_pgto || 'N/A'}</div>
         </div>
         
         <div class="detalhe-item">
             <span class="detalhe-label">🤝 Adesão</span>
             <div class="detalhe-valor" style="color: var(--info); font-weight: 600;">${adesaoFormatada}</div>
         </div>
+        
+        <div class="detalhe-item">
+            <span class="detalhe-label">💸 Pgto Adesão</span>
+            <div class="detalhe-valor" style="color: var(--dark); font-weight: 600;">${formatarDataParaExibicao(dados.pgto_adesao) || 'N/A'}</div>
+        </div>
 
-        <!-- SEÇÃO: MDR, TIS e REBATE -->
+        <!-- 🔥🔥🔥 SEÇÃO: MDR, TIS E REBATE -->
         <div class="detalhe-item" style="grid-column: 1 / -1; background: linear-gradient(135deg, #f8f9fa 0%, #f5f0fa 100%); border-left: 4px solid #FF6B35; margin-top: 10px;">
             <span class="detalhe-label" style="font-size: 1.1em; color: #FF6B35;">
                 <i class="fas fa-percentage"></i> 📊 MDR, TIS E REBATE
@@ -3070,7 +2895,7 @@ function exibirModalDetalhesCompleto(dados) {
             </div>
         </div>
 
-        <!-- SEÇÃO: DEFASAGEM - AGORA CORRETA -->
+        <!-- SEÇÃO: DEFASAGEM -->
         ${secaoDefasagem}
     </div>
     
@@ -3084,7 +2909,7 @@ function exibirModalDetalhesCompleto(dados) {
     modal.style.display = 'flex';
 }
 
-// CORREÇÃO: ADICIONAR FUNÇÃO fecharModalDetalhes NO ESCOPO GLOBAL
+// FUNÇÃO ADICIONADA: fecharModalDetalhes
 function fecharModalDetalhes() {
   const modal = document.getElementById('modalDetalhes');
   modal.style.display = 'none';
@@ -3418,7 +3243,6 @@ function atualizarContadorCNPJs(cnpjCount) {
   }
 }
 
-// FUNÇÃO EXISTENTE: Atualizar contador (mantida para compatibilidade)
 function atualizarContador() {
   const cadastrosAgrupados = agruparCadastrosPorCNPJ(cadastrosFiltrados);
   atualizarContadorCNPJs(cadastrosAgrupados.length);
@@ -3479,6 +3303,281 @@ document.getElementById('modalFornecedores').addEventListener('click', function(
     fecharModalFornecedores();
   }
 });
+
+// 🔥🔥🔥 FUNÇÕES DE AUXÍLIO - MANTIDAS DO CÓDIGO ANTERIOR
+function encontrarFornecedorMaisAntigo(lojasDoCNPJ) {
+  if (!lojasDoCNPJ || lojasDoCNPJ.length === 0) {
+    return { fornecedor: 'N/A', data: 'N/A', etapa: 'N/A', dias: 9999 };
+  }
+  
+  const situacoesPrioritarias = ['EM ANDAMENTO', 'NOVO REGISTRO'];
+  
+  for (const situacao of situacoesPrioritarias) {
+    const lojasPrioritarias = lojasDoCNPJ.filter(loja => 
+      loja.situacao && loja.situacao.toUpperCase() === situacao
+    );
+    
+    if (lojasPrioritarias.length > 0) {
+      const lojasComData = lojasPrioritarias.filter(loja => {
+        if (!loja.ultima_etapa || loja.ultima_etapa === 'N/A') return false;
+        try {
+          const data = new Date(loja.ultima_etapa.split('/').reverse().join('-'));
+          return !isNaN(data.getTime());
+        } catch (error) {
+          return false;
+        }
+      });
+      
+      if (lojasComData.length > 0) {
+        const lojaMaisAntiga = lojasComData.reduce((maisAntiga, atual) => {
+          try {
+            const dataMaisAntiga = new Date(maisAntiga.ultima_etapa.split('/').reverse().join('-'));
+            const dataAtual = new Date(atual.ultima_etapa.split('/').reverse().join('-'));
+            return dataAtual < dataMaisAntiga ? atual : maisAntiga;
+          } catch (error) {
+            return maisAntiga;
+          }
+        });
+        
+        const diasDefasagem = calcularDiasDefasagem(lojaMaisAntiga.ultima_etapa);
+        return {
+          fornecedor: lojaMaisAntiga.fornecedor,
+          data: lojaMaisAntiga.ultima_etapa,
+          etapa: lojaMaisAntiga.etapa,
+          dias: diasDefasagem,
+          situacao: lojaMaisAntiga.situacao
+        };
+      } else if (lojasPrioritarias.length > 0) {
+        return {
+          fornecedor: lojasPrioritarias[0].fornecedor,
+          data: 'N/A',
+          etapa: lojasPrioritarias[0].etapa || 'N/A',
+          dias: 9999,
+          situacao: lojasPrioritarias[0].situacao
+        };
+      }
+    }
+  }
+  
+  const lojasComData = lojasDoCNPJ.filter(loja => {
+    if (!loja.ultima_etapa || loja.ultima_etapa === 'N/A') return false;
+    try {
+      const data = new Date(loja.ultima_etapa.split('/').reverse().join('-'));
+      return !isNaN(data.getTime());
+    } catch (error) {
+      return false;
+    }
+  });
+  
+  if (lojasComData.length > 0) {
+    const lojaMaisAntiga = lojasComData.reduce((maisAntiga, atual) => {
+      try {
+        const dataMaisAntiga = new Date(maisAntiga.ultima_etapa.split('/').reverse().join('-'));
+        const dataAtual = new Date(atual.ultima_etapa.split('/').reverse().join('-'));
+        return dataAtual < dataMaisAntiga ? atual : maisAntiga;
+      } catch (error) {
+        return maisAntiga;
+      }
+    });
+    
+    const diasDefasagem = calcularDiasDefasagem(lojaMaisAntiga.ultima_etapa);
+    return {
+      fornecedor: lojaMaisAntiga.fornecedor,
+      data: lojaMaisAntiga.ultima_etapa,
+      etapa: lojaMaisAntiga.etapa,
+      dias: diasDefasagem,
+      situacao: lojaMaisAntiga.situacao
+    };
+  }
+  
+  const lojaComEtapa = lojasDoCNPJ.find(loja => loja.etapa && loja.etapa !== 'N/A');
+  if (lojaComEtapa) {
+    return {
+      fornecedor: lojaComEtapa.fornecedor,
+      data: 'N/A',
+      etapa: lojaComEtapa.etapa,
+      dias: 9999,
+      situacao: lojaComEtapa.situacao
+    };
+  }
+  
+  return {
+    fornecedor: lojasDoCNPJ[0].fornecedor,
+    data: 'N/A',
+    etapa: lojasDoCNPJ[0].etapa || 'N/A',
+    dias: 9999,
+    situacao: lojasDoCNPJ[0].situacao
+  };
+}
+
+function calcularDefasagemPorCNPJ(lojasDoCNPJ) {
+  if (!lojasDoCNPJ || lojasDoCNPJ.length === 0) {
+    return { dias: 9999, fornecedor: 'N/A', data: 'N/A', etapa: 'N/A' };
+  }
+  
+  const fornecedorMaisAntigo = encontrarFornecedorMaisAntigo(lojasDoCNPJ);
+  
+  return {
+    dias: fornecedorMaisAntigo.dias,
+    fornecedor: fornecedorMaisAntigo.fornecedor,
+    data: fornecedorMaisAntigo.data,
+    etapa: fornecedorMaisAntigo.etapa
+  };
+}
+
+function agruparCadastrosPorCNPJ(cadastros) {
+  const agrupados = {};
+  
+  cadastros.forEach(cadastro => {
+    if (!agrupados[cadastro.cnpj]) {
+      agrupados[cadastro.cnpj] = {
+        razao_social: cadastro.razao_social,
+        nome_fantasia: cadastro.nome_fantasia,
+        cnpj: cadastro.cnpj,
+        lojas: []
+      };
+    }
+    
+    agrupados[cadastro.cnpj].lojas.push(cadastro);
+  });
+  
+  return Object.values(agrupados);
+}
+
+function carregarCadastros() {
+  console.log("🎯 Carregando cadastros Sim_Facilita...");
+  
+  showLoading();
+  document.getElementById('tableContainer').style.display = 'none';
+
+  // SALVAR FILTROS ATUAIS ANTES DE RECARREGAR
+  const filtrosSalvos = {
+    situacaoAtiva: situacaoAtiva,
+    filtrosAtivos: {...filtrosAtivos},
+    etapasSelecionados: [...etapasSelecionados],
+    fornecedoresSelecionados: [...fornecedoresSelecionados],
+    pesquisa: document.getElementById('pesquisaCadastros').value,
+    ordenacao: document.getElementById('ordenacaoCadastros').value
+  };
+
+  // SALVAR NO localStorage PARA GARANTIR PERSISTÊNCIA
+  localStorage.setItem('filtrosSalvos', JSON.stringify(filtrosSalvos));
+
+  google.script.run
+    .withSuccessHandler(function(cadastros) {
+      hideLoading();
+      hideLoadingPopup();
+      
+      console.log("✅ Cadastros Sim_Facilita recebidos:", cadastros);
+      
+      if (cadastros && cadastros.length > 0) {
+        // ORDENAR POR RAZÃO SOCIAL (A-Z) AO CARREGAR
+        const cadastrosOrdenados = cadastros.sort((a, b) => {
+          const nomeA = (a.razao_social || '').toLowerCase();
+          const nomeB = (b.razao_social || '').toLowerCase();
+          return nomeA.localeCompare(nomeB);
+        });
+        
+        todosCadastros = cadastrosOrdenados;
+        cadastrosFiltrados = [...cadastrosOrdenados];
+        
+        // RESTAURAR FILTROS APÓS CARREGAR
+        setTimeout(() => {
+          restaurarFiltros(filtrosSalvos);
+        }, 100);
+        
+        document.getElementById('filtrosContainer').style.display = 'flex';
+        
+        showMessage('success', `✅ ${cadastros.length} cadastros Sim_Facilita carregados!`);
+      } else {
+        document.getElementById('tabelaCadastrosBody').innerHTML = `
+          <tr>
+            <td colspan="13" style="text-align: center; padding: 40px;">
+              <i class="fas fa-inbox" style="font-size: 3rem; color: var(--gray); margin-bottom: 15px;"></i>
+              <h3>Nenhum cadastro encontrado</h3>
+              <p>Não há cadastros no sistema Sim_Facilita.</p>
+            </td>
+          </tr>
+        `;
+        document.getElementById('tableContainer').style.display = 'block';
+        showMessage('info', '📝 Nenhum cadastro Sim_Facilita encontrado.');
+      }
+    })
+    .withFailureHandler(function(error) {
+      hideLoading();
+      hideLoadingPopup();
+      console.error("❌ Erro ao carregar cadastros Sim_Facilita:", error);
+      showMessage('error', '❌ Erro ao carregar cadastros Sim_Facilita: ' + error.message);
+      
+      // TENTAR RESTAURAR FILTROS MESMO COM ERRO
+      try {
+        const filtrosSalvos = JSON.parse(localStorage.getItem('filtrosSalvos') || '{}');
+        restaurarFiltros(filtrosSalvos);
+      } catch (e) {
+        console.error("Erro ao restaurar filtros:", e);
+      }
+    })
+    .buscarTodosCadastrosComWaitlabel(waitlabelAtual);
+}
+
+function restaurarFiltros(filtrosSalvos) {
+  if (!filtrosSalvos) {
+    try {
+      filtrosSalvos = JSON.parse(localStorage.getItem('filtrosSalvos') || '{}');
+    } catch (e) {
+      console.error("Erro ao recuperar filtros do localStorage:", e);
+      return;
+    }
+  }
+  
+  console.log("🔄 Restaurando filtros:", filtrosSalvos);
+  
+  // Restaurar variáveis globais
+  situacaoAtiva = filtrosSalvos.situacaoAtiva || 'all';
+  filtrosAtivos = {...(filtrosSalvos.filtrosAtivos || {})};
+  etapasSelecionados = [...(filtrosSalvos.etapasSelecionados || [])];
+  fornecedoresSelecionados = [...(filtrosSalvos.fornecedoresSelecionados || [])];
+  
+  // Restaurar elementos da interface
+  if (document.getElementById('pesquisaCadastros')) {
+    document.getElementById('pesquisaCadastros').value = filtrosSalvos.pesquisa || '';
+  }
+  
+  if (document.getElementById('ordenacaoCadastros')) {
+    document.getElementById('ordenacaoCadastros').value = filtrosSalvos.ordenacao || 'razao_social';
+  }
+  
+  // Atualizar botões de situação
+  document.querySelectorAll('.filtro-btn').forEach(btn => {
+    btn.classList.remove('active');
+  });
+  
+  const btnAtivo = document.querySelector(`.filtro-btn[data-situacao="${situacaoAtiva}"]`);
+  if (btnAtivo) {
+    btnAtivo.classList.add('active');
+  } else {
+    // Fallback para "Todos"
+    const btnTodos = document.querySelector('.filtro-btn[data-situacao="all"]');
+    if (btnTodos) {
+      btnTodos.classList.add('active');
+      situacaoAtiva = 'all';
+    }
+  }
+  
+  // Atualizar tags selecionadas
+  atualizarEtapasSelecionados();
+  atualizarFornecedoresSelecionados();
+  
+  // Reaplicar os filtros
+  aplicarTodosFiltros();
+  
+  // Reordenar se necessário
+  if (filtrosSalvos.ordenacao) {
+    setTimeout(() => {
+      ordenarCadastros();
+    }, 150);
+  }
+}
   </script>
 </body>
 </html>
